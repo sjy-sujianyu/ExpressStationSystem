@@ -498,22 +498,48 @@
             <returns>返回</returns>
         </member>
         <member name="M:ExpressStationSystem.Controllers.CustomerController.Post(ExpressStationSystem.Customer)">
-             <summary>
-             向数据库插入客户信息
-             </summary>
-             <param name="customer">客户实体信息</param>
-             <remarks>向数据库插入客户信息
-             <br>例子：</br>
+            <summary>
+            向数据库插入客户信息
+            </summary>
+            <param name="customer">客户实体信息</param>
+            <remarks>向数据库插入客户信息
+            <br>例子：</br>
             <br> {</br>
             <br>"cId": 0,</br>
+            <br>"name": "string",</br>
+            <br>"phone": "string",</br>
+            <br> "province": "string",</br>
+            <br>"city": "string",</br>
+            <br>"street": "string"</br>
+            <br>}</br>
+            </remarks>
+            <returns>返回</returns>
+        </member>
+        <member name="M:ExpressStationSystem.Controllers.CustomerController.Update(ExpressStationSystem.Customer)">
+             <summary>
+             更新指定ID的客户
+             </summary>
+             <param name="customer">客户对象</param>
+             <remarks>更新指定ID的客户对象
+             <br>例子：</br>
+             <br> {</br>
+             <br>"cId": 0,</br>
              <br>"name": "string",</br>
              <br>"phone": "string",</br>
-            <br> "province": "string",</br>
+             <br> "province": "string",</br>
              <br>"city": "string",</br>
              <br>"street": "string"</br>
             <br>}</br>
              </remarks>
              <returns>返回</returns>
+        </member>
+        <member name="M:ExpressStationSystem.Controllers.CustomerController.Delete(System.Int32)">
+            <summary>
+            删除指定ID的客户
+            </summary>
+            <param name="id">客户ID</param>
+            <remarks>删除指定ID的客户</remarks>
+            <returns>返回</returns>
         </member>
     </members>
 </doc>

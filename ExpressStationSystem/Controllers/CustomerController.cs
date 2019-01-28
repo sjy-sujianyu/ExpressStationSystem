@@ -57,14 +57,14 @@ namespace ExpressStationSystem.Controllers
         /// <param name="customer">客户实体信息</param>
         /// <remarks>向数据库插入客户信息
         /// <br>例子：</br>
-        ///<br> {</br>
-        ///<br>"cId": 0,</br>
+        /// <br> {</br>
+        /// <br>"cId": 0,</br>
         /// <br>"name": "string",</br>
         /// <br>"phone": "string",</br>
-        ///<br> "province": "string",</br>
+        /// <br> "province": "string",</br>
         /// <br>"city": "string",</br>
         /// <br>"street": "string"</br>
-        ///<br>}</br>
+        /// <br>}</br>
         /// </remarks>
         /// <returns>返回</returns>
         [HttpPost, Route("Customer/Post")]
@@ -74,6 +74,7 @@ namespace ExpressStationSystem.Controllers
             try
             {
                 db.Customer.InsertOnSubmit(customer);
+
                 db.SubmitChanges();
                 return true;
             }
@@ -83,14 +84,67 @@ namespace ExpressStationSystem.Controllers
             }
         }
 
-        // PUT: api/Customer/5
-        public void Put(int id, [FromBody]string value)
+        // Put: api/Customer/Update
+        /// <summary>
+        /// 更新指定ID的客户
+        /// </summary>
+        /// <param name="customer">客户对象</param>
+        /// <remarks>更新指定ID的客户对象
+        /// <br>例子：</br>
+        /// <br> {</br>
+        /// <br>"cId": 0,</br>
+        /// <br>"name": "string",</br>
+        /// <br>"phone": "string",</br>
+        /// <br> "province": "string",</br>
+        /// <br>"city": "string",</br>
+        /// <br>"street": "string"</br>
+        ///<br>}</br>
+        /// </remarks>
+        /// <returns>返回</returns>
+        [HttpPut, Route("Customer/Update")]
+        public bool Update(Customer customer)
         {
+            db = new DataClasses1DataContext(connstr);
+
+            try
+            {
+                Customer cus = db.Customer.Single(c => c.cId == customer.cId);
+                cus.name = customer.name;
+                cus.phone = customer.phone;
+                cus.province = customer.province;
+                cus.city = customer.city;
+                cus.street = customer.street;
+                db.SubmitChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        // DELETE: api/Customer/5
-        public void Delete(int id)
+        // DELETE: api/Customer/Delete?id={id}
+        /// <summary>
+        /// 删除指定ID的客户
+        /// </summary>
+        /// <param name="id">客户ID</param>
+        /// <remarks>删除指定ID的客户</remarks>
+        /// <returns>返回</returns>
+        [HttpDelete, Route("Customer/Delete")]
+        public bool Delete(int id)
         {
+            db = new DataClasses1DataContext(connstr);
+            try
+            {
+                Customer customer = db.Customer.Single(c => c.cId == id);
+                db.Customer.DeleteOnSubmit(customer);
+                db.SubmitChanges();
+                return true;
+            }
+            catch(Exception)
+            {
+                return false;
+            }
         }
     }
 }

@@ -75,27 +75,6 @@
       <Association Name="Package_Transfer" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Package" Member="Package">
-    <Type Name="Package">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="weight" Type="System.Decimal" DbType="Decimal(5,2) NOT NULL" CanBeNull="false" />
-      <Column Name="price" Type="System.Decimal" DbType="Decimal(5,2) NOT NULL" CanBeNull="false" />
-      <Column Name="sendId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="receiverId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="srcId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="destId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="vId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Package_Delivery" Member="Delivery" ThisKey="id" OtherKey="id" Type="Delivery" />
-      <Association Name="Package_Error" Member="Error" ThisKey="id" OtherKey="id" Type="Error" Cardinality="One" />
-      <Association Name="Package_PickUp" Member="PickUp" ThisKey="id" OtherKey="id" Type="PickUp" />
-      <Association Name="Package_Transfer" Member="Transfer" ThisKey="id" OtherKey="id" Type="Transfer" />
-      <Association Name="Branch_Package" Member="Branch" ThisKey="srcId" OtherKey="bId" Type="Branch" IsForeignKey="true" />
-      <Association Name="Branch_Package1" Member="Branch1" ThisKey="destId" OtherKey="bId" Type="Branch" IsForeignKey="true" />
-      <Association Name="Vehicle_Package" Member="Vehicle" ThisKey="vId" OtherKey="vId" Type="Vehicle" IsForeignKey="true" />
-      <Association Name="Customer_Package" Member="Customer" ThisKey="sendId" OtherKey="cId" Type="Customer" IsForeignKey="true" />
-      <Association Name="Customer_Package1" Member="Customer1" ThisKey="receiverId" OtherKey="cId" Type="Customer" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Customer" Member="Customer">
     <Type Name="Customer">
       <Column Name="cId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -106,6 +85,28 @@
       <Column Name="street" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Association Name="Customer_Package" Member="Package" ThisKey="cId" OtherKey="sendId" Type="Package" />
       <Association Name="Customer_Package1" Member="Package1" ThisKey="cId" OtherKey="receiverId" Type="Package" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Package" Member="Package">
+    <Type Name="Package">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="weight" Type="System.Decimal" DbType="Decimal(5,2) NOT NULL" CanBeNull="false" />
+      <Column Name="price" Type="System.Decimal" DbType="Decimal(5,2) NOT NULL" CanBeNull="false" />
+      <Column Name="sendId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="receiverId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="srcId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="destId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="vId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="Package_Delivery" Member="Delivery" ThisKey="id" OtherKey="id" Type="Delivery" />
+      <Association Name="Package_Error" Member="Error" ThisKey="id" OtherKey="id" Type="Error" Cardinality="One" />
+      <Association Name="Package_PickUp" Member="PickUp" ThisKey="id" OtherKey="id" Type="PickUp" />
+      <Association Name="Package_Transfer" Member="Transfer" ThisKey="id" OtherKey="id" Type="Transfer" />
+      <Association Name="Customer_Package" Member="Customer" ThisKey="sendId" OtherKey="cId" Type="Customer" IsForeignKey="true" />
+      <Association Name="Customer_Package1" Member="Customer1" ThisKey="receiverId" OtherKey="cId" Type="Customer" IsForeignKey="true" />
+      <Association Name="Branch_Package" Member="Branch" ThisKey="srcId" OtherKey="bId" Type="Branch" IsForeignKey="true" />
+      <Association Name="Branch_Package1" Member="Branch1" ThisKey="destId" OtherKey="bId" Type="Branch" IsForeignKey="true" />
+      <Association Name="Vehicle_Package" Member="Vehicle" ThisKey="vId" OtherKey="vId" Type="Vehicle" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>
