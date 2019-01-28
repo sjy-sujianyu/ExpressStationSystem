@@ -515,13 +515,5 @@
              </remarks>
              <returns>返回</returns>
         </member>
-        <member name="M:ExpressStationSystem.Controllers.DeliveryController.GetAllDelivery(System.Int32)">
-            <summary>
-            根据客户ID获取快递信息
-            </summary>
-            <param name="id">快递ID</param>
-            <remarks>当前方法根据快递ID返回快递派件信息</remarks>
-            <returns>返回</returns>
-        </member>
     </members>
 </doc>
