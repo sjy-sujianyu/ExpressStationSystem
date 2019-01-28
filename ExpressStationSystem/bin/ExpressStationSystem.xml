@@ -481,5 +481,13 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
+        <member name="M:ExpressStationSystem.Controllers.CustomerController.Get(System.Int32)">
+            <summary>
+            根据客户ID获取客户的信息
+            </summary>
+            <param name="id">客户ID</param>
+            <remarks>当前方法根据客户ID返回客户的信息</remarks>
+            <returns>返回</returns>
+        </member>
     </members>
 </doc>
