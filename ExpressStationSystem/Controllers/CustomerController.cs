@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web.Http;
 
 namespace ExpressStationSystem.Controllers
@@ -11,7 +12,7 @@ namespace ExpressStationSystem.Controllers
     {
         private static string connstr=@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Express;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private DataClasses1DataContext db;
-        // GET: api/Customer/Get?{id}
+        // GET: api/Customer/Get?id={id}
         /// <summary>
         /// 根据客户ID获取客户的信息
         /// </summary>
@@ -31,9 +32,55 @@ namespace ExpressStationSystem.Controllers
             return Json<Customer>(cus);
         }
 
-        // POST: api/Customer
-        public void Post([FromBody]string value)
+        // POST: api/Customer/isTel?tb={tb}
+        /// <summary>
+        /// 验证手机号码是否合法
+        /// </summary>
+        /// <param name="tb">手机号码</param>
+        /// <remarks>验证手机号码是否合法</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Customer/isTel")]
+        public bool isTel(string tb)
         {
+            string s = @"^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\d{8}$";
+            bool flag = true;
+            if (!Regex.IsMatch(tb, s))
+            {
+                flag = false;
+            }
+            return flag;
+        }
+        // POST: api/Customer/Post
+        /// <summary>
+        /// 向数据库插入客户信息
+        /// </summary>
+        /// <param name="customer">客户实体信息</param>
+        /// <remarks>向数据库插入客户信息
+        /// <br>例子：</br>
+        ///<br> {</br>
+        ///<br>"cId": 0,</br>
+        /// <br>"name": "string",</br>
+        /// <br>"phone": "string",</br>
+        ///<br> "province": "string",</br>
+        /// <br>"city": "string",</br>
+        /// <br>"street": "string"</br>
+        ///<br>}</br>
+        /// </remarks>
+        /// <returns>返回</returns>
+        [HttpPost, Route("Customer/Post")]
+        public bool Post(Customer customer)
+        {
+            db = new DataClasses1DataContext(connstr);
+            try
+            {
+                db.Customer.InsertOnSubmit(customer);
+                db.SubmitChanges();
+                return true;
+            }
+            catch(Exception)
+            {
+                return false;
+            }
         }
 
         // PUT: api/Customer/5
