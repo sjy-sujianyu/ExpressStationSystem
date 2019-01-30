@@ -541,11 +541,11 @@
             <remarks>删除指定ID的客户</remarks>
             <returns>返回</returns>
         </member>
-        <member name="M:ExpressStationSystem.DeliveryController.GetAllDelivery">
+        <member name="M:ExpressStationSystem.DeliveryController.GetAllDelivery(System.Int32)">
             <summary>
-            获取所有待配送和已配送的快递ID列表
+            通过员工ID获取所有待配送和已配送的快递ID列表
             </summary>
-            <remarks>当前方法获取所有待配送和已配送的快递ID列表</remarks>
+            <remarks>当前方法通过员工ID获取所有待配送和已配送的快递ID列表</remarks>
             <returns>返回</returns>
         </member>
         <member name="M:ExpressStationSystem.DeliveryController.IsDelivered(System.Int32)">

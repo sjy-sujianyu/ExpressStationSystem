@@ -195,3 +195,4 @@ C:\Users\qq147\git\ExpressStationSystem\ExpressStationSystem\obj\Debug\ExpressSt
 C:\Users\qq147\git\ExpressStationSystem\ExpressStationSystem\obj\Debug\ExpressStationSystem.csproj.CopyComplete
 C:\Users\qq147\git\ExpressStationSystem\ExpressStationSystem\obj\Debug\ExpressStationSystem.dll
 C:\Users\qq147\git\ExpressStationSystem\ExpressStationSystem\obj\Debug\ExpressStationSystem.pdb
+C:\Users\qq147\git\ExpressStationSystem\ExpressStationSystem\obj\Debug\ExpressStationSystem.csprojAssemblyReference.cache

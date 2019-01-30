@@ -17,17 +17,18 @@ namespace ExpressStationSystem
 
         // GET: api/Delivery/GetAllDelivery
         /// <summary>
-        /// 获取所有待配送和已配送的快递ID列表
+        /// 通过员工ID获取所有待配送和已配送的快递ID列表
         /// </summary>
-        /// <remarks>当前方法获取所有待配送和已配送的快递ID列表</remarks>
+        /// <remarks>当前方法通过员工ID获取所有待配送和已配送的快递ID列表</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Delivery/GetAllDelivery")]
-        public IEnumerable<int> GetAllDelivery()
+        public IEnumerable<int> GetAllDelivery(int mid)
         {
             db = new DataClasses1DataContext(connstr);
             List<int> ids = new List<int>();
             var query =
                 from delivery in db.Delivery
+                where delivery.mId == mid
                 select delivery;
             foreach(var del in query)
             {
@@ -52,7 +53,7 @@ namespace ExpressStationSystem
                 where delivery.id == id
                 select delivery;
             Delivery del = query.FirstOrDefault();
-            return del != null && del.status != "待配送";
+            return del != null && del.status != "待派送";
         }
 
         // GET: api/Delivery/GetDeliveryById?id={id}
@@ -63,7 +64,7 @@ namespace ExpressStationSystem
         /// <remarks>当前方法根据快递ID查看快递信息</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Delivery/GetDeliveryById")]
-        public Delivery GetDeliveryById(int id)
+        public MyDelivery GetDeliveryById(int id)
         {
             db = new DataClasses1DataContext(connstr);
             var query =
@@ -71,34 +72,57 @@ namespace ExpressStationSystem
                 where delivery.id == id
                 select delivery;
             Delivery del = query.FirstOrDefault();
-            return del;
+            if (del == null) return null;
+            MyDelivery mydel = new MyDelivery();
+            mydel.Time = del.time;
+            mydel.Id = del.id;
+            mydel.Status = del.status;
+            var query1 =
+                from Package in db.Package
+                where Package.id == id
+                select Package;
+            int cid = query1.FirstOrDefault().receiverId;
+            var query2 =
+                from Customer in db.Customer
+                where Customer.cId == cid
+                select Customer;
+            Customer cus = query2.FirstOrDefault();
+            mydel.City = cus.city;
+            mydel.Province = cus.province;
+            mydel.Street = mydel.Street;
+            mydel.Name = cus.name;
+            mydel.Phone = cus.phone;
+            return mydel;
         }
 
-        // GET api/<controller>
-        public IEnumerable<string> Get()
+        public class MyDelivery
         {
-            return new string[] { "value1", "value2" };
-        }
+            public MyDelivery() { }
 
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
-        }
+            private int id;
 
-        // POST api/<controller>
-        public void Post([FromBody]string value)
-        {
-        }
+            private string name;
 
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
+            private string phone;
 
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
+            private string province;
+
+            private string city;
+
+            private string street;
+
+            private string status;
+
+            private DateTime time;
+
+            public int Id { get => id; set => id = value; }
+            public string Name { get => name; set => name = value; }
+            public string Phone { get => phone; set => phone = value; }
+            public string Province { get => province; set => province = value; }
+            public string City { get => city; set => city = value; }
+            public string Street { get => street; set => street = value; }
+            public string Status { get => status; set => status = value; }
+            public DateTime Time { get => time; set => time = value; }
         }
     }
 }
