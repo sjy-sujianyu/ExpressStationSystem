@@ -515,5 +515,28 @@
              </remarks>
              <returns>返回</returns>
         </member>
+        <member name="M:ExpressStationSystem.DeliveryController.GetAllDelivery">
+            <summary>
+            获取所有待配送和已配送的快递ID列表
+            </summary>
+            <remarks>当前方法获取所有待配送和已配送的快递ID列表</remarks>
+            <returns>返回</returns>
+        </member>
+        <member name="M:ExpressStationSystem.DeliveryController.IsDelivered(System.Int32)">
+            <summary>
+            根据快递ID查看快递是否已签收
+            </summary>
+            <param name="id">快递ID</param>
+            <remarks>当前方法根据快递ID查看快递是否已签收</remarks>
+            <returns>返回</returns>
+        </member>
+        <member name="M:ExpressStationSystem.DeliveryController.GetDeliveryById(System.Int32)">
+            <summary>
+            根据快递ID查看快递信息
+            </summary>
+            <param name="id">快递ID</param>
+            <remarks>当前方法根据快递ID查看快递信息</remarks>
+            <returns>返回</returns>
+        </member>
     </members>
 </doc>
