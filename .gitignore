@@ -694,3 +694,5 @@ ASALocalRun/
 healthchecksdb
 
 # End of https://www.gitignore.io/api/csharp
+
+.vs/config/applicationhost.config

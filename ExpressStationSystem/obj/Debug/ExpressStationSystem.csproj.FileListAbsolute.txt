@@ -191,7 +191,6 @@ C:\Users\qq147\git\ExpressStationSystem\ExpressStationSystem\bin\zh-Hans\System.
 C:\Users\qq147\git\ExpressStationSystem\ExpressStationSystem\bin\zh-Hans\System.Web.WebPages.resources.dll
 C:\Users\qq147\git\ExpressStationSystem\ExpressStationSystem\bin\zh-Hans\System.Web.WebPages.Deployment.resources.dll
 C:\Users\qq147\git\ExpressStationSystem\ExpressStationSystem\bin\zh-Hans\System.Web.WebPages.Razor.resources.dll
-C:\Users\qq147\git\ExpressStationSystem\ExpressStationSystem\obj\Debug\ExpressStationSystem.csprojAssemblyReference.cache
 C:\Users\qq147\git\ExpressStationSystem\ExpressStationSystem\obj\Debug\ExpressStationSystem.csproj.CoreCompileInputs.cache
 C:\Users\qq147\git\ExpressStationSystem\ExpressStationSystem\obj\Debug\ExpressStationSystem.csproj.CopyComplete
 C:\Users\qq147\git\ExpressStationSystem\ExpressStationSystem\obj\Debug\ExpressStationSystem.dll
