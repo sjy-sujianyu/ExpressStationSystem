@@ -17,17 +17,6 @@
       <Column Name="role" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
-  <Table Name="dbo.Member" Member="Member">
-    <Type Name="Member">
-      <Column Name="mId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="job" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="phone" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Member_Delivery" Member="Delivery" ThisKey="mId" OtherKey="mId" Type="Delivery" />
-      <Association Name="Member_PickUp" Member="PickUp" ThisKey="mId" OtherKey="mId" Type="PickUp" />
-      <Association Name="Member_Transfer" Member="Transfer" ThisKey="mId" OtherKey="mId" Type="Transfer" />
-    </Type>
-  </Table>
   <Table Name="dbo.Vehicle" Member="Vehicle">
     <Type Name="Vehicle">
       <Column Name="vId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -41,8 +30,8 @@
       <Column Name="mId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Member_Delivery" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
       <Association Name="Package_Delivery" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
+      <Association Name="Member_Delivery" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Error" Member="Error">
@@ -59,8 +48,8 @@
       <Column Name="mId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Member_PickUp" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
       <Association Name="Package_PickUp" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
+      <Association Name="Member_PickUp" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Transfer" Member="Transfer">
@@ -71,8 +60,8 @@
       <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="srcId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="destId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Member_Transfer" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
       <Association Name="Package_Transfer" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
+      <Association Name="Member_Transfer" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Customer" Member="Customer">
@@ -107,6 +96,17 @@
       <Association Name="Branch_Package" Member="Branch" ThisKey="srcId" OtherKey="bId" Type="Branch" IsForeignKey="true" />
       <Association Name="Branch_Package1" Member="Branch1" ThisKey="destId" OtherKey="bId" Type="Branch" IsForeignKey="true" />
       <Association Name="Vehicle_Package" Member="Vehicle" ThisKey="vId" OtherKey="vId" Type="Vehicle" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Member" Member="Member">
+    <Type Name="Member">
+      <Column Name="mId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="job" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="phone" Type="System.String" DbType="VarChar(11) NOT NULL" CanBeNull="false" />
+      <Association Name="Member_Delivery" Member="Delivery" ThisKey="mId" OtherKey="mId" Type="Delivery" />
+      <Association Name="Member_PickUp" Member="PickUp" ThisKey="mId" OtherKey="mId" Type="PickUp" />
+      <Association Name="Member_Transfer" Member="Transfer" ThisKey="mId" OtherKey="mId" Type="Transfer" />
     </Type>
   </Table>
 </Database>
