@@ -95,6 +95,32 @@ namespace ExpressStationSystem
             return mydel;
         }
 
+        // PUT: api/Delivery/UpdateDelivered
+        /// <summary>
+        /// 将快递修改为已签收，并将时间修改为当前时间
+        /// </summary>
+        /// <param name="id">快递ID</param>
+        /// <remarks>将快递修改为已签收，并将时间修改为当前时间</remarks>
+        /// <returns>返回</returns>
+        [HttpPut, Route("Delivery/UpdateDelivered")]
+        public bool UpdateDelivered(int id)
+        {
+            db = new DataClasses1DataContext(connstr);
+            try
+            {
+                Delivery del = db.Delivery.Single(d => d.id == id);
+                if (del.status == "已签收") throw new Exception();
+                del.status = "已签收";
+                del.time = DateTime.Now;
+                db.SubmitChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
         public class MyDelivery
         {
             public MyDelivery() { }
