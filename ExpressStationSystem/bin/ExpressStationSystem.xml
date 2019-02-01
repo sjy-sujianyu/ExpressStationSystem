@@ -566,10 +566,10 @@
         </member>
         <member name="M:ExpressStationSystem.DeliveryController.UpdateDelivered(System.Int32)">
             <summary>
-            将快递修改为已签收
+            将快递修改为已签收，并将时间修改为当前时间
             </summary>
             <param name="id">快递ID</param>
-            <remarks>将快递修改为已签收</remarks>
+            <remarks>将快递修改为已签收，并将时间修改为当前时间</remarks>
             <returns>返回</returns>
         </member>
     </members>
