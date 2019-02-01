@@ -61,7 +61,7 @@ namespace ExpressStationSystem
                 db.SubmitChanges();
                 return true;
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 return false;
             }

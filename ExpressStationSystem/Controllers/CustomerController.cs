@@ -80,7 +80,7 @@ namespace ExpressStationSystem.Controllers
         /// <summary>
         /// 更新指定手机号码的客户
         /// </summary>
-        /// <param name="customer">客户对象</param>
+        /// <param name="customerclass">客户对象</param>
         /// <remarks>更新指定手机号码的客户对象</remarks>
         /// <returns>返回</returns>
         [HttpPut, Route("Customer/Update")]
