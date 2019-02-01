@@ -14,15 +14,68 @@ namespace ExpressStationSystem
         private static string connstr = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Express;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private DataClasses1DataContext db;
 
-
-        // GET: api/Delivery/GetAllDelivery
+        // GET: api/Delivery/GetNotInDelivery
         /// <summary>
-        /// 通过员工ID获取所有待配送和已配送的快递ID列表
+        /// 通过网点ID获取未接单待派送的快递
         /// </summary>
-        /// <remarks>当前方法通过员工ID获取所有待配送和已配送的快递ID列表</remarks>
+        /// <param name="bid">网点ID</param>
+        /// <remarks>当前方法通过网点ID获取未接单待派送的快递</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Delivery/GetAllDelivery")]
-        public IEnumerable<int> GetAllDelivery(int mid)
+        [HttpGet, Route("Delivery/GetNotInDelivery")]
+        public IEnumerable<int> GetNotInDelivery(int bid){
+            List<int> ids = new List<int>();
+            db = new DataClasses1DataContext(connstr);
+            var query = from Package in db.Package
+                        where Package.destId == bid
+                        select Package.id;
+            foreach(var id in query)
+            {
+                var query2 = from Delivery in db.Delivery
+                             where Delivery.id == id
+                             select Delivery;
+                if (query2.FirstOrDefault() == null) ids.Add(id);
+            }
+            return ids;
+        }
+
+        //POST: api/Delivery/AddDelivery
+        /// <summary>
+        /// 员工接单
+        /// </summary>
+        /// <param name="id">快递ID</param>
+        /// <param name="mid">员工ID</param>
+        /// <remarks>当前进行员工接单</remarks>
+        /// <returns>返回</returns>
+        [HttpPost, Route("Delivery/AddDelivery")]
+        public bool AddDelivery(int id, int mid)
+        {
+            db = new DataClasses1DataContext(connstr);
+            try
+            {
+                Delivery del = new Delivery();
+                del.id = id;
+                del.mId = mid;
+                del.time = DateTime.Now;
+                del.status = "待派送";
+                db.Delivery.InsertOnSubmit(del);
+                db.SubmitChanges();
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+        }
+
+        // GET: api/Delivery/GetUnDelivered
+        /// <summary>
+        /// 通过员工ID获取未签收的快递ID列表
+        /// </summary>
+        /// <param name="mid">员工ID</param>
+        /// <remarks>当前方法通过员工ID获取未签收快递ID列表</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Delivery/GetUnDelivered")]
+        public IEnumerable<int> GetUnDelivered(int mid)
         {
             db = new DataClasses1DataContext(connstr);
             List<int> ids = new List<int>();
@@ -32,7 +85,32 @@ namespace ExpressStationSystem
                 select delivery;
             foreach(var del in query)
             {
-                ids.Add(del.id);
+                if(del.status == "待派送")
+                    ids.Add(del.id);
+            }
+            return ids;
+        }
+
+        // GET: api/Delivery/GetDelivered
+        /// <summary>
+        /// 通过员工ID获取已签收的快递ID列表
+        /// </summary>
+        /// <param name="mid">员工ID</param>
+        /// <remarks>当前方法通过员工ID获取已签收快递ID列表</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Delivery/GetDelivered")]
+        public IEnumerable<int> GetDelivered(int mid)
+        {
+            db = new DataClasses1DataContext(connstr);
+            List<int> ids = new List<int>();
+            var query =
+                from delivery in db.Delivery
+                where delivery.mId == mid
+                select delivery;
+            foreach (var del in query)
+            {
+                if (del.status != "待派送")
+                    ids.Add(del.id);
             }
             return ids;
         }
