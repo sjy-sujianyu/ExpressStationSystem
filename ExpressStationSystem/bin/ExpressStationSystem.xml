@@ -481,12 +481,12 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
-        <member name="M:ExpressStationSystem.Controllers.CustomerController.Get(System.Int32)">
+        <member name="M:ExpressStationSystem.Controllers.CustomerController.Get(System.String)">
             <summary>
-            根据客户ID获取客户的信息
+            根据客户手机号码获取客户的信息
             </summary>
-            <param name="id">客户ID</param>
-            <remarks>当前方法根据客户ID返回客户的信息</remarks>
+            <param name="phone">客户手机号码</param>
+            <remarks>根据客户手机号码获取客户的信息</remarks>
             <returns>返回</returns>
         </member>
         <member name="M:ExpressStationSystem.Controllers.CustomerController.isTel(System.String)">
@@ -497,48 +497,66 @@
             <remarks>验证手机号码是否合法</remarks>
             <returns>返回</returns>
         </member>
-        <member name="M:ExpressStationSystem.Controllers.CustomerController.Post(ExpressStationSystem.Customer)">
+        <member name="M:ExpressStationSystem.Controllers.CustomerController.Post(ExpressStationSystem.CustomerClass)">
             <summary>
             向数据库插入客户信息
             </summary>
-            <param name="customer">客户实体信息</param>
-            <remarks>向数据库插入客户信息
-            <br>例子：</br>
-            <br> {</br>
-            <br>"cId": 0,</br>
-            <br>"name": "string",</br>
-            <br>"phone": "string",</br>
-            <br> "province": "string",</br>
-            <br>"city": "string",</br>
-            <br>"street": "string"</br>
-            <br>}</br>
-            </remarks>
+            <param name="customerclass">客户实体信息</param>
+            <remarks>向数据库插入客户信息</remarks>
             <returns>返回</returns>
         </member>
-        <member name="M:ExpressStationSystem.Controllers.CustomerController.Update(ExpressStationSystem.Customer)">
-             <summary>
-             更新指定ID的客户
-             </summary>
-             <param name="customer">客户对象</param>
-             <remarks>更新指定ID的客户对象
-             <br>例子：</br>
-             <br> {</br>
-             <br>"cId": 0,</br>
-             <br>"name": "string",</br>
-             <br>"phone": "string",</br>
-             <br> "province": "string",</br>
-             <br>"city": "string",</br>
-             <br>"street": "string"</br>
-            <br>}</br>
-             </remarks>
-             <returns>返回</returns>
-        </member>
-        <member name="M:ExpressStationSystem.Controllers.CustomerController.Delete(System.Int32)">
+        <member name="M:ExpressStationSystem.Controllers.CustomerController.Update(ExpressStationSystem.CustomerClass)">
             <summary>
-            删除指定ID的客户
+            更新指定手机号码的客户
             </summary>
-            <param name="id">客户ID</param>
+            <param name="customer">客户对象</param>
+            <remarks>更新指定手机号码的客户对象</remarks>
+            <returns>返回</returns>
+        </member>
+        <member name="M:ExpressStationSystem.Controllers.CustomerController.Delete(System.String)">
+            <summary>
+            删除指定手机号码的客户
+            </summary>
+            <param name="phone">客户手机号码</param>
             <remarks>删除指定ID的客户</remarks>
+            <returns>返回</returns>
+        </member>
+        <member name="M:ExpressStationSystem.Controllers.PackageController.Get(System.Int32)">
+            <summary>
+            根据包裹ID获取包裹的信息
+            </summary>
+            <param name="id">包裹ID</param>
+            <remarks>根据包裹ID获取包裹的信息</remarks>
+            <returns>返回</returns>
+        </member>
+        <member name="M:ExpressStationSystem.Controllers.PackageController.GetValue(System.String,System.String,System.String,System.String,System.String,System.String,System.Double)">
+            <summary>
+            根据起始地点、目的地点和重量计算包裹价格
+            </summary>
+            <param name="srcProvince">源省份 A省</param>
+            <param name="srcCity">源城市 A市</param>
+            <param name="srcStreet">源街道 A街道</param>
+            <param name="destProvince">目的省份 A省</param>
+            <param name="destCity">目的城市 A市</param>
+            <param name="destStreet">目的街道 A街道</param>
+            <param name="weight">重量kg  1.0</param>
+            <remarks>根据起始地点、目的地点和重量计算包裹价格</remarks>
+            <returns>返回</returns>
+        </member>
+        <member name="M:ExpressStationSystem.Controllers.PackageController.Post(ExpressStationSystem.PackageClass)">
+            <summary>
+            插入包裹记录
+            </summary>
+            <param name="packageclass">包裹对象 vId字段可选</param>
+            <remarks>插入包裹记录</remarks>
+            <returns>返回</returns>
+        </member>
+        <member name="M:ExpressStationSystem.Controllers.PackageController.Delete(System.Int32)">
+            <summary>
+            删除指定ID的包裹信息
+            </summary>
+            <param name="id">包裹ID</param>
+            <remarks>删除指定ID的包裹信息</remarks>
             <returns>返回</returns>
         </member>
         <member name="M:ExpressStationSystem.DeliveryController.GetAllDelivery(System.Int32)">

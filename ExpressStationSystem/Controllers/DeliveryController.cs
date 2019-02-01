@@ -81,10 +81,10 @@ namespace ExpressStationSystem
                 from Package in db.Package
                 where Package.id == id
                 select Package;
-            int cid = query1.FirstOrDefault().receiverId;
+            string receiverPhone = query1.FirstOrDefault().receiverPhone;
             var query2 =
                 from Customer in db.Customer
-                where Customer.cId == cid
+                where Customer.phone == receiverPhone
                 select Customer;
             Customer cus = query2.FirstOrDefault();
             mydel.City = cus.city;

@@ -30,36 +30,36 @@ namespace ExpressStationSystem
 		
     #region 可扩展性方法定义
     partial void OnCreated();
+    partial void InsertPackage(Package instance);
+    partial void UpdatePackage(Package instance);
+    partial void DeletePackage(Package instance);
     partial void InsertBranch(Branch instance);
     partial void UpdateBranch(Branch instance);
     partial void DeleteBranch(Branch instance);
-    partial void InsertLogin(Login instance);
-    partial void UpdateLogin(Login instance);
-    partial void DeleteLogin(Login instance);
-    partial void InsertVehicle(Vehicle instance);
-    partial void UpdateVehicle(Vehicle instance);
-    partial void DeleteVehicle(Vehicle instance);
+    partial void InsertCustomer(Customer instance);
+    partial void UpdateCustomer(Customer instance);
+    partial void DeleteCustomer(Customer instance);
     partial void InsertDelivery(Delivery instance);
     partial void UpdateDelivery(Delivery instance);
     partial void DeleteDelivery(Delivery instance);
+    partial void InsertLogin(Login instance);
+    partial void UpdateLogin(Login instance);
+    partial void DeleteLogin(Login instance);
     partial void InsertError(Error instance);
     partial void UpdateError(Error instance);
     partial void DeleteError(Error instance);
+    partial void InsertMember(Member instance);
+    partial void UpdateMember(Member instance);
+    partial void DeleteMember(Member instance);
     partial void InsertPickUp(PickUp instance);
     partial void UpdatePickUp(PickUp instance);
     partial void DeletePickUp(PickUp instance);
     partial void InsertTransfer(Transfer instance);
     partial void UpdateTransfer(Transfer instance);
     partial void DeleteTransfer(Transfer instance);
-    partial void InsertCustomer(Customer instance);
-    partial void UpdateCustomer(Customer instance);
-    partial void DeleteCustomer(Customer instance);
-    partial void InsertPackage(Package instance);
-    partial void UpdatePackage(Package instance);
-    partial void DeletePackage(Package instance);
-    partial void InsertMember(Member instance);
-    partial void UpdateMember(Member instance);
-    partial void DeleteMember(Member instance);
+    partial void InsertVehicle(Vehicle instance);
+    partial void UpdateVehicle(Vehicle instance);
+    partial void DeleteVehicle(Vehicle instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -92,6 +92,14 @@ namespace ExpressStationSystem
 			OnCreated();
 		}
 		
+		public System.Data.Linq.Table<Package> Package
+		{
+			get
+			{
+				return this.GetTable<Package>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Branch> Branch
 		{
 			get
@@ -100,19 +108,11 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		public System.Data.Linq.Table<Login> Login
+		public System.Data.Linq.Table<Customer> Customer
 		{
 			get
 			{
-				return this.GetTable<Login>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Vehicle> Vehicle
-		{
-			get
-			{
-				return this.GetTable<Vehicle>();
+				return this.GetTable<Customer>();
 			}
 		}
 		
@@ -124,11 +124,27 @@ namespace ExpressStationSystem
 			}
 		}
 		
+		public System.Data.Linq.Table<Login> Login
+		{
+			get
+			{
+				return this.GetTable<Login>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Error> Error
 		{
 			get
 			{
 				return this.GetTable<Error>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Member> Member
+		{
+			get
+			{
+				return this.GetTable<Member>();
 			}
 		}
 		
@@ -148,28 +164,505 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		public System.Data.Linq.Table<Customer> Customer
+		public System.Data.Linq.Table<Vehicle> Vehicle
 		{
 			get
 			{
-				return this.GetTable<Customer>();
+				return this.GetTable<Vehicle>();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Package")]
+	public partial class Package : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private decimal _weight;
+		
+		private decimal _price;
+		
+		private string _sendPhone;
+		
+		private string _receiverPhone;
+		
+		private int _srcId;
+		
+		private int _destId;
+		
+		private System.Nullable<int> _vId;
+		
+		private string _Remarks;
+		
+		private EntitySet<Delivery> _Delivery;
+		
+		private EntityRef<Error> _Error;
+		
+		private EntitySet<PickUp> _PickUp;
+		
+		private EntitySet<Transfer> _Transfer;
+		
+		private EntityRef<Branch> _Branch;
+		
+		private EntityRef<Branch> _Branch1;
+		
+		private EntityRef<Vehicle> _Vehicle;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OnweightChanging(decimal value);
+    partial void OnweightChanged();
+    partial void OnpriceChanging(decimal value);
+    partial void OnpriceChanged();
+    partial void OnsendPhoneChanging(string value);
+    partial void OnsendPhoneChanged();
+    partial void OnreceiverPhoneChanging(string value);
+    partial void OnreceiverPhoneChanged();
+    partial void OnsrcIdChanging(int value);
+    partial void OnsrcIdChanged();
+    partial void OndestIdChanging(int value);
+    partial void OndestIdChanged();
+    partial void OnvIdChanging(System.Nullable<int> value);
+    partial void OnvIdChanged();
+    partial void OnRemarksChanging(string value);
+    partial void OnRemarksChanged();
+    #endregion
+		
+		public Package()
+		{
+			this._Delivery = new EntitySet<Delivery>(new Action<Delivery>(this.attach_Delivery), new Action<Delivery>(this.detach_Delivery));
+			this._Error = default(EntityRef<Error>);
+			this._PickUp = new EntitySet<PickUp>(new Action<PickUp>(this.attach_PickUp), new Action<PickUp>(this.detach_PickUp));
+			this._Transfer = new EntitySet<Transfer>(new Action<Transfer>(this.attach_Transfer), new Action<Transfer>(this.detach_Transfer));
+			this._Branch = default(EntityRef<Branch>);
+			this._Branch1 = default(EntityRef<Branch>);
+			this._Vehicle = default(EntityRef<Vehicle>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
 			}
 		}
 		
-		public System.Data.Linq.Table<Package> Package
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_weight", DbType="Decimal(5,2) NOT NULL")]
+		public decimal weight
 		{
 			get
 			{
-				return this.GetTable<Package>();
+				return this._weight;
+			}
+			set
+			{
+				if ((this._weight != value))
+				{
+					this.OnweightChanging(value);
+					this.SendPropertyChanging();
+					this._weight = value;
+					this.SendPropertyChanged("weight");
+					this.OnweightChanged();
+				}
 			}
 		}
 		
-		public System.Data.Linq.Table<Member> Member
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_price", DbType="Decimal(5,2) NOT NULL")]
+		public decimal price
 		{
 			get
 			{
-				return this.GetTable<Member>();
+				return this._price;
 			}
+			set
+			{
+				if ((this._price != value))
+				{
+					this.OnpriceChanging(value);
+					this.SendPropertyChanging();
+					this._price = value;
+					this.SendPropertyChanged("price");
+					this.OnpriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sendPhone", DbType="VarChar(11) NOT NULL", CanBeNull=false)]
+		public string sendPhone
+		{
+			get
+			{
+				return this._sendPhone;
+			}
+			set
+			{
+				if ((this._sendPhone != value))
+				{
+					this.OnsendPhoneChanging(value);
+					this.SendPropertyChanging();
+					this._sendPhone = value;
+					this.SendPropertyChanged("sendPhone");
+					this.OnsendPhoneChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_receiverPhone", DbType="VarChar(11) NOT NULL", CanBeNull=false)]
+		public string receiverPhone
+		{
+			get
+			{
+				return this._receiverPhone;
+			}
+			set
+			{
+				if ((this._receiverPhone != value))
+				{
+					this.OnreceiverPhoneChanging(value);
+					this.SendPropertyChanging();
+					this._receiverPhone = value;
+					this.SendPropertyChanged("receiverPhone");
+					this.OnreceiverPhoneChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_srcId", DbType="Int NOT NULL")]
+		public int srcId
+		{
+			get
+			{
+				return this._srcId;
+			}
+			set
+			{
+				if ((this._srcId != value))
+				{
+					if (this._Branch.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnsrcIdChanging(value);
+					this.SendPropertyChanging();
+					this._srcId = value;
+					this.SendPropertyChanged("srcId");
+					this.OnsrcIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_destId", DbType="Int NOT NULL")]
+		public int destId
+		{
+			get
+			{
+				return this._destId;
+			}
+			set
+			{
+				if ((this._destId != value))
+				{
+					if (this._Branch1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OndestIdChanging(value);
+					this.SendPropertyChanging();
+					this._destId = value;
+					this.SendPropertyChanged("destId");
+					this.OndestIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vId", DbType="Int")]
+		public System.Nullable<int> vId
+		{
+			get
+			{
+				return this._vId;
+			}
+			set
+			{
+				if ((this._vId != value))
+				{
+					if (this._Vehicle.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnvIdChanging(value);
+					this.SendPropertyChanging();
+					this._vId = value;
+					this.SendPropertyChanged("vId");
+					this.OnvIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Remarks", DbType="NVarChar(50)")]
+		public string Remarks
+		{
+			get
+			{
+				return this._Remarks;
+			}
+			set
+			{
+				if ((this._Remarks != value))
+				{
+					this.OnRemarksChanging(value);
+					this.SendPropertyChanging();
+					this._Remarks = value;
+					this.SendPropertyChanged("Remarks");
+					this.OnRemarksChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Delivery", Storage="_Delivery", ThisKey="id", OtherKey="id")]
+		public EntitySet<Delivery> Delivery
+		{
+			get
+			{
+				return this._Delivery;
+			}
+			set
+			{
+				this._Delivery.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Error", Storage="_Error", ThisKey="id", OtherKey="id", IsUnique=true, IsForeignKey=false)]
+		public Error Error
+		{
+			get
+			{
+				return this._Error.Entity;
+			}
+			set
+			{
+				Error previousValue = this._Error.Entity;
+				if (((previousValue != value) 
+							|| (this._Error.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Error.Entity = null;
+						previousValue.Package = null;
+					}
+					this._Error.Entity = value;
+					if ((value != null))
+					{
+						value.Package = this;
+					}
+					this.SendPropertyChanged("Error");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_PickUp", Storage="_PickUp", ThisKey="id", OtherKey="id")]
+		public EntitySet<PickUp> PickUp
+		{
+			get
+			{
+				return this._PickUp;
+			}
+			set
+			{
+				this._PickUp.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Transfer", Storage="_Transfer", ThisKey="id", OtherKey="id")]
+		public EntitySet<Transfer> Transfer
+		{
+			get
+			{
+				return this._Transfer;
+			}
+			set
+			{
+				this._Transfer.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Package", Storage="_Branch", ThisKey="srcId", OtherKey="bId", IsForeignKey=true)]
+		public Branch Branch
+		{
+			get
+			{
+				return this._Branch.Entity;
+			}
+			set
+			{
+				Branch previousValue = this._Branch.Entity;
+				if (((previousValue != value) 
+							|| (this._Branch.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Branch.Entity = null;
+						previousValue.Package.Remove(this);
+					}
+					this._Branch.Entity = value;
+					if ((value != null))
+					{
+						value.Package.Add(this);
+						this._srcId = value.bId;
+					}
+					else
+					{
+						this._srcId = default(int);
+					}
+					this.SendPropertyChanged("Branch");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Package1", Storage="_Branch1", ThisKey="destId", OtherKey="bId", IsForeignKey=true)]
+		public Branch Branch1
+		{
+			get
+			{
+				return this._Branch1.Entity;
+			}
+			set
+			{
+				Branch previousValue = this._Branch1.Entity;
+				if (((previousValue != value) 
+							|| (this._Branch1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Branch1.Entity = null;
+						previousValue.Package1.Remove(this);
+					}
+					this._Branch1.Entity = value;
+					if ((value != null))
+					{
+						value.Package1.Add(this);
+						this._destId = value.bId;
+					}
+					else
+					{
+						this._destId = default(int);
+					}
+					this.SendPropertyChanged("Branch1");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Vehicle_Package", Storage="_Vehicle", ThisKey="vId", OtherKey="vId", IsForeignKey=true)]
+		public Vehicle Vehicle
+		{
+			get
+			{
+				return this._Vehicle.Entity;
+			}
+			set
+			{
+				Vehicle previousValue = this._Vehicle.Entity;
+				if (((previousValue != value) 
+							|| (this._Vehicle.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Vehicle.Entity = null;
+						previousValue.Package.Remove(this);
+					}
+					this._Vehicle.Entity = value;
+					if ((value != null))
+					{
+						value.Package.Add(this);
+						this._vId = value.vId;
+					}
+					else
+					{
+						this._vId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Vehicle");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Delivery(Delivery entity)
+		{
+			this.SendPropertyChanging();
+			entity.Package = this;
+		}
+		
+		private void detach_Delivery(Delivery entity)
+		{
+			this.SendPropertyChanging();
+			entity.Package = null;
+		}
+		
+		private void attach_PickUp(PickUp entity)
+		{
+			this.SendPropertyChanging();
+			entity.Package = this;
+		}
+		
+		private void detach_PickUp(PickUp entity)
+		{
+			this.SendPropertyChanging();
+			entity.Package = null;
+		}
+		
+		private void attach_Transfer(Transfer entity)
+		{
+			this.SendPropertyChanging();
+			entity.Package = this;
+		}
+		
+		private void detach_Transfer(Transfer entity)
+		{
+			this.SendPropertyChanging();
+			entity.Package = null;
 		}
 	}
 	
@@ -212,7 +705,7 @@ namespace ExpressStationSystem
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int bId
 		{
 			get
@@ -363,91 +856,139 @@ namespace ExpressStationSystem
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Login")]
-	public partial class Login : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Customer")]
+	public partial class Customer : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _account;
+		private string _phone;
 		
-		private string _password;
+		private string _name;
 		
-		private string _role;
+		private string _province;
+		
+		private string _city;
+		
+		private string _street;
 		
     #region 可扩展性方法定义
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnaccountChanging(int value);
-    partial void OnaccountChanged();
-    partial void OnpasswordChanging(string value);
-    partial void OnpasswordChanged();
-    partial void OnroleChanging(string value);
-    partial void OnroleChanged();
+    partial void OnphoneChanging(string value);
+    partial void OnphoneChanged();
+    partial void OnnameChanging(string value);
+    partial void OnnameChanged();
+    partial void OnprovinceChanging(string value);
+    partial void OnprovinceChanged();
+    partial void OncityChanging(string value);
+    partial void OncityChanged();
+    partial void OnstreetChanging(string value);
+    partial void OnstreetChanged();
     #endregion
 		
-		public Login()
+		public Customer()
 		{
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_account", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int account
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_phone", DbType="VarChar(11) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string phone
 		{
 			get
 			{
-				return this._account;
+				return this._phone;
 			}
 			set
 			{
-				if ((this._account != value))
+				if ((this._phone != value))
 				{
-					this.OnaccountChanging(value);
+					this.OnphoneChanging(value);
 					this.SendPropertyChanging();
-					this._account = value;
-					this.SendPropertyChanged("account");
-					this.OnaccountChanged();
+					this._phone = value;
+					this.SendPropertyChanged("phone");
+					this.OnphoneChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_password", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string password
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string name
 		{
 			get
 			{
-				return this._password;
+				return this._name;
 			}
 			set
 			{
-				if ((this._password != value))
+				if ((this._name != value))
 				{
-					this.OnpasswordChanging(value);
+					this.OnnameChanging(value);
 					this.SendPropertyChanging();
-					this._password = value;
-					this.SendPropertyChanged("password");
-					this.OnpasswordChanged();
+					this._name = value;
+					this.SendPropertyChanged("name");
+					this.OnnameChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_role", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string role
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_province", DbType="NVarChar(50)")]
+		public string province
 		{
 			get
 			{
-				return this._role;
+				return this._province;
 			}
 			set
 			{
-				if ((this._role != value))
+				if ((this._province != value))
 				{
-					this.OnroleChanging(value);
+					this.OnprovinceChanging(value);
 					this.SendPropertyChanging();
-					this._role = value;
-					this.SendPropertyChanged("role");
-					this.OnroleChanged();
+					this._province = value;
+					this.SendPropertyChanged("province");
+					this.OnprovinceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_city", DbType="NVarChar(50)")]
+		public string city
+		{
+			get
+			{
+				return this._city;
+			}
+			set
+			{
+				if ((this._city != value))
+				{
+					this.OncityChanging(value);
+					this.SendPropertyChanging();
+					this._city = value;
+					this.SendPropertyChanged("city");
+					this.OncityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_street", DbType="NVarChar(50)")]
+		public string street
+		{
+			get
+			{
+				return this._street;
+			}
+			set
+			{
+				if ((this._street != value))
+				{
+					this.OnstreetChanging(value);
+					this.SendPropertyChanging();
+					this._street = value;
+					this.SendPropertyChanged("street");
+					this.OnstreetChanged();
 				}
 			}
 		}
@@ -470,120 +1011,6 @@ namespace ExpressStationSystem
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Vehicle")]
-	public partial class Vehicle : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _vId;
-		
-		private string _type;
-		
-		private EntitySet<Package> _Package;
-		
-    #region 可扩展性方法定义
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnvIdChanging(int value);
-    partial void OnvIdChanged();
-    partial void OntypeChanging(string value);
-    partial void OntypeChanged();
-    #endregion
-		
-		public Vehicle()
-		{
-			this._Package = new EntitySet<Package>(new Action<Package>(this.attach_Package), new Action<Package>(this.detach_Package));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vId", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int vId
-		{
-			get
-			{
-				return this._vId;
-			}
-			set
-			{
-				if ((this._vId != value))
-				{
-					this.OnvIdChanging(value);
-					this.SendPropertyChanging();
-					this._vId = value;
-					this.SendPropertyChanged("vId");
-					this.OnvIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string type
-		{
-			get
-			{
-				return this._type;
-			}
-			set
-			{
-				if ((this._type != value))
-				{
-					this.OntypeChanging(value);
-					this.SendPropertyChanging();
-					this._type = value;
-					this.SendPropertyChanged("type");
-					this.OntypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Vehicle_Package", Storage="_Package", ThisKey="vId", OtherKey="vId")]
-		public EntitySet<Package> Package
-		{
-			get
-			{
-				return this._Package;
-			}
-			set
-			{
-				this._Package.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Package(Package entity)
-		{
-			this.SendPropertyChanging();
-			entity.Vehicle = this;
-		}
-		
-		private void detach_Package(Package entity)
-		{
-			this.SendPropertyChanging();
-			entity.Vehicle = null;
 		}
 	}
 	
@@ -803,6 +1230,116 @@ namespace ExpressStationSystem
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Login")]
+	public partial class Login : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _account;
+		
+		private string _password;
+		
+		private string _role;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnaccountChanging(int value);
+    partial void OnaccountChanged();
+    partial void OnpasswordChanging(string value);
+    partial void OnpasswordChanged();
+    partial void OnroleChanging(string value);
+    partial void OnroleChanged();
+    #endregion
+		
+		public Login()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_account", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int account
+		{
+			get
+			{
+				return this._account;
+			}
+			set
+			{
+				if ((this._account != value))
+				{
+					this.OnaccountChanging(value);
+					this.SendPropertyChanging();
+					this._account = value;
+					this.SendPropertyChanged("account");
+					this.OnaccountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_password", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string password
+		{
+			get
+			{
+				return this._password;
+			}
+			set
+			{
+				if ((this._password != value))
+				{
+					this.OnpasswordChanging(value);
+					this.SendPropertyChanging();
+					this._password = value;
+					this.SendPropertyChanged("password");
+					this.OnpasswordChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_role", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string role
+		{
+			get
+			{
+				return this._role;
+			}
+			set
+			{
+				if ((this._role != value))
+				{
+					this.OnroleChanging(value);
+					this.SendPropertyChanging();
+					this._role = value;
+					this.SendPropertyChanged("role");
+					this.OnroleChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Error")]
 	public partial class Error : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -951,6 +1488,224 @@ namespace ExpressStationSystem
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Member")]
+	public partial class Member : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _mId;
+		
+		private string _name;
+		
+		private string _job;
+		
+		private string _phone;
+		
+		private EntitySet<Delivery> _Delivery;
+		
+		private EntitySet<PickUp> _PickUp;
+		
+		private EntitySet<Transfer> _Transfer;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnmIdChanging(int value);
+    partial void OnmIdChanged();
+    partial void OnnameChanging(string value);
+    partial void OnnameChanged();
+    partial void OnjobChanging(string value);
+    partial void OnjobChanged();
+    partial void OnphoneChanging(string value);
+    partial void OnphoneChanged();
+    #endregion
+		
+		public Member()
+		{
+			this._Delivery = new EntitySet<Delivery>(new Action<Delivery>(this.attach_Delivery), new Action<Delivery>(this.detach_Delivery));
+			this._PickUp = new EntitySet<PickUp>(new Action<PickUp>(this.attach_PickUp), new Action<PickUp>(this.detach_PickUp));
+			this._Transfer = new EntitySet<Transfer>(new Action<Transfer>(this.attach_Transfer), new Action<Transfer>(this.detach_Transfer));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_mId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int mId
+		{
+			get
+			{
+				return this._mId;
+			}
+			set
+			{
+				if ((this._mId != value))
+				{
+					this.OnmIdChanging(value);
+					this.SendPropertyChanging();
+					this._mId = value;
+					this.SendPropertyChanged("mId");
+					this.OnmIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string name
+		{
+			get
+			{
+				return this._name;
+			}
+			set
+			{
+				if ((this._name != value))
+				{
+					this.OnnameChanging(value);
+					this.SendPropertyChanging();
+					this._name = value;
+					this.SendPropertyChanged("name");
+					this.OnnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_job", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string job
+		{
+			get
+			{
+				return this._job;
+			}
+			set
+			{
+				if ((this._job != value))
+				{
+					this.OnjobChanging(value);
+					this.SendPropertyChanging();
+					this._job = value;
+					this.SendPropertyChanged("job");
+					this.OnjobChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_phone", DbType="VarChar(11) NOT NULL", CanBeNull=false)]
+		public string phone
+		{
+			get
+			{
+				return this._phone;
+			}
+			set
+			{
+				if ((this._phone != value))
+				{
+					this.OnphoneChanging(value);
+					this.SendPropertyChanging();
+					this._phone = value;
+					this.SendPropertyChanged("phone");
+					this.OnphoneChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Delivery", Storage="_Delivery", ThisKey="mId", OtherKey="mId")]
+		public EntitySet<Delivery> Delivery
+		{
+			get
+			{
+				return this._Delivery;
+			}
+			set
+			{
+				this._Delivery.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_PickUp", Storage="_PickUp", ThisKey="mId", OtherKey="mId")]
+		public EntitySet<PickUp> PickUp
+		{
+			get
+			{
+				return this._PickUp;
+			}
+			set
+			{
+				this._PickUp.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Transfer", Storage="_Transfer", ThisKey="mId", OtherKey="mId")]
+		public EntitySet<Transfer> Transfer
+		{
+			get
+			{
+				return this._Transfer;
+			}
+			set
+			{
+				this._Transfer.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Delivery(Delivery entity)
+		{
+			this.SendPropertyChanging();
+			entity.Member = this;
+		}
+		
+		private void detach_Delivery(Delivery entity)
+		{
+			this.SendPropertyChanging();
+			entity.Member = null;
+		}
+		
+		private void attach_PickUp(PickUp entity)
+		{
+			this.SendPropertyChanging();
+			entity.Member = this;
+		}
+		
+		private void detach_PickUp(PickUp entity)
+		{
+			this.SendPropertyChanging();
+			entity.Member = null;
+		}
+		
+		private void attach_Transfer(Transfer entity)
+		{
+			this.SendPropertyChanging();
+			entity.Member = this;
+		}
+		
+		private void detach_Transfer(Transfer entity)
+		{
+			this.SendPropertyChanging();
+			entity.Member = null;
 		}
 	}
 	
@@ -1434,174 +2189,75 @@ namespace ExpressStationSystem
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Customer")]
-	public partial class Customer : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Vehicle")]
+	public partial class Vehicle : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _cId;
+		private int _vId;
 		
-		private string _name;
-		
-		private string _phone;
-		
-		private string _province;
-		
-		private string _city;
-		
-		private string _street;
+		private string _type;
 		
 		private EntitySet<Package> _Package;
-		
-		private EntitySet<Package> _Package1;
 		
     #region 可扩展性方法定义
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OncIdChanging(int value);
-    partial void OncIdChanged();
-    partial void OnnameChanging(string value);
-    partial void OnnameChanged();
-    partial void OnphoneChanging(string value);
-    partial void OnphoneChanged();
-    partial void OnprovinceChanging(string value);
-    partial void OnprovinceChanged();
-    partial void OncityChanging(string value);
-    partial void OncityChanged();
-    partial void OnstreetChanging(string value);
-    partial void OnstreetChanged();
+    partial void OnvIdChanging(int value);
+    partial void OnvIdChanged();
+    partial void OntypeChanging(string value);
+    partial void OntypeChanged();
     #endregion
 		
-		public Customer()
+		public Vehicle()
 		{
 			this._Package = new EntitySet<Package>(new Action<Package>(this.attach_Package), new Action<Package>(this.detach_Package));
-			this._Package1 = new EntitySet<Package>(new Action<Package>(this.attach_Package1), new Action<Package>(this.detach_Package1));
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_cId", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int cId
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int vId
 		{
 			get
 			{
-				return this._cId;
+				return this._vId;
 			}
 			set
 			{
-				if ((this._cId != value))
+				if ((this._vId != value))
 				{
-					this.OncIdChanging(value);
+					this.OnvIdChanging(value);
 					this.SendPropertyChanging();
-					this._cId = value;
-					this.SendPropertyChanged("cId");
-					this.OncIdChanged();
+					this._vId = value;
+					this.SendPropertyChanged("vId");
+					this.OnvIdChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string name
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string type
 		{
 			get
 			{
-				return this._name;
+				return this._type;
 			}
 			set
 			{
-				if ((this._name != value))
+				if ((this._type != value))
 				{
-					this.OnnameChanging(value);
+					this.OntypeChanging(value);
 					this.SendPropertyChanging();
-					this._name = value;
-					this.SendPropertyChanged("name");
-					this.OnnameChanged();
+					this._type = value;
+					this.SendPropertyChanged("type");
+					this.OntypeChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_phone", DbType="VarChar(11) NOT NULL", CanBeNull=false)]
-		public string phone
-		{
-			get
-			{
-				return this._phone;
-			}
-			set
-			{
-				if ((this._phone != value))
-				{
-					this.OnphoneChanging(value);
-					this.SendPropertyChanging();
-					this._phone = value;
-					this.SendPropertyChanged("phone");
-					this.OnphoneChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_province", DbType="NVarChar(50)")]
-		public string province
-		{
-			get
-			{
-				return this._province;
-			}
-			set
-			{
-				if ((this._province != value))
-				{
-					this.OnprovinceChanging(value);
-					this.SendPropertyChanging();
-					this._province = value;
-					this.SendPropertyChanged("province");
-					this.OnprovinceChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_city", DbType="NVarChar(50)")]
-		public string city
-		{
-			get
-			{
-				return this._city;
-			}
-			set
-			{
-				if ((this._city != value))
-				{
-					this.OncityChanging(value);
-					this.SendPropertyChanging();
-					this._city = value;
-					this.SendPropertyChanged("city");
-					this.OncityChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_street", DbType="NVarChar(50)")]
-		public string street
-		{
-			get
-			{
-				return this._street;
-			}
-			set
-			{
-				if ((this._street != value))
-				{
-					this.OnstreetChanging(value);
-					this.SendPropertyChanging();
-					this._street = value;
-					this.SendPropertyChanged("street");
-					this.OnstreetChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_Package", Storage="_Package", ThisKey="cId", OtherKey="sendId")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Vehicle_Package", Storage="_Package", ThisKey="vId", OtherKey="vId")]
 		public EntitySet<Package> Package
 		{
 			get
@@ -1611,19 +2267,6 @@ namespace ExpressStationSystem
 			set
 			{
 				this._Package.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_Package1", Storage="_Package1", ThisKey="cId", OtherKey="receiverId")]
-		public EntitySet<Package> Package1
-		{
-			get
-			{
-				return this._Package1;
-			}
-			set
-			{
-				this._Package1.Assign(value);
 			}
 		}
 		
@@ -1650,818 +2293,13 @@ namespace ExpressStationSystem
 		private void attach_Package(Package entity)
 		{
 			this.SendPropertyChanging();
-			entity.Customer = this;
+			entity.Vehicle = this;
 		}
 		
 		private void detach_Package(Package entity)
 		{
 			this.SendPropertyChanging();
-			entity.Customer = null;
-		}
-		
-		private void attach_Package1(Package entity)
-		{
-			this.SendPropertyChanging();
-			entity.Customer1 = this;
-		}
-		
-		private void detach_Package1(Package entity)
-		{
-			this.SendPropertyChanging();
-			entity.Customer1 = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Package")]
-	public partial class Package : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _id;
-		
-		private decimal _weight;
-		
-		private decimal _price;
-		
-		private int _sendId;
-		
-		private int _receiverId;
-		
-		private int _srcId;
-		
-		private int _destId;
-		
-		private int _vId;
-		
-		private string _Remarks;
-		
-		private EntitySet<Delivery> _Delivery;
-		
-		private EntityRef<Error> _Error;
-		
-		private EntitySet<PickUp> _PickUp;
-		
-		private EntitySet<Transfer> _Transfer;
-		
-		private EntityRef<Customer> _Customer;
-		
-		private EntityRef<Customer> _Customer1;
-		
-		private EntityRef<Branch> _Branch;
-		
-		private EntityRef<Branch> _Branch1;
-		
-		private EntityRef<Vehicle> _Vehicle;
-		
-    #region 可扩展性方法定义
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnidChanging(int value);
-    partial void OnidChanged();
-    partial void OnweightChanging(decimal value);
-    partial void OnweightChanged();
-    partial void OnpriceChanging(decimal value);
-    partial void OnpriceChanged();
-    partial void OnsendIdChanging(int value);
-    partial void OnsendIdChanged();
-    partial void OnreceiverIdChanging(int value);
-    partial void OnreceiverIdChanged();
-    partial void OnsrcIdChanging(int value);
-    partial void OnsrcIdChanged();
-    partial void OndestIdChanging(int value);
-    partial void OndestIdChanged();
-    partial void OnvIdChanging(int value);
-    partial void OnvIdChanged();
-    partial void OnRemarksChanging(string value);
-    partial void OnRemarksChanged();
-    #endregion
-		
-		public Package()
-		{
-			this._Delivery = new EntitySet<Delivery>(new Action<Delivery>(this.attach_Delivery), new Action<Delivery>(this.detach_Delivery));
-			this._Error = default(EntityRef<Error>);
-			this._PickUp = new EntitySet<PickUp>(new Action<PickUp>(this.attach_PickUp), new Action<PickUp>(this.detach_PickUp));
-			this._Transfer = new EntitySet<Transfer>(new Action<Transfer>(this.attach_Transfer), new Action<Transfer>(this.detach_Transfer));
-			this._Customer = default(EntityRef<Customer>);
-			this._Customer1 = default(EntityRef<Customer>);
-			this._Branch = default(EntityRef<Branch>);
-			this._Branch1 = default(EntityRef<Branch>);
-			this._Vehicle = default(EntityRef<Vehicle>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int id
-		{
-			get
-			{
-				return this._id;
-			}
-			set
-			{
-				if ((this._id != value))
-				{
-					this.OnidChanging(value);
-					this.SendPropertyChanging();
-					this._id = value;
-					this.SendPropertyChanged("id");
-					this.OnidChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_weight", DbType="Decimal(5,2) NOT NULL")]
-		public decimal weight
-		{
-			get
-			{
-				return this._weight;
-			}
-			set
-			{
-				if ((this._weight != value))
-				{
-					this.OnweightChanging(value);
-					this.SendPropertyChanging();
-					this._weight = value;
-					this.SendPropertyChanged("weight");
-					this.OnweightChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_price", DbType="Decimal(5,2) NOT NULL")]
-		public decimal price
-		{
-			get
-			{
-				return this._price;
-			}
-			set
-			{
-				if ((this._price != value))
-				{
-					this.OnpriceChanging(value);
-					this.SendPropertyChanging();
-					this._price = value;
-					this.SendPropertyChanged("price");
-					this.OnpriceChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sendId", DbType="Int NOT NULL")]
-		public int sendId
-		{
-			get
-			{
-				return this._sendId;
-			}
-			set
-			{
-				if ((this._sendId != value))
-				{
-					if (this._Customer.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnsendIdChanging(value);
-					this.SendPropertyChanging();
-					this._sendId = value;
-					this.SendPropertyChanged("sendId");
-					this.OnsendIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_receiverId", DbType="Int NOT NULL")]
-		public int receiverId
-		{
-			get
-			{
-				return this._receiverId;
-			}
-			set
-			{
-				if ((this._receiverId != value))
-				{
-					if (this._Customer1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnreceiverIdChanging(value);
-					this.SendPropertyChanging();
-					this._receiverId = value;
-					this.SendPropertyChanged("receiverId");
-					this.OnreceiverIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_srcId", DbType="Int NOT NULL")]
-		public int srcId
-		{
-			get
-			{
-				return this._srcId;
-			}
-			set
-			{
-				if ((this._srcId != value))
-				{
-					if (this._Branch.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnsrcIdChanging(value);
-					this.SendPropertyChanging();
-					this._srcId = value;
-					this.SendPropertyChanged("srcId");
-					this.OnsrcIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_destId", DbType="Int NOT NULL")]
-		public int destId
-		{
-			get
-			{
-				return this._destId;
-			}
-			set
-			{
-				if ((this._destId != value))
-				{
-					if (this._Branch1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OndestIdChanging(value);
-					this.SendPropertyChanging();
-					this._destId = value;
-					this.SendPropertyChanged("destId");
-					this.OndestIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vId", DbType="Int NOT NULL")]
-		public int vId
-		{
-			get
-			{
-				return this._vId;
-			}
-			set
-			{
-				if ((this._vId != value))
-				{
-					if (this._Vehicle.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnvIdChanging(value);
-					this.SendPropertyChanging();
-					this._vId = value;
-					this.SendPropertyChanged("vId");
-					this.OnvIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Remarks", DbType="NVarChar(50)")]
-		public string Remarks
-		{
-			get
-			{
-				return this._Remarks;
-			}
-			set
-			{
-				if ((this._Remarks != value))
-				{
-					this.OnRemarksChanging(value);
-					this.SendPropertyChanging();
-					this._Remarks = value;
-					this.SendPropertyChanged("Remarks");
-					this.OnRemarksChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Delivery", Storage="_Delivery", ThisKey="id", OtherKey="id")]
-		public EntitySet<Delivery> Delivery
-		{
-			get
-			{
-				return this._Delivery;
-			}
-			set
-			{
-				this._Delivery.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Error", Storage="_Error", ThisKey="id", OtherKey="id", IsUnique=true, IsForeignKey=false)]
-		public Error Error
-		{
-			get
-			{
-				return this._Error.Entity;
-			}
-			set
-			{
-				Error previousValue = this._Error.Entity;
-				if (((previousValue != value) 
-							|| (this._Error.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Error.Entity = null;
-						previousValue.Package = null;
-					}
-					this._Error.Entity = value;
-					if ((value != null))
-					{
-						value.Package = this;
-					}
-					this.SendPropertyChanged("Error");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_PickUp", Storage="_PickUp", ThisKey="id", OtherKey="id")]
-		public EntitySet<PickUp> PickUp
-		{
-			get
-			{
-				return this._PickUp;
-			}
-			set
-			{
-				this._PickUp.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Transfer", Storage="_Transfer", ThisKey="id", OtherKey="id")]
-		public EntitySet<Transfer> Transfer
-		{
-			get
-			{
-				return this._Transfer;
-			}
-			set
-			{
-				this._Transfer.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_Package", Storage="_Customer", ThisKey="sendId", OtherKey="cId", IsForeignKey=true)]
-		public Customer Customer
-		{
-			get
-			{
-				return this._Customer.Entity;
-			}
-			set
-			{
-				Customer previousValue = this._Customer.Entity;
-				if (((previousValue != value) 
-							|| (this._Customer.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Customer.Entity = null;
-						previousValue.Package.Remove(this);
-					}
-					this._Customer.Entity = value;
-					if ((value != null))
-					{
-						value.Package.Add(this);
-						this._sendId = value.cId;
-					}
-					else
-					{
-						this._sendId = default(int);
-					}
-					this.SendPropertyChanged("Customer");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_Package1", Storage="_Customer1", ThisKey="receiverId", OtherKey="cId", IsForeignKey=true)]
-		public Customer Customer1
-		{
-			get
-			{
-				return this._Customer1.Entity;
-			}
-			set
-			{
-				Customer previousValue = this._Customer1.Entity;
-				if (((previousValue != value) 
-							|| (this._Customer1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Customer1.Entity = null;
-						previousValue.Package1.Remove(this);
-					}
-					this._Customer1.Entity = value;
-					if ((value != null))
-					{
-						value.Package1.Add(this);
-						this._receiverId = value.cId;
-					}
-					else
-					{
-						this._receiverId = default(int);
-					}
-					this.SendPropertyChanged("Customer1");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Package", Storage="_Branch", ThisKey="srcId", OtherKey="bId", IsForeignKey=true)]
-		public Branch Branch
-		{
-			get
-			{
-				return this._Branch.Entity;
-			}
-			set
-			{
-				Branch previousValue = this._Branch.Entity;
-				if (((previousValue != value) 
-							|| (this._Branch.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Branch.Entity = null;
-						previousValue.Package.Remove(this);
-					}
-					this._Branch.Entity = value;
-					if ((value != null))
-					{
-						value.Package.Add(this);
-						this._srcId = value.bId;
-					}
-					else
-					{
-						this._srcId = default(int);
-					}
-					this.SendPropertyChanged("Branch");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Package1", Storage="_Branch1", ThisKey="destId", OtherKey="bId", IsForeignKey=true)]
-		public Branch Branch1
-		{
-			get
-			{
-				return this._Branch1.Entity;
-			}
-			set
-			{
-				Branch previousValue = this._Branch1.Entity;
-				if (((previousValue != value) 
-							|| (this._Branch1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Branch1.Entity = null;
-						previousValue.Package1.Remove(this);
-					}
-					this._Branch1.Entity = value;
-					if ((value != null))
-					{
-						value.Package1.Add(this);
-						this._destId = value.bId;
-					}
-					else
-					{
-						this._destId = default(int);
-					}
-					this.SendPropertyChanged("Branch1");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Vehicle_Package", Storage="_Vehicle", ThisKey="vId", OtherKey="vId", IsForeignKey=true)]
-		public Vehicle Vehicle
-		{
-			get
-			{
-				return this._Vehicle.Entity;
-			}
-			set
-			{
-				Vehicle previousValue = this._Vehicle.Entity;
-				if (((previousValue != value) 
-							|| (this._Vehicle.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Vehicle.Entity = null;
-						previousValue.Package.Remove(this);
-					}
-					this._Vehicle.Entity = value;
-					if ((value != null))
-					{
-						value.Package.Add(this);
-						this._vId = value.vId;
-					}
-					else
-					{
-						this._vId = default(int);
-					}
-					this.SendPropertyChanged("Vehicle");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Delivery(Delivery entity)
-		{
-			this.SendPropertyChanging();
-			entity.Package = this;
-		}
-		
-		private void detach_Delivery(Delivery entity)
-		{
-			this.SendPropertyChanging();
-			entity.Package = null;
-		}
-		
-		private void attach_PickUp(PickUp entity)
-		{
-			this.SendPropertyChanging();
-			entity.Package = this;
-		}
-		
-		private void detach_PickUp(PickUp entity)
-		{
-			this.SendPropertyChanging();
-			entity.Package = null;
-		}
-		
-		private void attach_Transfer(Transfer entity)
-		{
-			this.SendPropertyChanging();
-			entity.Package = this;
-		}
-		
-		private void detach_Transfer(Transfer entity)
-		{
-			this.SendPropertyChanging();
-			entity.Package = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Member")]
-	public partial class Member : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _mId;
-		
-		private string _name;
-		
-		private string _job;
-		
-		private string _phone;
-		
-		private EntitySet<Delivery> _Delivery;
-		
-		private EntitySet<PickUp> _PickUp;
-		
-		private EntitySet<Transfer> _Transfer;
-		
-    #region 可扩展性方法定义
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnmIdChanging(int value);
-    partial void OnmIdChanged();
-    partial void OnnameChanging(string value);
-    partial void OnnameChanged();
-    partial void OnjobChanging(string value);
-    partial void OnjobChanged();
-    partial void OnphoneChanging(string value);
-    partial void OnphoneChanged();
-    #endregion
-		
-		public Member()
-		{
-			this._Delivery = new EntitySet<Delivery>(new Action<Delivery>(this.attach_Delivery), new Action<Delivery>(this.detach_Delivery));
-			this._PickUp = new EntitySet<PickUp>(new Action<PickUp>(this.attach_PickUp), new Action<PickUp>(this.detach_PickUp));
-			this._Transfer = new EntitySet<Transfer>(new Action<Transfer>(this.attach_Transfer), new Action<Transfer>(this.detach_Transfer));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_mId", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int mId
-		{
-			get
-			{
-				return this._mId;
-			}
-			set
-			{
-				if ((this._mId != value))
-				{
-					this.OnmIdChanging(value);
-					this.SendPropertyChanging();
-					this._mId = value;
-					this.SendPropertyChanged("mId");
-					this.OnmIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string name
-		{
-			get
-			{
-				return this._name;
-			}
-			set
-			{
-				if ((this._name != value))
-				{
-					this.OnnameChanging(value);
-					this.SendPropertyChanging();
-					this._name = value;
-					this.SendPropertyChanged("name");
-					this.OnnameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_job", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string job
-		{
-			get
-			{
-				return this._job;
-			}
-			set
-			{
-				if ((this._job != value))
-				{
-					this.OnjobChanging(value);
-					this.SendPropertyChanging();
-					this._job = value;
-					this.SendPropertyChanged("job");
-					this.OnjobChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_phone", DbType="VarChar(11) NOT NULL", CanBeNull=false)]
-		public string phone
-		{
-			get
-			{
-				return this._phone;
-			}
-			set
-			{
-				if ((this._phone != value))
-				{
-					this.OnphoneChanging(value);
-					this.SendPropertyChanging();
-					this._phone = value;
-					this.SendPropertyChanged("phone");
-					this.OnphoneChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Delivery", Storage="_Delivery", ThisKey="mId", OtherKey="mId")]
-		public EntitySet<Delivery> Delivery
-		{
-			get
-			{
-				return this._Delivery;
-			}
-			set
-			{
-				this._Delivery.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_PickUp", Storage="_PickUp", ThisKey="mId", OtherKey="mId")]
-		public EntitySet<PickUp> PickUp
-		{
-			get
-			{
-				return this._PickUp;
-			}
-			set
-			{
-				this._PickUp.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Transfer", Storage="_Transfer", ThisKey="mId", OtherKey="mId")]
-		public EntitySet<Transfer> Transfer
-		{
-			get
-			{
-				return this._Transfer;
-			}
-			set
-			{
-				this._Transfer.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Delivery(Delivery entity)
-		{
-			this.SendPropertyChanging();
-			entity.Member = this;
-		}
-		
-		private void detach_Delivery(Delivery entity)
-		{
-			this.SendPropertyChanging();
-			entity.Member = null;
-		}
-		
-		private void attach_PickUp(PickUp entity)
-		{
-			this.SendPropertyChanging();
-			entity.Member = this;
-		}
-		
-		private void detach_PickUp(PickUp entity)
-		{
-			this.SendPropertyChanging();
-			entity.Member = null;
-		}
-		
-		private void attach_Transfer(Transfer entity)
-		{
-			this.SendPropertyChanging();
-			entity.Member = this;
-		}
-		
-		private void detach_Transfer(Transfer entity)
-		{
-			this.SendPropertyChanging();
-			entity.Member = null;
+			entity.Vehicle = null;
 		}
 	}
 }
