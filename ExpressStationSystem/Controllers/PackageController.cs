@@ -19,7 +19,7 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>根据包裹ID获取包裹的信息</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Package/Get")]
-        public IHttpActionResult Get(int id)
+        public PackageClass Get(int id)
         {
             db = new DataClasses1DataContext(connstr);
             var selectQuery = from package1 in db.Package where package1.id == id select package1;
@@ -28,7 +28,7 @@ namespace ExpressStationSystem.Controllers
             
             if (packageclass is null)
             {
-                return NotFound();
+                return null;
             }
             package.id = packageclass.id;
             package.weight = packageclass.weight;
@@ -40,7 +40,7 @@ namespace ExpressStationSystem.Controllers
             package.destId = packageclass.destId;
             package.vId = packageclass.vId;
             package.Remarks = packageclass.Remarks;
-            return Json<PackageClass>(package);
+            return package;
         }
 
         // GET: api/Package/GetValue
