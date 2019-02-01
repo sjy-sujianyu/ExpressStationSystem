@@ -20,16 +20,12 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>根据客户手机号码获取客户的信息</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Customer/Get")]
-        public IHttpActionResult Get(string phone)
+        public Customer Get(string phone)
         {
             db = new DataClasses1DataContext(connstr);
             var selectQuery = from customer in db.Customer where customer.phone==phone select customer;
             Customer cus = selectQuery.FirstOrDefault();
-            if(cus is null)
-            {
-                return NotFound();
-            }
-            return Json<Customer>(cus);
+            return cus;
         }
 
         // POST: api/Customer/isTel?tb={tb}

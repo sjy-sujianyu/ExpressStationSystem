@@ -22,7 +22,7 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>根据地址得到网点ID</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Branch/Get")]
-        public IHttpActionResult Get(string province,string city,string street)
+        public List<int> Get(string province,string city,string street)
         {
             db = new DataClasses1DataContext(connstr);
             var selectQuery = from branch in db.Branch where branch.province == province && branch.city==city&&branch.street==street select branch;
@@ -31,11 +31,7 @@ namespace ExpressStationSystem.Controllers
             {
                 list.Add(x.bId);
             }
-            if (list.Count==0)
-            {
-                return NotFound();
-            }
-            return Json<List<int>>(list);
+            return list;
         }
 
         // POST: api/Branch
