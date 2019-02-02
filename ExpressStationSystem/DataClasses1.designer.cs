@@ -30,12 +30,12 @@ namespace ExpressStationSystem
 		
     #region 可扩展性方法定义
     partial void OnCreated();
-    partial void InsertAddressBook(AddressBook instance);
-    partial void UpdateAddressBook(AddressBook instance);
-    partial void DeleteAddressBook(AddressBook instance);
     partial void InsertBranch(Branch instance);
     partial void UpdateBranch(Branch instance);
     partial void DeleteBranch(Branch instance);
+    partial void InsertAddressBook(AddressBook instance);
+    partial void UpdateAddressBook(AddressBook instance);
+    partial void DeleteAddressBook(AddressBook instance);
     partial void InsertDelivery(Delivery instance);
     partial void UpdateDelivery(Delivery instance);
     partial void DeleteDelivery(Delivery instance);
@@ -92,19 +92,19 @@ namespace ExpressStationSystem
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<AddressBook> AddressBook
-		{
-			get
-			{
-				return this.GetTable<AddressBook>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Branch> Branch
 		{
 			get
 			{
 				return this.GetTable<Branch>();
+			}
+		}
+		
+		public System.Data.Linq.Table<AddressBook> AddressBook
+		{
+			get
+			{
+				return this.GetTable<AddressBook>();
 			}
 		}
 		
@@ -170,6 +170,196 @@ namespace ExpressStationSystem
 			{
 				return this.GetTable<Vehicle>();
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Branch")]
+	public partial class Branch : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _bId;
+		
+		private string _province;
+		
+		private string _city;
+		
+		private string _street;
+		
+		private EntitySet<Package> _Package;
+		
+		private EntitySet<Package> _Package1;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnbIdChanging(int value);
+    partial void OnbIdChanged();
+    partial void OnprovinceChanging(string value);
+    partial void OnprovinceChanged();
+    partial void OncityChanging(string value);
+    partial void OncityChanged();
+    partial void OnstreetChanging(string value);
+    partial void OnstreetChanged();
+    #endregion
+		
+		public Branch()
+		{
+			this._Package = new EntitySet<Package>(new Action<Package>(this.attach_Package), new Action<Package>(this.detach_Package));
+			this._Package1 = new EntitySet<Package>(new Action<Package>(this.attach_Package1), new Action<Package>(this.detach_Package1));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int bId
+		{
+			get
+			{
+				return this._bId;
+			}
+			set
+			{
+				if ((this._bId != value))
+				{
+					this.OnbIdChanging(value);
+					this.SendPropertyChanging();
+					this._bId = value;
+					this.SendPropertyChanged("bId");
+					this.OnbIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_province", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string province
+		{
+			get
+			{
+				return this._province;
+			}
+			set
+			{
+				if ((this._province != value))
+				{
+					this.OnprovinceChanging(value);
+					this.SendPropertyChanging();
+					this._province = value;
+					this.SendPropertyChanged("province");
+					this.OnprovinceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_city", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string city
+		{
+			get
+			{
+				return this._city;
+			}
+			set
+			{
+				if ((this._city != value))
+				{
+					this.OncityChanging(value);
+					this.SendPropertyChanging();
+					this._city = value;
+					this.SendPropertyChanged("city");
+					this.OncityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_street", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string street
+		{
+			get
+			{
+				return this._street;
+			}
+			set
+			{
+				if ((this._street != value))
+				{
+					this.OnstreetChanging(value);
+					this.SendPropertyChanging();
+					this._street = value;
+					this.SendPropertyChanged("street");
+					this.OnstreetChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Package", Storage="_Package", ThisKey="bId", OtherKey="srcId")]
+		public EntitySet<Package> Package
+		{
+			get
+			{
+				return this._Package;
+			}
+			set
+			{
+				this._Package.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Package1", Storage="_Package1", ThisKey="bId", OtherKey="destId")]
+		public EntitySet<Package> Package1
+		{
+			get
+			{
+				return this._Package1;
+			}
+			set
+			{
+				this._Package1.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Package(Package entity)
+		{
+			this.SendPropertyChanging();
+			entity.Branch = this;
+		}
+		
+		private void detach_Package(Package entity)
+		{
+			this.SendPropertyChanging();
+			entity.Branch = null;
+		}
+		
+		private void attach_Package1(Package entity)
+		{
+			this.SendPropertyChanging();
+			entity.Branch1 = this;
+		}
+		
+		private void detach_Package1(Package entity)
+		{
+			this.SendPropertyChanging();
+			entity.Branch1 = null;
 		}
 	}
 	
@@ -473,196 +663,6 @@ namespace ExpressStationSystem
 		{
 			this.SendPropertyChanging();
 			entity.AddressBook1 = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Branch")]
-	public partial class Branch : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _bId;
-		
-		private string _province;
-		
-		private string _city;
-		
-		private string _street;
-		
-		private EntitySet<Package> _Package;
-		
-		private EntitySet<Package> _Package1;
-		
-    #region 可扩展性方法定义
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnbIdChanging(int value);
-    partial void OnbIdChanged();
-    partial void OnprovinceChanging(string value);
-    partial void OnprovinceChanged();
-    partial void OncityChanging(string value);
-    partial void OncityChanged();
-    partial void OnstreetChanging(string value);
-    partial void OnstreetChanged();
-    #endregion
-		
-		public Branch()
-		{
-			this._Package = new EntitySet<Package>(new Action<Package>(this.attach_Package), new Action<Package>(this.detach_Package));
-			this._Package1 = new EntitySet<Package>(new Action<Package>(this.attach_Package1), new Action<Package>(this.detach_Package1));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int bId
-		{
-			get
-			{
-				return this._bId;
-			}
-			set
-			{
-				if ((this._bId != value))
-				{
-					this.OnbIdChanging(value);
-					this.SendPropertyChanging();
-					this._bId = value;
-					this.SendPropertyChanged("bId");
-					this.OnbIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_province", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string province
-		{
-			get
-			{
-				return this._province;
-			}
-			set
-			{
-				if ((this._province != value))
-				{
-					this.OnprovinceChanging(value);
-					this.SendPropertyChanging();
-					this._province = value;
-					this.SendPropertyChanged("province");
-					this.OnprovinceChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_city", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string city
-		{
-			get
-			{
-				return this._city;
-			}
-			set
-			{
-				if ((this._city != value))
-				{
-					this.OncityChanging(value);
-					this.SendPropertyChanging();
-					this._city = value;
-					this.SendPropertyChanged("city");
-					this.OncityChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_street", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string street
-		{
-			get
-			{
-				return this._street;
-			}
-			set
-			{
-				if ((this._street != value))
-				{
-					this.OnstreetChanging(value);
-					this.SendPropertyChanging();
-					this._street = value;
-					this.SendPropertyChanged("street");
-					this.OnstreetChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Package", Storage="_Package", ThisKey="bId", OtherKey="srcId")]
-		public EntitySet<Package> Package
-		{
-			get
-			{
-				return this._Package;
-			}
-			set
-			{
-				this._Package.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Package1", Storage="_Package1", ThisKey="bId", OtherKey="destId")]
-		public EntitySet<Package> Package1
-		{
-			get
-			{
-				return this._Package1;
-			}
-			set
-			{
-				this._Package1.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Package(Package entity)
-		{
-			this.SendPropertyChanging();
-			entity.Branch = this;
-		}
-		
-		private void detach_Package(Package entity)
-		{
-			this.SendPropertyChanging();
-			entity.Branch = null;
-		}
-		
-		private void attach_Package1(Package entity)
-		{
-			this.SendPropertyChanging();
-			entity.Branch1 = this;
-		}
-		
-		private void detach_Package1(Package entity)
-		{
-			this.SendPropertyChanging();
-			entity.Branch1 = null;
 		}
 	}
 	
@@ -1043,6 +1043,8 @@ namespace ExpressStationSystem
 		
 		private string _password;
 		
+		private string _role;
+		
 		private EntitySet<AddressBook> _AddressBook;
 		
 		private EntitySet<Package> _Package;
@@ -1055,6 +1057,8 @@ namespace ExpressStationSystem
     partial void OnaccountChanged();
     partial void OnpasswordChanging(string value);
     partial void OnpasswordChanged();
+    partial void OnroleChanging(string value);
+    partial void OnroleChanged();
     #endregion
 		
 		public Login()
@@ -1100,6 +1104,26 @@ namespace ExpressStationSystem
 					this._password = value;
 					this.SendPropertyChanged("password");
 					this.OnpasswordChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_role", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string role
+		{
+			get
+			{
+				return this._role;
+			}
+			set
+			{
+				if ((this._role != value))
+				{
+					this.OnroleChanging(value);
+					this.SendPropertyChanging();
+					this._role = value;
+					this.SendPropertyChanged("role");
+					this.OnroleChanged();
 				}
 			}
 		}
