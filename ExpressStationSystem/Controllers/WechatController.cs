@@ -40,8 +40,12 @@ namespace ExpressStationSystem.Controllers
             response.Close();
 
             JObject jo = (JObject)JsonConvert.DeserializeObject(html);
+            if(jo is null)
+            {
+                return null;
+            }
             string openid = jo["openid"].ToString();
-            if(openid.Length==0)
+            if(openid is null)
             {
                 return null;
             }
