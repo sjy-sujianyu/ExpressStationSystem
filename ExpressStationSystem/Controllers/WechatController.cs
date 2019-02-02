@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,7 +28,7 @@ namespace ExpressStationSystem.Controllers
         public string Get(string appId,string secret,string code)
         {
             string html = string.Empty;
-            string url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="+ appId + "&secret="+secret+"&code=" + code + "&grant_type=authorization_code";
+            string url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appId + "&secret="+secret+"&js_code=" + code + "&grant_type=authorization_code";
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
             request.Method = "GET";
             HttpWebResponse response = request.GetResponse() as HttpWebResponse;
@@ -37,34 +39,29 @@ namespace ExpressStationSystem.Controllers
             ioStream.Close();
             response.Close();
 
-            string key = "\"openid\":\"";
-            int startIndex = html.IndexOf(key);
-            if (startIndex != -1)
-            {
-                int endIndex = html.IndexOf("\",", startIndex);
-                string openid = html.Substring(startIndex + key.Length, endIndex - startIndex - key.Length);
-             
-                try
-                {
-                    db = new DataClasses1DataContext(connstr);
-                    Login login = new Login();
-                    login.account = openid;
-                    login.password = "123456";
-                    db.Login.InsertOnSubmit(login);
-                    db.SubmitChanges();
-                    return openid;
-                }
-                catch(Exception)
-                {
-                    return openid;
-                }
-                
-
-            }
-            else
+            JObject jo = (JObject)JsonConvert.DeserializeObject(html);
+            string openid = jo["openid"].ToString();
+            if(openid.Length==0)
             {
                 return null;
             }
+            try
+            {
+                db = new DataClasses1DataContext(connstr);
+                Login login = new Login();
+                login.account = openid;
+                login.password = "123456";
+                db.Login.InsertOnSubmit(login);
+                db.SubmitChanges();
+                return html;
+            }
+            catch(Exception)
+            {
+                return html;
+            }
+                
+
+            
         }
     }
 }
