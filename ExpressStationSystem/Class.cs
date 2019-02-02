@@ -13,9 +13,9 @@ namespace ExpressStationSystem
 
         public decimal price;
 
-        public string sendPhone;
+        public int sendId;
 
-        public string receiverPhone;
+        public int receiverId;
 
         public int srcId;
 
@@ -24,5 +24,23 @@ namespace ExpressStationSystem
         public System.Nullable<int> vId;
 
         public string Remarks;
+
+        public string account;
+    }
+    public class AddressBookClass
+    {
+        public int aId;
+
+        public string phone;
+
+        public string name;
+
+        public string province;
+
+        public string city;
+
+        public string street;
+
+        public string account;
     }
 }

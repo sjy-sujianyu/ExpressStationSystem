@@ -144,33 +144,34 @@ namespace ExpressStationSystem
         [HttpGet, Route("Delivery/GetDeliveryById")]
         public MyDelivery GetDeliveryById(int id)
         {
-            db = new DataClasses1DataContext(connstr);
-            var query =
-                from delivery in db.Delivery
-                where delivery.id == id
-                select delivery;
-            Delivery del = query.FirstOrDefault();
-            if (del == null) return null;
-            MyDelivery mydel = new MyDelivery();
-            mydel.Time = del.time;
-            mydel.Id = del.id;
-            mydel.Status = del.status;
-            var query1 =
-                from Package in db.Package
-                where Package.id == id
-                select Package;
-            string receiverPhone = query1.FirstOrDefault().receiverPhone;
-            var query2 =
-                from Customer in db.Customer
-                where Customer.phone == receiverPhone
-                select Customer;
-            Customer cus = query2.FirstOrDefault();
-            mydel.City = cus.city;
-            mydel.Province = cus.province;
-            mydel.Street = mydel.Street;
-            mydel.Name = cus.name;
-            mydel.Phone = cus.phone;
-            return mydel;
+            return null;
+            //db = new DataClasses1DataContext(connstr);
+            //var query =
+            //    from delivery in db.Delivery
+            //    where delivery.id == id
+            //    select delivery;
+            //Delivery del = query.FirstOrDefault();
+            //if (del == null) return null;
+            //MyDelivery mydel = new MyDelivery();
+            //mydel.Time = del.time;
+            //mydel.Id = del.id;
+            //mydel.Status = del.status;
+            //var query1 =
+            //    from Package in db.Package
+            //    where Package.id == id
+            //    select Package;
+            //string receiverPhone = query1.FirstOrDefault().receiverPhone;
+            //var query2 =
+            //    from Customer in db.Customer
+            //    where Customer.phone == receiverPhone
+            //    select Customer;
+            //Customer cus = query2.FirstOrDefault();
+            //mydel.City = cus.city;
+            //mydel.Province = cus.province;
+            //mydel.Street = mydel.Street;
+            //mydel.Name = cus.name;
+            //mydel.Phone = cus.phone;
+            //return mydel;
         }
 
         // PUT: api/Delivery/UpdateDelivered

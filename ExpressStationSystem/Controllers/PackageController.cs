@@ -25,7 +25,7 @@ namespace ExpressStationSystem.Controllers
             var selectQuery = from package1 in db.Package where package1.id == id select package1;
             Package packageclass = selectQuery.FirstOrDefault();
             PackageClass package = new PackageClass();
-            
+
             if (packageclass is null)
             {
                 return null;
@@ -33,13 +33,14 @@ namespace ExpressStationSystem.Controllers
             package.id = packageclass.id;
             package.weight = packageclass.weight;
             package.price = packageclass.price;
-            package.sendPhone = packageclass.sendPhone;
-            package.receiverPhone = packageclass.receiverPhone;
+            package.sendId = packageclass.sendId;
+            package.receiverId = packageclass.receiverId;
 
             package.srcId = packageclass.srcId;
             package.destId = packageclass.destId;
             package.vId = packageclass.vId;
             package.Remarks = packageclass.Remarks;
+            package.account = packageclass.account;
             return package;
         }
 
@@ -91,13 +92,14 @@ namespace ExpressStationSystem.Controllers
                 package.id = packageclass.id;
                 package.weight = packageclass.weight;
                 package.price = packageclass.price;
-                package.sendPhone = packageclass.sendPhone;
-                package.receiverPhone = packageclass.receiverPhone;
+                package.sendId = packageclass.sendId;
+                package.receiverId = packageclass.receiverId;
 
                 package.srcId = packageclass.srcId;
                 package.destId = packageclass.destId;
                 package.vId = packageclass.vId;
                 package.Remarks = packageclass.Remarks;
+                package.account = packageclass.account;
                 db.Package.InsertOnSubmit(package);
 
                 db.SubmitChanges();
