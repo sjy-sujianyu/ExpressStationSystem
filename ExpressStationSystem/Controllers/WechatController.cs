@@ -15,7 +15,7 @@ namespace ExpressStationSystem.Controllers
     {
         private static string connstr = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Express;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private DataClasses1DataContext db;
-        // GET: api/Wechat/Get
+        // GET: api/Wechat/GetOpenId
         /// <summary>
         /// 获取OpenId
         /// </summary>
@@ -24,8 +24,8 @@ namespace ExpressStationSystem.Controllers
         /// <param name="code">用户登陆后的code</param>
         /// <remarks>获取OpenId</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Wechat/Get")]
-        public string Get(string appId,string secret,string code)
+        [HttpGet, Route("Wechat/GetOpenId")]
+        public string GetOpenId(string appId,string secret,string code)
         {
             string html = string.Empty;
             string url = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appId + "&secret="+secret+"&js_code=" + code + "&grant_type=authorization_code";
