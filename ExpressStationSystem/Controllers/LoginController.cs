@@ -37,21 +37,19 @@ namespace ExpressStationSystem.Controllers
 
         // GET: api/Login/Post
         /// <summary>
-        /// 插入账户密码
+        /// 插入账户密码角色
         /// </summary>
-        /// <param name="account">账号</param>
-        /// <param name="password">密码</param>
-        /// <param name="role">角色 如：客户</param>
-        /// <remarks>插入账户密码</remarks>
+        /// <param name="a">账户实体信息</param>
+        /// <remarks>插入账户密码角色</remarks>
         /// <returns>返回</returns>
         [HttpPost, Route("Login/Post")]
-        public bool Post(string account,string password,string role)
+        public bool Post(LoginClass a)
         {
             db = new DataClasses1DataContext(connstr);
             Login login = new Login();
-            login.account = account;
-            login.password = password;
-            login.role = role;
+            login.account = a.account;
+            login.password = a.password;
+            login.role = a.role;
             try
             {
                 db.Login.InsertOnSubmit(login);

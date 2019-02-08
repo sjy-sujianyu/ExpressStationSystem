@@ -43,4 +43,10 @@ namespace ExpressStationSystem
 
         public string account;
     }
+    public class LoginClass
+    {
+        public string account;
+        public string password;
+        public string role;
+    }
 }
