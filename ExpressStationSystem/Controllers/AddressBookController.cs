@@ -112,6 +112,7 @@ namespace ExpressStationSystem.Controllers
                 aclass.street = x.street;
                 aclass.phone = x.phone;
                 aclass.name = x.name;
+
                 db.SubmitChanges();
                 return true;
             }
