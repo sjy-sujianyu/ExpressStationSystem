@@ -40,6 +40,63 @@ namespace ExpressStationSystem.Controllers
             return list;
         }
 
+        // GET: api/AddressBook/GetWithName
+        /// <summary>
+        /// 根据特定客户账号获取地址簿列表
+        /// </summary>
+        /// <param name="account">客户账号</param>
+        /// <param name="name">客户名字</param>
+        /// <remarks>根据特定客户账号获取地址簿列表</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("AddressBook/GetWithName")]
+        public List<AddressBookClass> GetWithName(string account,string name)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var selectQuery = from addressbook in db.AddressBook where addressbook.account == account&&addressbook.name==name select addressbook;
+            List<AddressBookClass> list = new List<AddressBookClass>();
+            foreach (var x in selectQuery)
+            {
+                AddressBookClass aclass = new AddressBookClass();
+                aclass.aId = x.aId;
+                aclass.account = x.account;
+                aclass.province = x.province;
+                aclass.city = x.city;
+                aclass.street = x.street;
+                aclass.phone = x.phone;
+                aclass.name = x.name;
+                list.Add(aclass);
+            }
+            return list;
+        }
+
+        // GET: api/AddressBook/GetWithPhone
+        /// <summary>
+        /// 根据特定客户账号获取地址簿列表
+        /// </summary>
+        /// <param name="account">客户账号</param>
+        /// <param name="phone">客户电话</param>
+        /// <remarks>根据特定客户账号获取地址簿列表</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("AddressBook/GetWithPhone")]
+        public List<AddressBookClass> GetWithPhone(string account, string phone)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var selectQuery = from addressbook in db.AddressBook where addressbook.account == account && addressbook.phone == phone select addressbook;
+            List<AddressBookClass> list = new List<AddressBookClass>();
+            foreach (var x in selectQuery)
+            {
+                AddressBookClass aclass = new AddressBookClass();
+                aclass.aId = x.aId;
+                aclass.account = x.account;
+                aclass.province = x.province;
+                aclass.city = x.city;
+                aclass.street = x.street;
+                aclass.phone = x.phone;
+                aclass.name = x.name;
+                list.Add(aclass);
+            }
+            return list;
+        }
         // POST: api/Customer/isTel?tb={tb}
         /// <summary>
         /// 验证手机号码是否合法
