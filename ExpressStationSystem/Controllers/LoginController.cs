@@ -41,15 +41,17 @@ namespace ExpressStationSystem.Controllers
         /// </summary>
         /// <param name="account">账号</param>
         /// <param name="password">密码</param>
+        /// <param name="role">角色 如：客户</param>
         /// <remarks>插入账户密码</remarks>
         /// <returns>返回</returns>
         [HttpPost, Route("Login/Post")]
-        public bool Post(string account,string password)
+        public bool Post(string account,string password,string role)
         {
             db = new DataClasses1DataContext(connstr);
             Login login = new Login();
             login.account = account;
             login.password = password;
+            login.role = role;
             try
             {
                 db.Login.InsertOnSubmit(login);
