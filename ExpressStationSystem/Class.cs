@@ -47,7 +47,6 @@ namespace ExpressStationSystem
     {
         public string account;
         public string password;
-        public string role;
     }
     public class Address
     {

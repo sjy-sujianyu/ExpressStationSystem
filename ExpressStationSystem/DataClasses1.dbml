@@ -1,15 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Express" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Express;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="ExpressConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.Branch" Member="Branch">
-    <Type Name="Branch">
-      <Column Name="bId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="province" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="city" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="street" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Association Name="Branch_Package" Member="Package" ThisKey="bId" OtherKey="srcId" Type="Package" />
-      <Association Name="Branch_Package1" Member="Package1" ThisKey="bId" OtherKey="destId" Type="Package" />
-    </Type>
-  </Table>
   <Table Name="dbo.AddressBook" Member="AddressBook">
     <Type Name="AddressBook">
       <Column Name="aId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -24,10 +13,20 @@
       <Association Name="Login_AddressBook" Member="Login" ThisKey="account" OtherKey="account" Type="Login" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.Branch" Member="Branch">
+    <Type Name="Branch">
+      <Column Name="bId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="province" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="city" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="street" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Branch_Package" Member="Package" ThisKey="bId" OtherKey="srcId" Type="Package" />
+      <Association Name="Branch_Package1" Member="Package1" ThisKey="bId" OtherKey="destId" Type="Package" />
+    </Type>
+  </Table>
   <Table Name="dbo.Delivery" Member="Delivery">
     <Type Name="Delivery">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="mId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="mId" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Member_Delivery" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
@@ -46,20 +45,21 @@
     <Type Name="Login">
       <Column Name="account" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="password" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="role" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Association Name="Login_AddressBook" Member="AddressBook" ThisKey="account" OtherKey="account" Type="AddressBook" />
+      <Association Name="Login_Member" Member="Member" ThisKey="account" OtherKey="mId" Type="Member" Cardinality="One" />
       <Association Name="Login_Package" Member="Package" ThisKey="account" OtherKey="account" Type="Package" />
     </Type>
   </Table>
   <Table Name="dbo.Member" Member="Member">
     <Type Name="Member">
-      <Column Name="mId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="mId" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="job" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="phone" Type="System.String" DbType="VarChar(11) NOT NULL" CanBeNull="false" />
       <Association Name="Member_Delivery" Member="Delivery" ThisKey="mId" OtherKey="mId" Type="Delivery" />
       <Association Name="Member_PickUp" Member="PickUp" ThisKey="mId" OtherKey="mId" Type="PickUp" />
       <Association Name="Member_Transfer" Member="Transfer" ThisKey="mId" OtherKey="mId" Type="Transfer" />
+      <Association Name="Login_Member" Member="Login" ThisKey="mId" OtherKey="account" Type="Login" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Package" Member="Package">
@@ -89,7 +89,7 @@
   <Table Name="dbo.PickUp" Member="PickUp">
     <Type Name="PickUp">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="mId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="mId" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Package_PickUp" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
@@ -99,7 +99,7 @@
   <Table Name="dbo.Transfer" Member="Transfer">
     <Type Name="Transfer">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="mId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="mId" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="srcId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />

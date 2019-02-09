@@ -49,7 +49,6 @@ namespace ExpressStationSystem.Controllers
             Login login = new Login();
             login.account = a.account;
             login.password = a.password;
-            login.role = a.role;
             try
             {
                 db.Login.InsertOnSubmit(login);
