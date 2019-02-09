@@ -52,7 +52,7 @@ namespace ExpressStationSystem.Controllers
         public List<AddressBookClass> GetWithName(string account,string name)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from addressbook in db.AddressBook where addressbook.account == account&&addressbook.name==name && addressbook.isDelete == false select addressbook;
+            var selectQuery = from addressbook in db.AddressBook where addressbook.account == account&&addressbook.name.StartsWith(name) && addressbook.isDelete == false select addressbook;
             List<AddressBookClass> list = new List<AddressBookClass>();
             foreach (var x in selectQuery)
             {
@@ -81,7 +81,7 @@ namespace ExpressStationSystem.Controllers
         public List<AddressBookClass> GetWithPhone(string account, string phone)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from addressbook in db.AddressBook where addressbook.account == account && addressbook.phone == phone && addressbook.isDelete == false select addressbook;
+            var selectQuery = from addressbook in db.AddressBook where addressbook.account == account && addressbook.phone.StartsWith(phone) && addressbook.isDelete == false select addressbook;
             List<AddressBookClass> list = new List<AddressBookClass>();
             foreach (var x in selectQuery)
             {
