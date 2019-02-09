@@ -46,26 +46,26 @@ namespace ExpressStationSystem
         /// <param name="mid">员工ID</param>
         /// <remarks>当前进行员工接单</remarks>
         /// <returns>返回</returns>
-        [HttpPost, Route("Delivery/AddDelivery")]
-        public bool AddDelivery(int id, int mid)
-        {
-            db = new DataClasses1DataContext(connstr);
-            try
-            {
-                Delivery del = new Delivery();
-                del.id = id;
-                del.mId = mid;
-                del.time = DateTime.Now;
-                del.status = "待派送";
-                db.Delivery.InsertOnSubmit(del);
-                db.SubmitChanges();
-                return true;
-            }
-            catch(Exception)
-            {
-                return false;
-            }
-        }
+        //[HttpPost, Route("Delivery/AddDelivery")]
+        //public bool AddDelivery(int id, int mid)
+        //{
+        //    db = new DataClasses1DataContext(connstr);
+        //    try
+        //    {
+        //        Delivery del = new Delivery();
+        //        del.id = id;
+        //        del.mId = mid;
+        //        del.time = DateTime.Now;
+        //        del.status = "待派送";
+        //        db.Delivery.InsertOnSubmit(del);
+        //        db.SubmitChanges();
+        //        return true;
+        //    }
+        //    catch(Exception)
+        //    {
+        //        return false;
+        //    }
+        //}
 
         // GET: api/Delivery/GetUnDelivered
         /// <summary>
@@ -75,21 +75,21 @@ namespace ExpressStationSystem
         /// <remarks>当前方法通过员工ID获取未签收快递ID列表</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Delivery/GetUnDelivered")]
-        public IEnumerable<int> GetUnDelivered(int mid)
-        {
-            db = new DataClasses1DataContext(connstr);
-            List<int> ids = new List<int>();
-            var query =
-                from delivery in db.Delivery
-                where delivery.mId == mid
-                select delivery;
-            foreach(var del in query)
-            {
-                if(del.status == "待派送")
-                    ids.Add(del.id);
-            }
-            return ids;
-        }
+        //public IEnumerable<int> GetUnDelivered(int mid)
+        //{
+        //    db = new DataClasses1DataContext(connstr);
+        //    List<int> ids = new List<int>();
+        //    var query =
+        //        from delivery in db.Delivery
+        //        where delivery.mId == mid
+        //        select delivery;
+        //    foreach(var del in query)
+        //    {
+        //        if(del.status == "待派送")
+        //            ids.Add(del.id);
+        //    }
+        //    return ids;
+        //}
 
         // GET: api/Delivery/GetDelivered
         /// <summary>
@@ -98,22 +98,22 @@ namespace ExpressStationSystem
         /// <param name="mid">员工ID</param>
         /// <remarks>当前方法通过员工ID获取已签收快递ID列表</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Delivery/GetDelivered")]
-        public IEnumerable<int> GetDelivered(int mid)
-        {
-            db = new DataClasses1DataContext(connstr);
-            List<int> ids = new List<int>();
-            var query =
-                from delivery in db.Delivery
-                where delivery.mId == mid
-                select delivery;
-            foreach (var del in query)
-            {
-                if (del.status != "待派送")
-                    ids.Add(del.id);
-            }
-            return ids;
-        }
+        //[HttpGet, Route("Delivery/GetDelivered")]
+        //public IEnumerable<int> GetDelivered(int mid)
+        //{
+        //    db = new DataClasses1DataContext(connstr);
+        //    List<int> ids = new List<int>();
+        //    var query =
+        //        from delivery in db.Delivery
+        //        where delivery.mId == mid
+        //        select delivery;
+        //    foreach (var del in query)
+        //    {
+        //        if (del.status != "待派送")
+        //            ids.Add(del.id);
+        //    }
+        //    return ids;
+        //}
 
         // GET: api/Delivery/IsDelivered?id={id}
         /// <summary>
@@ -122,17 +122,17 @@ namespace ExpressStationSystem
         /// <param name="id">快递ID</param>
         /// <remarks>当前方法根据快递ID查看快递是否已签收</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Delivery/IsDelivered")]
-        public bool IsDelivered(int id)
-        {
-            db = new DataClasses1DataContext(connstr);
-            var query =
-                from delivery in db.Delivery
-                where delivery.id == id
-                select delivery;
-            Delivery del = query.FirstOrDefault();
-            return del != null && del.status != "待派送";
-        }
+        //[HttpGet, Route("Delivery/IsDelivered")]
+        //public bool IsDelivered(int id)
+        //{
+        //    db = new DataClasses1DataContext(connstr);
+        //    var query =
+        //        from delivery in db.Delivery
+        //        where delivery.id == id
+        //        select delivery;
+        //    Delivery del = query.FirstOrDefault();
+        //    return del != null && del.status != "待派送";
+        //}
 
         // GET: api/Delivery/GetDeliveryById?id={id}
         /// <summary>
@@ -141,52 +141,52 @@ namespace ExpressStationSystem
         /// <param name="id">快递ID</param>
         /// <remarks>当前方法根据快递ID查看快递信息，若快递是未接单的快递，则时间一项返回当前时间，为无效项</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Delivery/GetDeliveryById")]
-        public MyDelivery GetDeliveryById(int id)
-        {
-            db = new DataClasses1DataContext(connstr);
-            try
-            {
-                var query =
-                    from Package in db.Package
-                    where Package.id == id
-                    select Package;
-                Package package = query.FirstOrDefault();
-                if (package == null) return null;
-                int rid = package.receiverId;
-                var query2 = from AddressBook in db.AddressBook
-                             where AddressBook.aId == rid
-                             select AddressBook;
-                AddressBook address = query2.FirstOrDefault();
-                MyDelivery mydel = new MyDelivery();
-                mydel.Id = id;
-                mydel.Name = address.name;
-                mydel.Phone = address.phone;
-                mydel.Province = address.province;
-                mydel.City = address.city;
-                mydel.Street = address.street;
-                var query3 =
-                    from Delivery in db.Delivery
-                    where Delivery.id == id
-                    select Delivery;
-                Delivery del = query3.FirstOrDefault();
-                if(del == null)
-                {
-                    mydel.Time = DateTime.Now;
-                    mydel.Status = "未接单";
-                }
-                else
-                {
-                    mydel.Time = del.time;
-                    mydel.Status = del.status;
-                }
-                return mydel;
-            }
-            catch
-            {
-                return null;
-            }
-        }
+        //[HttpGet, Route("Delivery/GetDeliveryById")]
+        //public MyDelivery GetDeliveryById(int id)
+        //{
+        //    db = new DataClasses1DataContext(connstr);
+        //    try
+        //    {
+        //        var query =
+        //            from Package in db.Package
+        //            where Package.id == id
+        //            select Package;
+        //        Package package = query.FirstOrDefault();
+        //        if (package == null) return null;
+        //        int rid = package.receiverId;
+        //        var query2 = from AddressBook in db.AddressBook
+        //                     where AddressBook.aId == rid
+        //                     select AddressBook;
+        //        AddressBook address = query2.FirstOrDefault();
+        //        MyDelivery mydel = new MyDelivery();
+        //        mydel.Id = id;
+        //        mydel.Name = address.name;
+        //        mydel.Phone = address.phone;
+        //        mydel.Province = address.province;
+        //        mydel.City = address.city;
+        //        mydel.Street = address.street;
+        //        var query3 =
+        //            from Delivery in db.Delivery
+        //            where Delivery.id == id
+        //            select Delivery;
+        //        Delivery del = query3.FirstOrDefault();
+        //        if(del == null)
+        //        {
+        //            mydel.Time = DateTime.Now;
+        //            mydel.Status = "未接单";
+        //        }
+        //        else
+        //        {
+        //            mydel.Time = del.time;
+        //            mydel.Status = del.status;
+        //        }
+        //        return mydel;
+        //    }
+        //    catch
+        //    {
+        //        return null;
+        //    }
+        //}
 
         // PUT: api/Delivery/UpdateDelivered
         /// <summary>
