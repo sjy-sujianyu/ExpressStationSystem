@@ -119,7 +119,7 @@ namespace ExpressStationSystem.Controllers
         /// <summary>
         /// 向数据库插入地址信息
         /// </summary>
-        /// <param name="x">地址簿信息实体</param>
+        /// <param name="x">地址簿信息实体  aId可以省略</param>
         /// <remarks>向数据库插入地址信息</remarks>
         /// <returns>返回</returns>
         [HttpPost, Route("AddressBook/Post")]

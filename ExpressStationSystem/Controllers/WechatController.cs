@@ -55,6 +55,7 @@ namespace ExpressStationSystem.Controllers
                 Login login = new Login();
                 login.account = openid;
                 login.password = "123456";
+                login.role = "客户";
                 db.Login.InsertOnSubmit(login);
                 db.SubmitChanges();
                 return html;
