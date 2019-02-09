@@ -23,7 +23,7 @@ namespace ExpressStationSystem.Controllers
         public List<AddressBookClass> Get(string account)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from addressbook in db.AddressBook where addressbook.account==account select addressbook;
+            var selectQuery = from addressbook in db.AddressBook where addressbook.account==account&&addressbook.isDelete==false select addressbook;
             List<AddressBookClass> list = new List<AddressBookClass>();
             foreach(var x in selectQuery)
             {
@@ -52,7 +52,7 @@ namespace ExpressStationSystem.Controllers
         public List<AddressBookClass> GetWithName(string account,string name)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from addressbook in db.AddressBook where addressbook.account == account&&addressbook.name==name select addressbook;
+            var selectQuery = from addressbook in db.AddressBook where addressbook.account == account&&addressbook.name==name && addressbook.isDelete == false select addressbook;
             List<AddressBookClass> list = new List<AddressBookClass>();
             foreach (var x in selectQuery)
             {
@@ -81,7 +81,7 @@ namespace ExpressStationSystem.Controllers
         public List<AddressBookClass> GetWithPhone(string account, string phone)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from addressbook in db.AddressBook where addressbook.account == account && addressbook.phone == phone select addressbook;
+            var selectQuery = from addressbook in db.AddressBook where addressbook.account == account && addressbook.phone == phone && addressbook.isDelete == false select addressbook;
             List<AddressBookClass> list = new List<AddressBookClass>();
             foreach (var x in selectQuery)
             {
@@ -125,26 +125,41 @@ namespace ExpressStationSystem.Controllers
         [HttpPost, Route("AddressBook/Post")]
         public bool Post(AddressBookClass x)
         {
-
             db = new DataClasses1DataContext(connstr);
+
             try
             {
-                AddressBook aclass = new AddressBook();
-                aclass.aId = x.aId;
-                aclass.account = x.account;
-                aclass.province = x.province;
-                aclass.city = x.city;
-                aclass.street = x.street;
-                aclass.phone = x.phone;
-                aclass.name = x.name;
-                db.AddressBook.InsertOnSubmit(aclass);
+                AddressBook aclass = db.AddressBook.Single(a=>a.account==x.account&&a.phone==x.phone&&a.province==x.province&&a.city==x.city&&a.street==x.street&&a.name==x.name);
+                if(aclass.isDelete==false)
+                {
+                    return false;
+                }
+                aclass.isDelete = false;
                 db.SubmitChanges();
                 return true;
             }
             catch (Exception)
             {
-                return false;
+                try
+                {
+                    AddressBook aclass = new AddressBook();
+                    aclass.account = x.account;
+                    aclass.province = x.province;
+                    aclass.city = x.city;
+                    aclass.street = x.street;
+                    aclass.phone = x.phone;
+                    aclass.name = x.name;
+                    aclass.isDelete = false;
+                    db.AddressBook.InsertOnSubmit(aclass);
+                    db.SubmitChanges();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
             }
+            
         }
 
         // Put: api/AddressBook/Update
@@ -162,8 +177,6 @@ namespace ExpressStationSystem.Controllers
             try
             {
                 AddressBook aclass = db.AddressBook.Single(a => a.aId == x.aId);
-                aclass.aId = x.aId;
-                aclass.account = x.account;
                 aclass.province = x.province;
                 aclass.city = x.city;
                 aclass.street = x.street;
@@ -193,13 +206,12 @@ namespace ExpressStationSystem.Controllers
             try
             {
                 AddressBook ab = db.AddressBook.Single(a => a.aId == aId);
-                db.AddressBook.DeleteOnSubmit(ab);
+                ab.isDelete = true;
                 db.SubmitChanges();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(string.Format("Exception:\n{0}\n BaseException:\n{1} \n GetType:\n{2} \nMessage:\n{3}\n StackTrace:\n{4}", ex, ex.GetBaseException(), ex.GetType(), ex.Message, ex.StackTrace));
                 return false;
             }
         }
