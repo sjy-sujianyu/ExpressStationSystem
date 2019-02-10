@@ -42,11 +42,11 @@ namespace ExpressStationSystem.Controllers
 
         // GET: api/AddressBook/GetWithName
         /// <summary>
-        /// 根据特定客户账号获取地址簿列表
+        /// 根据特定条件获取地址簿列表
         /// </summary>
         /// <param name="account">客户账号</param>
         /// <param name="name">客户名字</param>
-        /// <remarks>根据特定客户账号获取地址簿列表</remarks>
+        /// <remarks>根据特定条件获取地址簿列表</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("AddressBook/GetWithName")]
         public List<AddressBookClass> GetWithName(string account,string name)
@@ -71,17 +71,46 @@ namespace ExpressStationSystem.Controllers
 
         // GET: api/AddressBook/GetWithPhone
         /// <summary>
-        /// 根据特定客户账号获取地址簿列表
+        /// 根据特定条件获取地址簿列表
         /// </summary>
         /// <param name="account">客户账号</param>
         /// <param name="phone">客户电话</param>
-        /// <remarks>根据特定客户账号获取地址簿列表</remarks>
+        /// <remarks>根据特定条件获取地址簿列表</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("AddressBook/GetWithPhone")]
         public List<AddressBookClass> GetWithPhone(string account, string phone)
         {
             db = new DataClasses1DataContext(connstr);
             var selectQuery = from addressbook in db.AddressBook where addressbook.account == account && addressbook.phone.StartsWith(phone) && addressbook.isDelete == false select addressbook;
+            List<AddressBookClass> list = new List<AddressBookClass>();
+            foreach (var x in selectQuery)
+            {
+                AddressBookClass aclass = new AddressBookClass();
+                aclass.aId = x.aId;
+                aclass.account = x.account;
+                aclass.province = x.province;
+                aclass.city = x.city;
+                aclass.street = x.street;
+                aclass.phone = x.phone;
+                aclass.name = x.name;
+                list.Add(aclass);
+            }
+            return list;
+        }
+
+        // GET: api/AddressBook/GetWithAddresss
+        /// <summary>
+        /// 根据特定条件获取地址簿列表
+        /// </summary>
+        /// <param name="account">客户账号</param>
+        /// <param name="address">客户地址</param>
+        /// <remarks>根据特定条件获取地址簿列表</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("AddressBook/GetWithAddresss")]
+        public List<AddressBookClass> GetWithAddresss(string account, string address)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var selectQuery = from addressbook in db.AddressBook where addressbook.account == account && addressbook.isDelete == false && ( addressbook.province.StartsWith(address)||addressbook.city.StartsWith(address)||addressbook.street.StartsWith(address))  select addressbook;
             List<AddressBookClass> list = new List<AddressBookClass>();
             foreach (var x in selectQuery)
             {
