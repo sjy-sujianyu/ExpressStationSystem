@@ -51,6 +51,9 @@ namespace ExpressStationSystem
     partial void InsertPackage(Package instance);
     partial void UpdatePackage(Package instance);
     partial void DeletePackage(Package instance);
+    partial void InsertPath(Path instance);
+    partial void UpdatePath(Path instance);
+    partial void DeletePath(Path instance);
     partial void InsertPickUp(PickUp instance);
     partial void UpdatePickUp(PickUp instance);
     partial void DeletePickUp(PickUp instance);
@@ -145,6 +148,14 @@ namespace ExpressStationSystem
 			get
 			{
 				return this.GetTable<Package>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Path> Path
+		{
+			get
+			{
+				return this.GetTable<Path>();
 			}
 		}
 		
@@ -514,6 +525,12 @@ namespace ExpressStationSystem
 		
 		private string _street;
 		
+		private EntitySet<Path> _Path;
+		
+		private EntitySet<Path> _Path1;
+		
+		private EntitySet<Path> _Path2;
+		
     #region 可扩展性方法定义
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -530,6 +547,9 @@ namespace ExpressStationSystem
 		
 		public Branch()
 		{
+			this._Path = new EntitySet<Path>(new Action<Path>(this.attach_Path), new Action<Path>(this.detach_Path));
+			this._Path1 = new EntitySet<Path>(new Action<Path>(this.attach_Path1), new Action<Path>(this.detach_Path1));
+			this._Path2 = new EntitySet<Path>(new Action<Path>(this.attach_Path2), new Action<Path>(this.detach_Path2));
 			OnCreated();
 		}
 		
@@ -613,6 +633,45 @@ namespace ExpressStationSystem
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Path", Storage="_Path", ThisKey="bId", OtherKey="srcId")]
+		public EntitySet<Path> Path
+		{
+			get
+			{
+				return this._Path;
+			}
+			set
+			{
+				this._Path.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Path1", Storage="_Path1", ThisKey="bId", OtherKey="destId")]
+		public EntitySet<Path> Path1
+		{
+			get
+			{
+				return this._Path1;
+			}
+			set
+			{
+				this._Path1.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Path2", Storage="_Path2", ThisKey="bId", OtherKey="curId")]
+		public EntitySet<Path> Path2
+		{
+			get
+			{
+				return this._Path2;
+			}
+			set
+			{
+				this._Path2.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -631,6 +690,42 @@ namespace ExpressStationSystem
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_Path(Path entity)
+		{
+			this.SendPropertyChanging();
+			entity.Branch = this;
+		}
+		
+		private void detach_Path(Path entity)
+		{
+			this.SendPropertyChanging();
+			entity.Branch = null;
+		}
+		
+		private void attach_Path1(Path entity)
+		{
+			this.SendPropertyChanging();
+			entity.Branch1 = this;
+		}
+		
+		private void detach_Path1(Path entity)
+		{
+			this.SendPropertyChanging();
+			entity.Branch1 = null;
+		}
+		
+		private void attach_Path2(Path entity)
+		{
+			this.SendPropertyChanging();
+			entity.Branch2 = this;
+		}
+		
+		private void detach_Path2(Path entity)
+		{
+			this.SendPropertyChanging();
+			entity.Branch2 = null;
 		}
 	}
 	
@@ -1482,6 +1577,8 @@ namespace ExpressStationSystem
 		
 		private EntityRef<Error> _Error;
 		
+		private EntitySet<Path> _Path;
+		
 		private EntitySet<PickUp> _PickUp;
 		
 		private EntitySet<Transfer> _Transfer;
@@ -1516,6 +1613,7 @@ namespace ExpressStationSystem
 		{
 			this._Delivery = new EntitySet<Delivery>(new Action<Delivery>(this.attach_Delivery), new Action<Delivery>(this.detach_Delivery));
 			this._Error = default(EntityRef<Error>);
+			this._Path = new EntitySet<Path>(new Action<Path>(this.attach_Path), new Action<Path>(this.detach_Path));
 			this._PickUp = new EntitySet<PickUp>(new Action<PickUp>(this.attach_PickUp), new Action<PickUp>(this.detach_PickUp));
 			this._Transfer = new EntitySet<Transfer>(new Action<Transfer>(this.attach_Transfer), new Action<Transfer>(this.detach_Transfer));
 			this._AddressBook = default(EntityRef<AddressBook>);
@@ -1718,6 +1816,19 @@ namespace ExpressStationSystem
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Path", Storage="_Path", ThisKey="id", OtherKey="id")]
+		public EntitySet<Path> Path
+		{
+			get
+			{
+				return this._Path;
+			}
+			set
+			{
+				this._Path.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_PickUp", Storage="_PickUp", ThisKey="id", OtherKey="id")]
 		public EntitySet<PickUp> PickUp
 		{
@@ -1878,6 +1989,18 @@ namespace ExpressStationSystem
 			entity.Package = null;
 		}
 		
+		private void attach_Path(Path entity)
+		{
+			this.SendPropertyChanging();
+			entity.Package = this;
+		}
+		
+		private void detach_Path(Path entity)
+		{
+			this.SendPropertyChanging();
+			entity.Package = null;
+		}
+		
 		private void attach_PickUp(PickUp entity)
 		{
 			this.SendPropertyChanging();
@@ -1900,6 +2023,441 @@ namespace ExpressStationSystem
 		{
 			this.SendPropertyChanging();
 			entity.Package = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Path")]
+	public partial class Path : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _pId;
+		
+		private int _id;
+		
+		private int _srcId;
+		
+		private int _destId;
+		
+		private int _curId;
+		
+		private int _vId;
+		
+		private bool _isArrival;
+		
+		private System.DateTime _time;
+		
+		private EntityRef<Package> _Package;
+		
+		private EntityRef<Branch> _Branch;
+		
+		private EntityRef<Branch> _Branch1;
+		
+		private EntityRef<Branch> _Branch2;
+		
+		private EntityRef<Vehicle> _Vehicle;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnpIdChanging(int value);
+    partial void OnpIdChanged();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OnsrcIdChanging(int value);
+    partial void OnsrcIdChanged();
+    partial void OndestIdChanging(int value);
+    partial void OndestIdChanged();
+    partial void OncurIdChanging(int value);
+    partial void OncurIdChanged();
+    partial void OnvIdChanging(int value);
+    partial void OnvIdChanged();
+    partial void OnisArrivalChanging(bool value);
+    partial void OnisArrivalChanged();
+    partial void OntimeChanging(System.DateTime value);
+    partial void OntimeChanged();
+    #endregion
+		
+		public Path()
+		{
+			this._Package = default(EntityRef<Package>);
+			this._Branch = default(EntityRef<Branch>);
+			this._Branch1 = default(EntityRef<Branch>);
+			this._Branch2 = default(EntityRef<Branch>);
+			this._Vehicle = default(EntityRef<Vehicle>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_pId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int pId
+		{
+			get
+			{
+				return this._pId;
+			}
+			set
+			{
+				if ((this._pId != value))
+				{
+					this.OnpIdChanging(value);
+					this.SendPropertyChanging();
+					this._pId = value;
+					this.SendPropertyChanged("pId");
+					this.OnpIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", DbType="Int NOT NULL")]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					if (this._Package.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_srcId", DbType="Int NOT NULL")]
+		public int srcId
+		{
+			get
+			{
+				return this._srcId;
+			}
+			set
+			{
+				if ((this._srcId != value))
+				{
+					if (this._Branch.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnsrcIdChanging(value);
+					this.SendPropertyChanging();
+					this._srcId = value;
+					this.SendPropertyChanged("srcId");
+					this.OnsrcIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_destId", DbType="Int NOT NULL")]
+		public int destId
+		{
+			get
+			{
+				return this._destId;
+			}
+			set
+			{
+				if ((this._destId != value))
+				{
+					if (this._Branch1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OndestIdChanging(value);
+					this.SendPropertyChanging();
+					this._destId = value;
+					this.SendPropertyChanged("destId");
+					this.OndestIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_curId", DbType="Int NOT NULL")]
+		public int curId
+		{
+			get
+			{
+				return this._curId;
+			}
+			set
+			{
+				if ((this._curId != value))
+				{
+					if (this._Branch2.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OncurIdChanging(value);
+					this.SendPropertyChanging();
+					this._curId = value;
+					this.SendPropertyChanged("curId");
+					this.OncurIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vId", DbType="Int NOT NULL")]
+		public int vId
+		{
+			get
+			{
+				return this._vId;
+			}
+			set
+			{
+				if ((this._vId != value))
+				{
+					if (this._Vehicle.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnvIdChanging(value);
+					this.SendPropertyChanging();
+					this._vId = value;
+					this.SendPropertyChanged("vId");
+					this.OnvIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isArrival", DbType="Bit NOT NULL")]
+		public bool isArrival
+		{
+			get
+			{
+				return this._isArrival;
+			}
+			set
+			{
+				if ((this._isArrival != value))
+				{
+					this.OnisArrivalChanging(value);
+					this.SendPropertyChanging();
+					this._isArrival = value;
+					this.SendPropertyChanged("isArrival");
+					this.OnisArrivalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_time", DbType="DateTime NOT NULL")]
+		public System.DateTime time
+		{
+			get
+			{
+				return this._time;
+			}
+			set
+			{
+				if ((this._time != value))
+				{
+					this.OntimeChanging(value);
+					this.SendPropertyChanging();
+					this._time = value;
+					this.SendPropertyChanged("time");
+					this.OntimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Path", Storage="_Package", ThisKey="id", OtherKey="id", IsForeignKey=true)]
+		public Package Package
+		{
+			get
+			{
+				return this._Package.Entity;
+			}
+			set
+			{
+				Package previousValue = this._Package.Entity;
+				if (((previousValue != value) 
+							|| (this._Package.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Package.Entity = null;
+						previousValue.Path.Remove(this);
+					}
+					this._Package.Entity = value;
+					if ((value != null))
+					{
+						value.Path.Add(this);
+						this._id = value.id;
+					}
+					else
+					{
+						this._id = default(int);
+					}
+					this.SendPropertyChanged("Package");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Path", Storage="_Branch", ThisKey="srcId", OtherKey="bId", IsForeignKey=true)]
+		public Branch Branch
+		{
+			get
+			{
+				return this._Branch.Entity;
+			}
+			set
+			{
+				Branch previousValue = this._Branch.Entity;
+				if (((previousValue != value) 
+							|| (this._Branch.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Branch.Entity = null;
+						previousValue.Path.Remove(this);
+					}
+					this._Branch.Entity = value;
+					if ((value != null))
+					{
+						value.Path.Add(this);
+						this._srcId = value.bId;
+					}
+					else
+					{
+						this._srcId = default(int);
+					}
+					this.SendPropertyChanged("Branch");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Path1", Storage="_Branch1", ThisKey="destId", OtherKey="bId", IsForeignKey=true)]
+		public Branch Branch1
+		{
+			get
+			{
+				return this._Branch1.Entity;
+			}
+			set
+			{
+				Branch previousValue = this._Branch1.Entity;
+				if (((previousValue != value) 
+							|| (this._Branch1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Branch1.Entity = null;
+						previousValue.Path1.Remove(this);
+					}
+					this._Branch1.Entity = value;
+					if ((value != null))
+					{
+						value.Path1.Add(this);
+						this._destId = value.bId;
+					}
+					else
+					{
+						this._destId = default(int);
+					}
+					this.SendPropertyChanged("Branch1");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Path2", Storage="_Branch2", ThisKey="curId", OtherKey="bId", IsForeignKey=true)]
+		public Branch Branch2
+		{
+			get
+			{
+				return this._Branch2.Entity;
+			}
+			set
+			{
+				Branch previousValue = this._Branch2.Entity;
+				if (((previousValue != value) 
+							|| (this._Branch2.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Branch2.Entity = null;
+						previousValue.Path2.Remove(this);
+					}
+					this._Branch2.Entity = value;
+					if ((value != null))
+					{
+						value.Path2.Add(this);
+						this._curId = value.bId;
+					}
+					else
+					{
+						this._curId = default(int);
+					}
+					this.SendPropertyChanged("Branch2");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Vehicle_Path", Storage="_Vehicle", ThisKey="vId", OtherKey="vId", IsForeignKey=true)]
+		public Vehicle Vehicle
+		{
+			get
+			{
+				return this._Vehicle.Entity;
+			}
+			set
+			{
+				Vehicle previousValue = this._Vehicle.Entity;
+				if (((previousValue != value) 
+							|| (this._Vehicle.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Vehicle.Entity = null;
+						previousValue.Path.Remove(this);
+					}
+					this._Vehicle.Entity = value;
+					if ((value != null))
+					{
+						value.Path.Add(this);
+						this._vId = value.vId;
+					}
+					else
+					{
+						this._vId = default(int);
+					}
+					this.SendPropertyChanged("Vehicle");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	
@@ -2395,6 +2953,8 @@ namespace ExpressStationSystem
 		
 		private bool _isDelete;
 		
+		private EntitySet<Path> _Path;
+		
     #region 可扩展性方法定义
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -2409,6 +2969,7 @@ namespace ExpressStationSystem
 		
 		public Vehicle()
 		{
+			this._Path = new EntitySet<Path>(new Action<Path>(this.attach_Path), new Action<Path>(this.detach_Path));
 			OnCreated();
 		}
 		
@@ -2472,6 +3033,19 @@ namespace ExpressStationSystem
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Vehicle_Path", Storage="_Path", ThisKey="vId", OtherKey="vId")]
+		public EntitySet<Path> Path
+		{
+			get
+			{
+				return this._Path;
+			}
+			set
+			{
+				this._Path.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -2490,6 +3064,18 @@ namespace ExpressStationSystem
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_Path(Path entity)
+		{
+			this.SendPropertyChanging();
+			entity.Vehicle = this;
+		}
+		
+		private void detach_Path(Path entity)
+		{
+			this.SendPropertyChanging();
+			entity.Vehicle = null;
 		}
 	}
 }
