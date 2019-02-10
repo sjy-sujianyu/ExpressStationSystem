@@ -14,29 +14,29 @@ namespace ExpressStationSystem
         private static string connstr = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Express;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private DataClasses1DataContext db;
 
-        // GET: api/Delivery/GetNotInDelivery
-        /// <summary>
-        /// 通过网点ID获取未接单待派送的快递
-        /// </summary>
-        /// <param name="bid">网点ID</param>
-        /// <remarks>当前方法通过网点ID获取未接单待派送的快递</remarks>
-        /// <returns>返回</returns>
-        [HttpGet, Route("Delivery/GetNotInDelivery")]
-        public IEnumerable<int> GetNotInDelivery(int bid){
-            List<int> ids = new List<int>();
-            db = new DataClasses1DataContext(connstr);
-            var query = from Package in db.Package
-                        where Package.destId == bid
-                        select Package.id;
-            foreach(var id in query)
-            {
-                var query2 = from Delivery in db.Delivery
-                             where Delivery.id == id
-                             select Delivery;
-                if (query2.FirstOrDefault() == null) ids.Add(id);
-            }
-            return ids;
-        }
+        //// GET: api/Delivery/GetNotInDelivery
+        ///// <summary>
+        ///// 通过网点ID获取未接单待派送的快递
+        ///// </summary>
+        ///// <param name="bid">网点ID</param>
+        ///// <remarks>当前方法通过网点ID获取未接单待派送的快递</remarks>
+        ///// <returns>返回</returns>
+        //[HttpGet, Route("Delivery/GetNotInDelivery")]
+        //public IEnumerable<int> GetNotInDelivery(int bid){
+        //    List<int> ids = new List<int>();
+        //    db = new DataClasses1DataContext(connstr);
+        //    var query = from Package in db.Package
+        //                where Package.destId == bid
+        //                select Package.id;
+        //    foreach(var id in query)
+        //    {
+        //        var query2 = from Delivery in db.Delivery
+        //                     where Delivery.id == id
+        //                     select Delivery;
+        //        if (query2.FirstOrDefault() == null) ids.Add(id);
+        //    }
+        //    return ids;
+        //}
 
         //POST: api/Delivery/AddDelivery
         /// <summary>

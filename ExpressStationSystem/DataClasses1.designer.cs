@@ -514,10 +514,6 @@ namespace ExpressStationSystem
 		
 		private string _street;
 		
-		private EntitySet<Package> _Package;
-		
-		private EntitySet<Package> _Package1;
-		
     #region 可扩展性方法定义
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -534,8 +530,6 @@ namespace ExpressStationSystem
 		
 		public Branch()
 		{
-			this._Package = new EntitySet<Package>(new Action<Package>(this.attach_Package), new Action<Package>(this.detach_Package));
-			this._Package1 = new EntitySet<Package>(new Action<Package>(this.attach_Package1), new Action<Package>(this.detach_Package1));
 			OnCreated();
 		}
 		
@@ -619,32 +613,6 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Package", Storage="_Package", ThisKey="bId", OtherKey="srcId")]
-		public EntitySet<Package> Package
-		{
-			get
-			{
-				return this._Package;
-			}
-			set
-			{
-				this._Package.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Package1", Storage="_Package1", ThisKey="bId", OtherKey="destId")]
-		public EntitySet<Package> Package1
-		{
-			get
-			{
-				return this._Package1;
-			}
-			set
-			{
-				this._Package1.Assign(value);
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -663,30 +631,6 @@ namespace ExpressStationSystem
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		
-		private void attach_Package(Package entity)
-		{
-			this.SendPropertyChanging();
-			entity.Branch = this;
-		}
-		
-		private void detach_Package(Package entity)
-		{
-			this.SendPropertyChanging();
-			entity.Branch = null;
-		}
-		
-		private void attach_Package1(Package entity)
-		{
-			this.SendPropertyChanging();
-			entity.Branch1 = this;
-		}
-		
-		private void detach_Package1(Package entity)
-		{
-			this.SendPropertyChanging();
-			entity.Branch1 = null;
 		}
 	}
 	
@@ -1530,12 +1474,6 @@ namespace ExpressStationSystem
 		
 		private int _receiverId;
 		
-		private int _srcId;
-		
-		private int _destId;
-		
-		private System.Nullable<int> _vId;
-		
 		private string _Remarks;
 		
 		private string _account;
@@ -1552,13 +1490,7 @@ namespace ExpressStationSystem
 		
 		private EntityRef<AddressBook> _AddressBook1;
 		
-		private EntityRef<Branch> _Branch;
-		
-		private EntityRef<Branch> _Branch1;
-		
 		private EntityRef<Login> _Login;
-		
-		private EntityRef<Vehicle> _Vehicle;
 		
     #region 可扩展性方法定义
     partial void OnLoaded();
@@ -1574,12 +1506,6 @@ namespace ExpressStationSystem
     partial void OnsendIdChanged();
     partial void OnreceiverIdChanging(int value);
     partial void OnreceiverIdChanged();
-    partial void OnsrcIdChanging(int value);
-    partial void OnsrcIdChanged();
-    partial void OndestIdChanging(int value);
-    partial void OndestIdChanged();
-    partial void OnvIdChanging(System.Nullable<int> value);
-    partial void OnvIdChanged();
     partial void OnRemarksChanging(string value);
     partial void OnRemarksChanged();
     partial void OnaccountChanging(string value);
@@ -1594,10 +1520,7 @@ namespace ExpressStationSystem
 			this._Transfer = new EntitySet<Transfer>(new Action<Transfer>(this.attach_Transfer), new Action<Transfer>(this.detach_Transfer));
 			this._AddressBook = default(EntityRef<AddressBook>);
 			this._AddressBook1 = default(EntityRef<AddressBook>);
-			this._Branch = default(EntityRef<Branch>);
-			this._Branch1 = default(EntityRef<Branch>);
 			this._Login = default(EntityRef<Login>);
-			this._Vehicle = default(EntityRef<Vehicle>);
 			OnCreated();
 		}
 		
@@ -1705,78 +1628,6 @@ namespace ExpressStationSystem
 					this._receiverId = value;
 					this.SendPropertyChanged("receiverId");
 					this.OnreceiverIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_srcId", DbType="Int NOT NULL")]
-		public int srcId
-		{
-			get
-			{
-				return this._srcId;
-			}
-			set
-			{
-				if ((this._srcId != value))
-				{
-					if (this._Branch.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnsrcIdChanging(value);
-					this.SendPropertyChanging();
-					this._srcId = value;
-					this.SendPropertyChanged("srcId");
-					this.OnsrcIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_destId", DbType="Int NOT NULL")]
-		public int destId
-		{
-			get
-			{
-				return this._destId;
-			}
-			set
-			{
-				if ((this._destId != value))
-				{
-					if (this._Branch1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OndestIdChanging(value);
-					this.SendPropertyChanging();
-					this._destId = value;
-					this.SendPropertyChanged("destId");
-					this.OndestIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vId", DbType="Int")]
-		public System.Nullable<int> vId
-		{
-			get
-			{
-				return this._vId;
-			}
-			set
-			{
-				if ((this._vId != value))
-				{
-					if (this._Vehicle.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnvIdChanging(value);
-					this.SendPropertyChanging();
-					this._vId = value;
-					this.SendPropertyChanged("vId");
-					this.OnvIdChanged();
 				}
 			}
 		}
@@ -1961,74 +1812,6 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Package", Storage="_Branch", ThisKey="srcId", OtherKey="bId", IsForeignKey=true)]
-		public Branch Branch
-		{
-			get
-			{
-				return this._Branch.Entity;
-			}
-			set
-			{
-				Branch previousValue = this._Branch.Entity;
-				if (((previousValue != value) 
-							|| (this._Branch.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Branch.Entity = null;
-						previousValue.Package.Remove(this);
-					}
-					this._Branch.Entity = value;
-					if ((value != null))
-					{
-						value.Package.Add(this);
-						this._srcId = value.bId;
-					}
-					else
-					{
-						this._srcId = default(int);
-					}
-					this.SendPropertyChanged("Branch");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Branch_Package1", Storage="_Branch1", ThisKey="destId", OtherKey="bId", IsForeignKey=true)]
-		public Branch Branch1
-		{
-			get
-			{
-				return this._Branch1.Entity;
-			}
-			set
-			{
-				Branch previousValue = this._Branch1.Entity;
-				if (((previousValue != value) 
-							|| (this._Branch1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Branch1.Entity = null;
-						previousValue.Package1.Remove(this);
-					}
-					this._Branch1.Entity = value;
-					if ((value != null))
-					{
-						value.Package1.Add(this);
-						this._destId = value.bId;
-					}
-					else
-					{
-						this._destId = default(int);
-					}
-					this.SendPropertyChanged("Branch1");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Login_Package", Storage="_Login", ThisKey="account", OtherKey="account", IsForeignKey=true)]
 		public Login Login
 		{
@@ -2059,40 +1842,6 @@ namespace ExpressStationSystem
 						this._account = default(string);
 					}
 					this.SendPropertyChanged("Login");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Vehicle_Package", Storage="_Vehicle", ThisKey="vId", OtherKey="vId", IsForeignKey=true)]
-		public Vehicle Vehicle
-		{
-			get
-			{
-				return this._Vehicle.Entity;
-			}
-			set
-			{
-				Vehicle previousValue = this._Vehicle.Entity;
-				if (((previousValue != value) 
-							|| (this._Vehicle.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Vehicle.Entity = null;
-						previousValue.Package.Remove(this);
-					}
-					this._Vehicle.Entity = value;
-					if ((value != null))
-					{
-						value.Package.Add(this);
-						this._vId = value.vId;
-					}
-					else
-					{
-						this._vId = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Vehicle");
 				}
 			}
 		}
@@ -2646,8 +2395,6 @@ namespace ExpressStationSystem
 		
 		private bool _isDelete;
 		
-		private EntitySet<Package> _Package;
-		
     #region 可扩展性方法定义
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -2662,7 +2409,6 @@ namespace ExpressStationSystem
 		
 		public Vehicle()
 		{
-			this._Package = new EntitySet<Package>(new Action<Package>(this.attach_Package), new Action<Package>(this.detach_Package));
 			OnCreated();
 		}
 		
@@ -2726,19 +2472,6 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Vehicle_Package", Storage="_Package", ThisKey="vId", OtherKey="vId")]
-		public EntitySet<Package> Package
-		{
-			get
-			{
-				return this._Package;
-			}
-			set
-			{
-				this._Package.Assign(value);
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -2757,18 +2490,6 @@ namespace ExpressStationSystem
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		
-		private void attach_Package(Package entity)
-		{
-			this.SendPropertyChanging();
-			entity.Vehicle = this;
-		}
-		
-		private void detach_Package(Package entity)
-		{
-			this.SendPropertyChanging();
-			entity.Vehicle = null;
 		}
 	}
 }

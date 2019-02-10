@@ -35,10 +35,6 @@ namespace ExpressStationSystem.Controllers
             package.price = packageclass.price;
             package.sendId = packageclass.sendId;
             package.receiverId = packageclass.receiverId;
-
-            package.srcId = packageclass.srcId;
-            package.destId = packageclass.destId;
-            package.vId = packageclass.vId;
             package.Remarks = packageclass.Remarks;
             package.account = packageclass.account;
             return package;
@@ -98,10 +94,6 @@ namespace ExpressStationSystem.Controllers
                 package.price = packageclass.price;
                 package.sendId = packageclass.sendId;
                 package.receiverId = packageclass.receiverId;
-
-                package.srcId = packageclass.srcId;
-                package.destId = packageclass.destId;
-                package.vId = packageclass.vId;
                 package.Remarks = packageclass.Remarks;
                 package.account = packageclass.account;
                 db.Package.InsertOnSubmit(package);

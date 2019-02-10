@@ -17,12 +17,6 @@ namespace ExpressStationSystem
 
         public int receiverId;
 
-        public int srcId;
-
-        public int destId;
-
-        public System.Nullable<int> vId;
-
         public string Remarks;
 
         public string account;
