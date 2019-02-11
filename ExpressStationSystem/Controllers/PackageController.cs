@@ -96,6 +96,7 @@ namespace ExpressStationSystem.Controllers
                 package.receiverId = packageclass.receiverId;
                 package.Remarks = packageclass.Remarks;
                 package.account = packageclass.account;
+                package.time = DateTime.Now;
                 db.Package.InsertOnSubmit(package);
 
                 db.SubmitChanges();

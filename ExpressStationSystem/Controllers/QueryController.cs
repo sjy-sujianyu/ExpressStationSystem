@@ -32,6 +32,59 @@ namespace ExpressStationSystem.Controllers
             return list;
         }
 
+        //// GET: api/Query/GetStatus?account={account}
+        ///// <summary>
+        ///// 得到包裹状态信息
+        ///// </summary>
+        ///// <param name="id">包裹ID</param>
+        ///// <remarks>得到包裹状态信息</remarks>
+        ///// <returns>返回</returns>
+        //[HttpGet, Route("Query/GetStatus")]
+        //public string GetStatus(int id)
+        //{
+        //    db = new DataClasses1DataContext(connstr);
+        //    var isTransport = from a in db.Path where a.id == id select a;
+        //    if (isTransport.Count() == 0)
+        //    {
+        //        var isReady = from a in db.PickUp where a.id == id select a;
+        //        if (isReady.Count() == 0)
+        //        {
+        //            return "待揽收";
+        //        }
+        //        else
+        //        {
+        //            return "正在揽收";
+        //        }
+
+        //    }
+        //    else if(isTransport.Count()==1)
+        //    {
+        //        return "已揽收";
+        //    }
+        //    else
+        //    {
+        //        var isSignIn = from a in db.Delivery where a.id == id select a;
+        //        if (isSignIn.Count() == 0)
+        //        {
+        //            return "运输中";
+        //        }
+        //        else
+        //        {
+
+        //            foreach(var x in isSignIn)
+        //            {
+        //                return x.status;
+        //            }
+        //        }
+        //    }
+        //    //var selectQuery = from a in db.Path join b in db.Branch on a.curId equals b.bId where a.id == id select new { path = a, branch = b };
+        //    //List<dynamic> list = new List<dynamic>();
+        //    //foreach (var x in selectQuery)
+        //    //{
+        //    //    list.Add(x);
+        //    //}
+        //    //return list;
+        //}
         // POST: api/Query
         public void Post([FromBody]string value)
         {
