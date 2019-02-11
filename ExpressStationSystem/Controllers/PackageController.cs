@@ -97,6 +97,7 @@ namespace ExpressStationSystem.Controllers
                 package.Remarks = packageclass.Remarks;
                 package.account = packageclass.account;
                 package.time = DateTime.Now;
+                package.status = "待揽收";
                 db.Package.InsertOnSubmit(package);
 
                 db.SubmitChanges();
