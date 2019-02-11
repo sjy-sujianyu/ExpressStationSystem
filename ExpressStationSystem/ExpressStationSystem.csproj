@@ -177,8 +177,12 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PackageController.cs" />
     <Compile Include="Controllers\PickUpController.cs" />
+    <Compile Include="Controllers\QueryController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\WechatController.cs" />
+    <Compile Include="DataClasses1.cs">
+      <DependentUpon>DataClasses1.dbml</DependentUpon>
+    </Compile>
     <Compile Include="DataClasses1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
