@@ -74,7 +74,7 @@ namespace ExpressStationSystem
         /// <param name="mid">员工ID</param>
         /// <remarks>当前方法通过员工ID获取未签收快递ID列表</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Delivery/GetUnDelivered")]
+        //[HttpGet, Route("Delivery/GetUnDelivered")]
         //public IEnumerable<int> GetUnDelivered(int mid)
         //{
         //    db = new DataClasses1DataContext(connstr);
@@ -188,31 +188,31 @@ namespace ExpressStationSystem
         //    }
         //}
 
-        // PUT: api/Delivery/UpdateDelivered
-        /// <summary>
-        /// 将快递修改为已签收，并将时间修改为当前时间
-        /// </summary>
-        /// <param name="id">快递ID</param>
-        /// <remarks>将快递修改为已签收，并将时间修改为当前时间</remarks>
-        /// <returns>返回</returns>
-        [HttpPut, Route("Delivery/UpdateDelivered")]
-        public bool UpdateDelivered(int id)
-        {
-            db = new DataClasses1DataContext(connstr);
-            try
-            {
-                Delivery del = db.Delivery.Single(d => d.id == id);
-                if (del.status == "已签收") throw new Exception();
-                del.status = "已签收";
-                del.time = DateTime.Now;
-                db.SubmitChanges();
-                return true;
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-        }
+        //// PUT: api/Delivery/UpdateDelivered
+        ///// <summary>
+        ///// 将快递修改为已签收，并将时间修改为当前时间
+        ///// </summary>
+        ///// <param name="id">快递ID</param>
+        ///// <remarks>将快递修改为已签收，并将时间修改为当前时间</remarks>
+        ///// <returns>返回</returns>
+        //[HttpPut, Route("Delivery/UpdateDelivered")]
+        //public bool UpdateDelivered(int id)
+        //{
+        //    db = new DataClasses1DataContext(connstr);
+        //    try
+        //    {
+        //        Delivery del = db.Delivery.Single(d => d.id == id);
+        //        if (del.status == "已签收") throw new Exception();
+        //        del.status = "已签收";
+        //        del.time = DateTime.Now;
+        //        db.SubmitChanges();
+        //        return true;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return false;
+        //    }
+        //}
 
         public class MyDelivery
         {
