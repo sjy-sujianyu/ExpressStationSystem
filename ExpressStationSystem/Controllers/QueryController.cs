@@ -32,18 +32,38 @@ namespace ExpressStationSystem.Controllers
             return list;
         }
 
-        // GET: api/Query/GetAllPackagesByAccount?account={account}
+        // GET: api/Query/GetAllBillByAccount?account={account}
         /// <summary>
         /// 根据客户ID获取所有订单列表
         /// </summary>
         /// <param name="account">客户ID</param>
         /// <remarks>根据客户ID获取所有订单列表</remarks>
         /// <returns>返回</returns>
+        [HttpGet, Route("Query/GetAllBillByAccount")]
+        public List<int> GetAllBillByAccount(string account)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var selectQuery = from a in db.Package where a.account == account select a.id;
+            List<int> list = new List<int>();
+            foreach (var x in selectQuery)
+            {
+                list.Add(x);
+            }
+            return list;
+        }
+
+        // GET: api/Query/GetAllPackagesByAccount?account={account}
+        /// <summary>
+        /// 根据客户ID获取所有接受的快递
+        /// </summary>
+        /// <param name="account">客户ID</param>
+        /// <remarks>根据客户ID获取所有接受的快递</remarks>
+        /// <returns>返回</returns>
         [HttpGet, Route("Query/GetAllPackagesByAccount")]
         public List<int> GetAllPackagesByAccount(string account)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Package where a.account == account select a.id;
+            var selectQuery = from a in db.Package join b in db.AddressBook on a.receiverId equals b.aId where b.phone==account select a.id;
             List<int> list = new List<int>();
             foreach (var x in selectQuery)
             {
