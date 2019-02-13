@@ -11,34 +11,6 @@ namespace ExpressStationSystem.Controllers
     {
         private static string connstr = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Express;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private DataClasses1DataContext db;
-        // GET: api/Package/Get?id={id}
-        /// <summary>
-        /// 根据包裹ID获取包裹的信息
-        /// </summary>
-        /// <param name="id">包裹ID</param>
-        /// <remarks>根据包裹ID获取包裹的信息</remarks>
-        /// <returns>返回</returns>
-        [HttpGet, Route("Package/Get")]
-        public PackageClass Get(int id)
-        {
-            db = new DataClasses1DataContext(connstr);
-            var selectQuery = from package1 in db.Package where package1.id == id select package1;
-            Package packageclass = selectQuery.FirstOrDefault();
-            PackageClass package = new PackageClass();
-
-            if (packageclass is null)
-            {
-                return null;
-            }
-            package.id = packageclass.id;
-            package.weight = packageclass.weight;
-            package.price = packageclass.price;
-            package.sendId = packageclass.sendId;
-            package.receiverId = packageclass.receiverId;
-            package.Remarks = packageclass.Remarks;
-            package.account = packageclass.account;
-            return package;
-        }
 
         // GET: api/Package/GetValue
         /// <summary>

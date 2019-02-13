@@ -25,7 +25,6 @@ namespace ExpressStationSystem.Controllers
             db = new DataClasses1DataContext(connstr);
             var selectQuery = from a in db.Path join b in db.Branch on a.curId equals b.bId join c in db.Vehicle on a.vId equals c.vId where a.id==id select new { path = a, branch = b,vehicle=c };
             List<dynamic> list = new List<dynamic>();
-
             foreach (var x in selectQuery)
             {
                 list.Add(x);
@@ -33,6 +32,25 @@ namespace ExpressStationSystem.Controllers
             return list;
         }
 
+        // GET: api/Query/GetAllPackagesByAccount?account={account}
+        /// <summary>
+        /// 根据客户ID获取所有订单列表
+        /// </summary>
+        /// <param name="account">客户ID</param>
+        /// <remarks>根据客户ID获取所有订单列表</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Query/GetAllPackagesByAccount")]
+        public List<int> GetAllPackagesByAccount(string account)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var selectQuery = from a in db.Package where a.account == account select a.id;
+            List<int> list = new List<int>();
+            foreach (var x in selectQuery)
+            {
+                list.Add(x);
+            }
+            return list;
+        }
         // GET: api/Query/GetAllInfo?account={account}
         /// <summary>
         /// 得到包裹全部信息
