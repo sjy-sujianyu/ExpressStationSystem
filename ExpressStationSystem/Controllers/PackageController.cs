@@ -69,7 +69,8 @@ namespace ExpressStationSystem.Controllers
                 package.Remarks = packageclass.Remarks;
                 package.account = packageclass.account;
                 package.time = DateTime.Now;
-                package.status = "待揽收";
+                package.status = "已下单";
+                package.isDelete = false;
                 db.Package.InsertOnSubmit(package);
 
                 db.SubmitChanges();
@@ -100,7 +101,7 @@ namespace ExpressStationSystem.Controllers
             try
             {
                 Package package = db.Package.Single(c => c.id == id);
-                db.Package.DeleteOnSubmit(package);
+                package.isDelete = true;
                 db.SubmitChanges();
                 return true;
             }

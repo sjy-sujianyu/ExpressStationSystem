@@ -64,5 +64,12 @@ namespace ExpressStationSystem
             City = city;
             Street = street;
         }
+        
+    }
+    public class PickUpClass
+    {
+        public int id;
+        public string mId;
+        public DateTime time;
     }
 }

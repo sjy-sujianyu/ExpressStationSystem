@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Express" Class="DataClasses1DataContext" Serialization="Unidirectional" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Express;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="ExpressConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.Transfer" Member="Transfer">
-    <Type Name="Transfer">
+  <Table Name="dbo.Delivery" Member="Delivery">
+    <Type Name="Delivery">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="mId" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Member_Transfer" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
-      <Association Name="Package_Transfer" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
+      <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Member_Delivery" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
+      <Association Name="Package_Delivery" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.AddressBook" Member="AddressBook">
@@ -36,15 +36,6 @@
       <Association Name="Branch_Path2" Member="Path2" ThisKey="bId" OtherKey="curId" Type="Path" />
     </Type>
   </Table>
-  <Table Name="dbo.Delivery" Member="Delivery">
-    <Type Name="Delivery">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="mId" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="Member_Delivery" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
-      <Association Name="Package_Delivery" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Error" Member="Error">
     <Type Name="Error">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -69,9 +60,9 @@
       <Column Name="job" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="phone" Type="System.String" DbType="VarChar(11) NOT NULL" CanBeNull="false" />
       <Column Name="isDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="Member_Transfer" Member="Transfer" ThisKey="mId" OtherKey="mId" Type="Transfer" />
       <Association Name="Member_Delivery" Member="Delivery" ThisKey="mId" OtherKey="mId" Type="Delivery" />
       <Association Name="Member_PickUp" Member="PickUp" ThisKey="mId" OtherKey="mId" Type="PickUp" />
+      <Association Name="Member_Transfer" Member="Transfer" ThisKey="mId" OtherKey="mId" Type="Transfer" />
       <Association Name="Login_Member" Member="Login" ThisKey="mId" OtherKey="account" Type="Login" IsForeignKey="true" />
     </Type>
   </Table>
@@ -86,11 +77,12 @@
       <Column Name="account" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Association Name="Package_Transfer" Member="Transfer" ThisKey="id" OtherKey="id" Type="Transfer" />
+      <Column Name="isDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Package_Delivery" Member="Delivery" ThisKey="id" OtherKey="id" Type="Delivery" />
       <Association Name="Package_Error" Member="Error" ThisKey="id" OtherKey="id" Type="Error" Cardinality="One" />
       <Association Name="Package_Path" Member="Path" ThisKey="id" OtherKey="id" Type="Path" />
       <Association Name="Package_PickUp" Member="PickUp" ThisKey="id" OtherKey="id" Type="PickUp" />
+      <Association Name="Package_Transfer" Member="Transfer" ThisKey="id" OtherKey="id" Type="Transfer" />
       <Association Name="AddressBook_Package" Member="AddressBook" ThisKey="sendId" OtherKey="aId" Type="AddressBook" IsForeignKey="true" />
       <Association Name="AddressBook_Package1" Member="AddressBook1" ThisKey="receiverId" OtherKey="aId" Type="AddressBook" IsForeignKey="true" />
       <Association Name="Login_Package" Member="Login" ThisKey="account" OtherKey="account" Type="Login" IsForeignKey="true" />
@@ -117,9 +109,18 @@
     <Type Name="PickUp">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="mId" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Association Name="Package_PickUp" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
       <Association Name="Member_PickUp" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Transfer" Member="Transfer">
+    <Type Name="Transfer">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="mId" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Package_Transfer" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
+      <Association Name="Member_Transfer" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Vehicle" Member="Vehicle">

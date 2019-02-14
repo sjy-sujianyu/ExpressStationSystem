@@ -13,15 +13,15 @@ namespace ExpressStationSystem.Controllers
         private DataClasses1DataContext db;
         // GET: api/PickUp/GetReadytoScan
         /// <summary>
-        /// 获取待扫件的包裹ID
+        /// 获取上个网点转来待扫件的包裹ID
         /// </summary>
-        /// <remarks>获取待扫件的包裹ID</remarks>
+        /// <remarks>获取上个网点转来待扫件的包裹ID</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("PickUp/GetReadytoScan")]
         public List<int> GetReadytoScan()
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Package where a.status == "待揽收" || a.status == "待扫件" select a.id;
+            var selectQuery = from a in db.Package where  a.status == "初始" select a.id;
             List <int> list = new List<int>();
             foreach (var x in selectQuery)
             {
@@ -68,9 +68,36 @@ namespace ExpressStationSystem.Controllers
 
             return list;
         }
-        // POST: api/PickUp
-        public void Post([FromBody]string value)
+        // PUT: api/PickUp/Post
+        /// <summary>
+        /// 添加待揽件包裹信息
+        /// </summary>
+        /// <remarks>添加待揽件包裹信息</remarks>
+        /// <returns>返回</returns>
+        [HttpPut, Route("PickUp/Post")]
+        public bool Post(PickUpClass x)
         {
+            db = new DataClasses1DataContext(connstr);
+            try
+            {
+                var package = db.Package.Single(a => a.id == x.id);
+                if(package.status!="已下单")
+                {
+                    return false;
+                }
+                PickUp pk = new PickUp();
+                pk.id = x.id;
+                pk.mId = x.mId;
+                pk.time = x.time;
+                db.PickUp.InsertOnSubmit(pk);
+                package.status = "待揽件";
+                db.SubmitChanges();
+                return true;
+            }
+            catch(Exception)
+            {
+                return false;
+            }
         }
 
         // PUT: api/PickUp/RevokeReceive
@@ -95,13 +122,37 @@ namespace ExpressStationSystem.Controllers
                     return false;
                 }
                 x.status = "已下单";
+                db.SubmitChanges();
                 return true;
             }
         }
 
-        // DELETE: api/PickUp/5
-        public void Delete(int id)
+
+        // PUT: api/PickUp/Scan?id={id}
+        /// <summary>
+        /// 包裹的状态从待揽件状态或者初始状态变为已扫件
+        /// </summary>
+        /// <remarks>包裹的状态从待揽件状态或者初始状态变为已扫件</remarks>
+        /// <returns>返回</returns>
+        [HttpPut, Route("PickUp/Scan")]
+        public bool Scan(int id)
         {
+            db = new DataClasses1DataContext(connstr);
+            var x = db.Package.SingleOrDefault(a => a.id == id);
+            if (x is null)
+            {
+                return false;
+            }
+            else
+            {
+                if (x.status != "待揽件"&&x.status!="初始")
+                {
+                    return false;
+                }
+                x.status = "已扫件";
+                db.SubmitChanges();
+                return true; 
+            }
         }
     }
 }
