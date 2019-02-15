@@ -70,6 +70,10 @@ namespace ExpressStationSystem
     {
         public int id;
         public string mId;
-        public DateTime time;
+    }
+
+    public class IdClass
+    {
+        public int id;
     }
 }

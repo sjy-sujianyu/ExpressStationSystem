@@ -11,6 +11,43 @@ namespace ExpressStationSystem.Controllers
     {
         private static string connstr = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Express;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private DataClasses1DataContext db;
+
+        // GET: api/PickUp/GetReadytoReceiveByCondition
+        /// <summary>
+        /// 按条件查询要揽件的包裹
+        /// </summary>
+        /// <param name="str">关键字</param>
+        /// <param name="type">类型 "单号、姓名、电话、街道"其中一种</param>
+        /// <remarks>按条件查询要揽件的包裹</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("PickUp/GetReadytoReceiveByCondition")]
+        public List<int> GetReadytoReceiveByCondition(string str,string type)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var a = GetReadytoReceive();
+            List <int> list = new List<int>();
+            foreach (var x in a)
+            {
+                var ob = new QueryController().GetAllInfo(x);
+                if(type=="单号"&&ob.package.id.ToString().StartsWith(str))
+                {
+                    list.Add(x);
+                }
+                else if(type=="姓名"&&ob.src.name.StartsWith(str))
+                {
+                    list.Add(x);
+                }
+                else if(type=="电话"&&ob.src.phone.StartsWith(str))
+                {
+                    list.Add(x);
+                }
+                else if(type=="街道"&&ob.src.street.StartsWith(str))
+                {
+                    list.Add(x);
+                }
+            }
+            return list;
+        }
         // GET: api/PickUp/GetReadytoScan
         /// <summary>
         /// 获取上个网点转来待扫件的包裹ID
@@ -88,7 +125,7 @@ namespace ExpressStationSystem.Controllers
                 PickUp pk = new PickUp();
                 pk.id = x.id;
                 pk.mId = x.mId;
-                pk.time = x.time;
+                pk.time = DateTime.Now;
                 db.PickUp.InsertOnSubmit(pk);
                 package.status = "待揽件";
                 db.SubmitChanges();
@@ -135,10 +172,10 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>包裹的状态从待揽件状态或者初始状态变为已扫件</remarks>
         /// <returns>返回</returns>
         [HttpPut, Route("PickUp/Scan")]
-        public bool Scan(int id)
+        public bool Scan(IdClass iclass)
         {
             db = new DataClasses1DataContext(connstr);
-            var x = db.Package.SingleOrDefault(a => a.id == id);
+            var x = db.Package.SingleOrDefault(a => a.id == iclass.id);
             if (x is null)
             {
                 return false;
