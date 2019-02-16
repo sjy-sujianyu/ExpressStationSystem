@@ -87,11 +87,11 @@ namespace ExpressStationSystem.Controllers
             {
                 return null;
             }
-            var pickup = db.PickUp.SingleOrDefault(a => a.id == id);
+            var pickup = db.PickUp.Join(db.Member, a => a.mId, b => b.mId, (a, b) => new { pickup = a, member = b });
             var src = db.AddressBook.SingleOrDefault(a => a.aId == package.sendId);
             var dest = db.AddressBook.SingleOrDefault(a => a.aId == package.receiverId);
-            var delivery = db.Delivery.SingleOrDefault(a => a.id == id);
-            var transfer = db.Transfer.SingleOrDefault(a => a.id == id);
+            var delivery = db.Delivery.Join(db.Member, a => a.mId, b => b.mId, (a, b) => new { delivery = a, member = b });
+            var transfer = db.Transfer.Join(db.Member,a=>a.mId,b=>b.mId,(a,b)=>new { transfer = a, member = b });
             var list=GetLogisticsInfo(id);
             return new { package = package, pickup = pickup, src = src, dest = dest, delivery = delivery, transfer = transfer,pathList=list };
         }
