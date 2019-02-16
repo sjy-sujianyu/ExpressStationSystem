@@ -23,7 +23,8 @@ namespace ExpressStationSystem.Controllers
         private List<dynamic> GetLogisticsInfo(int id)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Path join b in db.Branch on a.curId equals b.bId join c in db.Vehicle on a.vId equals c.vId where a.id==id select new { path = a, branch = b,vehicle=c };
+            var selectQuery = from a in db.Path join b in db.Branch on a.curId equals b.bId join c in db.Vehicle on a.vId equals c.vId where a.id==id orderby a.time
+                              select new { path = a, branch = b,vehicle=c };
             List<dynamic> list = new List<dynamic>();
             foreach (var x in selectQuery)
             {
@@ -76,7 +77,7 @@ namespace ExpressStationSystem.Controllers
         /// 得到包裹全部信息
         /// </summary>
         /// <param name="id">包裹ID</param>
-        /// <remarks>得到包裹全部信息</remarks>
+        /// <remarks>得到包裹全部信息 包裹状态有初始、已下单、待揽件、已扫件、运输中、待派件、已签收状态</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Query/GetAllInfo")]
         public dynamic GetAllInfo(int id)
