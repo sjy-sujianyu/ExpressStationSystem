@@ -12,6 +12,27 @@ namespace ExpressStationSystem.Controllers
     {
         private static string connstr = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Express;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private DataClasses1DataContext db;
+
+        // GET: api/Query/GetRole?account={account}
+        /// <summary>
+        /// 返回员工角色(揽件员，派件员，出件员)
+        /// </summary>
+        /// <param name="account">员工账户</param>
+        /// <remarks>返回员工角色(揽件员，派件员，出件员)</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Query/GetRole")]
+        public string GetRole(string account)
+        {
+            var role = db.Member.SingleOrDefault(a => a.mId == account && a.isDelete == false);
+            if(role is null)
+            {
+                return null;
+            }
+            else
+            {
+                return role.job;
+            }
+        }
         // GET: api/Query/GetLogisticsInfo?account={account}
         /// <summary>
         /// 根据包裹得到物流信息
