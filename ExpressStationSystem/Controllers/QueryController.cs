@@ -23,6 +23,7 @@ namespace ExpressStationSystem.Controllers
         [HttpGet, Route("Query/GetRole")]
         public string GetRole(string account)
         {
+            db = new DataClasses1DataContext(connstr);
             var role = db.Member.SingleOrDefault(a => a.mId == account && a.isDelete == false);
             if(role is null)
             {
