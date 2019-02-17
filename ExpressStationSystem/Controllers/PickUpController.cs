@@ -105,13 +105,13 @@ namespace ExpressStationSystem.Controllers
 
             return list;
         }
-        // PUT: api/PickUp/Post
+        // Post: api/PickUp/Post
         /// <summary>
         /// 添加待揽件包裹信息
         /// </summary>
         /// <remarks>添加待揽件包裹信息</remarks>
         /// <returns>返回</returns>
-        [HttpPut, Route("PickUp/Post")]
+        [HttpPost, Route("PickUp/Post")]
         public bool Post(PickUpClass x)
         {
             db = new DataClasses1DataContext(connstr);
@@ -126,6 +126,7 @@ namespace ExpressStationSystem.Controllers
                 pk.id = x.id;
                 pk.mId = x.mId;
                 pk.time = DateTime.Now;
+                pk.isDone = false;
                 db.PickUp.InsertOnSubmit(pk);
                 package.status = "待揽件";
                 db.SubmitChanges();
@@ -136,7 +137,38 @@ namespace ExpressStationSystem.Controllers
                 return false;
             }
         }
-
+        // Post: api/PickUp/ConfirmPost
+        /// <summary>
+        /// 添加确认揽件包裹信息
+        /// </summary>
+        /// <remarks>添加确认揽件包裹信息</remarks>
+        /// <returns>返回</returns>
+        [HttpPost, Route("PickUp/ConfirmPost")]
+        public bool ConfirmPost(PickUpClass x)
+        {
+            db = new DataClasses1DataContext(connstr);
+            try
+            {
+                var package = db.Package.Single(a => a.id == x.id);
+                if (package.status != "待揽件")
+                {
+                    return false;
+                }
+                PickUp pk = new PickUp();
+                pk.id = x.id;
+                pk.mId = x.mId;
+                pk.time = DateTime.Now;
+                pk.isDone = true;
+                db.PickUp.InsertOnSubmit(pk);
+                package.status = "已扫件";
+                db.SubmitChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         // PUT: api/PickUp/RevokeReceive
         /// <summary>
         /// 包裹的状态从待揽件撤销为已下单
@@ -167,9 +199,9 @@ namespace ExpressStationSystem.Controllers
 
         // PUT: api/PickUp/Scan?id={id}
         /// <summary>
-        /// 包裹的状态从待揽件状态或者初始状态变为已扫件
+        /// 包裹的状态从初始状态变为已扫件
         /// </summary>
-        /// <remarks>包裹的状态从待揽件状态或者初始状态变为已扫件</remarks>
+        /// <remarks>包裹的状态从初始状态变为已扫件</remarks>
         /// <returns>返回</returns>
         [HttpPut, Route("PickUp/Scan")]
         public bool Scan(IdClass iclass)
@@ -182,7 +214,7 @@ namespace ExpressStationSystem.Controllers
             }
             else
             {
-                if (x.status != "待揽件"&&x.status!="初始")
+                if (x.status!="初始")
                 {
                     return false;
                 }

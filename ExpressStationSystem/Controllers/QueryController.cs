@@ -88,11 +88,11 @@ namespace ExpressStationSystem.Controllers
             {
                 return null;
             }
-            var pickup = db.PickUp.Join(db.Member, a => a.mId, b => b.mId, (a, b) => new { pickup = a, member = b });
+            var pickup = db.PickUp.Where(a=>a.id==package.id).Join(db.Member, a => a.mId, b => b.mId, (a, b) => new { pickup = a, member = b });
             var src = db.AddressBook.SingleOrDefault(a => a.aId == package.sendId);
             var dest = db.AddressBook.SingleOrDefault(a => a.aId == package.receiverId);
-            var delivery = db.Delivery.Join(db.Member, a => a.mId, b => b.mId, (a, b) => new { delivery = a, member = b });
-            var transfer = db.Transfer.Join(db.Member,a=>a.mId,b=>b.mId,(a,b)=>new { transfer = a, member = b });
+            var delivery = db.Delivery.Where(a => a.id == package.id).Join(db.Member, a => a.mId, b => b.mId, (a, b) => new { delivery = a, member = b });
+            var transfer = db.Transfer.Where(a => a.id == package.id).Join(db.Member,a=>a.mId,b=>b.mId,(a,b)=>new { transfer = a, member = b });
             var list=GetLogisticsInfo(id);
             return new { package = package, pickup = pickup, src = src, dest = dest, delivery = delivery, transfer = transfer,pathList=list };
         }

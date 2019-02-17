@@ -16,6 +16,7 @@ namespace ExpressStationSystem.Controllers
         /// <summary>
         /// 根据客户账号获取地址簿列表
         /// </summary>
+        /// <Example>haha</Example>
         /// <param name="account">客户账号</param>
         /// <remarks>根据客户账号获取地址簿列表</remarks>
         /// <returns>返回</returns>
