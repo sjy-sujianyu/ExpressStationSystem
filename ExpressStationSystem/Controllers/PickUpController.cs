@@ -23,6 +23,10 @@ namespace ExpressStationSystem.Controllers
         [HttpGet, Route("PickUp/GetReadytoReceiveByCondition")]
         public List<int> GetReadytoReceiveByCondition(string str,string type)
         {
+            if(str is null)
+            {
+                return null;
+            }
             db = new DataClasses1DataContext(connstr);
             var a = GetReadytoReceive();
             List <int> list = new List<int>();
