@@ -58,7 +58,7 @@ namespace ExpressStationSystem.Controllers
         public List<int> GetReadytoScan()
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Package where  a.status == "初始" select a.id;
+            var selectQuery = from a in db.Package where  a.status == "运输中" select a.id;
             List <int> list = new List<int>();
             foreach (var x in selectQuery)
             {
@@ -199,9 +199,9 @@ namespace ExpressStationSystem.Controllers
 
         // PUT: api/PickUp/Scan?id={id}
         /// <summary>
-        /// 包裹的状态从初始状态变为已扫件
+        /// 包裹的状态从运输中状态变为已扫件
         /// </summary>
-        /// <remarks>包裹的状态从初始状态变为已扫件</remarks>
+        /// <remarks>包裹的状态从运输中状态变为已扫件</remarks>
         /// <returns>返回</returns>
         [HttpPut, Route("PickUp/Scan")]
         public bool Scan(IdClass iclass)
@@ -214,7 +214,7 @@ namespace ExpressStationSystem.Controllers
             }
             else
             {
-                if (x.status!="初始")
+                if (x.status!="运输中")
                 {
                     return false;
                 }
