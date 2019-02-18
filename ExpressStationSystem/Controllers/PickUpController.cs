@@ -23,7 +23,7 @@ namespace ExpressStationSystem.Controllers
         [HttpGet, Route("PickUp/GetReadytoReceiveByCondition")]
         public List<int> GetReadytoReceiveByCondition(string str,string type)
         {
-            if(str is null)
+            if(str is null||type is null)
             {
                 return null;
             }
