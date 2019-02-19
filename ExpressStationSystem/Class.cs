@@ -71,6 +71,12 @@ namespace ExpressStationSystem
         public int id;
         public string mId;
     }
+    public class PickUpClassPlus
+    {
+        public int id;
+        public string mId;
+        public DateTime time;
+    }
 
     public class IdClass
     {
