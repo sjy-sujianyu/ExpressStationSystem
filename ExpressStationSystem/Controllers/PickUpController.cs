@@ -100,7 +100,7 @@ namespace ExpressStationSystem.Controllers
         public List<int> GetReceiving(string account)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.PickUp join b in db.Package on a.id equals b.id where b.status == "待揽件" && a.mId == account select b.id;
+            var selectQuery = from a in db.PickUp.GroupBy(p=>p.id).Select(g=>g.OrderByDescending(t=>t.time).First()) join b in db.Package on a.id equals b.id where b.status == "待揽件" && a.mId == account&&a.isDone==false select b.id;
             List<int> list = new List<int>();
             foreach (var x in selectQuery)
             {
