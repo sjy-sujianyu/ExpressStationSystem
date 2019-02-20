@@ -100,7 +100,7 @@ namespace ExpressStationSystem.Controllers
         public List<int> GetReceiving(string account)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.PickUp.GroupBy(p=>p.id).Select(g=>g.OrderByDescending(t=>t.time).First()) join b in db.Package on a.id equals b.id where b.status == "待揽件" && a.mId == account&&a.isDone==false&&a.isDelete==false select b.id;
+            var selectQuery = from a in db.PickUp.GroupBy(p=>p.id).Select(g=>g.OrderByDescending(t=>t.time).First()) join b in db.Package on a.id equals b.id where b.status == "待揽件" && a.mId == account&&a.isDone==false select b.id;
             List<int> list = new List<int>();
             foreach (var x in selectQuery)
             {
@@ -131,7 +131,6 @@ namespace ExpressStationSystem.Controllers
                 pk.mId = x.mId;
                 pk.time = DateTime.Now;
                 pk.isDone = false;
-                pk.isDelete = false;
                 db.PickUp.InsertOnSubmit(pk);
                 package.status = "待揽件";
                 db.SubmitChanges();
@@ -181,27 +180,20 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>包裹的状态从待揽件撤销为已下单</remarks>
         /// <returns>返回</returns>
         [HttpPut, Route("PickUp/RevokeReceive")]
-        public bool RevokeReceive(PickUpClass pclass)
+        public bool RevokeReceive(IdClass iclass)
         {
             db = new DataClasses1DataContext(connstr);
-            var x = db.Package.SingleOrDefault(a => a.id == pclass.id);
+            var x = db.Package.SingleOrDefault(a => a.id == iclass.id);
             if (x is null)
             {
                 return false;
             }
             else
             {
-                var y = db.PickUp.Where(a => a.id == pclass.id).OrderByDescending(a => a.time).First();
-                if (x.status == "待揽件" && y.mId == pclass.mId && y.isDelete == false && y.isDone == false)
-                {
-                    x.status = "已下单";
-                    db.SubmitChanges();
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                x.status = "已下单";
+                db.SubmitChanges();
+                return true;
+                
             }
         }
 
@@ -233,49 +225,49 @@ namespace ExpressStationSystem.Controllers
             }
         }
 
-        // DELETE api/PickUp/Delete?id={id}
-        /// <summary>
-        /// 删除揽件员进度里的订单记录
-        /// </summary>
-        /// <param name="key">主键 id mId time三个字段</param>
-        /// <remarks>删除揽件员进度里的订单记录</remarks>
-        /// <returns>返回</returns>
-        [HttpDelete, Route("PickUp/Delete")]
-        public bool Delete(PickUpClassPlus key)
-        {
-            db = new DataClasses1DataContext(connstr);
-            var x = db.PickUp.Where(a => a.id == key.id).OrderByDescending(a=>a.time).First();
-            if(x is null)
-            {
-                return false;
-            }
-            if(x.mId==key.mId&&x.isDone==false)
-            {
-                var y = db.Package.SingleOrDefault(a => a.id == x.id);
-                if(y is null)
-                {
-                    return false;
-                }
-                else
-                {
-                    if(y.status=="待揽件")
-                    {
-                        return false;
-                    }
-                }
-            }
-            var pickup = db.PickUp.SingleOrDefault(a => a.id == key.id && a.mId == key.mId && a.time == key.time);
-            if(pickup is null)
-            {
-                return false;
-            }
-            else
-            {
-                pickup.isDelete = true;
-                db.SubmitChanges();
-                return true;
-            }
+        //// DELETE api/PickUp/Delete?id={id}
+        ///// <summary>
+        ///// 删除揽件员进度里的订单记录
+        ///// </summary>
+        ///// <param name="key">主键 id mId time三个字段</param>
+        ///// <remarks>删除揽件员进度里的订单记录</remarks>
+        ///// <returns>返回</returns>
+        //[HttpDelete, Route("PickUp/Delete")]
+        //public bool Delete(PickUpClassPlus key)
+        //{
+        //    db = new DataClasses1DataContext(connstr);
+        //    var x = db.PickUp.Where(a => a.id == key.id).OrderByDescending(a=>a.time).First();
+        //    if(x is null)
+        //    {
+        //        return false;
+        //    }
+        //    if(x.mId==key.mId&&x.isDone==false)
+        //    {
+        //        var y = db.Package.SingleOrDefault(a => a.id == x.id);
+        //        if(y is null)
+        //        {
+        //            return false;
+        //        }
+        //        else
+        //        {
+        //            if(y.status=="待揽件")
+        //            {
+        //                return false;
+        //            }
+        //        }
+        //    }
+        //    var pickup = db.PickUp.SingleOrDefault(a => a.id == key.id && a.mId == key.mId && a.time == key.time);
+        //    if(pickup is null)
+        //    {
+        //        return false;
+        //    }
+        //    else
+        //    {
+        //        pickup.isDelete = true;
+        //        db.SubmitChanges();
+        //        return true;
+        //    }
             
-        }
+        //}
     }
 }

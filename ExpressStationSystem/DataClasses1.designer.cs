@@ -2873,8 +2873,6 @@ namespace ExpressStationSystem
 		
 		private bool _isDone;
 		
-		private bool _isDelete;
-		
 		private EntityRef<Package> _Package;
 		
 		private EntityRef<Member> _Member;
@@ -2891,8 +2889,6 @@ namespace ExpressStationSystem
     partial void OntimeChanged();
     partial void OnisDoneChanging(bool value);
     partial void OnisDoneChanged();
-    partial void OnisDeleteChanging(bool value);
-    partial void OnisDeleteChanged();
     #endregion
 		
 		public PickUp()
@@ -2988,27 +2984,6 @@ namespace ExpressStationSystem
 					this._isDone = value;
 					this.SendPropertyChanged("isDone");
 					this.OnisDoneChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isDelete", DbType="Bit NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
-		public bool isDelete
-		{
-			get
-			{
-				return this._isDelete;
-			}
-			set
-			{
-				if ((this._isDelete != value))
-				{
-					this.OnisDeleteChanging(value);
-					this.SendPropertyChanging();
-					this._isDelete = value;
-					this.SendPropertyChanged("isDelete");
-					this.OnisDeleteChanged();
 				}
 			}
 		}

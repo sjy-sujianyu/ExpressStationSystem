@@ -111,7 +111,6 @@
       <Column Name="mId" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="isDone" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="isDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Package_PickUp" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
       <Association Name="Member_PickUp" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
     </Type>
