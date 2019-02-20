@@ -52,6 +52,48 @@ namespace ExpressStationSystem.Controllers
             }
             return list;
         }
+
+        // GET: api/PickUp/GetReceivingByCondition
+        /// <summary>
+        /// 按条件查询要揽件的包裹
+        /// </summary>
+        /// <param name="str">关键字</param>
+        /// <param name="type">类型 "单号、姓名、电话、街道"其中一种</param>
+        /// <param name="account">员工的mId</param>
+        /// <remarks>按条件查询要揽件的包裹</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("PickUp/GetReceivingByCondition")]
+        public List<int> GetReceivingByCondition(string account,string str, string type)
+        {
+            if (str is null || type is null)
+            {
+                return null;
+            }
+            db = new DataClasses1DataContext(connstr);
+            var a = GetReceiving(account);
+            List<int> list = new List<int>();
+            foreach (var x in a)
+            {
+                var ob = new QueryController().GetAllInfo(x);
+                if (type == "单号" && ob.package.id.ToString().StartsWith(str))
+                {
+                    list.Add(x);
+                }
+                else if (type == "姓名" && ob.src.name.StartsWith(str))
+                {
+                    list.Add(x);
+                }
+                else if (type == "电话" && ob.src.phone.StartsWith(str))
+                {
+                    list.Add(x);
+                }
+                else if (type == "街道" && ob.src.street.StartsWith(str))
+                {
+                    list.Add(x);
+                }
+            }
+            return list;
+        }
         // GET: api/PickUp/GetReadytoScan
         /// <summary>
         /// 获取上个网点转来待扫件的包裹ID
