@@ -51,6 +51,7 @@ namespace ExpressStationSystem.Controllers
             login.password = a.password;
             try
             {
+
                 db.Login.InsertOnSubmit(login);
                 db.SubmitChanges();
                 return true;

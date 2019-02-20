@@ -28,24 +28,7 @@ namespace ExpressStationSystem.Controllers
         [HttpGet, Route("Package/GetValue")]
         public double GetValue(string srcProvince,string srcCity,string srcStreet,string destProvince,string destCity,string destStreet,double weight)
         {
-            if(weight==0)
-            {
-                return 0;
-            }
-            Address src = new Address(srcProvince,srcCity,srcStreet);
-            Address dest =new Address(destProvince,destCity,destStreet);
-            double a = Math.Abs(src.Province[0] - dest.Province[0])*10;
-            double b = Math.Abs(src.City[0] - dest.City[0]) * 5;
-            double c = 0;
-            if(weight<1)
-            {
-                c = 10;
-            }
-            else
-            {
-                c = (weight - 1) * 5+10;
-            }
-            return a+b+c;
+            return 10.0;
         }
         // POST: api/Package/Post
         /// <summary>
