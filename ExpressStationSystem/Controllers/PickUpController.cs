@@ -181,23 +181,27 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>包裹的状态从待揽件撤销为已下单</remarks>
         /// <returns>返回</returns>
         [HttpPut, Route("PickUp/RevokeReceive")]
-        public bool RevokeReceive(int id)
+        public bool RevokeReceive(PickUpClass pclass)
         {
             db = new DataClasses1DataContext(connstr);
-            var x = db.Package.SingleOrDefault(a => a.id == id);
-            if(x is null)
+            var x = db.Package.SingleOrDefault(a => a.id == pclass.id);
+            if (x is null)
             {
                 return false;
             }
             else
             {
-                if(x.status!="待揽件")
+                var y = db.PickUp.Where(a => a.id == pclass.id).OrderByDescending(a => a.time).First();
+                if (x.status == "待揽件" && y.mId == pclass.mId && y.isDelete == false && y.isDone == false)
+                {
+                    x.status = "已下单";
+                    db.SubmitChanges();
+                    return true;
+                }
+                else
                 {
                     return false;
                 }
-                x.status = "已下单";
-                db.SubmitChanges();
-                return true;
             }
         }
 
