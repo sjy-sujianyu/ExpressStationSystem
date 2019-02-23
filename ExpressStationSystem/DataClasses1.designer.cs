@@ -67,7 +67,7 @@ namespace ExpressStationSystem
     #endregion
 		
 		public DataClasses1DataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["ExpressConnectionString"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["ExpressConnectionString1"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
