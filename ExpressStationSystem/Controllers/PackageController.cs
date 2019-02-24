@@ -17,11 +17,7 @@ namespace ExpressStationSystem.Controllers
         /// 根据起始地点、目的地点和重量计算包裹价格
         /// </summary>
         /// <param name="srcProvince">源省份</param>
-        /// <param name="srcCity">源城市 </param>
-        /// <param name="srcStreet">源街道 </param>
         /// <param name="destProvince">目的省份 </param>
-        /// <param name="destCity">目的城市 </param>
-        /// <param name="destStreet">目的街道 </param>
         /// <param name="weight">重量kg  1.0</param>
         /// <remarks>根据起始地点、目的地点和重量计算包裹价格</remarks>
         /// <returns>返回</returns>
@@ -59,6 +55,7 @@ namespace ExpressStationSystem.Controllers
                     value = 9 + (weight - 1) * v2[value9.ToList().IndexOf(destProvince)];
                 }
                     
+
             }
             else if(value10.ToList().IndexOf(destProvince) != -1)
             {
