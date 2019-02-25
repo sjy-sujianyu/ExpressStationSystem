@@ -82,4 +82,12 @@ namespace ExpressStationSystem
     {
         public int id;
     }
+    public class DeliveryClass
+    {
+        private int id;
+        private string mid;
+
+        public int Id { get => id; set => id = value; }
+        public string Mid { get => mid; set => mid = value; }
+    }
 }
