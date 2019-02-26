@@ -99,7 +99,7 @@ namespace ExpressStationSystem.Controllers
         /// 得到包裹全部信息
         /// </summary>
         /// <param name="id">包裹ID</param>
-        /// <remarks>得到包裹全部信息 包裹状态有已下单、待揽件、已扫件、运输中、待派件、已签收状态</remarks>
+        /// <remarks>得到包裹全部信息 包裹状态有已下单、待揽件、已扫件、运输中、派件中、已签收状态</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Query/GetAllInfo")]
         public dynamic GetAllInfo(int id)
