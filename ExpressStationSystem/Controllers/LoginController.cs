@@ -62,9 +62,28 @@ namespace ExpressStationSystem.Controllers
             }
         }
 
-        // PUT: api/Login/5
-        public void Put(int id, [FromBody]string value)
+        // GET: api/Login/ModifyPassword
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="x">登陆实体</param>
+        /// <remarks>修改密码</remarks>
+        /// <returns>返回</returns>
+        [HttpPost, Route("Login/ModifyPassword")]
+        public bool ModifyPassword(LoginClass x)
         {
+            db = new DataClasses1DataContext(connstr);
+            var login = db.Login.SingleOrDefault(a => a.account == x.account);
+            if(login is null)
+            {
+                return false;
+            }
+            else
+            {
+                login.password = x.password;
+                db.SubmitChanges();
+                return true;
+            }
         }
 
         // DELETE: api/Login/5

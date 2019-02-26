@@ -116,4 +116,14 @@ namespace ExpressStationSystem
         public int Id { get => id; set => id = value; }
         public string Mid { get => mid; set => mid = value; }
     }
+    public class MemberClass
+    {
+        public string mId;
+
+        public string name;
+
+        public string job;
+
+        public bool isDelete;
+    }
 }
