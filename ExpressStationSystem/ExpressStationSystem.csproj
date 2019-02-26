@@ -242,6 +242,7 @@
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Views\Image\UnknowUser.png" />
     <Content Include="Views\Package\Package.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -265,6 +266,8 @@
     <Content Include="Views\Login\changePassword.cshtml" />
     <Content Include="Views\Member\AllMember.cshtml" />
     <Content Include="Views\Member\AddMember.cshtml" />
+    <Content Include="Views\Member\DeleteMember.cshtml" />
+    <Content Include="Views\Member\Mission.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,6 +8,17 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @*<script src="~/Views/Package/Package.js"></script>*@
+    <style>
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            text - align: center;
+            padding: 6px 0;
+            font - size: 12px;
+            line - height: 1.428571429;
+            border - radius: 15px;
+        }
+    </style>
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
@@ -65,37 +76,34 @@
     <h2 class='page-header'>添加员工</h2>
 
     <div class="col-sm-9" style="left:0rem">
-        <div>
-            <img class="img-circle" src="img.jpg" alt="头像" />
-            <span class="glyphicon glyphicon-user">上传头像</span>
+        <div class="row" style="display:flex;align-items:center">
+            @*<img src="~/Views/Image/UnknowUser.png" alt="未知头像" class="img-circle" onclick="loadImg">*@
+            <button type="button" class="btn btn-default btn-group-lg" aria-label="Left Align" style="border-radius:6rem;height:6rem;width:6rem;font-size:3rem;">
+                <span class="glyphicon glyphicon glyphicon-camera" aria-hidden="true" ></span>
+            </button>
+
+            <h4 style="margin-left:1rem;font-size:22px">点击上传头像 <span class="label label-default">Tip</span></h4>
         </div>
-        @*<table class="table table-hover">
-            <thead style="display: table-header-group;vertical-align: middle;border-color: inherit;">
-                <tr>
-                    <th>肖像</th>
-                    <th>姓名</th>
-                    <th>联系手机</th>
-                    <th>状态</th>
-                </tr>
+        <br /><br />
 
-            </thead>
-            <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
-                <tr>
-                    <th scope="row"><img class="img-circle" src="img.jpg" alt="头像" /></th>
-                    <td>王小明</td>
-                    <td>158xxxx3391</td>
-                    <td>派件中</td>
-                </tr>
-
-                <tr>
-                    <th scope="row"><img class="img-circle" src="img.jpg" alt="头像" /></th>
-                    <td>李小花</td>
-                    <td>158xxxx3391</td>
-                    <td>空闲中</td>
-                </tr>
-            </tbody>
-        </table>*@
+        <div class="col-sm-offset-1">
+            <div class="row col-sm-5 input-group">
+                <input type="text" class="form-control" placeholder="输入员工姓名" aria-describedby="basic-addon1">
+            </div>
+            <br />
+            <div class="row col-sm-5 input-group">
+                <input type="text" class="form-control" placeholder="输入员工手机" aria-describedby="basic-addon1">
+            </div>
+        </div>
+        <br />
+        <div class="row col-sm-1 col-sm-offset-1">
+            <button type="button" class="btn btn-warning">重置信息</button>
+        </div>
+        <div class="col-sm-1 col-sm-offset-1">
+            <button type="button" class="btn btn-primary">确认录用</button>
+        </div>
     </div>
+
 
     @*<div class='container-fluid col-sm-offset-10 col-sm-2' style="top:-11rem">
         <div class="list-group">

@@ -22,6 +22,19 @@
             var input = document.getElementById("showCheckContent");
             input.placeholder = self.innerText + '查找';
         }
+
+        function update(self) {
+            var btn = document.getElementById(self.id);
+            btn.innerHTML = self.innerText + ' <span class="caret"></span>';
+        }
+
+        function AllSleep() {
+            var myArray = new Array()
+            myArray = document.getElementsByClassName("btn-Mission");
+            for (let btn of myArray) {
+                btn.innerHTML = "休息中" + ' <span class="caret"></span>';
+            }
+        }
     </script>
 
     <div class="navbar navbar-default navbar-fixed-top">
@@ -75,23 +88,20 @@
         </div><!-- /.container-fluid -->
     </div>
 
-    <h2 class='page-header'>员工一览</h2>
-
-
+    <h2 class='page-header'>任务分配</h2>
 
     <div class="col-sm-6 col-sm-offset-4" style="display:flex">
 
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
-            按工号 <span class="caret"></span>
+            按姓名 <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按工号</a></li>
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
         </ul>
 
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="按工号查找" id="showCheckContent">
+            <input type="text" class="form-control" placeholder="按姓名查找" id="showCheckContent">
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button">Go!</button>
             </span>
@@ -107,23 +117,48 @@
                     <th>肖像</th>
                     <th>姓名</th>
                     <th>联系手机</th>
-                    <th>状态</th>
+                    <th>职位</th>
                 </tr>
 
             </thead>
             <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
                 <tr>
-                    <th scope="row"><img class="img-circle" src="..." alt="头像" /></th>
+                    <th scope="row"><img class="img-circle" src="img.jpg" alt="头像" /></th>
                     <td>王小明</td>
                     <td>158xxxx3391</td>
-                    <td>派件中</td>
+                    <td>
+                        <div class="btn-group">
+
+                            <button type="button" class="btn-Mission btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="MissionType1">
+                                休息中 <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a onclick="update(this)" id="MissionType1">休息中</a></li>
+                                <li><a onclick="update(this)" id="MissionType1">派件员</a></li>
+                                <li><a onclick="update(this)" id="MissionType1">揽件员</a></li>
+                                <li><a onclick="update(this)" id="MissionType1">转件员</a></li>
+                            </ul>
+                        </div>
+                    </td>
                 </tr>
 
                 <tr>
-                    <th scope="row"><img class="img-circle" src="..." alt="头像" /></th>
+                    <th scope="row"><img class="img-circle" src="img.jpg" alt="头像" /></th>
                     <td>李小花</td>
                     <td>158xxxx3391</td>
-                    <td>空闲中</td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn-Mission btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="MissionType2">
+                                休息中 <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a onclick="update(this);" id="MissionType2">休息中</a></li>
+                                <li><a onclick="update(this);" id="MissionType2">派件员</a></li>
+                                <li><a onclick="update(this);" id="MissionType2">揽件员</a></li>
+                                <li><a onclick="update(this);" id="MissionType2">转件员</a></li>
+                            </ul>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -133,14 +168,20 @@
         <div class="list-group">
             <h4 class="page-header">选择分类</h4>
             <button type="button" class="list-group-item">全部</button>
-            <button type="button" class="list-group-item">空闲中</button>
-            <button type="button" class="list-group-item">派件中</button>
-            <button type="button" class="list-group-item">转件中</button>
-            <button type="button" class="list-group-item">揽件中</button>
+            <button type="button" class="list-group-item">休息中</button>
+            <button type="button" class="list-group-item">派件员</button>
+            <button type="button" class="list-group-item">转件员</button>
+            <button type="button" class="list-group-item">揽件员</button>
         </div>
-
-
+        <br />
+        <br />
+        <button type="button" class="btn btn-info btn-lg" onclick="AllSleep()">一键休息</button>
+        <br />
+        <br />
+        <button type="button" class="btn btn-success btn-lg">分配完成</button>
     </div>
+
+
 </body>
 </html>
 

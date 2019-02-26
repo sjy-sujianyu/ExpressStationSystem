@@ -18,5 +18,15 @@ namespace ExpressStationSystem.Controllers.ViewController
         {
             return View();
         }
+
+        public ActionResult DeleteMember()
+        {
+            return View();
+        }
+
+        public ActionResult Mission()
+        {
+            return View();
+        }
     }
 }
