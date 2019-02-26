@@ -14,16 +14,27 @@ namespace ExpressStationSystem.Controllers
     {
         private static string connstr = @"Data Source=172.16.34.153;Initial Catalog=Express;User ID=sa;Password=123456;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private DataClasses1DataContext db;
-        // GET: api/Image
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
 
-        // GET: api/Image/5
-        public string Get(int id)
+        // GET: api/Query/GetImageByAccount?account={account}
+        /// <summary>
+        /// 返回图片路径
+        /// </summary>
+        /// <param name="account">员工账户</param>
+        /// <remarks>返回图片路径</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Image/GetImageByAccount")]
+        public string Get(string account)
         {
-            return "value";
+            db = new DataClasses1DataContext(connstr);
+            var member = db.Member.SingleOrDefault(a => a.mId == account);
+            if(member is null)
+            {
+                return null;
+            }
+            else
+            {
+                return member.imagePath;
+            }
         }
 
         // GET: api/Image/Post
