@@ -19,7 +19,7 @@ namespace ExpressStationSystem
                 .EnableSwagger(c =>
                 {
 
-
+                    c.OperationFilter<UploadFilter>();
                     c.SingleApiVersion("v1", "Swagger");
                     c.IncludeXmlComments(GetXmlCommentsPath());
 

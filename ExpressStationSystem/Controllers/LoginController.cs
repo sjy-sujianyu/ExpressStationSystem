@@ -9,7 +9,7 @@ namespace ExpressStationSystem.Controllers
 {
     public class LoginController : ApiController
     {
-        private static string connstr = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Express;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private static string connstr = @"Data Source=172.16.34.153;Initial Catalog=Express;User ID=sa;Password=123456;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private DataClasses1DataContext db;
         // GET: api/Login/Get
         /// <summary>
@@ -28,7 +28,7 @@ namespace ExpressStationSystem.Controllers
                 Login login = db.Login.Single(l => l.account == account&&l.password==password);
                 return true;
             }
-            catch(Exception)
+            catch(Exception e)
             {
                 return false;
             }
