@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @*<script src="~/Views/Package/Package.js"></script>*@
+</head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../Login/AfterLogin">首页</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="#">包裹一览</a></li>
+                    <li><a href="#">站点配车</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">人员管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">员工一览</a></li>
+                            <li><a href="#">员工录用</a></li>
+                            <li><a href="#">员工开除</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">任务分配</a></li>
+                            <li><a href="#">工薪统计</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="输入单号查询包裹">
+                    </div>
+                    <button type="submit" class="btn btn-default">查询</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">修改超级密码</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="../Home/Index">退出用户</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </div>
+
+    <h2 class='page-header'>添加员工</h2>
+
+    <div class="col-sm-9" style="left:0rem">
+        <div>
+            <img class="img-circle" src="img.jpg" alt="头像" />
+            <span class="glyphicon glyphicon-user">上传头像</span>
+        </div>
+        @*<table class="table table-hover">
+            <thead style="display: table-header-group;vertical-align: middle;border-color: inherit;">
+                <tr>
+                    <th>肖像</th>
+                    <th>姓名</th>
+                    <th>联系手机</th>
+                    <th>状态</th>
+                </tr>
+
+            </thead>
+            <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
+                <tr>
+                    <th scope="row"><img class="img-circle" src="img.jpg" alt="头像" /></th>
+                    <td>王小明</td>
+                    <td>158xxxx3391</td>
+                    <td>派件中</td>
+                </tr>
+
+                <tr>
+                    <th scope="row"><img class="img-circle" src="img.jpg" alt="头像" /></th>
+                    <td>李小花</td>
+                    <td>158xxxx3391</td>
+                    <td>空闲中</td>
+                </tr>
+            </tbody>
+        </table>*@
+    </div>
+
+    @*<div class='container-fluid col-sm-offset-10 col-sm-2' style="top:-11rem">
+        <div class="list-group">
+            <h4 class="page-header">选择分类</h4>
+            <button type="button" class="list-group-item">全部</button>
+            <button type="button" class="list-group-item">空闲中</button>
+            <button type="button" class="list-group-item">派件中</button>
+            <button type="button" class="list-group-item">转件中</button>
+            <button type="button" class="list-group-item">揽件中</button>
+        </div>
+    </div>*@
+
+
+</body>
+</html>
+

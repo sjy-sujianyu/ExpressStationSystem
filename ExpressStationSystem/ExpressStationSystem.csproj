@@ -181,6 +181,9 @@
     <Compile Include="Controllers\PickUpController.cs" />
     <Compile Include="Controllers\QueryController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\ViewController\LogInController.cs" />
+    <Compile Include="Controllers\ViewController\MemberController.cs" />
+    <Compile Include="Controllers\ViewController\PackageController.cs" />
     <Compile Include="Controllers\WechatController.cs" />
     <Compile Include="DataClasses1.cs">
       <DependentUpon>DataClasses1.dbml</DependentUpon>
@@ -240,6 +243,7 @@
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Views\Package\Package.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -255,7 +259,13 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Login\AfterLogin.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Login\Login.cshtml" />
+    <Content Include="Views\Package\Package.cshtml" />
+    <Content Include="Views\Login\changePassword.cshtml" />
+    <Content Include="Views\Member\AllMember.cshtml" />
+    <Content Include="Views\Member\AddMember.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

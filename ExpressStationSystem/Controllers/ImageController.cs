@@ -47,9 +47,9 @@ namespace ExpressStationSystem.Controllers
         public bool Post(string account)
         {
             db = new DataClasses1DataContext(connstr);
-            if (!Directory.Exists("D:\\image"))
+            if (!Directory.Exists("E:\\image"))
             {
-                Directory.CreateDirectory("D:\\image");
+                Directory.CreateDirectory("E:\\image");
             }
             HttpFileCollection files = HttpContext.Current.Request.Files;
 
@@ -58,7 +58,7 @@ namespace ExpressStationSystem.Controllers
                 HttpPostedFile file = files[key];//file.ContentLength文件长度  
                 if (string.IsNullOrEmpty(file.FileName) == false)
                 {
-                    string path = "D:\\image\\" + file.FileName;
+                    string path = "E:\\image\\" + file.FileName;
                     var member = db.Member.SingleOrDefault(a => a.mId == account);
                     if(member is null)
                     {
