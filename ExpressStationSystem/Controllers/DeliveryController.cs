@@ -14,234 +14,136 @@ namespace ExpressStationSystem
         private static string connstr = @"Data Source=172.16.34.153;Initial Catalog=Express;User ID=sa;Password=123456;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private DataClasses1DataContext db;
 
-        //// GET: api/Delivery/GetNotInDelivery
-        ///// <summary>
-        ///// 通过网点ID获取未接单待派送的快递
-        ///// </summary>
-        ///// <param name="bid">网点ID</param>
-        ///// <remarks>当前方法通过网点ID获取未接单待派送的快递</remarks>
-        ///// <returns>返回</returns>
-        //[HttpGet, Route("Delivery/GetNotInDelivery")]
-        //public IEnumerable<int> GetNotInDelivery(int bid){
-        //    List<int> ids = new List<int>();
-        //    db = new DataClasses1DataContext(connstr);
-        //    var query = from Package in db.Package
-        //                where Package.destId == bid
-        //                select Package.id;
-        //    foreach(var id in query)
-        //    {
-        //        var query2 = from Delivery in db.Delivery
-        //                     where Delivery.id == id
-        //                     select Delivery;
-        //        if (query2.FirstOrDefault() == null) ids.Add(id);
-        //    }
-        //    return ids;
-        //}
-
-        //POST: api/Delivery/AddDelivery
+        // GET: api/Delivery/GetReadytoDelivery
         /// <summary>
-        /// 员工接单
+        /// 获取已扫件,要派件的包裹ID
         /// </summary>
-        /// <param name="id">快递ID</param>
-        /// <param name="mid">员工ID</param>
-        /// <remarks>当前进行员工接单</remarks>
+        /// <remarks>获取待派件的包裹ID</remarks>
         /// <returns>返回</returns>
-        //[HttpPost, Route("Delivery/AddDelivery")]
-        //public bool AddDelivery(int id, int mid)
-        //{
-        //    db = new DataClasses1DataContext(connstr);
-        //    try
-        //    {
-        //        Delivery del = new Delivery();
-        //        del.id = id;
-        //        del.mId = mid;
-        //        del.time = DateTime.Now;
-        //        del.status = "待派送";
-        //        db.Delivery.InsertOnSubmit(del);
-        //        db.SubmitChanges();
-        //        return true;
-        //    }
-        //    catch(Exception)
-        //    {
-        //        return false;
-        //    }
-        //}
-
-        // GET: api/Delivery/GetUnDelivered
-        /// <summary>
-        /// 通过员工ID获取未签收的快递ID列表
-        /// </summary>
-        /// <param name="mid">员工ID</param>
-        /// <remarks>当前方法通过员工ID获取未签收快递ID列表</remarks>
-        /// <returns>返回</returns>
-        //[HttpGet, Route("Delivery/GetUnDelivered")]
-        //public IEnumerable<int> GetUnDelivered(int mid)
-        //{
-        //    db = new DataClasses1DataContext(connstr);
-        //    List<int> ids = new List<int>();
-        //    var query =
-        //        from delivery in db.Delivery
-        //        where delivery.mId == mid
-        //        select delivery;
-        //    foreach(var del in query)
-        //    {
-        //        if(del.status == "待派送")
-        //            ids.Add(del.id);
-        //    }
-        //    return ids;
-        //}
-
-        // GET: api/Delivery/GetDelivered
-        /// <summary>
-        /// 通过员工ID获取已签收的快递ID列表
-        /// </summary>
-        /// <param name="mid">员工ID</param>
-        /// <remarks>当前方法通过员工ID获取已签收快递ID列表</remarks>
-        /// <returns>返回</returns>
-        //[HttpGet, Route("Delivery/GetDelivered")]
-        //public IEnumerable<int> GetDelivered(int mid)
-        //{
-        //    db = new DataClasses1DataContext(connstr);
-        //    List<int> ids = new List<int>();
-        //    var query =
-        //        from delivery in db.Delivery
-        //        where delivery.mId == mid
-        //        select delivery;
-        //    foreach (var del in query)
-        //    {
-        //        if (del.status != "待派送")
-        //            ids.Add(del.id);
-        //    }
-        //    return ids;
-        //}
-
-        // GET: api/Delivery/IsDelivered?id={id}
-        /// <summary>
-        /// 根据快递ID查看快递是否已签收
-        /// </summary>
-        /// <param name="id">快递ID</param>
-        /// <remarks>当前方法根据快递ID查看快递是否已签收</remarks>
-        /// <returns>返回</returns>
-        //[HttpGet, Route("Delivery/IsDelivered")]
-        //public bool IsDelivered(int id)
-        //{
-        //    db = new DataClasses1DataContext(connstr);
-        //    var query =
-        //        from delivery in db.Delivery
-        //        where delivery.id == id
-        //        select delivery;
-        //    Delivery del = query.FirstOrDefault();
-        //    return del != null && del.status != "待派送";
-        //}
-
-        // GET: api/Delivery/GetDeliveryById?id={id}
-        /// <summary>
-        /// 根据快递ID查看快递信息
-        /// </summary>
-        /// <param name="id">快递ID</param>
-        /// <remarks>当前方法根据快递ID查看快递信息，若快递是未接单的快递，则时间一项返回当前时间，为无效项</remarks>
-        /// <returns>返回</returns>
-        //[HttpGet, Route("Delivery/GetDeliveryById")]
-        //public MyDelivery GetDeliveryById(int id)
-        //{
-        //    db = new DataClasses1DataContext(connstr);
-        //    try
-        //    {
-        //        var query =
-        //            from Package in db.Package
-        //            where Package.id == id
-        //            select Package;
-        //        Package package = query.FirstOrDefault();
-        //        if (package == null) return null;
-        //        int rid = package.receiverId;
-        //        var query2 = from AddressBook in db.AddressBook
-        //                     where AddressBook.aId == rid
-        //                     select AddressBook;
-        //        AddressBook address = query2.FirstOrDefault();
-        //        MyDelivery mydel = new MyDelivery();
-        //        mydel.Id = id;
-        //        mydel.Name = address.name;
-        //        mydel.Phone = address.phone;
-        //        mydel.Province = address.province;
-        //        mydel.City = address.city;
-        //        mydel.Street = address.street;
-        //        var query3 =
-        //            from Delivery in db.Delivery
-        //            where Delivery.id == id
-        //            select Delivery;
-        //        Delivery del = query3.FirstOrDefault();
-        //        if(del == null)
-        //        {
-        //            mydel.Time = DateTime.Now;
-        //            mydel.Status = "未接单";
-        //        }
-        //        else
-        //        {
-        //            mydel.Time = del.time;
-        //            mydel.Status = del.status;
-        //        }
-        //        return mydel;
-        //    }
-        //    catch
-        //    {
-        //        return null;
-        //    }
-        //}
-
-        //// PUT: api/Delivery/UpdateDelivered
-        ///// <summary>
-        ///// 将快递修改为已签收，并将时间修改为当前时间
-        ///// </summary>
-        ///// <param name="id">快递ID</param>
-        ///// <remarks>将快递修改为已签收，并将时间修改为当前时间</remarks>
-        ///// <returns>返回</returns>
-        //[HttpPut, Route("Delivery/UpdateDelivered")]
-        //public bool UpdateDelivered(int id)
-        //{
-        //    db = new DataClasses1DataContext(connstr);
-        //    try
-        //    {
-        //        Delivery del = db.Delivery.Single(d => d.id == id);
-        //        if (del.status == "已签收") throw new Exception();
-        //        del.status = "已签收";
-        //        del.time = DateTime.Now;
-        //        db.SubmitChanges();
-        //        return true;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return false;
-        //    }
-        //}
-
-        public class MyDelivery
+        [HttpGet, Route("Delivery/GetReadytoDelivery")]
+        public List<int> GetReadytDelivery()
         {
-            public MyDelivery() { }
-
-            private int id;
-
-            private string name;
-
-            private string phone;
-
-            private string province;
-
-            private string city;
-
-            private string street;
-
-            private string status;
-
-            private DateTime time;
-
-            public int Id { get => id; set => id = value; }
-            public string Name { get => name; set => name = value; }
-            public string Phone { get => phone; set => phone = value; }
-            public string Province { get => province; set => province = value; }
-            public string City { get => city; set => city = value; }
-            public string Street { get => street; set => street = value; }
-            public string Status { get => status; set => status = value; }
-            public DateTime Time { get => time; set => time = value; }
+            db = new DataClasses1DataContext(connstr);
+            var selectQuery = from a in db.Package where a.status == "已扫件" select a.id;
+            List<int> list = new List<int>();
+            foreach (var x in selectQuery)
+            {
+                var selectQuery2 = from a in db.AddressBook where a.aId == x select a.street;
+                if(selectQuery2.SingleOrDefault() == "华南农业大学")
+                    list.Add(x);
+            }
+            return list;
         }
+
+        // Post: api/Delivery/Post
+        /// <summary>
+        /// 添加待派件包裹信息
+        /// </summary>
+        /// <remarks>添加待派件包裹信息</remarks>
+        /// <returns>返回</returns>
+        [HttpPost, Route("Delivery/Post")]
+        public bool Post(DeliveryClass x)
+        {
+            db = new DataClasses1DataContext(connstr);
+            try
+            {
+                var package = db.Package.Single(a => a.id == x.Id);
+                if (package.status != "已下单")
+                {
+                    return false;
+                }
+                Delivery del = new Delivery();
+                del.id = x.Id;
+                del.mId = x.Mid;
+                del.time = DateTime.Now;
+                del.isDone = false;
+                db.Delivery.InsertOnSubmit(del);
+                package.status = "待派件";
+                db.SubmitChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        // PUT: api/Delivery/RevokeDelivery
+        /// <summary>
+        /// 包裹的状态从待派件撤销为已扫件
+        /// </summary>
+        /// <remarks>包裹的状态从待派件撤销为已扫件</remarks>
+        /// <returns>返回</returns>
+        [HttpPut, Route("Delivery/RevokeDelivery")]
+        public bool RevokeDelivery(IdClass iclass)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var x = db.Package.SingleOrDefault(a => a.id == iclass.id);
+            if (x is null || x.status != "待派件")
+            {
+                return false;
+            }
+            else
+            {
+                x.status = "已扫件";
+                db.SubmitChanges();
+                return true;
+
+            }
+        }
+
+        // GET: api/Delivery/GetDelivering
+        /// <summary>
+        /// 获取某员工正在派件的包裹ID
+        /// </summary>
+        /// <remarks>获取某员工正在派件的包裹ID</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Delivery/GetDelivering")]
+        public List<int> GetDelivering(string account)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var selectQuery = from a in db.PickUp.GroupBy(p => p.id).Select(g => g.OrderByDescending(t => t.time).First()) join b in db.Package on a.id equals b.id where b.status == "待派件" && a.mId == account && a.isDone == false select b.id;
+            List<int> list = new List<int>();
+            foreach (var x in selectQuery)
+            {
+                list.Add(x);
+            }
+
+            return list;
+        }
+
+        // Post: api/Delivery/ConfirmPost
+        /// <summary>
+        /// 添加已签收包裹信息
+        /// </summary>
+        /// <remarks>添加已签收包裹信息</remarks>
+        /// <returns>返回</returns>
+        [HttpPost, Route("Delivery/ConfirmPost")]
+        public bool ConfirmPost(DeliveryClass x)
+        {
+            db = new DataClasses1DataContext(connstr);
+            try
+            {
+                var package = db.Package.Single(a => a.id == x.Id);
+                if (package.status != "待派件")
+                {
+                    return false;
+                }
+                Delivery del = new Delivery();
+                del.id = x.Id;
+                del.mId = x.Mid;
+                del.time = DateTime.Now;
+                del.isDone = true;
+                db.Delivery.InsertOnSubmit(del);
+                package.status = "已签收";
+                db.SubmitChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
     }
 }
