@@ -32,7 +32,7 @@ namespace ExpressStationSystem.Controllers
             string []value10 = { "广东省", "广西省", "安徽省", "北京市", "天津市" };
             int[] v3 = { 9, 6, 6, 6, 6 };
             string []value12 = { "河南省", "山东省", "山西省", "四川省", "重庆市" };
-            int[] v4 = { 9, 10, 10, 8, 8 };
+            int[] v4 = { 9, 10, 10, 8, 8 }; 
             if(value5.ToList().IndexOf(destProvince)!=-1)
             {
                 if(weight<=1)
