@@ -28,17 +28,17 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">包裹一览</a></li>
+                    <li><a href="Package">包裹一览</a></li>
                     <li><a href="#">站点配车</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">人员管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">员工一览</a></li>
-                            <li><a href="#">员工录用</a></li>
-                            <li><a href="#">员工开除</a></li>
+                            <li><a href="../Member/AllMember">员工一览</a></li>
+                            <li><a href="../Member/AddMember">员工录用</a></li>
+                            <li><a href="../Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#">任务分配</a></li>
-                            <li><a href="#">工薪统计</a></li>
+                            <li><a href="../Member/Mission">任务分配</a></li>
+                            <li><a href="../Member/Wages">工薪统计</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -52,7 +52,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多 <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">修改超级密码</a></li>
+                            <li><a href="../Login/changePassword">修改超级密码</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="../Home/Index">退出用户</a></li>
                         </ul>
@@ -72,15 +72,52 @@
                     <th>收件人姓名</th>
                     <th>收件人手机</th>
                     <th>处理时间</th>
+                    <th>状态</th>
                 </tr>
 
             </thead>
             <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;">
-                <tr>
+                <tr class="list-group-item-danger">
                     <th scope="row">11111</th>
                     <td>王小明</td>
                     <td>158xxxx3391</td>
                     <td>时间</td>
+                    <td>拒收</td>
+                </tr>
+                <tr class="list-group-item-success">
+                    <th scope="row">11111</th>
+                    <td>王小明</td>
+                    <td>158xxxx3391</td>
+                    <td>时间</td>
+                    <td>已签收</td>
+                </tr>
+                <tr class="list-group-item-info">
+                    <th scope="row">11111</th>
+                    <td>王小明</td>
+                    <td>158xxxx3391</td>
+                    <td>时间</td>
+                    <td>未揽件</td>
+                </tr>
+                <tr class="list-group-item-info">
+                    <th scope="row">11111</th>
+                    <td>王小明</td>
+                    <td>158xxxx3391</td>
+                    <td>时间</td>
+                    <td>派送中</td>
+                </tr>
+                <tr class="list-group-item-warning">
+                    <th scope="row">11111</th>
+                    <td>王小明</td>
+                    <td>158xxxx3391</td>
+                    <td>时间</td>
+                    <td>错分件</td>
+                </tr>
+                <tr class="list-group-item-danger">
+                    <th scope="row">11111</th>
+                    <td>王小明</td>
+                    <td>158xxxx3391</td>
+                    <td>时间</td>
+                    <td>遗漏</td>
                 </tr>
             </tbody>
         </table>
@@ -95,7 +132,6 @@
             <button type="button" class="list-group-item">未转件</button>
             <button type="button" class="list-group-item">已派送</button>
             <div class="btn-group">
-
                 <button class="btn btn-default dropdown-toggle list-group-item" type="button" id="problemPackage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     问题件<span class="caret"></span>
                 </button>
