@@ -269,6 +269,7 @@
     <Content Include="Views\Member\AddMember.cshtml" />
     <Content Include="Views\Member\DeleteMember.cshtml" />
     <Content Include="Views\Member\Mission.cshtml" />
+    <Content Include="Views\Member\Wages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -28,5 +28,10 @@ namespace ExpressStationSystem.Controllers.ViewController
         {
             return View();
         }
+
+        public ActionResult Wages()
+        {
+            return View();
+        }
     }
 }
