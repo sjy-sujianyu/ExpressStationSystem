@@ -33,6 +33,7 @@ namespace ExpressStationSystem.Controllers
             }
             else
             {
+                
                 return member.imagePath;
             }
         }
@@ -47,9 +48,9 @@ namespace ExpressStationSystem.Controllers
         public bool Post(string account)
         {
             db = new DataClasses1DataContext(connstr);
-            if (!Directory.Exists("E:\\image"))
+            if (!Directory.Exists(HttpContext.Current.Server.MapPath("/image")))
             {
-                Directory.CreateDirectory("E:\\image");
+                Directory.CreateDirectory(HttpContext.Current.Server.MapPath("/image"));
             }
             HttpFileCollection files = HttpContext.Current.Request.Files;
 
@@ -58,7 +59,7 @@ namespace ExpressStationSystem.Controllers
                 HttpPostedFile file = files[key];//file.ContentLength文件长度  
                 if (string.IsNullOrEmpty(file.FileName) == false)
                 {
-                    string path = "E:\\image\\" + file.FileName;
+                    string path = HttpContext.Current.Server.MapPath("/image") + "\\"+file.FileName;
                     var member = db.Member.SingleOrDefault(a => a.mId == account);
                     if(member is null)
                     {
@@ -66,7 +67,8 @@ namespace ExpressStationSystem.Controllers
                     }
                     else
                     {
-                        member.imagePath = path;
+                        string[] str = path.Split('\\');
+                        member.imagePath = "172.16.34.153:60062\\image\\" + str[str.Length - 1];
                         db.SubmitChanges();
                         file.SaveAs(path);
                     }
