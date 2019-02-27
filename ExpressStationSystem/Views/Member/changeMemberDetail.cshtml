@@ -8,22 +8,20 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @*<script src="~/Views/Package/Package.js"></script>*@
+    <style>
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            text - align: center;
+            padding: 6px 0;
+            font - size: 12px;
+            line - height: 1.428571429;
+            border - radius: 15px;
+        }
+    </style>
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
-
-    <script>
-        function changeShowCheckType(self) {
-            var button = document.getElementById("showCheckType");
-            button.innerHTML = self.innerText + ' <span class="caret"></span>';
-        }
-
-        function changeInputContent(self) {
-            var input = document.getElementById("showCheckContent");
-            input.placeholder = self.innerText + '查找';
-        }
-    </script>
-
     <div class="navbar navbar-default navbar-fixed-top">
 
         <div class="container-fluid">
@@ -75,73 +73,65 @@
         </div><!-- /.container-fluid -->
     </div>
 
-    <h2 class='page-header'>员工一览</h2>
+    <h2 class='page-header'>员工详情</h2>
 
+    <div class="col-sm-9" style="left:0rem;display:flex">
+        <div style="display:flex;align-items:center">
 
+            <button type="button" class="btn btn-default btn-group-lg" aria-label="Left Align" style="border-radius:8rem;height:8rem;width:8rem;font-size:3rem;">
+                <span class="glyphicon glyphicon glyphicon-camera" aria-hidden="true"></span><!-- 头像-->
+            </button>
 
-    <div class="col-sm-6 col-sm-offset-4" style="display:flex">
+        </div>
+        <br /><br />
 
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
-            按工号 <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按工号</a></li>
-            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
-            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
-        </ul>
+        <input type="text" class="form-control" placeholder="王小明" aria-describedby="sizing-addon1" style="margin: auto;margin-top: 5rem;margin-left: 4rem;height: 3rem;">
 
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="按工号查找" id="showCheckContent">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button">Go!</button>
-            </span>
+    </div>
+
+    <div style="display:flex">
+        <div style="margin-left:6.5rem;margin-top:2rem">
+            <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
+                员工号:&nbsp;&nbsp;&nbsp;
+                <div id="mid">158xxxx3391</div>
+            </div>
+
+            <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
+                职称:&nbsp;&nbsp;&nbsp;
+                <div id="mjob">站点派件员</div>
+            </div>
+
+            <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex;width: 24rem;">
+                入职时间:&nbsp;&nbsp;&nbsp;
+                <input type="text" class="form-control" placeholder="2019-2-27" aria-describedby="sizing-addon1">
+            </div>
+
+            <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
+                <div class="btn-group">
+                    <button type="button" class="btn-Mission btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:15rem">
+                        派件记录<span class="glyphicon glyphicon-triangle-bottom"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li style="display:flex"><a>历史派件总数:</a><a class="Pie" style="margin-left:-1rem" id="MissionType2">111</a></li>
+                        <li style="display:flex"><a>历史揽件总数:</a><a class="Docs" style="margin-left:-1rem" id="MissionType2">121</a></li>
+                        <li style="display:flex"><a>历史转件总数:</a><a class="Tra" style="margin-left:-1rem" id="MissionType2">133</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
+                月薪:&nbsp;&nbsp;&nbsp;
+                <div id="mjoinTime">￥8500.00</div>
+            </div>
+        </div>
+
+        <div>
+            <button type="button" class="btn btn-info btn-lg" style="margin-left:15rem;margin-top:23rem">修改信息</button>
         </div>
     </div>
 
-    <br />
-
-    <div class="col-sm-9" style="left:0rem">
-        <table class="table table-hover">
-            <thead style="display: table-header-group;vertical-align: middle;border-color: inherit;">
-                <tr>
-                    <th>肖像</th>
-                    <th>姓名</th>
-                    <th>联系手机</th>
-                    <th>状态</th>
-                </tr>
-
-            </thead>
-            <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
-                <tr>
-                    <th scope="row"><img class="img-circle" src="..." alt="头像" /></th>
-                    <td>王小明</td>
-                    <td>158xxxx3391</td>
-                    <td>派件中</td>
-                </tr>
-
-                <tr>
-                    <th scope="row"><img class="img-circle" src="..." alt="头像" /></th>
-                    <td>李小花</td>
-                    <td>158xxxx3391</td>
-                    <td>空闲中</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class='container-fluid col-sm-offset-10 col-sm-2' style="top:-11rem">
-        <div class="list-group">
-            <h4 class="page-header">选择分类</h4>
-            <button type="button" class="list-group-item">全部</button>
-            <button type="button" class="list-group-item">空闲中</button>
-            <button type="button" class="list-group-item">派件中</button>
-            <button type="button" class="list-group-item">转件中</button>
-            <button type="button" class="list-group-item">揽件中</button>
-            <button type="button" class="list-group-item">已开除</button>
-        </div>
 
 
-    </div>
 </body>
 </html>
 

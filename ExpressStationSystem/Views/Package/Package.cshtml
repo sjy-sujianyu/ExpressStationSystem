@@ -77,12 +77,21 @@
 
             </thead>
             <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;">
-                <tr class="list-group-item-danger">
+                <tr class="list-group-item-danger" data-toggle="modal" data-target=".bs-example-modal-lg">
                     <th scope="row">11111</th>
-                    <td>王小明</td>
+                    <td>@ViewBag.fuck</td>
                     <td>158xxxx3391</td>
                     <td>时间</td>
                     <td>拒收</td>
+
+                    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                cnm
+                            </div>
+                        </div>
+                    </div>
+
                 </tr>
                 <tr class="list-group-item-success">
                     <th scope="row">11111</th>
@@ -131,8 +140,9 @@
             <button type="button" class="list-group-item">未派件</button>
             <button type="button" class="list-group-item">未转件</button>
             <button type="button" class="list-group-item">已派送</button>
+            <button type="button" class="list-group-item">已删除</button>
             <div class="btn-group">
-                <button class="btn btn-default dropdown-toggle list-group-item" type="button" id="problemPackage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <button class="btn btn-default dropdown-toggle list-group-item" type="button" id="problemPackage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="width:10rem">
                     问题件<span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="problemPackage">

@@ -33,5 +33,16 @@ namespace ExpressStationSystem.Controllers.ViewController
         {
             return View();
         }
+
+        public ActionResult DetailMember()
+        {
+            return View();
+        }
+
+        public ActionResult changeMemberDetail()
+        {
+            return View();
+        }
+        
     }
 }
