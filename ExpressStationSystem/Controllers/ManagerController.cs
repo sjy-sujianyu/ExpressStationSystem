@@ -23,14 +23,14 @@ namespace ExpressStationSystem.Controllers
             return "value";
         }
 
-        // GET: api/Login/PostMember
+        // GET: api/Manager/PostMember
         /// <summary>
         /// 新增员工信息
         /// </summary>
         /// <param name="x">员工实体</param>
         /// <remarks>新增员工信息</remarks>
         /// <returns>返回</returns>
-        [HttpPost, Route("Login/PostMember")]
+        [HttpPost, Route("Manager/PostMember")]
         public bool PostMember(MemberClass x)
         {
             db = new DataClasses1DataContext(connstr);
@@ -49,7 +49,7 @@ namespace ExpressStationSystem.Controllers
             member.mId = x.mId;
             member.job = x.job;
             member.name = x.name;
-            member.isDelete = x.isDelete;
+            member.isDelete = false;
             member.imagePath = "无";
             try
             {
@@ -65,19 +65,43 @@ namespace ExpressStationSystem.Controllers
             }
         }
 
-        // PUT: api/Manager/5
-        public void Put(int id, [FromBody]string value)
+        // PUT: api/PickUp/ChangeJob?account={account}
+        /// <summary>
+        /// 改变员工职位
+        /// </summary>
+        /// <param name="x">员工实体</param>
+        /// <remarks>改变员工职位</remarks>
+        /// <returns>返回</returns>
+        [HttpPut, Route("Manager/ChangeJob")]
+        public bool ChangeJob(MemberClass x)
         {
+            db = new DataClasses1DataContext(connstr);
+            List<string> list = new List<string>() { "派件员","收件员", "出件员","休息中" };
+            if(!list.Contains(x.job))
+            {
+                return false;
+            }
+            var member = db.Member.SingleOrDefault(a => a.mId == x.mId);
+            if(member is null)
+            {
+                return false;
+            }
+            else
+            {
+                member.job = x.job;
+                db.SubmitChanges();
+                return true;
+            }
         }
 
-        // DELETE: api/AddressBook/DeleteMember?account={account}
+        // DELETE: api/Manager/DeleteMember?account={account}
         /// <summary>
         /// 解雇某个员工
         /// </summary>
         /// <param name="account">员工的账号</param>
         /// <remarks>解雇某个员工</remarks>
         /// <returns>返回</returns>
-        [HttpDelete, Route("AddressBook/DeleteMember")]
+        [HttpDelete, Route("Manager/DeleteMember")]
         public bool DeleteMember(string account)
         {
             db = new DataClasses1DataContext(connstr);
