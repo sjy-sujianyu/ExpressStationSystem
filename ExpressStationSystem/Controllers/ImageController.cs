@@ -68,7 +68,7 @@ namespace ExpressStationSystem.Controllers
                     else
                     {
                         string[] str = path.Split('\\');
-                        member.imagePath = "172.16.34.153:60062\\image\\" + str[str.Length - 1];
+                        member.imagePath = "172.16.34.153:60062/image/" + str[str.Length - 1];
                         db.SubmitChanges();
                         file.SaveAs(path);
                     }
