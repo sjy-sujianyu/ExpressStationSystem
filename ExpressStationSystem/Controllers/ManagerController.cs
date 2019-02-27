@@ -36,6 +36,43 @@ namespace ExpressStationSystem.Controllers
             return list;
         }
 
+        // GET: api/PickUp/GetAllMemberOnDuty
+        /// <summary>
+        /// 获取所有在职员工
+        /// </summary>
+        /// <remarks>获取所有在职员工</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Manager/GetAllMemberOnDuty")]
+        public List<string> GetAllMemberOnDuty()
+        {
+            db = new DataClasses1DataContext(connstr);
+            var selectQuery = from a in db.Member where a.isDelete==false select a.mId;
+            List<string> list = new List<string>();
+            foreach (var x in selectQuery)
+            {
+                list.Add(x);
+            }
+            return list;
+        }
+
+        // GET: api/PickUp/GetAllFiredMember
+        /// <summary>
+        /// 获取所有被解雇员工
+        /// </summary>
+        /// <remarks>获取所有被解雇员工</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Manager/GetAllFiredMember")]
+        public List<string> GetAllFiredMember()
+        {
+            db = new DataClasses1DataContext(connstr);
+            var selectQuery = from a in db.Member where a.isDelete == true select a.mId;
+            List<string> list = new List<string>();
+            foreach (var x in selectQuery)
+            {
+                list.Add(x);
+            }
+            return list;
+        }
         // GET: api/Manager/PostMember
         /// <summary>
         /// 新增员工信息
