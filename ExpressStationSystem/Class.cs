@@ -123,7 +123,5 @@ namespace ExpressStationSystem
         public string name;
 
         public string job;
-
-        public bool isDelete;
     }
 }

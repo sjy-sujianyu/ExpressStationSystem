@@ -34,6 +34,28 @@ namespace ExpressStationSystem.Controllers
                 return role.job;
             }
         }
+
+        // GET: api/Query/GetMemberAllInfo?account={account}
+        /// <summary>
+        /// 返回员工信息
+        /// </summary>
+        /// <param name="account">员工账户</param>
+        /// <remarks>返回员工信息</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Query/GetMemberAllInfo")]
+        public dynamic GetMemberAllInfo(string account)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var member = db.Member.SingleOrDefault(a => a.mId == account && a.isDelete == false);
+            if(member is null)
+            {
+                return null;
+            }
+            else
+            {
+                return new { name = member.name, account = member.mId, job = member.job, imagePath = member.imagePath };
+            }
+        }
         // GET: api/Query/GetLogisticsInfo?account={account}
         /// <summary>
         /// 根据包裹得到物流信息
@@ -117,6 +139,26 @@ namespace ExpressStationSystem.Controllers
             var transfer = db.Transfer.Where(a => a.id == package.id).OrderByDescending(a => a.time).Join(db.Member,a=>a.mId,b=>b.mId,(a,b)=>new { transfer = a, member = b });
             var list=GetLogisticsInfo(id);
             return new { package = package, pickup = pickup, src = src, dest = dest, delivery = delivery, transfer = transfer,pathList=list };
+        }
+
+        // GET: api/Query/GetRecordByAccount?account={account}
+        /// <summary>
+        /// 根据员工历史任务记录
+        /// </summary>
+        /// <param name="account">客户ID</param>
+        /// <remarks>根据员工历史任务记录</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Query/GetRecordByAccount")]
+        public dynamic GetRecordByAccount(string account)
+        {
+            db = new DataClasses1DataContext(connstr);
+            int pCount = 0;
+            int dCount = 0;
+            int tCount = 0;
+            pCount = db.PickUp.Where(a => a.mId == account&&a.isDone==true).Count();
+            dCount=db.Delivery.Where(a => a.mId == account && a.isDone == true).Count();
+            tCount=db.Transfer.Where(a => a.mId == account && a.isDone == true).Count();
+            return new { PickUpCount = pCount, Delivery = dCount, Transfer = tCount };
         }
         // POST: api/Query
         public void Post([FromBody]string value)
