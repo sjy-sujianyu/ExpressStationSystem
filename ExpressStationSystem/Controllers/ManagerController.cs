@@ -17,10 +17,23 @@ namespace ExpressStationSystem.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET: api/Manager/5
-        public string Get(int id)
+        // GET: api/PickUp/GetReadytoReceive
+        /// <summary>
+        /// 获取所有包裹记录
+        /// </summary>
+        /// <remarks>获取所有包裹记录</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Manager/GetAllPackage")]
+        public List<int> GetAllPackage()
         {
-            return "value";
+            db = new DataClasses1DataContext(connstr);
+            var selectQuery = from a in db.Package select a.id;
+            List<int> list = new List<int>();
+            foreach (var x in selectQuery)
+            {
+                list.Add(x);
+            }
+            return list;
         }
 
         // GET: api/Manager/PostMember
