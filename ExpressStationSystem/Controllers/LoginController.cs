@@ -15,7 +15,7 @@ namespace ExpressStationSystem.Controllers
         /// <summary>
         /// 检验登陆是否成功
         /// </summary>
-        /// <param name="account">账号  可以是openId也可以是普通账户</param>
+        /// <param name="account">账号  手机号码</param>
         /// <param name="password">密码</param>
         /// <remarks>检验登陆是否成功</remarks>
         /// <returns>返回</returns>
@@ -35,6 +35,41 @@ namespace ExpressStationSystem.Controllers
             
         }
 
+        // GET: api/Login/LandOfManager
+        /// <summary>
+        /// 检验经理登陆
+        /// </summary>
+        /// <param name="account">账号  手机号码</param>
+        /// <param name="password">密码</param>
+        /// <remarks>检验经理登陆</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Login/LandOfManager")]
+        public bool LandOfManager(string account, string password)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var selectQuery = from a in db.Member join b in db.Login on a.mId equals b.account where b.account == account && a.isDelete == false && b.isDelete == false && a.job.Equals("经理") select b;
+            try
+            {
+                var x = selectQuery.FirstOrDefault();
+                if(x is null)
+                {
+                    return false;
+                }
+                else
+                {
+                    if(x.password==password)
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return false;
+
+        }
         // GET: api/Login/Post
         /// <summary>
         /// 插入账户密码角色
