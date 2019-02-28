@@ -146,18 +146,39 @@ namespace ExpressStationSystem.Controllers
         /// 根据员工历史任务记录
         /// </summary>
         /// <param name="account">客户ID</param>
+        /// <param name="start">起始时间</param>
+        /// <param name="end">终止时间</param>
         /// <remarks>根据员工历史任务记录</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Query/GetRecordByAccount")]
-        public dynamic GetRecordByAccount(string account)
+        public dynamic GetRecordByAccount(string account,DateTime start,DateTime end)
         {
             db = new DataClasses1DataContext(connstr);
             int pCount = 0;
             int dCount = 0;
             int tCount = 0;
-            pCount = db.PickUp.Where(a => a.mId == account&&a.isDone==true).Count();
-            dCount=db.Delivery.Where(a => a.mId == account && a.isDone == true).Count();
-            tCount=db.Transfer.Where(a => a.mId == account && a.isDone == true).Count();
+            pCount = db.PickUp.Where(a => a.mId == account&&a.isDone==true&& DateTime.Compare(a.time, start)>=0&& DateTime.Compare(a.time, end)<=0).Count();
+            dCount=db.Delivery.Where(a => a.mId == account && a.isDone == true && DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0).Count();
+            tCount=db.Transfer.Where(a => a.mId == account && a.isDone == true && DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0).Count();
+            return new { PickUpCount = pCount, Delivery = dCount, Transfer = tCount };
+        }
+
+        // GET: api/Query/GetTotalRecord
+        /// <summary>
+        /// 根据员工总的统计数据
+        /// </summary>
+        /// <remarks>根据员工总的统计数据</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Query/GetTotalRecord")]
+        public dynamic GetTotalRecord()
+        {
+            db = new DataClasses1DataContext(connstr);
+            int pCount = 0;
+            int dCount = 0;
+            int tCount = 0;
+            pCount = db.PickUp.Where(a =>a.isDone == true).Count();
+            dCount = db.Delivery.Where(a =>a.isDone == true).Count();
+            tCount = db.Transfer.Where(a =>a.isDone == true).Count();
             return new { PickUpCount = pCount, Delivery = dCount, Transfer = tCount };
         }
         // POST: api/Query
