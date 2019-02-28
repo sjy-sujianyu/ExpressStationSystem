@@ -90,7 +90,7 @@ namespace ExpressStationSystem
             City = city;
             Street = street;
         }
-        
+
     }
     public class PickUpClass
     {
@@ -128,5 +128,17 @@ namespace ExpressStationSystem
     {
         public string oldMid;
         public string newMid;
+    }
+    public partial class VehicleClass
+    {
+        public string type;
+
+        public string plateNumber;
+    }
+    public partial class VehicleStatus
+    {
+        public int vId;
+
+        public bool onDuty;
     }
 }

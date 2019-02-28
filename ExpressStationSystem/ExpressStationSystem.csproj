@@ -181,6 +181,7 @@
     <Compile Include="Controllers\PickUpController.cs" />
     <Compile Include="Controllers\QueryController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Controllers\VehicleController.cs" />
     <Compile Include="Controllers\ViewController\LogInController.cs" />
     <Compile Include="Controllers\ViewController\MemberController.cs" />
     <Compile Include="Controllers\ViewController\PackageController.cs" />
