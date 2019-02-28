@@ -31,21 +31,21 @@ namespace ExpressStationSystem
 		
     #region 可扩展性方法定义
     partial void OnCreated();
-    partial void InsertLogin(Login instance);
-    partial void UpdateLogin(Login instance);
-    partial void DeleteLogin(Login instance);
     partial void InsertAddressBook(AddressBook instance);
     partial void UpdateAddressBook(AddressBook instance);
     partial void DeleteAddressBook(AddressBook instance);
     partial void InsertBranch(Branch instance);
     partial void UpdateBranch(Branch instance);
     partial void DeleteBranch(Branch instance);
-    partial void InsertDelivery(Delivery instance);
-    partial void UpdateDelivery(Delivery instance);
-    partial void DeleteDelivery(Delivery instance);
     partial void InsertError(Error instance);
     partial void UpdateError(Error instance);
     partial void DeleteError(Error instance);
+    partial void InsertDelivery(Delivery instance);
+    partial void UpdateDelivery(Delivery instance);
+    partial void DeleteDelivery(Delivery instance);
+    partial void InsertLogin(Login instance);
+    partial void UpdateLogin(Login instance);
+    partial void DeleteLogin(Login instance);
     partial void InsertMember(Member instance);
     partial void UpdateMember(Member instance);
     partial void DeleteMember(Member instance);
@@ -96,14 +96,6 @@ namespace ExpressStationSystem
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<Login> Login
-		{
-			get
-			{
-				return this.GetTable<Login>();
-			}
-		}
-		
 		public System.Data.Linq.Table<AddressBook> AddressBook
 		{
 			get
@@ -120,6 +112,14 @@ namespace ExpressStationSystem
 			}
 		}
 		
+		public System.Data.Linq.Table<Error> Error
+		{
+			get
+			{
+				return this.GetTable<Error>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Delivery> Delivery
 		{
 			get
@@ -128,11 +128,11 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		public System.Data.Linq.Table<Error> Error
+		public System.Data.Linq.Table<Login> Login
 		{
 			get
 			{
-				return this.GetTable<Error>();
+				return this.GetTable<Login>();
 			}
 		}
 		
@@ -182,254 +182,6 @@ namespace ExpressStationSystem
 			{
 				return this.GetTable<Vehicle>();
 			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Login")]
-	[global::System.Runtime.Serialization.DataContractAttribute()]
-	public partial class Login : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _account;
-		
-		private string _password;
-		
-		private bool _isDelete;
-		
-		private EntitySet<AddressBook> _AddressBook;
-		
-		private EntityRef<Member> _Member;
-		
-		private EntitySet<Package> _Package;
-		
-		private bool serializing;
-		
-    #region 可扩展性方法定义
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnaccountChanging(string value);
-    partial void OnaccountChanged();
-    partial void OnpasswordChanging(string value);
-    partial void OnpasswordChanged();
-    partial void OnisDeleteChanging(bool value);
-    partial void OnisDeleteChanged();
-    #endregion
-		
-		public Login()
-		{
-			this.Initialize();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_account", DbType="VarChar(100) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
-		public string account
-		{
-			get
-			{
-				return this._account;
-			}
-			set
-			{
-				if ((this._account != value))
-				{
-					this.OnaccountChanging(value);
-					this.SendPropertyChanging();
-					this._account = value;
-					this.SendPropertyChanged("account");
-					this.OnaccountChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_password", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
-		public string password
-		{
-			get
-			{
-				return this._password;
-			}
-			set
-			{
-				if ((this._password != value))
-				{
-					this.OnpasswordChanging(value);
-					this.SendPropertyChanging();
-					this._password = value;
-					this.SendPropertyChanged("password");
-					this.OnpasswordChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isDelete", DbType="Bit NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
-		public bool isDelete
-		{
-			get
-			{
-				return this._isDelete;
-			}
-			set
-			{
-				if ((this._isDelete != value))
-				{
-					this.OnisDeleteChanging(value);
-					this.SendPropertyChanging();
-					this._isDelete = value;
-					this.SendPropertyChanged("isDelete");
-					this.OnisDeleteChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Login_AddressBook", Storage="_AddressBook", ThisKey="account", OtherKey="account")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4, EmitDefaultValue=false)]
-		public EntitySet<AddressBook> AddressBook
-		{
-			get
-			{
-				if ((this.serializing 
-							&& (this._AddressBook.HasLoadedOrAssignedValues == false)))
-				{
-					return null;
-				}
-				return this._AddressBook;
-			}
-			set
-			{
-				this._AddressBook.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Login_Member", Storage="_Member", ThisKey="account", OtherKey="mId", IsUnique=true, IsForeignKey=false)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5, EmitDefaultValue=false)]
-		public Member Member
-		{
-			get
-			{
-				if ((this.serializing 
-							&& (this._Member.HasLoadedOrAssignedValue == false)))
-				{
-					return null;
-				}
-				return this._Member.Entity;
-			}
-			set
-			{
-				Member previousValue = this._Member.Entity;
-				if (((previousValue != value) 
-							|| (this._Member.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Member.Entity = null;
-						previousValue.Login = null;
-					}
-					this._Member.Entity = value;
-					if ((value != null))
-					{
-						value.Login = this;
-					}
-					this.SendPropertyChanged("Member");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Login_Package", Storage="_Package", ThisKey="account", OtherKey="account")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6, EmitDefaultValue=false)]
-		public EntitySet<Package> Package
-		{
-			get
-			{
-				if ((this.serializing 
-							&& (this._Package.HasLoadedOrAssignedValues == false)))
-				{
-					return null;
-				}
-				return this._Package;
-			}
-			set
-			{
-				this._Package.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_AddressBook(AddressBook entity)
-		{
-			this.SendPropertyChanging();
-			entity.Login = this;
-		}
-		
-		private void detach_AddressBook(AddressBook entity)
-		{
-			this.SendPropertyChanging();
-			entity.Login = null;
-		}
-		
-		private void attach_Package(Package entity)
-		{
-			this.SendPropertyChanging();
-			entity.Login = this;
-		}
-		
-		private void detach_Package(Package entity)
-		{
-			this.SendPropertyChanging();
-			entity.Login = null;
-		}
-		
-		private void Initialize()
-		{
-			this._AddressBook = new EntitySet<AddressBook>(new Action<AddressBook>(this.attach_AddressBook), new Action<AddressBook>(this.detach_AddressBook));
-			this._Member = default(EntityRef<Member>);
-			this._Package = new EntitySet<Package>(new Action<Package>(this.attach_Package), new Action<Package>(this.detach_Package));
-			OnCreated();
-		}
-		
-		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
-		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnDeserializing(StreamingContext context)
-		{
-			this.Initialize();
-		}
-		
-		[global::System.Runtime.Serialization.OnSerializingAttribute()]
-		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnSerializing(StreamingContext context)
-		{
-			this.serializing = true;
-		}
-		
-		[global::System.Runtime.Serialization.OnSerializedAttribute()]
-		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnSerialized(StreamingContext context)
-		{
-			this.serializing = false;
 		}
 	}
 	
@@ -1103,6 +855,173 @@ namespace ExpressStationSystem
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Error")]
+	[global::System.Runtime.Serialization.DataContractAttribute()]
+	public partial class Error : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _id;
+		
+		private string _introduction;
+		
+		private string _status;
+		
+		private EntityRef<Package> _Package;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OnintroductionChanging(string value);
+    partial void OnintroductionChanged();
+    partial void OnstatusChanging(string value);
+    partial void OnstatusChanged();
+    #endregion
+		
+		public Error()
+		{
+			this.Initialize();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					if (this._Package.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_introduction", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+		public string introduction
+		{
+			get
+			{
+				return this._introduction;
+			}
+			set
+			{
+				if ((this._introduction != value))
+				{
+					this.OnintroductionChanging(value);
+					this.SendPropertyChanging();
+					this._introduction = value;
+					this.SendPropertyChanged("introduction");
+					this.OnintroductionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_status", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+		public string status
+		{
+			get
+			{
+				return this._status;
+			}
+			set
+			{
+				if ((this._status != value))
+				{
+					this.OnstatusChanging(value);
+					this.SendPropertyChanging();
+					this._status = value;
+					this.SendPropertyChanged("status");
+					this.OnstatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Error", Storage="_Package", ThisKey="id", OtherKey="id", IsForeignKey=true)]
+		public Package Package
+		{
+			get
+			{
+				return this._Package.Entity;
+			}
+			set
+			{
+				Package previousValue = this._Package.Entity;
+				if (((previousValue != value) 
+							|| (this._Package.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Package.Entity = null;
+						previousValue.Error = null;
+					}
+					this._Package.Entity = value;
+					if ((value != null))
+					{
+						value.Error = this;
+						this._id = value.id;
+					}
+					else
+					{
+						this._id = default(int);
+					}
+					this.SendPropertyChanged("Package");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._Package = default(EntityRef<Package>);
+			OnCreated();
+		}
+		
+		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Delivery")]
 	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class Delivery : INotifyPropertyChanging, INotifyPropertyChanged
@@ -1336,136 +1255,177 @@ namespace ExpressStationSystem
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Error")]
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Login")]
 	[global::System.Runtime.Serialization.DataContractAttribute()]
-	public partial class Error : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Login : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _id;
+		private string _account;
 		
-		private string _introduction;
+		private string _password;
 		
-		private string _status;
+		private bool _isDelete;
 		
-		private EntityRef<Package> _Package;
+		private EntitySet<AddressBook> _AddressBook;
+		
+		private EntityRef<Member> _Member;
+		
+		private EntitySet<Package> _Package;
+		
+		private bool serializing;
 		
     #region 可扩展性方法定义
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnidChanging(int value);
-    partial void OnidChanged();
-    partial void OnintroductionChanging(string value);
-    partial void OnintroductionChanged();
-    partial void OnstatusChanging(string value);
-    partial void OnstatusChanged();
+    partial void OnaccountChanging(string value);
+    partial void OnaccountChanged();
+    partial void OnpasswordChanging(string value);
+    partial void OnpasswordChanged();
+    partial void OnisDeleteChanging(bool value);
+    partial void OnisDeleteChanged();
     #endregion
 		
-		public Error()
+		public Login()
 		{
 			this.Initialize();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_account", DbType="VarChar(100) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
 		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
-		public int id
+		public string account
 		{
 			get
 			{
-				return this._id;
+				return this._account;
 			}
 			set
 			{
-				if ((this._id != value))
+				if ((this._account != value))
 				{
-					if (this._Package.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnidChanging(value);
+					this.OnaccountChanging(value);
 					this.SendPropertyChanging();
-					this._id = value;
-					this.SendPropertyChanged("id");
-					this.OnidChanged();
+					this._account = value;
+					this.SendPropertyChanged("account");
+					this.OnaccountChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_introduction", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_password", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
 		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
-		public string introduction
+		public string password
 		{
 			get
 			{
-				return this._introduction;
+				return this._password;
 			}
 			set
 			{
-				if ((this._introduction != value))
+				if ((this._password != value))
 				{
-					this.OnintroductionChanging(value);
+					this.OnpasswordChanging(value);
 					this.SendPropertyChanging();
-					this._introduction = value;
-					this.SendPropertyChanged("introduction");
-					this.OnintroductionChanged();
+					this._password = value;
+					this.SendPropertyChanged("password");
+					this.OnpasswordChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_status", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isDelete", DbType="Bit NOT NULL")]
 		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
-		public string status
+		public bool isDelete
 		{
 			get
 			{
-				return this._status;
+				return this._isDelete;
 			}
 			set
 			{
-				if ((this._status != value))
+				if ((this._isDelete != value))
 				{
-					this.OnstatusChanging(value);
+					this.OnisDeleteChanging(value);
 					this.SendPropertyChanging();
-					this._status = value;
-					this.SendPropertyChanged("status");
-					this.OnstatusChanged();
+					this._isDelete = value;
+					this.SendPropertyChanged("isDelete");
+					this.OnisDeleteChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Error", Storage="_Package", ThisKey="id", OtherKey="id", IsForeignKey=true)]
-		public Package Package
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Login_AddressBook", Storage="_AddressBook", ThisKey="account", OtherKey="account")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4, EmitDefaultValue=false)]
+		public EntitySet<AddressBook> AddressBook
 		{
 			get
 			{
-				return this._Package.Entity;
+				if ((this.serializing 
+							&& (this._AddressBook.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._AddressBook;
 			}
 			set
 			{
-				Package previousValue = this._Package.Entity;
+				this._AddressBook.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Login_Member", Storage="_Member", ThisKey="account", OtherKey="mId", IsUnique=true, IsForeignKey=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5, EmitDefaultValue=false)]
+		public Member Member
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._Member.HasLoadedOrAssignedValue == false)))
+				{
+					return null;
+				}
+				return this._Member.Entity;
+			}
+			set
+			{
+				Member previousValue = this._Member.Entity;
 				if (((previousValue != value) 
-							|| (this._Package.HasLoadedOrAssignedValue == false)))
+							|| (this._Member.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._Package.Entity = null;
-						previousValue.Error = null;
+						this._Member.Entity = null;
+						previousValue.Login = null;
 					}
-					this._Package.Entity = value;
+					this._Member.Entity = value;
 					if ((value != null))
 					{
-						value.Error = this;
-						this._id = value.id;
+						value.Login = this;
 					}
-					else
-					{
-						this._id = default(int);
-					}
-					this.SendPropertyChanged("Package");
+					this.SendPropertyChanged("Member");
 				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Login_Package", Storage="_Package", ThisKey="account", OtherKey="account")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6, EmitDefaultValue=false)]
+		public EntitySet<Package> Package
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._Package.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._Package;
+			}
+			set
+			{
+				this._Package.Assign(value);
 			}
 		}
 		
@@ -1489,9 +1449,35 @@ namespace ExpressStationSystem
 			}
 		}
 		
+		private void attach_AddressBook(AddressBook entity)
+		{
+			this.SendPropertyChanging();
+			entity.Login = this;
+		}
+		
+		private void detach_AddressBook(AddressBook entity)
+		{
+			this.SendPropertyChanging();
+			entity.Login = null;
+		}
+		
+		private void attach_Package(Package entity)
+		{
+			this.SendPropertyChanging();
+			entity.Login = this;
+		}
+		
+		private void detach_Package(Package entity)
+		{
+			this.SendPropertyChanging();
+			entity.Login = null;
+		}
+		
 		private void Initialize()
 		{
-			this._Package = default(EntityRef<Package>);
+			this._AddressBook = new EntitySet<AddressBook>(new Action<AddressBook>(this.attach_AddressBook), new Action<AddressBook>(this.detach_AddressBook));
+			this._Member = default(EntityRef<Member>);
+			this._Package = new EntitySet<Package>(new Action<Package>(this.attach_Package), new Action<Package>(this.detach_Package));
 			OnCreated();
 		}
 		
@@ -1500,6 +1486,20 @@ namespace ExpressStationSystem
 		public void OnDeserializing(StreamingContext context)
 		{
 			this.Initialize();
+		}
+		
+		[global::System.Runtime.Serialization.OnSerializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[global::System.Runtime.Serialization.OnSerializedAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
 		}
 	}
 	
@@ -1519,6 +1519,8 @@ namespace ExpressStationSystem
 		private bool _isDelete;
 		
 		private string _imagePath;
+		
+		private decimal _salary;
 		
 		private EntitySet<Delivery> _Delivery;
 		
@@ -1544,6 +1546,8 @@ namespace ExpressStationSystem
     partial void OnisDeleteChanged();
     partial void OnimagePathChanging(string value);
     partial void OnimagePathChanged();
+    partial void OnsalaryChanging(decimal value);
+    partial void OnsalaryChanged();
     #endregion
 		
 		public Member()
@@ -1639,7 +1643,7 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_imagePath", DbType="NVarChar(100)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_imagePath", DbType="NVarChar(500)")]
 		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
 		public string imagePath
 		{
@@ -1660,8 +1664,29 @@ namespace ExpressStationSystem
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_salary", DbType="Decimal(10,2) NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
+		public decimal salary
+		{
+			get
+			{
+				return this._salary;
+			}
+			set
+			{
+				if ((this._salary != value))
+				{
+					this.OnsalaryChanging(value);
+					this.SendPropertyChanging();
+					this._salary = value;
+					this.SendPropertyChanged("salary");
+					this.OnsalaryChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Delivery", Storage="_Delivery", ThisKey="mId", OtherKey="mId")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7, EmitDefaultValue=false)]
 		public EntitySet<Delivery> Delivery
 		{
 			get
@@ -1680,7 +1705,7 @@ namespace ExpressStationSystem
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_PickUp", Storage="_PickUp", ThisKey="mId", OtherKey="mId")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=8, EmitDefaultValue=false)]
 		public EntitySet<PickUp> PickUp
 		{
 			get
@@ -1699,7 +1724,7 @@ namespace ExpressStationSystem
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Transfer", Storage="_Transfer", ThisKey="mId", OtherKey="mId")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=8, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=9, EmitDefaultValue=false)]
 		public EntitySet<Transfer> Transfer
 		{
 			get
@@ -1865,9 +1890,9 @@ namespace ExpressStationSystem
 		
 		private bool _isDelete;
 		
-		private EntitySet<Delivery> _Delivery;
-		
 		private EntityRef<Error> _Error;
+		
+		private EntitySet<Delivery> _Delivery;
 		
 		private EntitySet<Path> _Path;
 		
@@ -2136,27 +2161,8 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Delivery", Storage="_Delivery", ThisKey="id", OtherKey="id")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=11, EmitDefaultValue=false)]
-		public EntitySet<Delivery> Delivery
-		{
-			get
-			{
-				if ((this.serializing 
-							&& (this._Delivery.HasLoadedOrAssignedValues == false)))
-				{
-					return null;
-				}
-				return this._Delivery;
-			}
-			set
-			{
-				this._Delivery.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Error", Storage="_Error", ThisKey="id", OtherKey="id", IsUnique=true, IsForeignKey=false)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=12, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=11, EmitDefaultValue=false)]
 		public Error Error
 		{
 			get
@@ -2187,6 +2193,25 @@ namespace ExpressStationSystem
 					}
 					this.SendPropertyChanged("Error");
 				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Delivery", Storage="_Delivery", ThisKey="id", OtherKey="id")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=12, EmitDefaultValue=false)]
+		public EntitySet<Delivery> Delivery
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._Delivery.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._Delivery;
+			}
+			set
+			{
+				this._Delivery.Assign(value);
 			}
 		}
 		
@@ -2419,8 +2444,8 @@ namespace ExpressStationSystem
 		
 		private void Initialize()
 		{
-			this._Delivery = new EntitySet<Delivery>(new Action<Delivery>(this.attach_Delivery), new Action<Delivery>(this.detach_Delivery));
 			this._Error = default(EntityRef<Error>);
+			this._Delivery = new EntitySet<Delivery>(new Action<Delivery>(this.attach_Delivery), new Action<Delivery>(this.detach_Delivery));
 			this._Path = new EntitySet<Path>(new Action<Path>(this.attach_Path), new Action<Path>(this.detach_Path));
 			this._PickUp = new EntitySet<PickUp>(new Action<PickUp>(this.attach_PickUp), new Action<PickUp>(this.detach_PickUp));
 			this._Transfer = new EntitySet<Transfer>(new Action<Transfer>(this.attach_Transfer), new Action<Transfer>(this.detach_Transfer));

@@ -1,15 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Express" Class="DataClasses1DataContext" Serialization="Unidirectional" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=172.16.34.153;Initial Catalog=Express;User ID=sa;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="ExpressConnectionString1" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.Login" Member="Login">
-    <Type Name="Login">
-      <Column Name="account" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="password" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="isDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="Login_AddressBook" Member="AddressBook" ThisKey="account" OtherKey="account" Type="AddressBook" />
-      <Association Name="Login_Member" Member="Member" ThisKey="account" OtherKey="mId" Type="Member" Cardinality="One" />
-      <Association Name="Login_Package" Member="Package" ThisKey="account" OtherKey="account" Type="Package" />
-    </Type>
-  </Table>
   <Table Name="dbo.AddressBook" Member="AddressBook">
     <Type Name="AddressBook">
       <Column Name="aId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -37,6 +27,14 @@
       <Association Name="Branch_Path2" Member="Path2" ThisKey="bId" OtherKey="curId" Type="Path" />
     </Type>
   </Table>
+  <Table Name="dbo.Error" Member="Error">
+    <Type Name="Error">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="introduction" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Package_Error" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.Delivery" Member="Delivery">
     <Type Name="Delivery">
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -47,12 +45,14 @@
       <Association Name="Package_Delivery" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Error" Member="Error">
-    <Type Name="Error">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="introduction" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Association Name="Package_Error" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
+  <Table Name="dbo.Login" Member="Login">
+    <Type Name="Login">
+      <Column Name="account" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="password" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="isDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Login_AddressBook" Member="AddressBook" ThisKey="account" OtherKey="account" Type="AddressBook" />
+      <Association Name="Login_Member" Member="Member" ThisKey="account" OtherKey="mId" Type="Member" Cardinality="One" />
+      <Association Name="Login_Package" Member="Package" ThisKey="account" OtherKey="account" Type="Package" />
     </Type>
   </Table>
   <Table Name="dbo.Member" Member="Member">
@@ -61,7 +61,8 @@
       <Column Name="name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="job" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="isDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="imagePath" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="imagePath" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="salary" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
       <Association Name="Member_Delivery" Member="Delivery" ThisKey="mId" OtherKey="mId" Type="Delivery" />
       <Association Name="Member_PickUp" Member="PickUp" ThisKey="mId" OtherKey="mId" Type="PickUp" />
       <Association Name="Member_Transfer" Member="Transfer" ThisKey="mId" OtherKey="mId" Type="Transfer" />
@@ -80,8 +81,8 @@
       <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="isDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="Package_Delivery" Member="Delivery" ThisKey="id" OtherKey="id" Type="Delivery" />
       <Association Name="Package_Error" Member="Error" ThisKey="id" OtherKey="id" Type="Error" Cardinality="One" />
+      <Association Name="Package_Delivery" Member="Delivery" ThisKey="id" OtherKey="id" Type="Delivery" />
       <Association Name="Package_Path" Member="Path" ThisKey="id" OtherKey="id" Type="Path" />
       <Association Name="Package_PickUp" Member="PickUp" ThisKey="id" OtherKey="id" Type="PickUp" />
       <Association Name="Package_Transfer" Member="Transfer" ThisKey="id" OtherKey="id" Type="Transfer" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -126,7 +127,7 @@ namespace ExpressStationSystem.Controllers
         public bool ChangeJob(MemberClass x)
         {
             db = new DataClasses1DataContext(connstr);
-            List<string> list = new List<string>() { "派件员","收件员", "出件员","休息中" };
+            List<string> list = new List<string>() { "派件员","收件员", "出件员","休息中","经理" };
             if(!list.Contains(x.job))
             {
                 return false;
@@ -144,6 +145,39 @@ namespace ExpressStationSystem.Controllers
             }
         }
 
+        // PUT: api/PickUp/ChangeJob?account={account}
+        /// <summary>
+        /// 改变员工账号
+        /// </summary>
+        /// <param name="x">员工实体</param>
+        /// <remarks>改变员工账号</remarks>
+        /// <returns>返回</returns>
+        [HttpPut, Route("Manager/ChangeMid")]
+        public bool ChangeMid(MidChange x)
+        {
+            SqlConnection conn = new SqlConnection(connstr);
+            conn.Open();
+            string sql = string.Format("select Login.account from Member join Login on Member.mId=Login.account where Member.isDelete=0 and Member.mId={0}", x.oldMid);
+            SqlCommand comm = new SqlCommand(sql, conn);
+            if(comm.ExecuteScalar()!=null)
+            {
+                string update = string.Format("update Login set account={0} where account={1}", x.newMid, x.oldMid);
+                SqlCommand updateComm = new SqlCommand(update, conn);
+                int n=updateComm.ExecuteNonQuery();
+                if(n!=0)
+                {
+                    conn.Close();
+                    return true;
+                }
+                else
+                {
+                    conn.Close();
+                    return false;
+                }
+            }
+            conn.Close();
+            return false;
+        }
         // DELETE: api/Manager/DeleteMember?account={account}
         /// <summary>
         /// 解雇某个员工

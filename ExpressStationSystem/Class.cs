@@ -124,4 +124,9 @@ namespace ExpressStationSystem
 
         public string job;
     }
+    public class MidChange
+    {
+        public string oldMid;
+        public string newMid;
+    }
 }
