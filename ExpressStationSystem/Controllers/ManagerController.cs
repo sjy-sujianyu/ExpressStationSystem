@@ -163,15 +163,22 @@ namespace ExpressStationSystem.Controllers
             {
                 string update = string.Format("update Login set account={0} where account={1}", x.newMid, x.oldMid);
                 SqlCommand updateComm = new SqlCommand(update, conn);
-                int n=updateComm.ExecuteNonQuery();
-                if(n!=0)
+                try
                 {
-                    conn.Close();
-                    return true;
+                    int n = updateComm.ExecuteNonQuery();
+                    if (n != 0)
+                    {
+                        conn.Close();
+                        return true;
+                    }
+                    else
+                    {
+                        conn.Close();
+                        return false;
+                    }
                 }
-                else
+                catch(Exception)
                 {
-                    conn.Close();
                     return false;
                 }
             }
