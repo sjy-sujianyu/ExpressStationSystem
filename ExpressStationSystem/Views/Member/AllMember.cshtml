@@ -82,16 +82,15 @@
     <div class="col-sm-6 col-sm-offset-4" style="display:flex">
 
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
-            按工号 <span class="caret"></span>
+            按姓名 <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
-            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按工号</a></li>
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
         </ul>
 
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="按工号查找" id="showCheckContent">
+            <input type="text" class="form-control" placeholder="按姓名查找" id="showCheckContent">
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button">Go!</button>
             </span>
@@ -112,19 +111,16 @@
 
             </thead>
             <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
-                <tr>
-                    <th scope="row"><img class="img-circle" src="..." alt="头像" /></th>
-                    <td>王小明</td>
-                    <td>158xxxx3391</td>
-                    <td>派件中</td>
-                </tr>
 
-                <tr>
-                    <th scope="row"><img class="img-circle" src="..." alt="头像" /></th>
-                    <td>李小花</td>
-                    <td>158xxxx3391</td>
-                    <td>空闲中</td>
-                </tr>
+                @for (int i = 0; i < ViewBag.MID.Count; i++)
+                {
+                    <tr>
+                        <th scope="row"><img class="img-circle" src="@ViewBag.imgList[i]" alt="头像" /></th>
+                        <td>@ViewBag.nameList[i]</td>
+                        <td>@ViewBag.phoneList[i]</td>
+                        <td>@ViewBag.jobList[i]</td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

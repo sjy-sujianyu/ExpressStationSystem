@@ -64,120 +64,155 @@
 
     <h2 class='page-header'>包裹一览</h2>
 
-    <div class="col-sm-9" style="left:0rem">
-        <table class="table table-hover">
-            <thead style="display: table-header-group;vertical-align: middle;border-color: inherit;">
-                <tr>
-                    <th>快递单号</th>
-                    <th>收件人姓名</th>
-                    <th>收件人手机</th>
-                    <th>处理时间</th>
-                    <th>状态</th>
-                </tr>
+    <div style="display:flex;justify-content:space-between">
 
-            </thead>
-            <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;">
-                <tr class="list-group-item-danger" data-toggle="modal" data-target=".bs-example-modal-lg">
-                    <th scope="row">11111</th>
-                    <td>@ViewBag.fuck</td>
-                    <td>158xxxx3391</td>
-                    <td>时间</td>
-                    <td>拒收</td>
 
-                    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-                        <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                                cnm
-                            </div>
-                        </div>
-                    </div>
+        <div class="col-sm-9" style="left:0rem">
+            <table class="table table-hover">
+                <thead style="display: table-header-group;vertical-align: middle;border-color: inherit;">
+                    <tr>
+                        <th>快递单号</th>
+                        <th>收件人姓名</th>
+                        <th>收件人手机</th>
+                        <th>处理时间</th>
+                        <th>状态</th>
+                    </tr>
 
-                </tr>
-                <tr class="list-group-item-success">
-                    <th scope="row">11111</th>
-                    <td>王小明</td>
-                    <td>158xxxx3391</td>
-                    <td>时间</td>
-                    <td>已签收</td>
-                </tr>
-                <tr class="list-group-item-info">
-                    <th scope="row">11111</th>
-                    <td>王小明</td>
-                    <td>158xxxx3391</td>
-                    <td>时间</td>
-                    <td>未揽件</td>
-                </tr>
-                <tr class="list-group-item-info">
-                    <th scope="row">11111</th>
-                    <td>王小明</td>
-                    <td>158xxxx3391</td>
-                    <td>时间</td>
-                    <td>派送中</td>
-                </tr>
-                <tr class="list-group-item-warning">
-                    <th scope="row">11111</th>
-                    <td>王小明</td>
-                    <td>158xxxx3391</td>
-                    <td>时间</td>
-                    <td>错分件</td>
-                </tr>
-                <tr class="list-group-item-danger">
-                    <th scope="row">11111</th>
-                    <td>王小明</td>
-                    <td>158xxxx3391</td>
-                    <td>时间</td>
-                    <td>遗漏</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;">
 
-    <div class='container-fluid col-sm-offset-10 col-sm-2' style="top:-11rem">
-        <div class="list-group">
-            <h4 class="page-header">选择分类</h4>
-            <button type="button" class="list-group-item">全部</button>
-            <button type="button" class="list-group-item">未揽件</button>
-            <button type="button" class="list-group-item">未派件</button>
-            <button type="button" class="list-group-item">未转件</button>
-            <button type="button" class="list-group-item">已派送</button>
-            <button type="button" class="list-group-item">已删除</button>
-            <div class="btn-group">
-                <button class="btn btn-default dropdown-toggle list-group-item" type="button" id="problemPackage" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="width:10rem">
-                    问题件<span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="problemPackage">
-                    <li><a href="#">拒收件</a></li>
-                    <li><a href="#">错分件</a></li>
-                    <li><a href="#">遗漏件</a></li>
+                    <script>
+                        function detailImformation(i) {
+                            alert(i);
+                        }
+
+                    </script>
+
+                    @for (int i = 0; i < ViewBag.packagesID.Count; i++)
+                    {
+                        if (@ViewBag.statusList[i] == "已扫件" ||
+                            @ViewBag.statusList[i] == "已揽件" ||
+                            @ViewBag.statusList[i] == "派送中" ||
+                            @ViewBag.statusList[i] == "待揽件" ||
+                            @ViewBag.statusList[i] == "已下单")
+                        {
+                            <tr class="list-group-item-info" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="detailImformation(@i)">
+                                <th scope="row">@ViewBag.packagesID[i]</th>
+                                <td>@ViewBag.nameList[i]</td>
+                                <td>@ViewBag.phoneList[i]</td>
+                                <td>@ViewBag.timeList[i]</td>
+                                <td>@ViewBag.statusList[i]</td>
+
+                            </tr>
+                            continue;
+                        }
+                        else if (@ViewBag.statusList[i] == "已签收")
+                        {
+                            <tr class="list-group-item-success" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="detailImformation(@i)">
+                                <th scope="row">@ViewBag.packagesID[i]</th>
+                                <td>@ViewBag.nameList[i]</td>
+                                <td>@ViewBag.phoneList[i]</td>
+                                <td>@ViewBag.timeList[i]</td>
+                                <td>@ViewBag.statusList[i]</td>
+
+                                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            详细信息
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </tr>
+                            continue;
+                        }
+                        else if (@ViewBag.statusList[i] == "拒收" || @ViewBag.statusList[i] == "错分件" || @ViewBag.statusList[i] == "遗漏")
+                        {
+                            <tr class="list-group-item-info" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="detailImformation(@i)">
+                                <th scope="row">@ViewBag.packagesID[i]</th>
+                                <td>@ViewBag.nameList[i]</td>
+                                <td>@ViewBag.phoneList[i]</td>
+                                <td>@ViewBag.timeList[i]</td>
+                                <td>@ViewBag.statusList[i]</td>
+
+                                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            详细信息
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </tr>
+
+                            continue;
+                        }
+                        else
+                        {
+                            <tr class="list-group-item-danger" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="detailImformation(@i)">
+                                <th scope="row">@ViewBag.packagesID[i]</th>
+                                <td>@ViewBag.nameList[i]</td>
+                                <td>@ViewBag.phoneList[i]</td>
+                                <td>@ViewBag.timeList[i]</td>
+                                <td>@ViewBag.statusList[i]</td>
+
+                                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            详细信息
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </tr>
+                            continue;
+                        }
+
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class='container-fluid col-sm-offset-1 col-sm-2'>
+            <div class="list-group">
+                <h4 class="page-header">选择分类</h4>
+                <button type="button" class="list-group-item">全部</button>
+                <button type="button" class="list-group-item" style="background-color:cornflowerblue">未揽件</button>
+                <button type="button" class="list-group-item" style="background:cornflowerblue">未派件</button>
+                <button type="button" class="list-group-item" style="background:cornflowerblue">未转件</button>
+                <button type="button" class="list-group-item" style="background:greenyellow">已派送</button>
+                <button type="button" class="list-group-item" style="background:gray">已删除</button>
+                <button type="button" class="list-group-item" style="background:red">拒收件</button>
+                <button type="button" class="list-group-item" style="background:red">错分件</button>
+                <button type="button" class="list-group-item" style="background:red">遗漏件</button>
+            </div>
+        </div>
+        @*<div class='tabbable tabs-left'>
+
+                <!--
+                  选项卡：通过BS的类来控制选项卡的样式
+                -->
+                <ul class='nav nav-tabs'>
+                    <li class='active'><a href='#tab1' data-toggle='tab'>选项一</a></li>
+                    <li><a href='#tab2' data-toggle='tab'>选项二</a></li>
+                    <li><a href='#tab3' data-toggle='tab'>选项三</a></li>
+                    <li><a href='#tab4' data-toggle='tab'>选项四</a></li>
+                    <li><a href='#tab5' data-toggle='tab'>选项五</a></li>
                 </ul>
-            </div>
-        </div>
 
-            @*<div class='tabbable tabs-left'>
-
-            <!--
-              选项卡：通过BS的类来控制选项卡的样式
-            -->
-            <ul class='nav nav-tabs'>
-                <li class='active'><a href='#tab1' data-toggle='tab'>选项一</a></li>
-                <li><a href='#tab2' data-toggle='tab'>选项二</a></li>
-                <li><a href='#tab3' data-toggle='tab'>选项三</a></li>
-                <li><a href='#tab4' data-toggle='tab'>选项四</a></li>
-                <li><a href='#tab5' data-toggle='tab'>选项五</a></li>
-            </ul>
-
-            <!--
-              选项卡的内容定义
-            -->
-            <div class='tab-content'>
-                <div class='tab-pane active' id='tab1'>我是选项卡一的内容</div>
-                <div class='tab-pane' id='tab2'>我是选项卡二的内容</div>
-                <div class='tab-pane' id='tab3'>我是选项卡三的内容</div>
-                <div class='tab-pane' id='tab4'>我是选项卡四的内容</div>
-                <div class='tab-pane' id='tab5'>我是选项卡五的内容</div>
-            </div>
-        </div>*@
-        </div>
+                <!--
+                  选项卡的内容定义
+                -->
+                <div class='tab-content'>
+                    <div class='tab-pane active' id='tab1'>我是选项卡一的内容</div>
+                    <div class='tab-pane' id='tab2'>我是选项卡二的内容</div>
+                    <div class='tab-pane' id='tab3'>我是选项卡三的内容</div>
+                    <div class='tab-pane' id='tab4'>我是选项卡四的内容</div>
+                    <div class='tab-pane' id='tab5'>我是选项卡五的内容</div>
+                </div>
+            </div>*@
+    </div>
 
 
 
