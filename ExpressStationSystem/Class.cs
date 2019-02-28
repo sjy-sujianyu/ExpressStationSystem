@@ -125,8 +125,6 @@ namespace ExpressStationSystem
         public string job;
 
         public decimal salary;
-
-        public string imagePath;
     }
     public class accountClass
     {
