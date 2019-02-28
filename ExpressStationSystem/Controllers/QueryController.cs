@@ -160,6 +160,25 @@ namespace ExpressStationSystem.Controllers
             tCount=db.Transfer.Where(a => a.mId == account && a.isDone == true).Count();
             return new { PickUpCount = pCount, Delivery = dCount, Transfer = tCount };
         }
+
+        // GET: api/Query/GetTotalRecord
+        /// <summary>
+        /// 根据员工总的统计数据
+        /// </summary>
+        /// <remarks>根据员工总的统计数据</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Query/GetTotalRecord")]
+        public dynamic GetTotalRecord()
+        {
+            db = new DataClasses1DataContext(connstr);
+            int pCount = 0;
+            int dCount = 0;
+            int tCount = 0;
+            pCount = db.PickUp.Where(a =>a.isDone == true).Count();
+            dCount = db.Delivery.Where(a =>a.isDone == true).Count();
+            tCount = db.Transfer.Where(a =>a.isDone == true).Count();
+            return new { PickUpCount = pCount, Delivery = dCount, Transfer = tCount };
+        }
         // POST: api/Query
         public void Post([FromBody]string value)
         {
