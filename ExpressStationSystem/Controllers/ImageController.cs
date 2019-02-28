@@ -45,7 +45,7 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>[upload]上传文件</remarks>
         /// <returns>返回</returns>
         [HttpPost, Route("Image/Post")]
-        public bool Post(string account)
+        public bool Post(accountClass x)
         {
             db = new DataClasses1DataContext(connstr);
             if (!Directory.Exists(HttpContext.Current.Server.MapPath("/image")))
@@ -60,7 +60,7 @@ namespace ExpressStationSystem.Controllers
                 if (string.IsNullOrEmpty(file.FileName) == false)
                 {
                     string path = HttpContext.Current.Server.MapPath("/image") + "\\"+file.FileName;
-                    var member = db.Member.SingleOrDefault(a => a.mId == account);
+                    var member = db.Member.SingleOrDefault(a => a.mId == x.account);
                     if(member is null)
                     {
                         return false;
@@ -71,12 +71,13 @@ namespace ExpressStationSystem.Controllers
                         member.imagePath = "172.16.34.153:60062/image/" + str[str.Length - 1];
                         db.SubmitChanges();
                         file.SaveAs(path);
+                        return true;
                     }
                 }
                     
             }
 
-            return true;
+            return false;
         }  
 
         // PUT: api/Image/5

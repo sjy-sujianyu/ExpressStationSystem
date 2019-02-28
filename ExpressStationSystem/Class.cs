@@ -123,7 +123,16 @@ namespace ExpressStationSystem
         public string name;
 
         public string job;
+
+        public decimal salary;
+
+        public string imagePath;
     }
+    public class accountClass
+    {
+        public string account;
+    }
+
     public class MidChange
     {
         public string oldMid;
