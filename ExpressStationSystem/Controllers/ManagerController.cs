@@ -96,6 +96,7 @@ namespace ExpressStationSystem.Controllers
             Login login = new Login();
             login.account = x.mId;
             login.password = "123";
+            login.isDelete = false;
             Member member = new Member();
             member.mId = x.mId;
             member.job = x.job;
