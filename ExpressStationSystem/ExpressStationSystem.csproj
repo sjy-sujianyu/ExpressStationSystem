@@ -175,11 +175,13 @@
     <Compile Include="Controllers\AddressBookController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImageController.cs" />
+    <Compile Include="Controllers\LeaveController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\PackageController.cs" />
     <Compile Include="Controllers\PickUpController.cs" />
     <Compile Include="Controllers\QueryController.cs" />
+    <Compile Include="Controllers\SalaryController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\VehicleController.cs" />
     <Compile Include="Controllers\ViewController\LogInController.cs" />

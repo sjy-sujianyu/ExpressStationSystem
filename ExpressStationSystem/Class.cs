@@ -136,7 +136,7 @@ namespace ExpressStationSystem
         public string oldMid;
         public string newMid;
     }
-    public partial class VehicleClass
+    public class VehicleClass
     {
         public string type;
 
