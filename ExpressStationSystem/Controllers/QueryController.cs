@@ -53,7 +53,7 @@ namespace ExpressStationSystem.Controllers
             }
             else
             {
-                return new { name = member.name, account = member.mId, job = member.job, imagePath = member.imagePath };
+                return new { name = member.name, account = member.mId, job = member.job, salary=member.salary,imagePath = member.imagePath };
             }
         }
         // GET: api/Query/GetLogisticsInfo?account={account}
