@@ -45,7 +45,7 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>[upload]上传文件</remarks>
         /// <returns>返回</returns>
         [HttpPost, Route("Image/Post")]
-        public bool Post(accountClass x)
+        public bool Post(string account)
         {
             db = new DataClasses1DataContext(connstr);
             if (!Directory.Exists(HttpContext.Current.Server.MapPath("/image")))
@@ -60,7 +60,7 @@ namespace ExpressStationSystem.Controllers
                 if (string.IsNullOrEmpty(file.FileName) == false)
                 {
                     string path = HttpContext.Current.Server.MapPath("/image") + "\\"+file.FileName;
-                    var member = db.Member.SingleOrDefault(a => a.mId == x.account);
+                    var member = db.Member.SingleOrDefault(a => a.mId == account);
                     if(member is null)
                     {
                         return false;

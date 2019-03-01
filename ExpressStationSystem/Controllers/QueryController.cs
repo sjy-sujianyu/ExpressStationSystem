@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web.Http;
 
 namespace ExpressStationSystem.Controllers
@@ -35,6 +36,25 @@ namespace ExpressStationSystem.Controllers
             }
         }
 
+
+        // POST: api/Query/isTel?tb={tb}
+        /// <summary>
+        /// 验证手机号码是否合法
+        /// </summary>
+        /// <param name="tb">手机号码</param>
+        /// <remarks>验证手机号码是否合法</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Query/isTel")]
+        public bool isTel(string tb)
+        {
+            string s = @"^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\d{8}$";
+            bool flag = true;
+            if (!Regex.IsMatch(tb, s))
+            {
+                flag = false;
+            }
+            return flag;
+        }
         // GET: api/Query/GetMemberAllInfo?account={account}
         /// <summary>
         /// 返回员工信息
