@@ -12,6 +12,11 @@ namespace ExpressStationSystem.Controllers
     {
         private static string connstr = @"Data Source=172.16.34.153;Initial Catalog=Express;User ID=sa;Password=123456;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private DataClasses1DataContext db;
+
+        public string Options()
+        {
+            return null;
+        }
         // GET: api/Manager
         public IEnumerable<string> Get()
         {
@@ -96,6 +101,7 @@ namespace ExpressStationSystem.Controllers
             Login login = new Login();
             login.account = x.mId;
             login.password = "123";
+            login.isDelete = false;
             Member member = new Member();
             member.mId = x.mId;
             member.job = x.job;
