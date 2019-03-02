@@ -42,14 +42,14 @@ namespace ExpressStationSystem.Controllers
             return list;
         }
 
-        // GET: api/PickUp/GetAllMemberOnDuty
+        // GET: api/PickUp/GetAllMember
         /// <summary>
-        /// 获取所有在职员工
+        /// 获取所有员工
         /// </summary>
-        /// <remarks>获取所有在职员工</remarks>
+        /// <remarks>获取所有员工</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Manager/GetAllMemberOnDuty")]
-        public List<string> GetAllMemberOnDuty()
+        [HttpGet, Route("Manager/GetAllMember")]
+        public dynamic GetAllMember()
         {
             db = new DataClasses1DataContext(connstr);
             var selectQuery = from a in db.Member where a.isDelete==false select a.mId;
@@ -58,26 +58,14 @@ namespace ExpressStationSystem.Controllers
             {
                 list.Add(x);
             }
-            return list;
-        }
 
-        // GET: api/PickUp/GetAllFiredMember
-        /// <summary>
-        /// 获取所有被解雇员工
-        /// </summary>
-        /// <remarks>获取所有被解雇员工</remarks>
-        /// <returns>返回</returns>
-        [HttpGet, Route("Manager/GetAllFiredMember")]
-        public List<string> GetAllFiredMember()
-        {
-            db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Member where a.isDelete == true select a.mId;
-            List<string> list = new List<string>();
-            foreach (var x in selectQuery)
+            var selectQuery1 = from a in db.Member where a.isDelete == true select a.mId;
+            List<string> list1 = new List<string>();
+            foreach (var x in selectQuery1)
             {
-                list.Add(x);
+                list1.Add(x);
             }
-            return list;
+            return new {onDuty=list,fired=list1 };
         }
         // GET: api/Manager/PostMember
         /// <summary>
