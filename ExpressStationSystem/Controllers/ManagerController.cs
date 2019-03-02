@@ -23,7 +23,7 @@ namespace ExpressStationSystem.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET: api/PickUp/GetReadytoReceive
+        // GET: api/PickUp/GetAllPackage
         /// <summary>
         /// 获取所有包裹记录
         /// </summary>
@@ -106,15 +106,15 @@ namespace ExpressStationSystem.Controllers
             }
         }
 
-        // PUT: api/PickUp/ChangeJob?account={account}
+        // PUT: api/PickUp/ChangeMemberInfo?account={account}
         /// <summary>
-        /// 改变员工职位
+        /// 改变员工职位、名字、底薪
         /// </summary>
         /// <param name="x">员工实体</param>
-        /// <remarks>改变员工职位</remarks>
+        /// <remarks>改变员工职位、名字、底薪</remarks>
         /// <returns>返回</returns>
-        [HttpPut, Route("Manager/ChangeJob")]
-        public bool ChangeJob(MemberClass x)
+        [HttpPut, Route("Manager/ChangeMemberInfo")]
+        public bool ChangeMemberInfo(MemberClass x)
         {
             db = new DataClasses1DataContext(connstr);
             List<string> list = new List<string>() { "派件员","收件员", "出件员","休息中","经理" };
@@ -130,12 +130,14 @@ namespace ExpressStationSystem.Controllers
             else
             {
                 member.job = x.job;
+                member.name = x.name;
+                member.baseSalary = x.baseSalary;
                 db.SubmitChanges();
                 return true;
             }
         }
 
-        // PUT: api/PickUp/ChangeJob?account={account}
+        // PUT: api/PickUp/ChangeMid?account={account}
         /// <summary>
         /// 改变员工账号
         /// </summary>

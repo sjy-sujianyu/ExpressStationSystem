@@ -220,7 +220,7 @@ namespace ExpressStationSystem.Controllers
             if (leave is null)
             {
                 return false;
-            }
+            }  
             else if(leave.status!=1)
             {
                 return false;
