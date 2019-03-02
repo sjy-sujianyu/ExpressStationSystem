@@ -148,4 +148,41 @@ namespace ExpressStationSystem
 
         public bool onDuty;
     }
+    public class LeaveClass
+    {
+        public string mId;
+
+        public string reason;
+
+        public System.DateTime srcTime;
+
+        public System.DateTime endTime;
+    }
+    public class ConfirmLeaveClass
+    {
+        public int lId;
+
+        public string view;
+
+        public string person;
+
+        public bool isDone;
+    }
+    public class UpdateLeaveClass
+    {
+        public int lId;
+
+        public string reason;
+
+        public System.DateTime srcTime;
+
+        public System.DateTime endTime;
+    }
+    public class lIdClass
+    {
+        public int lId;
+
+        public string mId;
+    }
+
 }

@@ -157,8 +157,9 @@ namespace ExpressStationSystem.Controllers
             var dest = db.AddressBook.SingleOrDefault(a => a.aId == package.receiverId);
             var delivery = db.Delivery.Where(a => a.id == package.id).OrderByDescending(a => a.time).Join(db.Member, a => a.mId, b => b.mId, (a, b) => new { delivery = a, member = b });
             var transfer = db.Transfer.Where(a => a.id == package.id).OrderByDescending(a => a.time).Join(db.Member,a=>a.mId,b=>b.mId,(a,b)=>new { transfer = a, member = b });
+            var error = db.Error.SingleOrDefault(a => a.id == package.id);
             var list=GetLogisticsInfo(id);
-            return new { package = package, pickup = pickup, src = src, dest = dest, delivery = delivery, transfer = transfer,pathList=list };
+            return new { package = package, pickup = pickup, src = src, dest = dest, delivery = delivery, transfer = transfer,pathList=list,error=error };
         }
 
         // GET: api/Query/GetRecordByAccount?account={account}

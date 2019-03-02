@@ -9,6 +9,7 @@ namespace ExpressStationSystem.Controllers
 {
     public class LeaveController : ApiController
     {
+        //请假状态  0:初始 1:被拒绝 2:申请成功 3:已销假
         private static string connstr = @"Data Source=172.16.34.153;Initial Catalog=Express;User ID=sa;Password=123456;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private DataClasses1DataContext db;
         // GET: api/Leave/Get
@@ -20,7 +21,14 @@ namespace ExpressStationSystem.Controllers
         [HttpGet, Route("Leave/GetLeaveList")]
         public List<dynamic> GetLeaveList()
         {
-            return null;
+            db = new DataClasses1DataContext(connstr);
+            List<dynamic> list = new List<dynamic>();
+            var leave = db.Leave.Where(a => a.status == 0).ToList();
+            foreach(var x in leave)
+            {
+                list.Add(x);
+            }
+            return list;
         }
 
         // PUT: api/Leave/Post
@@ -31,12 +39,29 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>添加员工请假信息</remarks>
         /// <returns>返回</returns>
         [HttpPost, Route("Leave/Post")]
-        public dynamic Post(dynamic x)
+        public bool Post(LeaveClass x)
         {
-            return new { code = true, message = "" };
+            db = new DataClasses1DataContext(connstr);
+            Leave leave = new Leave();
+            leave.mId = x.mId;
+            leave.reason = x.reason;
+            leave.status = 0;
+            leave.time = DateTime.Now;
+            leave.srcTime = x.srcTime;
+            leave.endTime = x.endTime;
+            try
+            {
+                db.Leave.InsertOnSubmit(leave);
+                db.SubmitChanges();
+                return true;
+            }
+            catch(Exception)
+            {
+                return false;
+            }
         }
 
-        // PUT: api/Leave/Confirm
+        // PUT: api/Leave/Deal
         /// <summary>
         /// 处理请假
         /// </summary>
@@ -45,8 +70,27 @@ namespace ExpressStationSystem.Controllers
         /// 
         /// <returns>返回</returns>
         [HttpPut, Route("Leave/Deal")]
-        public void Deal(dynamic x)
+        public bool Deal(ConfirmLeaveClass x)
         {
+            db = new DataClasses1DataContext(connstr);
+            var leave = db.Leave.SingleOrDefault(a => a.lId == x.lId);
+            if(leave is null)
+            {
+                return false;
+            }
+            else if(leave.status!=0)
+            {
+                return false;
+            }
+            else
+            {
+                leave.status = x.isDone? (short)1 : (short)2;
+                leave.time = DateTime.Now;
+                leave.view = x.view;
+                leave.person=x.person;
+                db.SubmitChanges();
+                return true;
+            }
         }
 
 
@@ -58,8 +102,33 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>更新请假申请</remarks>
         /// <returns>返回</returns>
         [HttpPut, Route("Leave/UpdateLeave")]
-        public void UpdateLeave(dynamic x)
+        public bool UpdateLeave(UpdateLeaveClass x)
         {
+            db = new DataClasses1DataContext(connstr);
+            Leave leave = db.Leave.SingleOrDefault(a => a.lId == x.lId);
+            if(leave is null)
+            {
+                return false;
+            }
+            if(leave.status!=1)
+            {
+                return false;
+            }
+            leave.reason = x.reason;
+            leave.status = 0;
+            leave.time = DateTime.Now;
+            leave.srcTime = x.srcTime;
+            leave.endTime = x.endTime;
+            try
+            {
+                db.Leave.InsertOnSubmit(leave);
+                db.SubmitChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         // PUT: api/Leave/ComeBack
@@ -70,8 +139,42 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>销假</remarks>
         /// <returns>返回</returns>
         [HttpPut, Route("Leave/ComeBack")]
-        public void ComeBack(dynamic x)
+        public bool ComeBack(lIdClass x)
         {
+            db = new DataClasses1DataContext(connstr);
+            var leave = db.Leave.SingleOrDefault(a => a.lId == x.lId);
+            if(leave is null)
+            {
+                return false;
+            }
+            else if(leave.status!=2)
+            {
+                return false;
+            }
+            else
+            {
+                //罚款
+                if(DateTime.Compare(leave.time,leave.endTime)>0)
+                {
+                    TimeSpan ts = leave.time - leave.endTime;
+                    int fine = ts.Hours * 5;
+                    var find = db.Salary.OrderBy(a=>a.time).FirstOrDefault(a=>a.mId==x.mId);
+                    if(find is null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        find.fine += fine;
+                        db.SubmitChanges();
+                    }
+                }
+
+                leave.status = 3;
+                leave.time = DateTime.Now;
+                db.SubmitChanges();
+                return true;
+            }
         }
         // GET: api/Leave/Delete
         /// <summary>
@@ -81,8 +184,32 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>删除未批准的请假记录</remarks>
         /// <returns>返回</returns>
         [HttpDelete, Route("Leave/Delete")]
-        public void Delete(dynamic x)
+        public bool Delete(lIdClass x)
         {
+            db = new DataClasses1DataContext(connstr);
+            var leave = db.Leave.SingleOrDefault(a => a.lId == x.lId);
+            if (leave is null)
+            {
+                return false;
+            }
+            else if(leave.status!=1)
+            {
+                return false;
+            }
+            else
+            {
+                try
+                {
+                    db.Leave.DeleteOnSubmit(leave);
+                    db.SubmitChanges();
+                    return true;
+                }
+                catch(Exception)
+                {
+                    return false;
+                }
+                
+            }
         }
     }
 }

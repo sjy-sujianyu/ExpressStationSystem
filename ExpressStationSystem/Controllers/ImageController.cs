@@ -59,7 +59,10 @@ namespace ExpressStationSystem.Controllers
                 HttpPostedFile file = files[key];//file.ContentLength文件长度  
                 if (string.IsNullOrEmpty(file.FileName) == false)
                 {
-                    string path = HttpContext.Current.Server.MapPath("/image") + "\\"+file.FileName;
+                    string[] x = file.FileName.Split('.');
+                    TimeSpan t = (DateTime.UtcNow - new DateTime(1970, 1, 1));
+                    int timestamp = (int)t.TotalSeconds;
+                    string path = HttpContext.Current.Server.MapPath("/image") + "\\"+ timestamp.ToString()+"."+x[x.Length-1];
                     var member = db.Member.SingleOrDefault(a => a.mId == account);
                     if(member is null)
                     {
@@ -67,6 +70,12 @@ namespace ExpressStationSystem.Controllers
                     }
                     else
                     {
+                        if(!member.imagePath.Equals("无"))
+                        {
+                            string []y = member.imagePath.Split('/');
+                            string oldPath = HttpContext.Current.Server.MapPath("/image") + "\\"+y[y.Length - 1];
+                            File.Delete(oldPath);
+                        }
                         string[] str = path.Split('\\');
                         member.imagePath = "172.16.34.153:60062/image/" + str[str.Length - 1];
                         db.SubmitChanges();
