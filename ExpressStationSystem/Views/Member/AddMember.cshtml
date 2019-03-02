@@ -22,20 +22,12 @@
 
     <script>
 
-        //$(document).ready(function () {
-        //    $("#addform").ajaxForm(function (data) {
-        //        alert("post success." + data); 
-        //    });
-        //});  
-
         function addimg() {
             var f = document.getElementById('upload');
             f.click();
-            //alert($("#upload")[0].files);
         }
 
         function loadimg(file) {
-
             document.getElementById("camIcoin").style.visibility = "hidden";
 
             var MAXWIDTH = 100;
@@ -67,12 +59,8 @@
                 img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
                 var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
                 status = ('rect:' + rect.top + ',' + rect.left + ',' + rect.width + ',' + rect.height);
-                // div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;margin-left:"+rect.left+"px;"+sFilter+src+"\"'></div>"; 
-                //uploadPhoto();
                 
             }
-
-            
         }
 
         function resetPage() {
@@ -99,8 +87,6 @@
                     param.height = maxHeight;
                 }
             }
-
-
             param.left = Math.round((maxWidth - param.width) / 2);
             param.top = Math.round((maxHeight - param.height) / 2);
             return param;
@@ -113,31 +99,44 @@
             b.innerHTML = '<img src=' + $("#upload")[0].files.name + '>';
         })
 
-        $('#mPhone').blur(function () {
+        function tryEmpty() {
+            var name = document.getElementById("mName").value;
+            if (name == "") {
+                document.getElementById("nameIsEmpty").style.display = 'block';
+            }
+            else {
+                document.getElementById("nameIsEmpty").style.display = 'none';
+            }
+        }
+
+        function tryPhone() {
             var phone = document.getElementById("mPhone").value;
-                $.ajax({
-                    type: 'get',
-                    url: 'http://172.16.34.153:60062/Query/isTel',
-                    contentType: "application/json;charset=UTF-8",
-                    data: {
-                        tb: phone
-                    },
-                    success: function (res) {
-                        if (res == true) {
-                            document.getElementById("phoneIllegal").style.display = 'none';
-                            postData(phone);
-                        }
-                        else {
-                            document.getElementById("phoneIllegal").style.display = 'block';
-                        }
+            if (phone == "") {
+                return;
+            }
+            $.ajax({
+                type: 'get',
+                url: 'http://172.16.34.153:60062/Query/isTel',
+                data: {
+                    tb: phone
+                },
+                success: function (res) {
+                    if (res == true) {
+                        document.getElementById("phoneIllegal").style.display = 'none';
                     }
-                });
-        });
+                    else {
+                        document.getElementById("phoneIllegal").style.display = 'block';
+                    }
+                }
+            });
+        }
 
         function check() {
-            if (document.getElementById("phoneIllegal").css("display") === 'none') {
-                if (document.getElementById("phoneIllegal").css("display") === 'none')
-                postData(document.getElementById("mPhone").value);
+            var display = $('#phoneIllegal').css('display');
+            if (display == 'none') {
+                if ($('#nameIsEmpty').css('display') == 'none') {
+                    postData(document.getElementById("mPhone").value);
+                }
             }
         }
 
@@ -152,9 +151,9 @@
                 contentType: false,
                 success: function (res) {
                     if (res == true) {
-                        alert('已经录取该员工');
+                        alert('已经录取该员工,并上传头像');
                     } else {
-                        alert('失败');
+                        alert('已经录取该员工,但无头像');
                         console.log(res);
                     }
                 }
@@ -162,6 +161,14 @@
         }
 
         function postData(phone) {
+            var mjob = document.getElementById("mJob").value;
+            if (mjob == "") {
+                mjob = "空闲";
+            }
+            var msalary = document.getElementById("mSalary").value;
+            if (msalary == "") {
+                msalary = 0;
+            }
             $.ajax({
                 type: 'post',
                 url: 'http://localhost:60062/Manager/PostMember',
@@ -169,8 +176,8 @@
                 data: JSON.stringify({
                     mId: phone,
                     name: document.getElementById("mName").value,
-                    job: document.getElementById("mJob").value,
-                    salary: document.getElementById("mSalary").value
+                    job: mjob,
+                    salary: msalary
                 }),
                 success: function (res) {
                     if (res == true) {
@@ -258,27 +265,27 @@
                   <div class="col-sm-offset-1">
                       <div class="row col-sm-8 input-group" style="display:flex">
                           <div class="col-sm-8" style="padding:0;">
-                              <input type="text" name="account" class="form-control" placeholder="输入员工姓名" aria-describedby="basic-addon1" id="mName">
-                          </div>
-                          <div class="col-sm-5">
-                              <span class="glyphicon glyphicon glyphicon-remove " style="color:red;visibility:hidden" id="nameIsEmpty">名字不能为空</span>
-                          </div>
-                      </div>
-                      <br />
-                      <div class="row col-sm-8 input-group" style="display:flex">
-                          <div class="col-sm-8" style="padding:0;">
-                              <input type="text" name="account" class="form-control" placeholder="输入员工手机" aria-describedby="basic-addon1" id="mPhone">
+                              <input type="text" name="account" class="form-control" placeholder="输入员工姓名" aria-describedby="basic-addon1" id="mName" onblur="tryEmpty()">
                           </div>
                           <div class="col-sm-6">
-                              <span class="glyphicon glyphicon glyphicon-remove " style="color:red;visibility:hidden" id="phoneIllegal">错误的手机号</span>
+                              <span class="glyphicon glyphicon glyphicon-remove " style="color:red;display:none" id="nameIsEmpty">名字不能为空</span>
                           </div>
                       </div>
                       <br />
                       <div class="row col-sm-8 input-group" style="display:flex">
                           <div class="col-sm-8" style="padding:0;">
-                              <input type="text" name="account" class="form-control" placeholder="输入员工职位" aria-describedby="basic-addon1">
+                              <input type="text" name="account" class="form-control" placeholder="输入员工手机" aria-describedby="basic-addon1" id="mPhone" onblur="tryPhone()">
                           </div>
-                          <div class="col-sm-5">
+                          <div class="col-sm-6">
+                              <span class="glyphicon glyphicon glyphicon-remove " style="color:red;display:none" id="phoneIllegal">错误的手机号</span>
+                          </div>
+                      </div>
+                      <br />
+                      <div class="row col-sm-8 input-group" style="display:flex">
+                          <div class="col-sm-8" style="padding:0;">
+                              <input type="text" name="account" class="form-control" placeholder="输入员工职位" aria-describedby="basic-addon1" id="mJob">
+                          </div>
+                          <div class="col-sm-6">
                           </div>
                       </div>
                       <br />
@@ -286,7 +293,7 @@
                           <div class="col-sm-8" style="padding:0;">
                               <input type="text" name="account" class="form-control" placeholder="输入员工底薪" aria-describedby="basic-addon1" id="mSalary">
                           </div>
-                          <div class="col-sm-5">
+                          <div class="col-sm-6">
                           </div>
                       </div>
                       <br />

@@ -34,7 +34,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#btn-Login").click(function () {
+            $("#Login").click(function () {
                 var UserPhone = document.getElementById("UserPhone").value;
                 var Password = document.getElementById("Password").value;
                 $.ajax({
@@ -44,7 +44,7 @@
                         account: UserPhone,
                         password: Password
                     },
-                    success: function (data, status) {
+                    success: function (res) {
                         if (res == true) {
                             location.href = "../Login/AfterLogin";
                         } else {
@@ -94,7 +94,6 @@
                 </form>
 
                 <ul class="nav navbar-nav navbar-right" hidden="hidden">
-                    <li><img src="..." alt="这是头像" class="img-circle"></li>
                     <li>
 
                         <button id="btn-Login" class="btn btn-primary btn-lg active" onclick="">登陆</button>
@@ -140,15 +139,7 @@
                 <div class="row" style="display:flex;">
                     <div class="col-md-4" style="padding:0;margin:auto;">
 
-                        <script type="text/javascript">
-                            $(document).ready(function () {
-                                $("#Login").click(function () {
-                                    location.href = "../Login/AfterLogin";
-                                });
-                            });
-                        </script>
-
-                        <button type="button" class="btn btn-info" style="margin-top:1rem; width:16rem;" id="Login">登陆</button>
+                        <button type="button" class="btn btn-info" style="margin-top:1rem; width:16rem;" id="Login" >登陆</button>
                     </div>
                 </div>
 

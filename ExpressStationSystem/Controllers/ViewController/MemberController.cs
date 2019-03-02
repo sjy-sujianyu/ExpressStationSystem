@@ -15,8 +15,7 @@ namespace ExpressStationSystem.Controllers.ViewController
         // GET: Member
         public ActionResult AllMember()
         {
-            List<string> MID = new ManagerController().GetAllMember();
-            List<string> FireID = new ManagerController().GetAllFiredMember();
+            List<string> MID = new ManagerController().GetAllMember().onDuty;
             List<string> imgList = new List<string>();
             List<string> nameList = new List<string>();
             List<string> phoneList = new List<string>();
@@ -50,7 +49,7 @@ namespace ExpressStationSystem.Controllers.ViewController
 
         public ActionResult DeleteMember()
         {
-            List<string> MID = new ManagerController().GetAllMemberOnDuty();
+            List<string> MID = new ManagerController().GetAllMember();
             List<string> imgList = new List<string>();
             List<string> nameList = new List<string>();
             List<string> phoneList = new List<string>();
