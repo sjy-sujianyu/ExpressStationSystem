@@ -49,7 +49,7 @@ namespace ExpressStationSystem.Controllers.ViewController
 
         public ActionResult DeleteMember()
         {
-            List<string> MID = new ManagerController().GetAllMember();
+            List<string> MID = new ManagerController().GetAllMember().onDuty;
             List<string> imgList = new List<string>();
             List<string> nameList = new List<string>();
             List<string> phoneList = new List<string>();

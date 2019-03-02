@@ -124,25 +124,6 @@
 
             </thead>
             <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
-                <tr>
-                    <th scope="row"><img class="img-circle" src="img.jpg" alt="头像" /></th>
-                    <td>王小明</td>
-                    <td>158xxxx3391</td>
-                    <td>
-                        <div class="btn-group">
-
-                            <button type="button" class="btn-Mission btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="MissionType1">
-                                休息中 <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a onclick="update(this)" id="MissionType1">休息中</a></li>
-                                <li><a onclick="update(this)" id="MissionType1">派件员</a></li>
-                                <li><a onclick="update(this)" id="MissionType1">揽件员</a></li>
-                                <li><a onclick="update(this)" id="MissionType1">转件员</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
 
                 <tr>
                     <th scope="row"><img class="img-circle" src="img.jpg" alt="头像" /></th>
@@ -151,10 +132,9 @@
                     <td>
                         <div class="btn-group">
                             <button type="button" class="btn-Mission btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="MissionType2">
-                                休息中 <span class="caret"></span>
+                                派件员 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a onclick="update(this);" id="MissionType2">休息中</a></li>
                                 <li><a onclick="update(this);" id="MissionType2">派件员</a></li>
                                 <li><a onclick="update(this);" id="MissionType2">揽件员</a></li>
                                 <li><a onclick="update(this);" id="MissionType2">转件员</a></li>
@@ -169,7 +149,6 @@
             <div class="list-group">
                 <h4 class="page-header">选择分类</h4>
                 <button type="button" class="list-group-item">全部</button>
-                <button type="button" class="list-group-item">休息中</button>
                 <button type="button" class="list-group-item">派件员</button>
                 <button type="button" class="list-group-item">转件员</button>
                 <button type="button" class="list-group-item">揽件员</button>
@@ -177,6 +156,9 @@
             <br />
             <br />
             <button type="button" class="btn btn-info btn-lg" onclick="AllSleep()">一键休息</button>
+            <br />
+            <br />
+            <button type="button" class="btn btn-warning btn-lg" onclick="Reset()">重置职位</button>
             <br />
             <br />
             <button type="button" class="btn btn-success btn-lg">分配完成</button>

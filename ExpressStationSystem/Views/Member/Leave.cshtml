@@ -124,20 +124,27 @@
                         <th>
                             <button type="button" class="btn-sm btn-primary">批准</button>
                             <button type="button" class="btn-sm btn-danger">驳回</button>
+                            <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#myModal">详情</button>
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            请假理由:
+                                            请假时间:
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </th>
                     </tr>
 
-                    <tr>
-                        <th scope="row"><img class="img-circle" src="img.jpg" alt="头像" /></th>
-                        <td>李小花</td>
-                        <td>158xxxx3391</td>
-                        <td>空闲</td>
-                        <td>10次</td>
-                        <th>
-                            <button type="button" class="btn-sm btn-primary">批准</button>
-                            <button type="button" class="btn-sm btn-danger">驳回</button>
-                        </th>
-                    </tr>
                 </tbody>
             </table>
         </div>
