@@ -87,6 +87,7 @@
       <Column Name="isDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="imagePath" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
       <Column Name="baseSalary" Type="System.Decimal" DbType="Decimal(10,0) NOT NULL" CanBeNull="false" />
+      <Column Name="onDuty" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Member_Delivery" Member="Delivery" ThisKey="mId" OtherKey="mId" Type="Delivery" />
       <Association Name="Member_Leave" Member="Leave" ThisKey="mId" OtherKey="mId" Type="Leave" />
       <Association Name="Member_Money" Member="Money" ThisKey="mId" OtherKey="mId" Type="Money" />

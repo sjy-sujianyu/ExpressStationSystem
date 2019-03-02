@@ -167,6 +167,8 @@ namespace ExpressStationSystem
         public string person;
 
         public bool isDone;
+
+        public string mId;
     }
     public class UpdateLeaveClass
     {

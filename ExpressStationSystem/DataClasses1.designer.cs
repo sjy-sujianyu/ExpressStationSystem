@@ -2073,6 +2073,8 @@ namespace ExpressStationSystem
 		
 		private decimal _baseSalary;
 		
+		private bool _onDuty;
+		
 		private EntitySet<Delivery> _Delivery;
 		
 		private EntitySet<Leave> _Leave;
@@ -2103,6 +2105,8 @@ namespace ExpressStationSystem
     partial void OnimagePathChanged();
     partial void OnbaseSalaryChanging(decimal value);
     partial void OnbaseSalaryChanged();
+    partial void OnonDutyChanging(bool value);
+    partial void OnonDutyChanged();
     #endregion
 		
 		public Member()
@@ -2240,8 +2244,29 @@ namespace ExpressStationSystem
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_onDuty", DbType="Bit NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
+		public bool onDuty
+		{
+			get
+			{
+				return this._onDuty;
+			}
+			set
+			{
+				if ((this._onDuty != value))
+				{
+					this.OnonDutyChanging(value);
+					this.SendPropertyChanging();
+					this._onDuty = value;
+					this.SendPropertyChanged("onDuty");
+					this.OnonDutyChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Delivery", Storage="_Delivery", ThisKey="mId", OtherKey="mId")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=8, EmitDefaultValue=false)]
 		public EntitySet<Delivery> Delivery
 		{
 			get
@@ -2260,7 +2285,7 @@ namespace ExpressStationSystem
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Leave", Storage="_Leave", ThisKey="mId", OtherKey="mId")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=8, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=9, EmitDefaultValue=false)]
 		public EntitySet<Leave> Leave
 		{
 			get
@@ -2279,7 +2304,7 @@ namespace ExpressStationSystem
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Money", Storage="_Money", ThisKey="mId", OtherKey="mId")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=9, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=10, EmitDefaultValue=false)]
 		public EntitySet<Money> Money
 		{
 			get
@@ -2298,7 +2323,7 @@ namespace ExpressStationSystem
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_PickUp", Storage="_PickUp", ThisKey="mId", OtherKey="mId")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=10, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=11, EmitDefaultValue=false)]
 		public EntitySet<PickUp> PickUp
 		{
 			get
@@ -2317,7 +2342,7 @@ namespace ExpressStationSystem
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Transfer", Storage="_Transfer", ThisKey="mId", OtherKey="mId")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=11, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=12, EmitDefaultValue=false)]
 		public EntitySet<Transfer> Transfer
 		{
 			get

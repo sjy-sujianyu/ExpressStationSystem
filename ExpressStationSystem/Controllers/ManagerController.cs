@@ -91,6 +91,7 @@ namespace ExpressStationSystem.Controllers
             member.isDelete = false;
             member.baseSalary = x.baseSalary;
             member.imagePath = "无";
+            member.onDuty = true;
             try
             {
                 db.Login.InsertOnSubmit(login);
