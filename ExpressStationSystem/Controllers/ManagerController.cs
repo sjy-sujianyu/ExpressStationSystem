@@ -78,6 +78,7 @@ namespace ExpressStationSystem.Controllers
             {
                 check.isDelete = false;
                 y.isDelete = false;
+                db.SubmitChanges();
                 return true;
             }
             Login login = new Login();
@@ -108,7 +109,7 @@ namespace ExpressStationSystem.Controllers
 
         // PUT: api/PickUp/ChangeMemberInfo?account={account}
         /// <summary>
-        /// 改变员工职位、名字、底薪
+        /// 改变员工职位、名字、底薪、是否休息
         /// </summary>
         /// <param name="x">员工实体</param>
         /// <remarks>改变员工职位、名字、底薪</remarks>
@@ -132,6 +133,7 @@ namespace ExpressStationSystem.Controllers
                 member.job = x.job;
                 member.name = x.name;
                 member.baseSalary = x.baseSalary;
+                member.onDuty = x.onDuty;
                 db.SubmitChanges();
                 return true;
             }
@@ -189,13 +191,11 @@ namespace ExpressStationSystem.Controllers
         {
             db = new DataClasses1DataContext(connstr);
             var x = db.Member.SingleOrDefault(a => a.mId == account);
-            var y = db.Login.SingleOrDefault(a => a.account == account);
-            if(x is null||y is null)
+            if(x is null)
             {
                 return false;
             }
             x.isDelete = true;
-            y.isDelete = true;
             db.SubmitChanges();
             return true;
         }

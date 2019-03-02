@@ -65,7 +65,7 @@ namespace ExpressStationSystem.Controllers
         public dynamic GetMemberAllInfo(string account)
         {
             db = new DataClasses1DataContext(connstr);
-            var member = db.Member.SingleOrDefault(a => a.mId == account && a.isDelete == false);
+            var member = db.Member.SingleOrDefault(a => a.mId == account);
             if(member is null)
             {
                 return null;
