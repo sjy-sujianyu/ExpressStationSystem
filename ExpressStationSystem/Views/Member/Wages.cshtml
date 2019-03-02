@@ -88,6 +88,8 @@
                             <li><a href="../Member/AddMember">员工录用</a></li>
                             <li><a href="../Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
+                            <li><a href="../Member/Leave">请假条</a></li>
+                            <li role="separator" class="divider"></li>
                             <li><a href="../Member/Mission">任务分配</a></li>
                             <li><a href="../Member/Wages">工薪统计</a></li>
                         </ul>
@@ -136,14 +138,14 @@
 
     <br />
 
-    <div class="col-sm-9" style="left:0rem">
+    <div class="col-sm-12" style="left:0rem;display:flex">
         <table class="table table-hover">
             <thead style="display: table-header-group;vertical-align: middle;border-color: inherit;">
                 <tr>
                     <th>肖像</th>
                     <th>姓名</th>
                     <th>联系手机</th>
-                    <th>状态</th>
+                    <th>职位</th>
                     <th>本月工资</th>
                 </tr>
 
@@ -163,55 +165,38 @@
                                 <li style="display:flex"><a>本月派件:</a><a class="Pie" style="margin-left:-3rem" id="MissionType1">100</a></li>
                                 <li style="display:flex"><a>本月揽件:</a><a class="Docs" style="margin-left:-3rem" id="MissionType1">121</a></li>
                                 <li style="display:flex"><a>本月转件:</a><a class="Tra" style="margin-left:-3rem" id="MissionType1">133</a></li>
+                                <li style="display:flex"><a>底薪:</a><a class="Tra" style="margin-left:-3rem" id="MissionType1">￥5000</a></li>
+                                <li style="display:flex"><a>本月扣钱:</a><a class="Tra" style="margin-left:-3rem" id="MissionType1">￥1000</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li style="display:flex"><a>本月总工资:</a><a class="Wag" style="margin-left:-3rem" id="MissionType1">8000</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                    
-                </tr>
-
-                <tr>
-                    <th scope="row"><img class="img-circle" src="..." alt="头像" /></th>
-                    <td>李小花</td>
-                    <td>158xxxx3391</td>
-                    <td>空闲中</td>
-                    <td>
-                        <div class="btn-group">
-                            <button type="button" class="btn-Mission btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="MissionType2">
-                                <span class="glyphicon glyphicon-triangle-bottom"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li style="display:flex"><a>本月派件:</a><a class="Pie" style="margin-left:-3rem" id="MissionType2">111</a></li>
-                                <li style="display:flex"><a>本月揽件:</a><a class="Docs" style="margin-left:-3rem" id="MissionType2">121</a></li>
-                                <li style="display:flex"><a>本月转件:</a><a class="Tra" style="margin-left:-3rem" id="MissionType2">133</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li style="display:flex"><a>本月总工资:</a><a class="Wag" style="margin-left:-3rem" id="MissionType2">8500</a></li>
+                                <li style="display:flex"><a>本月总工资:</a><a class="Wag" style="margin-left:-3rem" id="MissionType1">￥8000</a></li>
                             </ul>
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
-    </div>
 
-    <div class="row" style="display:flex;font-size:20px;margin-left:1rem">
-        本月站点统计:&nbsp;派件总数:&nbsp;<div id="SumPie" style="color:chartreuse">111&nbsp;&nbsp;</div>揽件总数:&nbsp;<div id="SumDocs" style="color:cornflowerblue">111&nbsp;&nbsp;</div>转件总数:&nbsp;<div id="SumTra" style="color:orangered">111&nbsp;&nbsp;</div>工资总额:&nbsp;<div id="SumWag">11100</div>
-    </div>
-
-    
-    <div class='container-fluid col-sm-offset-10 col-sm-2' style="top:-11rem">
-        <div class="list-group">
-            <h4 class="page-header">选择分类</h4>
-            <button type="button" class="list-group-item">全部</button>
-            <button type="button" class="list-group-item">空闲中</button>
-            <button type="button" class="list-group-item">派件中</button>
-            <button type="button" class="list-group-item">转件中</button>
-            <button type="button" class="list-group-item">揽件中</button>
+        <div class='container-fluid col-sm-2'>
+            <div class="list-group">
+                <h4 class="page-header">选择分类</h4>
+                <button type="button" class="list-group-item">全部</button>
+                <button type="button" class="list-group-item">空闲中</button>
+                <button type="button" class="list-group-item">派件员</button>
+                <button type="button" class="list-group-item">转件员</button>
+                <button type="button" class="list-group-item">揽件员</button>
+            </div>
         </div>
-
-
     </div>
+    <div class="row" style="font-size:20px">
+        本月站点统计:</div>
+    <div class="row" style="display:flex;font-size:20px;margin-left:1rem">
+        &nbsp;派件总数:&nbsp;<div id="SumPie" style="color:chartreuse">111&nbsp;&nbsp;</div>揽件总数:&nbsp;<div id="SumDocs" style="color:cornflowerblue">111&nbsp;&nbsp;</div>转件总数:&nbsp;<div id="SumTra" style="color:orangered">111&nbsp;&nbsp;</div>工资总额:&nbsp;<div id="SumWag">11100</div>
+    </div>
+
+
+
+
+
 </body>
 </html>
 

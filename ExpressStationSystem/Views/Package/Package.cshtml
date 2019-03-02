@@ -37,6 +37,8 @@
                             <li><a href="../Member/AddMember">员工录用</a></li>
                             <li><a href="../Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
+                            <li><a href="../Member/Leave">请假条</a></li>
+                            <li role="separator" class="divider"></li>
                             <li><a href="../Member/Mission">任务分配</a></li>
                             <li><a href="../Member/Wages">工薪统计</a></li>
                         </ul>
@@ -81,18 +83,11 @@
                 </thead>
                 <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;">
 
-                    <script>
-                        function detailImformation(i) {
-                            alert(i);
-                        }
-
-                    </script>
-
                     @for (int i = 0; i < ViewBag.packagesID.Count; i++)
                     {
-                        if (@ViewBag.statusList[i] == "已扫件" ||
-                            @ViewBag.statusList[i] == "已揽件" ||
-                            @ViewBag.statusList[i] == "派送中" ||
+                        if (@ViewBag.statusList[i] == "派件中" ||
+                            @ViewBag.statusList[i] == "运输中" ||
+                            @ViewBag.statusList[i] == "已扫件" ||
                             @ViewBag.statusList[i] == "待揽件" ||
                             @ViewBag.statusList[i] == "已下单")
                         {
@@ -178,12 +173,12 @@
             <div class="list-group">
                 <h4 class="page-header">选择分类</h4>
                 <button type="button" class="list-group-item">全部</button>
-                <button type="button" class="list-group-item" style="background-color:cornflowerblue">未揽件</button>
-                <button type="button" class="list-group-item" style="background:cornflowerblue">未派件</button>
-                <button type="button" class="list-group-item" style="background:cornflowerblue">未转件</button>
-                <button type="button" class="list-group-item" style="background:greenyellow">已派送</button>
-                <button type="button" class="list-group-item" style="background:gray">已删除</button>
-                <button type="button" class="list-group-item" style="background:red">拒收件</button>
+                <button type="button" class="list-group-item" style="background:cornflowerblue">派件中</button>
+                <button type="button" class="list-group-item" style="background:cornflowerblue">运输中</button>
+                <button type="button" class="list-group-item" style="background:cornflowerblue">已扫件</button>
+                <button type="button" class="list-group-item" style="background:cornflowerblue">待揽件</button>
+                <button type="button" class="list-group-item" style="background:cornflowerblue">已下单</button>
+                <button type="button" class="list-group-item" style="background:greenyellow">已签收</button>
                 <button type="button" class="list-group-item" style="background:red">错分件</button>
                 <button type="button" class="list-group-item" style="background:red">遗漏件</button>
             </div>
