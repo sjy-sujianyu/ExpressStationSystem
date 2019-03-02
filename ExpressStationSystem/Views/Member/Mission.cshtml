@@ -63,6 +63,8 @@
                             <li><a href="../Member/AddMember">员工录用</a></li>
                             <li><a href="../Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
+                            <li><a href="../Member/Leave">请假条</a></li>
+                            <li role="separator" class="divider"></li>
                             <li><a href="../Member/Mission">任务分配</a></li>
                             <li><a href="../Member/Wages">工薪统计</a></li>
                         </ul>
@@ -110,7 +112,7 @@
 
     <br />
 
-    <div class="col-sm-9" style="left:0rem">
+    <div class="col-sm-9" style="display:flex">
         <table class="table table-hover">
             <thead style="display: table-header-group;vertical-align: middle;border-color: inherit;">
                 <tr>
@@ -162,24 +164,26 @@
                 </tr>
             </tbody>
         </table>
+
+        <div class='container-fluid col-sm-3' style="top:-1rem;left:6rem">
+            <div class="list-group">
+                <h4 class="page-header">选择分类</h4>
+                <button type="button" class="list-group-item">全部</button>
+                <button type="button" class="list-group-item">休息中</button>
+                <button type="button" class="list-group-item">派件员</button>
+                <button type="button" class="list-group-item">转件员</button>
+                <button type="button" class="list-group-item">揽件员</button>
+            </div>
+            <br />
+            <br />
+            <button type="button" class="btn btn-info btn-lg" onclick="AllSleep()">一键休息</button>
+            <br />
+            <br />
+            <button type="button" class="btn btn-success btn-lg">分配完成</button>
+        </div>
     </div>
 
-    <div class='container-fluid col-sm-offset-10 col-sm-2' style="top:-11rem">
-        <div class="list-group">
-            <h4 class="page-header">选择分类</h4>
-            <button type="button" class="list-group-item">全部</button>
-            <button type="button" class="list-group-item">休息中</button>
-            <button type="button" class="list-group-item">派件员</button>
-            <button type="button" class="list-group-item">转件员</button>
-            <button type="button" class="list-group-item">揽件员</button>
-        </div>
-        <br />
-        <br />
-        <button type="button" class="btn btn-info btn-lg" onclick="AllSleep()">一键休息</button>
-        <br />
-        <br />
-        <button type="button" class="btn btn-success btn-lg">分配完成</button>
-    </div>
+    
 
 
 </body>

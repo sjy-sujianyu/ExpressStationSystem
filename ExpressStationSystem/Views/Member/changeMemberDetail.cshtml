@@ -48,6 +48,8 @@
                             <li><a href="../Member/AddMember">员工录用</a></li>
                             <li><a href="../Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
+                            <li><a href="../Member/Leave">请假条</a></li>
+                            <li role="separator" class="divider"></li>
                             <li><a href="../Member/Mission">任务分配</a></li>
                             <li><a href="../Member/Wages">工薪统计</a></li>
                         </ul>
@@ -75,7 +77,7 @@
 
     <h2 class='page-header'>员工详情</h2>
 
-    <div class="col-sm-9" style="left:0rem;display:flex">
+    <div  style="left:0rem;display:flex">
         <div style="display:flex;align-items:center">
 
             <button type="button" class="btn btn-default btn-group-lg" aria-label="Left Align" style="border-radius:8rem;height:8rem;width:8rem;font-size:3rem;">
@@ -85,25 +87,30 @@
         </div>
         <br /><br />
 
-        <input type="text" class="form-control" placeholder="王小明" aria-describedby="sizing-addon1" style="margin: auto;margin-top: 5rem;margin-left: 4rem;height: 3rem;">
 
     </div>
 
     <div style="display:flex">
-        <div style="margin-left:6.5rem;margin-top:2rem">
+        <div style="display:flex;flex-direction:column">
             <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
-                员工号:&nbsp;&nbsp;&nbsp;
-                <div id="mid">158xxxx3391</div>
+                <input type="text" class="form-control" placeholder="王小明" aria-describedby="sizing-addon1" style="margin: auto;height: 3rem;">
             </div>
 
             <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
-                职称:&nbsp;&nbsp;&nbsp;
+                员工号:&nbsp;&nbsp;&nbsp;
+                <div id="mid">
+                    <input type="text" class="form-control" placeholder="158xxxx3391" aria-describedby="sizing-addon1" style="width:16rem">
+                </div>
+            </div>
+
+            <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
+                职称:&nbsp;&nbsp;
                 <div id="mjob">站点派件员</div>
             </div>
 
             <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex;width: 24rem;">
                 入职时间:&nbsp;&nbsp;&nbsp;
-                <input type="text" class="form-control" placeholder="2019-2-27" aria-describedby="sizing-addon1">
+                <input type="text" class="form-control" placeholder="2019-2-27" aria-describedby="sizing-addon1" style="width:16rem">
             </div>
 
             <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
@@ -119,15 +126,16 @@
                 </div>
             </div>
 
-            <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
+            <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex" id="mjoinTime">
                 月薪:&nbsp;&nbsp;&nbsp;
-                <div id="mjoinTime">￥8500.00</div>
+                <input type="text" class="form-control" placeholder="￥8500.00" aria-describedby="sizing-addon1" style="width:16rem">
             </div>
+
+            <button type="button" class="btn btn-success btn-lg col-sm-offset-1" style="margin:auto;margin-right:0">完成</button>
+
         </div>
 
-        <div>
-            <button type="button" class="btn btn-info btn-lg" style="margin-left:15rem;margin-top:23rem">修改信息</button>
-        </div>
+
     </div>
 
 

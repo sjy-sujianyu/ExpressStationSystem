@@ -12,13 +12,178 @@
         .btn-circle {
             width: 30px;
             height: 30px;
-            text - align: center;
+            text-align: center;
             padding: 6px 0;
-            font - size: 12px;
-            line - height: 1.428571429;
-            border - radius: 15px;
+            font-size: 12px;
+            line-height: 1.428571429;
+            border-radius: 15px;
         }
     </style>
+
+    <script>
+
+        //$(document).ready(function () {
+        //    $("#addform").ajaxForm(function (data) {
+        //        alert("post success." + data); 
+        //    });
+        //});  
+
+        function addimg() {
+            var f = document.getElementById('upload');
+            f.click();
+            //alert($("#upload")[0].files);
+        }
+
+        function loadimg(file) {
+
+            document.getElementById("camIcoin").style.visibility = "hidden";
+
+            var MAXWIDTH = 100;
+            var MAXHEIGHT = 100;
+
+            if (file.files && file.files[0]) {
+                //div.innerHTML = '<img id=imghead>'; 
+                var img = document.getElementById('imghead');
+                img.onload = function () {
+                    var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                    img.width = rect.width;
+                    img.height = rect.height;
+                    img.style.marginLeft = rect.left + 'px';
+                    img.style.marginTop = rect.top + 'px';
+                }
+                var reader = new FileReader();
+                reader.onload = function (evt) {
+                    img.src = evt.target.result;
+                }
+                reader.readAsDataURL(file.files[0]);
+                //uploadPhoto();
+                
+            } else {
+                var sFilter = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+                file.select();
+                var src = document.selection.createRange().text;
+                // div.innerHTML = '<img id=imghead>'; 
+                var img = document.getElementById('imghead');
+                img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                status = ('rect:' + rect.top + ',' + rect.left + ',' + rect.width + ',' + rect.height);
+                // div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;margin-left:"+rect.left+"px;"+sFilter+src+"\"'></div>"; 
+                //uploadPhoto();
+                
+            }
+
+            
+        }
+
+        function resetPage() {
+            document.location.reload();
+        }
+
+        function clacImgZoomParam(maxWidth, maxHeight, width, height) {
+            var param = {
+                top: 0,
+                left: 0,
+                width: width,
+                height: height
+            };
+            if (width > maxWidth || height > maxHeight) {
+                rateWidth = width / maxWidth;
+                rateHeight = height / maxHeight;
+
+
+                if (rateWidth > rateHeight) {
+                    param.width = maxWidth;
+                    param.height = Math.round(height / rateWidth);
+                } else {
+                    param.width = Math.round(width / rateHeight);
+                    param.height = maxHeight;
+                }
+            }
+
+
+            param.left = Math.round((maxWidth - param.width) / 2);
+            param.top = Math.round((maxHeight - param.height) / 2);
+            return param;
+        }
+        
+
+        $("#upload").on('change',function () {
+            var b = document.getElementById('uploadbtn');
+            alert($("#upload")[0].files);
+            b.innerHTML = '<img src=' + $("#upload")[0].files.name + '>';
+        })
+
+        $('#mPhone').blur(function () {
+            var phone = document.getElementById("mPhone").value;
+                $.ajax({
+                    type: 'get',
+                    url: 'http://172.16.34.153:60062/Query/isTel',
+                    contentType: "application/json;charset=UTF-8",
+                    data: {
+                        tb: phone
+                    },
+                    success: function (res) {
+                        if (res == true) {
+                            document.getElementById("phoneIllegal").style.display = 'none';
+                            postData(phone);
+                        }
+                        else {
+                            document.getElementById("phoneIllegal").style.display = 'block';
+                        }
+                    }
+                });
+        });
+
+        function check() {
+            if (document.getElementById("phoneIllegal").css("display") === 'none') {
+                if (document.getElementById("phoneIllegal").css("display") === 'none')
+                postData(document.getElementById("mPhone").value);
+            }
+        }
+
+        function postImg(phone) {
+            var formData = new FormData();
+            formData.append("file", $("#upload")[0].files[0]);
+            $.ajax({
+                url: 'http://172.16.34.153:60062/Image/Post?account=' + phone, /*接口域名地址*/
+                type: 'post',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (res) {
+                    if (res == true) {
+                        alert('已经录取该员工');
+                    } else {
+                        alert('失败');
+                        console.log(res);
+                    }
+                }
+            });
+        }
+
+        function postData(phone) {
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:60062/Manager/PostMember',
+                contentType: "application/json;charset=UTF-8",
+                data: JSON.stringify({
+                    mId: phone,
+                    name: document.getElementById("mName").value,
+                    job: document.getElementById("mJob").value,
+                    salary: document.getElementById("mSalary").value
+                }),
+                success: function (res) {
+                    if (res == true) {
+                        postImg(phone);
+                    }
+                    else {
+                        alert("信息上传失败");
+                    }
+                }
+            });
+        }
+
+    </script>
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
@@ -48,6 +213,8 @@
                             <li><a href="../Member/AddMember">员工录用</a></li>
                             <li><a href="../Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
+                            <li><a href="../Member/Leave">请假条</a></li>
+                            <li role="separator" class="divider"></li>
                             <li><a href="../Member/Mission">任务分配</a></li>
                             <li><a href="../Member/Wages">工薪统计</a></li>
                         </ul>
@@ -75,47 +242,67 @@
 
     <h2 class='page-header'>添加员工</h2>
 
-    <div class="col-sm-9" style="left:0rem">
-        <div class="row" style="display:flex;align-items:center">
-            @*<img src="~/Views/Image/UnknowUser.png" alt="未知头像" class="img-circle" onclick="loadImg">*@
-            <button type="button" class="btn btn-default btn-group-lg" aria-label="Left Align" style="border-radius:6rem;height:6rem;width:6rem;font-size:3rem;">
-                <span class="glyphicon glyphicon glyphicon-camera" aria-hidden="true" ></span>
-            </button>
+    <div class="col-sm-9">
+            <div class="row" style="display:flex;align-items:center">
 
-            <h4 style="margin-left:1rem;font-size:22px">点击上传头像 <span class="label label-default">Tip</span></h4>
-        </div>
-        <br /><br />
+                <input type="file" class="parameter required hidden" name="file" id="upload" onchange="loadimg(this)" >
 
-        <div class="col-sm-offset-1">
-            <div class="row col-sm-5 input-group">
-                <input type="text" class="form-control" placeholder="输入员工姓名" aria-describedby="basic-addon1">
+                <img id="imghead" type="button" class="btn btn-default btn-group-lg " onclick="addimg()" aria-label="Left Align" style="width:9rem;height:11rem">
+
+                <span class="glyphicon glyphicon glyphicon-camera" aria-hidden="true" id="camIcoin" style="font-size: 40px;margin: auto;margin-left: -6rem;" onclick="addimg()"></span>
+                <h4 style="font-size:22px;">点击上传头像 <span class="label label-default">Tip</span></h4>
+
             </div>
-            <br />
-            <div class="row col-sm-5 input-group">
-                <input type="text" class="form-control" placeholder="输入员工手机" aria-describedby="basic-addon1">
-            </div>
-        </div>
-        <br />
-        <div class="row col-sm-1 col-sm-offset-1">
-            <button type="button" class="btn btn-warning">重置信息</button>
-        </div>
-        <div class="col-sm-1 col-sm-offset-1">
-            <button type="button" class="btn btn-primary">确认录用</button>
-        </div>
+            <br /><br />
+
+                  <div class="col-sm-offset-1">
+                      <div class="row col-sm-8 input-group" style="display:flex">
+                          <div class="col-sm-8" style="padding:0;">
+                              <input type="text" name="account" class="form-control" placeholder="输入员工姓名" aria-describedby="basic-addon1" id="mName">
+                          </div>
+                          <div class="col-sm-5">
+                              <span class="glyphicon glyphicon glyphicon-remove " style="color:red;visibility:hidden" id="nameIsEmpty">名字不能为空</span>
+                          </div>
+                      </div>
+                      <br />
+                      <div class="row col-sm-8 input-group" style="display:flex">
+                          <div class="col-sm-8" style="padding:0;">
+                              <input type="text" name="account" class="form-control" placeholder="输入员工手机" aria-describedby="basic-addon1" id="mPhone">
+                          </div>
+                          <div class="col-sm-6">
+                              <span class="glyphicon glyphicon glyphicon-remove " style="color:red;visibility:hidden" id="phoneIllegal">错误的手机号</span>
+                          </div>
+                      </div>
+                      <br />
+                      <div class="row col-sm-8 input-group" style="display:flex">
+                          <div class="col-sm-8" style="padding:0;">
+                              <input type="text" name="account" class="form-control" placeholder="输入员工职位" aria-describedby="basic-addon1">
+                          </div>
+                          <div class="col-sm-5">
+                          </div>
+                      </div>
+                      <br />
+                      <div class="row col-sm-8 input-group" style="display:flex">
+                          <div class="col-sm-8" style="padding:0;">
+                              <input type="text" name="account" class="form-control" placeholder="输入员工底薪" aria-describedby="basic-addon1" id="mSalary">
+                          </div>
+                          <div class="col-sm-5">
+                          </div>
+                      </div>
+                      <br />
+                      <div class="row col-sm-5" style="display:flex">
+                          <div>
+                              <button type="button" class="btn btn-warning" onclick="resetPage()">重置信息</button>
+                          </div>
+
+                          <div class="col-sm-offset-2">
+                              <button type="submit" class="btn btn-primary" onclick="check()">确认录用</button>
+                          </div>
+                      </div>
+                  </div>
+
+        <iframe style="display:none" name="hiddenIFrame" id="hiddenIFrame" />
     </div>
-
-
-    @*<div class='container-fluid col-sm-offset-10 col-sm-2' style="top:-11rem">
-        <div class="list-group">
-            <h4 class="page-header">选择分类</h4>
-            <button type="button" class="list-group-item">全部</button>
-            <button type="button" class="list-group-item">空闲中</button>
-            <button type="button" class="list-group-item">派件中</button>
-            <button type="button" class="list-group-item">转件中</button>
-            <button type="button" class="list-group-item">揽件中</button>
-        </div>
-    </div>*@
-
 
 </body>
 </html>

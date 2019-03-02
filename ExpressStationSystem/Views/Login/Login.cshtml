@@ -31,6 +31,33 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btn-Login").click(function () {
+                var UserPhone = document.getElementById("UserPhone").value;
+                var Password = document.getElementById("Password").value;
+                $.ajax({
+                    type: 'get',
+                    url: 'http://172.16.34.153:60062/Login/LandOfManager',
+                    data: {
+                        account: UserPhone,
+                        password: Password
+                    },
+                    success: function (data, status) {
+                        if (res == true) {
+                            location.href = "../Login/AfterLogin";
+                        } else {
+                            alert('大失败');
+                            location.reload();
+                        }
+                        
+                    }
+                });
+            });
+        });
+    </script>
+
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
@@ -65,18 +92,10 @@
                     </div>
                     <button type="submit" class="btn btn-default" disabled="disabled">查询</button>
                 </form>
-         
+
                 <ul class="nav navbar-nav navbar-right" hidden="hidden">
                     <li><img src="..." alt="这是头像" class="img-circle"></li>
                     <li>
-
-                        <script type="text/javascript">
-                            $(document).ready(function () {
-                                $("#btn-Login").click(function () {
-                                    location.href = "../Login/AfterLogin";
-                                });
-                            });
-                        </script>
 
                         <button id="btn-Login" class="btn btn-primary btn-lg active" onclick="">登陆</button>
 
@@ -93,29 +112,33 @@
     </div>
 
 
-    <div class="row">
+    <div class="row" style="display:flex;">
 
-        <div class="col-xs-6" style="display:block;margin-left:auto;margin-right:auto;">
-            <img src="..." alt="小程序的二维码" class="img-responsive center-block" style="margin:7rem;margin-left:16rem">
-        </div>
+        @*<div class="col-xs-6" style="display:block;margin-left:auto;margin-right:auto;">
+                <img src="..." alt="小程序的二维码" class="img-responsive center-block" style="margin:7rem;margin-left:16rem">
+            </div>*@
 
 
 
-        <div class="col-xs-6" style="border-left:1px solid #000; padding:0;">
-            <div style="margin:3rem;margin-left:12rem">
+        <div class="col-sm-6" style="padding:0;margin:auto;">
+            <div style="margin:3rem;">
                 @*<div class="row">
-                    <label for="exampleInputEmail1">账号</label>
-                    <input type="email" class="form-control" id="Account" placeholder="你的账号">
-                </div>*@
+                        <label for="exampleInputEmail1">账号</label>
+                        <input type="email" class="form-control" id="Account" placeholder="你的账号">
+                    </div>*@
                 <div class="row">
-                    <label for="exampleInputEmail1">超级用户账号</label>
-                    <input type="password" class="form-control" id="Password" placeholder="输入管理员账号">
-                    <label for="exampleInputEmail1">超级密码</label>
-                    <input type="password" class="form-control" id="Password" placeholder="输入管理员密码">
+                    <div style="display:flex;flex-direction:column;margin:auto;width:fit-content;">
+                        <label for="exampleInputEmail1">超级用户账号</label>
+                        <input type="text" class="form-control" id="UserPhone" placeholder="输入管理员账号">
+                    </div>
+                    <div style="display:flex;flex-direction:column;margin:auto;width:fit-content;">
+                        <label for="exampleInputEmail1">超级密码</label>
+                        <input type="password" class="form-control" id="Password" placeholder="输入管理员密码">
+                    </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-4" style="padding:0">
+                <div class="row" style="display:flex;">
+                    <div class="col-md-4" style="padding:0;margin:auto;">
 
                         <script type="text/javascript">
                             $(document).ready(function () {
@@ -125,12 +148,12 @@
                             });
                         </script>
 
-                        <button type="button" class="btn btn-info" style="margin-top:1rem; width:100%" id="Login">登陆</button>
+                        <button type="button" class="btn btn-info" style="margin-top:1rem; width:16rem;" id="Login">登陆</button>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-7" style="margin-top:1rem;padding:5px">
+                <div class="row" style="display:flex;">
+                    <div class="col-md-7" style="margin:auto;margin-top:1rem;padding:5px;width:fit-content;">
                         <span class="glyphicon glyphicon-info-sign" style="color:red"></span>
                         <strong style="color:crimson">忘记密码请联系运维！</strong>
                     </div>
