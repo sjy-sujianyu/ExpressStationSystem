@@ -109,7 +109,7 @@ namespace ExpressStationSystem.Controllers
 
         // PUT: api/PickUp/ChangeMemberInfo?account={account}
         /// <summary>
-        /// 改变员工职位、名字、底薪
+        /// 改变员工职位、名字、底薪、是否休息
         /// </summary>
         /// <param name="x">员工实体</param>
         /// <remarks>改变员工职位、名字、底薪</remarks>
@@ -133,6 +133,7 @@ namespace ExpressStationSystem.Controllers
                 member.job = x.job;
                 member.name = x.name;
                 member.baseSalary = x.baseSalary;
+                member.onDuty = x.onDuty;
                 db.SubmitChanges();
                 return true;
             }
