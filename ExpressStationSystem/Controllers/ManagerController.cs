@@ -49,23 +49,17 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>获取所有员工</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Manager/GetAllMember")]
-        public dynamic GetAllMember()
+        public List<string> GetAllMember()
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Member where a.isDelete==false select a.mId;
+            var selectQuery = from a in db.Member  select a.mId;
             List<string> list = new List<string>();
             foreach (var x in selectQuery)
             {
                 list.Add(x);
             }
-
-            var selectQuery1 = from a in db.Member where a.isDelete == true select a.mId;
-            List<string> list1 = new List<string>();
-            foreach (var x in selectQuery1)
-            {
-                list1.Add(x);
-            }
-            return new {onDuty=list,fired=list1 };
+            
+            return list;
         }
         // GET: api/Manager/PostMember
         /// <summary>
