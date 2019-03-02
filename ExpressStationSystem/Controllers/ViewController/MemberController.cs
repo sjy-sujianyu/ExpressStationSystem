@@ -139,7 +139,7 @@ namespace ExpressStationSystem.Controllers.ViewController
 
                 nameList.Add(member.name);
 
-                phoneList.Add(member.account);
+                phoneList.Add(member.mId);
 
                 jobList.Add(member.job);
             }
