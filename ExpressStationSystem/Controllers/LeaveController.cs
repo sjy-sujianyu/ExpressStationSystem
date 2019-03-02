@@ -89,6 +89,19 @@ namespace ExpressStationSystem.Controllers
                 leave.view = x.view;
                 leave.person=x.person;
                 db.SubmitChanges();
+                if(leave.status==2)
+                {
+                    var member = db.Member.SingleOrDefault(a => a.mId == x.mId);
+                    if(member is null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        member.onDuty = false;
+                        db.SubmitChanges();
+                    }
+                }
                 return true;
             }
         }
@@ -179,6 +192,16 @@ namespace ExpressStationSystem.Controllers
                 leave.status = 3;
                 leave.time = DateTime.Now;
                 db.SubmitChanges();
+                var member = db.Member.SingleOrDefault(a => a.mId == x.mId);
+                if (member is null)
+                {
+                    return false;
+                }
+                else
+                {
+                    member.onDuty = true;
+                    db.SubmitChanges();
+                }
                 return true;
             }
         }
@@ -197,7 +220,7 @@ namespace ExpressStationSystem.Controllers
             if (leave is null)
             {
                 return false;
-            }
+            }  
             else if(leave.status!=1)
             {
                 return false;
