@@ -8,10 +8,10 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @*<script src="~/Views/Package/Package.js"></script>*@
-</head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<body>
+
     <script>
+        var showArray = @ViewBag.showArray;
+        var sum = @ViewBag.Sum;
 
         function changeShowCheckType(self) {
             var button = document.getElementById("showCheckType");
@@ -23,7 +23,7 @@
             input.placeholder = self.innerText + '查找';
         }
 
-        function showAll() {
+        @*function showAll() {
             ViewBag.showArray.splice(0, ViewBag.showArray.Count);
             for (var i = 0; i < ViewBag.Sum; i++) {
                 ViewBag.showArray[i] = i;
@@ -42,69 +42,73 @@
                 }
             }
             document.location.reload();
-        }
+        }*@
 
-        function showFree() {
+        @*function showFree() {
             var showArray = @ViewBag.showArray;
             var sum = @ViewBag.Sum;
-            showArray.splice(0, showArray.Length);
-            var num = 0;
-            for (var i = 0; i < sum; i++) {
-                if (ViewBag.onDuty == false) {
-                    ViewBag.showArray[num++] = i;
+            @ViewBag.showArray.Clear();
+            for (var i = 0, num = 0; i < sum; i++) {
+                if (@ViewBag.onDuty == false) {
+                   showArray[num++] = i;
                 }
             }
+            @ViewBag.showArray = showArray;
             document.location.reload();
-        }
+        }*@
 
-        function showPie() {
-            ViewBag.showArray.splice(0, ViewBag.showArray.Count);
-            alert(ViewBag.showArray.Count);
-            var num = 0;
-            for (var i = 0; i < ViewBag.Sum; i++) {
-                if (ViewBag.jobList == "派件员") {
-                    ViewBag.showArray[num++] = i;
-                }
-            }
-            document.location.reload();
-        }
+        //function showPie() {
+        //    ViewBag.showArray.splice(0, ViewBag.showArray.Count);
+        //    alert(ViewBag.showArray.Count);
+        //    var num = 0;
+        //    for (var i = 0; i < ViewBag.Sum; i++) {
+        //        if (ViewBag.jobList == "派件员") {
+        //            ViewBag.showArray[num++] = i;
+        //        }
+        //    }
+        //    document.location.reload();
+        //}
 
-        function showTra() {
-            ViewBag.showArray.splice(0, ViewBag.showArray.Count);
-            alert(ViewBag.showArray.Count);
-            var num = 0;
-            for (var i = 0; i < ViewBag.Sum; i++) {
-                if (ViewBag.jobList == "转件员") {
-                    ViewBag.showArray[num++] = i;
-                }
-            }
-            document.location.reload();
-        }
+        //function showTra() {
+        //    ViewBag.showArray.splice(0, ViewBag.showArray.Count);
+        //    alert(ViewBag.showArray.Count);
+        //    var num = 0;
+        //    for (var i = 0; i < ViewBag.Sum; i++) {
+        //        if (ViewBag.jobList == "转件员") {
+        //            ViewBag.showArray[num++] = i;
+        //        }
+        //    }
+        //    document.location.reload();
+        //}
 
-        function showLan() {
-            ViewBag.showArray.splice(0, ViewBag.showArray.Count);
-            alert(ViewBag.showArray.Count);
-            var num = 0;
-            for (var i = 0; i < ViewBag.Sum; i++) {
-                if (ViewBag.jobList == "揽件员") {
-                    ViewBag.showArray[num++] = i;
-                }
-            }
-            document.location.reload();
-        }
+        //function showLan() {
+        //    ViewBag.showArray.splice(0, ViewBag.showArray.Count);
+        //    alert(ViewBag.showArray.Count);
+        //    var num = 0;
+        //    for (var i = 0; i < ViewBag.Sum; i++) {
+        //        if (ViewBag.jobList == "揽件员") {
+        //            ViewBag.showArray[num++] = i;
+        //        }
+        //    }
+        //    document.location.reload();
+        //}
 
-        function showFire() {
-            ViewBag.showArray.splice(0, ViewBag.showArray.Count);
-            alert(ViewBag.showArray.Count);
-            var num = 0;
-            for (var i = 0; i < ViewBag.Sum; i++) {
-                if (ViewBag.isDelete == true) {
-                    ViewBag.showArray[num++] = i;
-                }
-            }
-            document.location.reload();
-        }
+        //function showFire() {
+        //    ViewBag.showArray.splice(0, ViewBag.showArray.Count);
+        //    alert(ViewBag.showArray.Count);
+        //    var num = 0;
+        //    for (var i = 0; i < ViewBag.Sum; i++) {
+        //        if (ViewBag.isDelete == true) {
+        //            ViewBag.showArray[num++] = i;
+        //        }
+        //    }
+        //    document.location.reload();
+        //}
     </script>
+</head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<body>
+    
 
     <div class="navbar navbar-default navbar-fixed-top">
 
@@ -198,13 +202,13 @@
                 </thead>
                 <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
 
-                    @foreach(int i in ViewBag.showArray)
+                    @for (int i = 0; i < ViewBag.showPhoneList.Count ; i++)
                     {
                         <tr>
-                            <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.imgList[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
-                            <td>@ViewBag.nameList[i]</td>
-                            <td>@ViewBag.phoneList[i]</td>
-                            <td>@ViewBag.jobList[i]</td>
+                            <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.showImgList[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                            <td>@ViewBag.showNameList[i]</td>
+                            <td>@ViewBag.showPhoneList[i]</td>
+                            <td>@ViewBag.showJobList[i]</td>
                         </tr>
                     }
                 </tbody>
@@ -215,13 +219,13 @@
         <div class='container-fluid col-sm-1.5'>
             <div class="list-group">
                 <h4 class="page-header">选择分类</h4>
-                <button type="button" class="list-group-item" onclick="showAll()">全部</button>
-                <button type="button" class="list-group-item" onclick="showFree()">休息中</button>
-                <button type="button" class="list-group-item" onclick="showUnknow()">待定中</button>
-                <button type="button" class="list-group-item" onclick="showPie()">派件员</button>
-                <button type="button" class="list-group-item" onclick="showTra()">转件员</button>
-                <button type="button" class="list-group-item" onclick="showLan()">揽件员</button>
-                <button type="button" class="list-group-item" onclick="showFire()">已辞职</button>
+                <a class="list-group-item" href="/Member/AllMember">全部</a>
+                <a class="list-group-item" href="/Member/AllMember/?status=休息中">休息中</a>
+                <a class="list-group-item" href="/Member/AllMember/?status=待定中">待定中</a>
+                <a class="list-group-item" href="/Member/AllMember/?status=派件员">派件员</a>
+                <a class="list-group-item" href="/Member/AllMember/?status=转件员">转件员</a>
+                <a class="list-group-item" href="/Member/AllMember/?status=揽件员">揽件员</a>
+                <a class="list-group-item" href="/Member/AllMember/?status=已辞职">已辞职</a>
             </div>
         </div>
     </div>

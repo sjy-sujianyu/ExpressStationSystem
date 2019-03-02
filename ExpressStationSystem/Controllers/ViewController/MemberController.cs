@@ -12,50 +12,115 @@ namespace ExpressStationSystem.Controllers.ViewController
 {
     public class MemberController : Controller
     {
+        List<string> showImgList = new List<string>();
+        List<string> showNameList = new List<string>();
+        List<string> showPhoneList = new List<string>();
+        List<string> showJobList = new List<string>();
+
         // GET: Member
-        public ActionResult AllMember()
+        public ActionResult AllMember(string status)
         {
+            //重新请求数据库，获取员工ID
             List<string> MID = new ManagerController().GetAllMember();
 
-            List<string> imgList = new List<string>();
-            List<string> nameList = new List<string>();
-            List<string> phoneList = new List<string>();
-            List<string> jobList = new List<string>();
-            List<Boolean> isDeleteList = new List<Boolean>();
-            List<Boolean> onDutyList = new List<Boolean>();
+            //清空原本数组
+            showImgList.Clear();
+            showNameList.Clear();
+            showPhoneList.Clear();
+            showJobList.Clear();
 
-            //显示的号数
-            List<int> showArray = new List<int>();
-
-            int num = 0;
-            foreach (var one in MID)
+            if(status == "已辞职")
             {
-                showArray.Add(num++);
-                isDeleteList.Add(new QueryController().GetMemberAllInfo(one).isDelete);
-                onDutyList.Add(new QueryController().GetMemberAllInfo(one).onDuty);
-                imgList.Add(new QueryController().GetMemberAllInfo(one).imagePath);
-                nameList.Add(new QueryController().GetMemberAllInfo(one).name);
-                phoneList.Add(new QueryController().GetMemberAllInfo(one).mId);
-                jobList.Add(new QueryController().GetMemberAllInfo(one).job);
-
+                foreach (var one in MID)
+                {
+                    if ((new QueryController().GetMemberAllInfo(one).isDelete))
+                    {
+                        showImgList.Add(new QueryController().GetMemberAllInfo(one).imagePath);
+                        showNameList.Add(new QueryController().GetMemberAllInfo(one).name);
+                        showPhoneList.Add(new QueryController().GetMemberAllInfo(one).mId);
+                        showJobList.Add(new QueryController().GetMemberAllInfo(one).job);
+                    }
+                }
+            }else if(status == null)
+            {
+                foreach (var one in MID)
+                {
+                    if (!(new QueryController().GetMemberAllInfo(one).isDelete))
+                    {
+                        showImgList.Add(new QueryController().GetMemberAllInfo(one).imagePath);
+                        showNameList.Add(new QueryController().GetMemberAllInfo(one).name);
+                        showPhoneList.Add(new QueryController().GetMemberAllInfo(one).mId);
+                        showJobList.Add(new QueryController().GetMemberAllInfo(one).job);
+                    }
+                }
+            }else if(status == "休息中")
+            {
+                foreach (var one in MID)
+                {
+                    if (!(new QueryController().GetMemberAllInfo(one).onDuty) && !(new QueryController().GetMemberAllInfo(one).isDelete))
+                    {
+                        showImgList.Add(new QueryController().GetMemberAllInfo(one).imagePath);
+                        showNameList.Add(new QueryController().GetMemberAllInfo(one).name);
+                        showPhoneList.Add(new QueryController().GetMemberAllInfo(one).mId);
+                        showJobList.Add(new QueryController().GetMemberAllInfo(one).job);
+                    }
+                }
+            }else
+            {
+                foreach (var one in MID)
+                {
+                    if ((new QueryController().GetMemberAllInfo(one).job) == status && !(new QueryController().GetMemberAllInfo(one).isDelete))
+                    {
+                        showImgList.Add(new QueryController().GetMemberAllInfo(one).imagePath);
+                        showNameList.Add(new QueryController().GetMemberAllInfo(one).name);
+                        showPhoneList.Add(new QueryController().GetMemberAllInfo(one).mId);
+                        showJobList.Add(new QueryController().GetMemberAllInfo(one).job);
+                    }
+                }
             }
-            ViewBag.Sum = num;
-            ViewBag.showArray = showArray;
 
-            ViewBag.MID = MID;
-            ViewBag.imgList = imgList;
-            ViewBag.phoneList = phoneList;
-            ViewBag.nameList = nameList;
-            ViewBag.jobList = jobList;
-            ViewBag.isDeleteList = isDeleteList;
-            ViewBag.onDutyList = onDutyList;
+            ViewBag.showImgList = showImgList;
+            ViewBag.showNameList = showNameList;
+            ViewBag.showPhoneList = showPhoneList;
+            ViewBag.showJobList = showJobList;
 
             return View();
         }
 
+        //public ActionResult AllMember()
+        //{
+        //    //重新请求数据库，获取员工ID
+        //    List<string> MID = new ManagerController().GetAllMember();
+
+        //    //清空原本数组
+        //    showImgList.Clear();
+        //    showNameList.Clear();
+        //    showPhoneList.Clear();
+        //    showJobList.Clear();
+
+        //    //默认获取全部的人员
+        //    foreach (var one in MID)
+        //    {
+        //        if (!(new QueryController().GetMemberAllInfo(one).isDelete))
+        //        {
+        //            showImgList.Add(new QueryController().GetMemberAllInfo(one).imagePath);
+        //            showNameList.Add(new QueryController().GetMemberAllInfo(one).name);
+        //            showPhoneList.Add(new QueryController().GetMemberAllInfo(one).mId);
+        //            showJobList.Add(new QueryController().GetMemberAllInfo(one).job);
+        //        }
+        //    }
+
+        //    ViewBag.showImgList = showImgList;
+        //    ViewBag.showNameList = showNameList;
+        //    ViewBag.showPhoneList = showPhoneList;
+        //    ViewBag.showJobList = showJobList;
+
+        //    return View();
+        //}
+
         public ActionResult AddMember()
         {
-            
+
             return View();
         }
 
