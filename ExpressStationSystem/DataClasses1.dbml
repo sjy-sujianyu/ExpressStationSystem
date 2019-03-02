@@ -1,50 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Express" Class="DataClasses1DataContext" Serialization="Unidirectional" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=172.16.34.153;Initial Catalog=Express;User ID=sa;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="ExpressConnectionString1" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.AddressBook" Member="AddressBook">
-    <Type Name="AddressBook">
-      <Column Name="aId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="phone" Type="System.String" DbType="VarChar(11) NOT NULL" CanBeNull="false" />
-      <Column Name="name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="province" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="city" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="street" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="account" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="isDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="AddressBook_Package" Member="Package" ThisKey="aId" OtherKey="sendId" Type="Package" />
-      <Association Name="AddressBook_Package1" Member="Package1" ThisKey="aId" OtherKey="receiverId" Type="Package" />
-      <Association Name="Login_AddressBook" Member="Login" ThisKey="account" OtherKey="account" Type="Login" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Branch" Member="Branch">
-    <Type Name="Branch">
-      <Column Name="bId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="province" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="city" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="street" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Association Name="Branch_Path" Member="Path" ThisKey="bId" OtherKey="srcId" Type="Path" />
-      <Association Name="Branch_Path1" Member="Path1" ThisKey="bId" OtherKey="destId" Type="Path" />
-      <Association Name="Branch_Path2" Member="Path2" ThisKey="bId" OtherKey="curId" Type="Path" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Delivery" Member="Delivery">
-    <Type Name="Delivery">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="mId" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="isDone" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="Member_Delivery" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
-      <Association Name="Package_Delivery" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Error" Member="Error">
-    <Type Name="Error">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="introduction" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Association Name="Package_Error" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Leave" Member="Leave">
     <Type Name="Leave">
       <Column Name="lId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -64,9 +19,9 @@
       <Column Name="account" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="password" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="isDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="Login_AddressBook" Member="AddressBook" ThisKey="account" OtherKey="account" Type="AddressBook" />
       <Association Name="Login_Member" Member="Member" ThisKey="account" OtherKey="mId" Type="Member" Cardinality="One" />
       <Association Name="Login_Package" Member="Package" ThisKey="account" OtherKey="account" Type="Package" />
+      <Association Name="Login_AddressBook" Member="AddressBook" ThisKey="account" OtherKey="account" Type="AddressBook" />
     </Type>
   </Table>
   <Table Name="dbo.Member" Member="Member">
@@ -76,12 +31,24 @@
       <Column Name="job" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="isDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="imagePath" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
-      <Association Name="Member_Delivery" Member="Delivery" ThisKey="mId" OtherKey="mId" Type="Delivery" />
+      <Column Name="baseSalary" Type="System.Decimal" DbType="Decimal(10,0) NOT NULL" CanBeNull="false" />
       <Association Name="Member_Leave" Member="Leave" ThisKey="mId" OtherKey="mId" Type="Leave" />
+      <Association Name="Member_Money" Member="Money" ThisKey="mId" OtherKey="mId" Type="Money" />
       <Association Name="Member_PickUp" Member="PickUp" ThisKey="mId" OtherKey="mId" Type="PickUp" />
-      <Association Name="Member_Salary" Member="Salary" ThisKey="mId" OtherKey="mId" Type="Salary" />
       <Association Name="Member_Transfer" Member="Transfer" ThisKey="mId" OtherKey="mId" Type="Transfer" />
+      <Association Name="Member_Delivery" Member="Delivery" ThisKey="mId" OtherKey="mId" Type="Delivery" />
       <Association Name="Login_Member" Member="Login" ThisKey="mId" OtherKey="account" Type="Login" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Money" Member="Money">
+    <Type Name="Money">
+      <Column Name="sId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="mId" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="subsidy" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="fine" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="time" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="reason" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Member_Money" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Package" Member="Package">
@@ -96,14 +63,14 @@
       <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="isDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="Package_Delivery" Member="Delivery" ThisKey="id" OtherKey="id" Type="Delivery" />
-      <Association Name="Package_Error" Member="Error" ThisKey="id" OtherKey="id" Type="Error" Cardinality="One" />
       <Association Name="Package_Path" Member="Path" ThisKey="id" OtherKey="id" Type="Path" />
       <Association Name="Package_PickUp" Member="PickUp" ThisKey="id" OtherKey="id" Type="PickUp" />
       <Association Name="Package_Transfer" Member="Transfer" ThisKey="id" OtherKey="id" Type="Transfer" />
+      <Association Name="Package_Error" Member="Error" ThisKey="id" OtherKey="id" Type="Error" Cardinality="One" />
+      <Association Name="Package_Delivery" Member="Delivery" ThisKey="id" OtherKey="id" Type="Delivery" />
+      <Association Name="Login_Package" Member="Login" ThisKey="account" OtherKey="account" Type="Login" IsForeignKey="true" />
       <Association Name="AddressBook_Package" Member="AddressBook" ThisKey="sendId" OtherKey="aId" Type="AddressBook" IsForeignKey="true" />
       <Association Name="AddressBook_Package1" Member="AddressBook1" ThisKey="receiverId" OtherKey="aId" Type="AddressBook" IsForeignKey="true" />
-      <Association Name="Login_Package" Member="Login" ThisKey="account" OtherKey="account" Type="Login" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Path" Member="Path">
@@ -117,10 +84,10 @@
       <Column Name="isArrival" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Package_Path" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
+      <Association Name="Vehicle_Path" Member="Vehicle" ThisKey="vId" OtherKey="vId" Type="Vehicle" IsForeignKey="true" />
       <Association Name="Branch_Path" Member="Branch" ThisKey="srcId" OtherKey="bId" Type="Branch" IsForeignKey="true" />
       <Association Name="Branch_Path1" Member="Branch1" ThisKey="destId" OtherKey="bId" Type="Branch" IsForeignKey="true" />
       <Association Name="Branch_Path2" Member="Branch2" ThisKey="curId" OtherKey="bId" Type="Branch" IsForeignKey="true" />
-      <Association Name="Vehicle_Path" Member="Vehicle" ThisKey="vId" OtherKey="vId" Type="Vehicle" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.PickUp" Member="PickUp">
@@ -131,17 +98,6 @@
       <Column Name="isDone" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Package_PickUp" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
       <Association Name="Member_PickUp" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Salary" Member="Salary">
-    <Type Name="Salary">
-      <Column Name="sId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="mId" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="baseSalary" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
-      <Column Name="subsidy" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
-      <Column Name="fine" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
-      <Column Name="time" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
-      <Association Name="Member_Salary" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Transfer" Member="Transfer">
@@ -162,6 +118,61 @@
       <Column Name="onDuty" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="plateNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Association Name="Vehicle_Path" Member="Path" ThisKey="vId" OtherKey="vId" Type="Path" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Error" Member="Error">
+    <Type Name="Error">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="introduction" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Package_Error" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Delivery" Member="Delivery">
+    <Type Name="Delivery">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="mId" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="isDone" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Package_Delivery" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
+      <Association Name="Member_Delivery" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Commission" Member="Commission">
+    <Type Name="Commission">
+      <Column Name="cId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="pickUpValue" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="deliveryValue" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="transferValue" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="person" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Branch" Member="Branch">
+    <Type Name="Branch">
+      <Column Name="bId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="province" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="city" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="street" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Branch_Path" Member="Path" ThisKey="bId" OtherKey="srcId" Type="Path" />
+      <Association Name="Branch_Path1" Member="Path1" ThisKey="bId" OtherKey="destId" Type="Path" />
+      <Association Name="Branch_Path2" Member="Path2" ThisKey="bId" OtherKey="curId" Type="Path" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AddressBook" Member="AddressBook">
+    <Type Name="AddressBook">
+      <Column Name="aId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="phone" Type="System.String" DbType="VarChar(11) NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="province" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="city" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="street" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="account" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="isDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="AddressBook_Package" Member="Package" ThisKey="aId" OtherKey="sendId" Type="Package" />
+      <Association Name="AddressBook_Package1" Member="Package1" ThisKey="aId" OtherKey="receiverId" Type="Package" />
+      <Association Name="Login_AddressBook" Member="Login" ThisKey="account" OtherKey="account" Type="Login" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

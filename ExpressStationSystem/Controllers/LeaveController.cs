@@ -158,18 +158,23 @@ namespace ExpressStationSystem.Controllers
                 {
                     TimeSpan ts = leave.time - leave.endTime;
                     int fine = ts.Hours * 5;
-                    var find = db.Salary.OrderBy(a=>a.time).FirstOrDefault(a=>a.mId==x.mId);
-                    if(find is null)
+                    Money money = new Money();
+                    money.mId = x.mId;
+                    money.subsidy = 0;
+                    money.fine = fine;
+                    money.time = DateTime.Now;
+                    money.reason = "请假逾期，未按时上班";
+                    try
+                    {
+                        db.Money.InsertOnSubmit(money);
+                        db.SubmitChanges();
+                        return true;
+                    }
+                    catch(Exception)
                     {
                         return false;
                     }
-                    else
-                    {
-                        find.fine += fine;
-                        db.SubmitChanges();
-                    }
                 }
-
                 leave.status = 3;
                 leave.time = DateTime.Now;
                 db.SubmitChanges();

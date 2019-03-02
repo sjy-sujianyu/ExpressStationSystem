@@ -35,8 +35,6 @@ namespace ExpressStationSystem.Controllers
                 return role.job;
             }
         }
-
-
         // POST: api/Query/isTel?tb={tb}
         /// <summary>
         /// 验证手机号码是否合法
@@ -55,6 +53,7 @@ namespace ExpressStationSystem.Controllers
             }
             return flag;
         }
+
         // GET: api/Query/GetMemberAllInfo?account={account}
         /// <summary>
         /// 返回员工信息
@@ -73,7 +72,7 @@ namespace ExpressStationSystem.Controllers
             }
             else
             {
-                return new { name = member.name, account = member.mId, job = member.job, salary=member.salary,imagePath = member.imagePath };
+                return new { name = member.name, account = member.mId, job = member.job,imagePath = member.imagePath };
             }
         }
         // GET: api/Query/GetLogisticsInfo?account={account}
@@ -181,7 +180,7 @@ namespace ExpressStationSystem.Controllers
             pCount = db.PickUp.Where(a => a.mId == account&&a.isDone==true&& DateTime.Compare(a.time, start)>=0&& DateTime.Compare(a.time, end)<=0).Count();
             dCount=db.Delivery.Where(a => a.mId == account && a.isDone == true && DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0).Count();
             tCount=db.Transfer.Where(a => a.mId == account && a.isDone == true && DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0).Count();
-            return new { PickUpCount = pCount, Delivery = dCount, Transfer = tCount };
+            return new { PickUpCount = pCount, DeliveryCount = dCount, TransferCount = tCount };
         }
 
         // GET: api/Query/GetTotalRecord

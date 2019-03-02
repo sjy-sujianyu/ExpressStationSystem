@@ -185,7 +185,7 @@
     <Compile Include="Controllers\PackageController.cs" />
     <Compile Include="Controllers\PickUpController.cs" />
     <Compile Include="Controllers\QueryController.cs" />
-    <Compile Include="Controllers\SalaryController.cs" />
+    <Compile Include="Controllers\MoneyController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\VehicleController.cs" />
     <Compile Include="Controllers\ViewController\LogInController.cs" />

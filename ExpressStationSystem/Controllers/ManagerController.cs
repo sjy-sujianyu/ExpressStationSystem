@@ -107,7 +107,7 @@ namespace ExpressStationSystem.Controllers
             member.job = x.job;
             member.name = x.name;
             member.isDelete = false;
-            member.salary = x.salary;
+            member.baseSalary = x.baseSalary;
             member.imagePath = "无";
             try
             {
