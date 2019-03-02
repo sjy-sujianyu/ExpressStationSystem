@@ -163,6 +163,7 @@ namespace ExpressStationSystem.Controllers
                     money.subsidy = 0;
                     money.fine = fine;
                     money.time = DateTime.Now;
+                    money.person = "系统";
                     money.reason = "请假逾期，未按时上班";
                     try
                     {
