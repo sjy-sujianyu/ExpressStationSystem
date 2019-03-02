@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -11,6 +12,11 @@ namespace ExpressStationSystem.Controllers
     {
         private static string connstr = @"Data Source=172.16.34.153;Initial Catalog=Express;User ID=sa;Password=123456;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private DataClasses1DataContext db;
+
+        public string Options()
+        {
+            return null;
+        }
         // GET: api/Manager
         public IEnumerable<string> Get()
         {
@@ -36,14 +42,14 @@ namespace ExpressStationSystem.Controllers
             return list;
         }
 
-        // GET: api/PickUp/GetAllMemberOnDuty
+        // GET: api/PickUp/GetAllMember
         /// <summary>
-        /// 获取所有在职员工
+        /// 获取所有员工
         /// </summary>
-        /// <remarks>获取所有在职员工</remarks>
+        /// <remarks>获取所有员工</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Manager/GetAllMemberOnDuty")]
-        public List<string> GetAllMemberOnDuty()
+        [HttpGet, Route("Manager/GetAllMember")]
+        public dynamic GetAllMember()
         {
             db = new DataClasses1DataContext(connstr);
             var selectQuery = from a in db.Member where a.isDelete==false select a.mId;
@@ -52,26 +58,14 @@ namespace ExpressStationSystem.Controllers
             {
                 list.Add(x);
             }
-            return list;
-        }
 
-        // GET: api/PickUp/GetAllFiredMember
-        /// <summary>
-        /// 获取所有被解雇员工
-        /// </summary>
-        /// <remarks>获取所有被解雇员工</remarks>
-        /// <returns>返回</returns>
-        [HttpGet, Route("Manager/GetAllFiredMember")]
-        public List<string> GetAllFiredMember()
-        {
-            db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Member where a.isDelete == true select a.mId;
-            List<string> list = new List<string>();
-            foreach (var x in selectQuery)
+            var selectQuery1 = from a in db.Member where a.isDelete == true select a.mId;
+            List<string> list1 = new List<string>();
+            foreach (var x in selectQuery1)
             {
-                list.Add(x);
+                list1.Add(x);
             }
-            return list;
+            return new {onDuty=list,fired=list1 };
         }
         // GET: api/Manager/PostMember
         /// <summary>
@@ -95,11 +89,13 @@ namespace ExpressStationSystem.Controllers
             Login login = new Login();
             login.account = x.mId;
             login.password = "123";
+            login.isDelete = false;
             Member member = new Member();
             member.mId = x.mId;
             member.job = x.job;
             member.name = x.name;
             member.isDelete = false;
+            member.baseSalary = x.baseSalary;
             member.imagePath = "无";
             try
             {
@@ -126,7 +122,7 @@ namespace ExpressStationSystem.Controllers
         public bool ChangeJob(MemberClass x)
         {
             db = new DataClasses1DataContext(connstr);
-            List<string> list = new List<string>() { "派件员","收件员", "出件员","休息中" };
+            List<string> list = new List<string>() { "派件员","收件员", "出件员","休息中","经理" };
             if(!list.Contains(x.job))
             {
                 return false;
@@ -144,6 +140,46 @@ namespace ExpressStationSystem.Controllers
             }
         }
 
+        // PUT: api/PickUp/ChangeJob?account={account}
+        /// <summary>
+        /// 改变员工账号
+        /// </summary>
+        /// <param name="x">员工实体</param>
+        /// <remarks>改变员工账号</remarks>
+        /// <returns>返回</returns>
+        [HttpPut, Route("Manager/ChangeMid")]
+        public bool ChangeMid(MidChange x)
+        {
+            SqlConnection conn = new SqlConnection(connstr);
+            conn.Open();
+            string sql = string.Format("select Login.account from Member join Login on Member.mId=Login.account where Member.isDelete=0 and Member.mId={0}", x.oldMid);
+            SqlCommand comm = new SqlCommand(sql, conn);
+            if(comm.ExecuteScalar()!=null)
+            {
+                string update = string.Format("update Login set account={0} where account={1}", x.newMid, x.oldMid);
+                SqlCommand updateComm = new SqlCommand(update, conn);
+                try
+                {
+                    int n = updateComm.ExecuteNonQuery();
+                    if (n != 0)
+                    {
+                        conn.Close();
+                        return true;
+                    }
+                    else
+                    {
+                        conn.Close();
+                        return false;
+                    }
+                }
+                catch(Exception)
+                {
+                    return false;
+                }
+            }
+            conn.Close();
+            return false;
+        }
         // DELETE: api/Manager/DeleteMember?account={account}
         /// <summary>
         /// 解雇某个员工

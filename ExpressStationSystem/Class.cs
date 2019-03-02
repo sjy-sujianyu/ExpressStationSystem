@@ -90,7 +90,7 @@ namespace ExpressStationSystem
             City = city;
             Street = street;
         }
-        
+
     }
     public class PickUpClass
     {
@@ -123,5 +123,66 @@ namespace ExpressStationSystem
         public string name;
 
         public string job;
+
+        public decimal baseSalary;
     }
+    public class accountClass
+    {
+        public string account;
+    }
+
+    public class MidChange
+    {
+        public string oldMid;
+        public string newMid;
+    }
+    public class VehicleClass
+    {
+        public string type;
+
+        public string plateNumber;
+    }
+    public partial class VehicleStatus
+    {
+        public int vId;
+
+        public bool onDuty;
+    }
+    public class LeaveClass
+    {
+        public string mId;
+
+        public string reason;
+
+        public System.DateTime srcTime;
+
+        public System.DateTime endTime;
+    }
+    public class ConfirmLeaveClass
+    {
+        public int lId;
+
+        public string view;
+
+        public string person;
+
+        public bool isDone;
+    }
+    public class UpdateLeaveClass
+    {
+        public int lId;
+
+        public string reason;
+
+        public System.DateTime srcTime;
+
+        public System.DateTime endTime;
+    }
+    public class lIdClass
+    {
+        public int lId;
+
+        public string mId;
+    }
+
 }

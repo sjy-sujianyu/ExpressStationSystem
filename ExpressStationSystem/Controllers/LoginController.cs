@@ -84,6 +84,7 @@ namespace ExpressStationSystem.Controllers
             Login login = new Login();
             login.account = a.account;
             login.password = a.password;
+            login.isDelete = false;
             try
             {
 
@@ -108,7 +109,7 @@ namespace ExpressStationSystem.Controllers
         public bool ModifyPassword(LoginClass x)
         {
             db = new DataClasses1DataContext(connstr);
-            var login = db.Login.SingleOrDefault(a => a.account == x.account);
+            var login = db.Login.SingleOrDefault(a => a.account == x.account && a.isDelete == false);
             if(login is null)
             {
                 return false;

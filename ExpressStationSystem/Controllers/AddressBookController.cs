@@ -127,24 +127,7 @@ namespace ExpressStationSystem.Controllers
             }
             return list;
         }
-        // POST: api/Customer/isTel?tb={tb}
-        /// <summary>
-        /// 验证手机号码是否合法
-        /// </summary>
-        /// <param name="tb">手机号码</param>
-        /// <remarks>验证手机号码是否合法</remarks>
-        /// <returns>返回</returns>
-        [HttpGet, Route("Customer/isTel")]
-        public bool isTel(string tb)
-        {
-            string s = @"^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\d{8}$";
-            bool flag = true;
-            if (!Regex.IsMatch(tb, s))
-            {
-                flag = false;
-            }
-            return flag;
-        }
+        
         // POST: api/AddressBook/Post
         /// <summary>
         /// 向数据库插入地址信息
