@@ -78,6 +78,7 @@ namespace ExpressStationSystem.Controllers
             {
                 check.isDelete = false;
                 y.isDelete = false;
+                db.SubmitChanges();
                 return true;
             }
             Login login = new Login();
@@ -189,13 +190,11 @@ namespace ExpressStationSystem.Controllers
         {
             db = new DataClasses1DataContext(connstr);
             var x = db.Member.SingleOrDefault(a => a.mId == account);
-            var y = db.Login.SingleOrDefault(a => a.account == account);
-            if(x is null||y is null)
+            if(x is null)
             {
                 return false;
             }
             x.isDelete = true;
-            y.isDelete = true;
             db.SubmitChanges();
             return true;
         }
