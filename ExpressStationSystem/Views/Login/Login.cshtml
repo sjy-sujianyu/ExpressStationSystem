@@ -33,29 +33,31 @@
     @Scripts.Render("~/bundles/modernizr")
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#Login").click(function () {
-                var UserPhone = document.getElementById("UserPhone").value;
-                var Password = document.getElementById("Password").value;
-                $.ajax({
-                    type: 'get',
-                    url: 'http://172.16.34.153:60062/Login/LandOfManager',
-                    data: {
-                        account: UserPhone,
-                        password: Password
-                    },
-                    success: function (res) {
-                        if (res == true) {
-                            location.href = "../Login/AfterLogin";
-                        } else {
-                            alert('大失败');
-                            location.reload();
-                        }
+        //$(document).ready(function () {
+        //    $("#Login").click(function () {
+        //        var UserPhone = document.getElementById("UserPhone").value;
+        //        var Password = document.getElementById("Password").value;
+        //        //$.ajax({
+        //        //    type: 'get',
+        //        //    url: 'http://172.16.34.153:60062/Login/LandOfManager',
+        //        //    data: {
+        //        //        account: UserPhone,
+        //        //        password: Password
+        //        //    },
+        //        //    success: function (res) {
+        //        //        if (res == true) {
+        //        //            location.href = "../Login/AfterLogin";
+        //        //        } else {
+        //        //            alert('大失败');
+        //        //            location.reload();
+        //        //        }
                         
-                    }
-                });
-            });
-        });
+        //        //    }
+        //        //});
+        //    });
+        //});
+
+
     </script>
 
 </head>
@@ -125,23 +127,25 @@
                         <label for="exampleInputEmail1">账号</label>
                         <input type="email" class="form-control" id="Account" placeholder="你的账号">
                     </div>*@
-                <div class="row">
-                    <div style="display:flex;flex-direction:column;margin:auto;width:fit-content;">
-                        <label for="exampleInputEmail1">超级用户账号</label>
-                        <input type="text" class="form-control" id="UserPhone" placeholder="输入管理员账号">
+                <form action="AfterLogin" method="post">
+                    <div class="row">
+                            <div style="display:flex;flex-direction:column;margin:auto;width:fit-content;">
+                                <label for="exampleInputEmail1">超级用户账号</label>
+                                <input type="text" class="form-control" placeholder="输入管理员账号" name="UserPhone">
+                            </div>
+                            <div style="display:flex;flex-direction:column;margin:auto;width:fit-content;">
+                                <label for="exampleInputEmail1">超级密码</label>
+                                <input type="password" class="form-control" name="Password" placeholder="输入管理员密码">
+                            </div>
                     </div>
-                    <div style="display:flex;flex-direction:column;margin:auto;width:fit-content;">
-                        <label for="exampleInputEmail1">超级密码</label>
-                        <input type="password" class="form-control" id="Password" placeholder="输入管理员密码">
-                    </div>
-                </div>
 
-                <div class="row" style="display:flex;">
-                    <div class="col-md-4" style="padding:0;margin:auto;">
+                    <div class="row" style="display:flex;">
+                        <div class="col-md-4" style="padding:0;margin:auto;">
 
-                        <button type="button" class="btn btn-info" style="margin-top:1rem; width:16rem;" id="Login" >登陆</button>
+                            <button type="submit" class="btn btn-info" style="margin-top:1rem; width:16rem;" id="Login" >登陆</button>
+                        </div>
                     </div>
-                </div>
+                </form>
 
                 <div class="row" style="display:flex;">
                     <div class="col-md-7" style="margin:auto;margin-top:1rem;padding:5px;width:fit-content;">

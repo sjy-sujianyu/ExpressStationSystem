@@ -31,13 +31,26 @@
             document.location.reload();
         }
 
+        function showUnknow() {
+            var showArray = @ViewBag.showArray;
+            var sum = @ViewBag.Sum;
+            showArray.splice(0, showArray.Length);
+            var num = 0;
+            for (var i = 0; i < sum; i++) {
+                if (ViewBag.jobList == "待定中") {
+                    ViewBag.showArray[num++] = i;
+                }
+            }
+            document.location.reload();
+        }
+
         function showFree() {
             var showArray = @ViewBag.showArray;
             var sum = @ViewBag.Sum;
             showArray.splice(0, showArray.Length);
             var num = 0;
             for (var i = 0; i < sum; i++) {
-                if (ViewBag.jobList == "空闲") {
+                if (ViewBag.onDuty == false) {
                     ViewBag.showArray[num++] = i;
                 }
             }
@@ -85,7 +98,7 @@
             alert(ViewBag.showArray.Count);
             var num = 0;
             for (var i = 0; i < ViewBag.Sum; i++) {
-                if (ViewBag.jobList == "解雇") {
+                if (ViewBag.isDelete == true) {
                     ViewBag.showArray[num++] = i;
                 }
             }
@@ -142,8 +155,8 @@
                         </ul>
                     </li>
                 </ul>
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
+            </div>
+        </div>
     </div>
 
     <h2 class='page-header'>员工一览</h2>
@@ -203,7 +216,8 @@
             <div class="list-group">
                 <h4 class="page-header">选择分类</h4>
                 <button type="button" class="list-group-item" onclick="showAll()">全部</button>
-                <button type="button" class="list-group-item" onclick="showFree()">空闲中</button>
+                <button type="button" class="list-group-item" onclick="showFree()">休息中</button>
+                <button type="button" class="list-group-item" onclick="showUnknow()">待定中</button>
                 <button type="button" class="list-group-item" onclick="showPie()">派件员</button>
                 <button type="button" class="list-group-item" onclick="showTra()">转件员</button>
                 <button type="button" class="list-group-item" onclick="showLan()">揽件员</button>

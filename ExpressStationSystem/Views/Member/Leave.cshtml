@@ -111,6 +111,7 @@
                         <th>联系手机</th>
                         <th>职位</th>
                         <th>本月请假次数</th>
+                        <th>操作</th>
                     </tr>
 
                 </thead>
@@ -122,10 +123,11 @@
                         <td>派件员</td>
                         <td>4次</td>
                         <th>
-                            <button type="button" class="btn-sm btn-primary">批准</button>
-                            <button type="button" class="btn-sm btn-danger">驳回</button>
-                            <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#myModal">详情</button>
-                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#accessLeave">批准</button>
+                            <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#refuseLeave">驳回</button>
+                            <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#detailLeave">详情</button>
+
+                            <div class="modal fade" id="accessLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -133,15 +135,55 @@
                                             <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
                                         </div>
                                         <div class="modal-body">
-                                            请假理由:
-                                            请假时间:
+                                            <input type="text" placeholder="输入意见" id="accessView"/>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">提交批准</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="modal fade" id="refuseLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="text" placeholder="输入意见" id="refuseView"/>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">提交驳回</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade" id="detailLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div id="Reason" class="row">
+                                                请假理由:
+                                            </div>
+                                            <div id="Time" class="row">
+                                                请假时间:
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </th>
                     </tr>
 
