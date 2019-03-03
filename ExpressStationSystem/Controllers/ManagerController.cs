@@ -187,10 +187,10 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>解雇某个员工</remarks>
         /// <returns>返回</returns>
         [HttpDelete, Route("Manager/DeleteMember")]
-        public bool DeleteMember(string account)
+        public bool DeleteMember(accountClass aclass)
         {
             db = new DataClasses1DataContext(connstr);
-            var x = db.Member.SingleOrDefault(a => a.mId == account);
+            var x = db.Member.SingleOrDefault(a => a.mId == aclass.account);
             if(x is null)
             {
                 return false;

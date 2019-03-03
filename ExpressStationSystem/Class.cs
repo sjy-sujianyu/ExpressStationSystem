@@ -178,6 +178,8 @@ namespace ExpressStationSystem
 
         public string reason;
 
+        public string mId;
+
         public System.DateTime srcTime;
 
         public System.DateTime endTime;
