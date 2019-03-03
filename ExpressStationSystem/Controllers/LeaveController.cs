@@ -78,8 +78,8 @@ namespace ExpressStationSystem.Controllers
         /// <param name="end">终止时间</param>
         /// <remarks>获取请假信息</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Leave/GetLeaveInfo")]
-        public List<int> GetLeaveInfo(string account,DateTime start,DateTime end)
+        [HttpGet, Route("Leave/GetLeaveInfoByAccount")]
+        public List<int> GetLeaveInfoByAccount(string account,DateTime start,DateTime end)
         {
             db = new DataClasses1DataContext(connstr);
             List<int> list = new List<int>();
