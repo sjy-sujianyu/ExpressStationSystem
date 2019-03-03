@@ -19,5 +19,17 @@ namespace ExpressStationSystem
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            var res = HttpContext.Current.Response;
+            var req = HttpContext.Current.Request;
+
+            //自定义header时进行处理
+            if (req.HttpMethod == "OPTIONS")
+            {
+                res.StatusCode = 200;
+                res.End();
+            }
+        }
     }
 }

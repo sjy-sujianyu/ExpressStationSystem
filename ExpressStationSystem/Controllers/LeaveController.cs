@@ -12,26 +12,92 @@ namespace ExpressStationSystem.Controllers
         //请假状态  0:初始 1:被拒绝 2:申请成功 3:已销假
         private static string connstr = @"Data Source=172.16.34.153;Initial Catalog=Express;User ID=sa;Password=123456;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private DataClasses1DataContext db;
-        // GET: api/Leave/Get
+        // GET: api/Leave/GetLeaveList
         /// <summary>
         /// 获取员工请假申请列表
         /// </summary>
         /// <remarks>获取员工请假申请列表</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Leave/GetLeaveList")]
-        public List<dynamic> GetLeaveList()
+        public List<int> GetLeaveList()
         {
             db = new DataClasses1DataContext(connstr);
-            List<dynamic> list = new List<dynamic>();
-            var leave = db.Leave.Where(a => a.status == 0).ToList();
+            List<int> list = new List<int>();
+            var leave = db.Leave.Where(a => a.status == 0);
             foreach(var x in leave)
             {
-                list.Add(x);
+                list.Add(x.lId);
             }
             return list;
         }
 
-        // PUT: api/Leave/Post
+        // GET: api/Leave/GetLeaveInfo
+        /// <summary>
+        /// 获取请假信息
+        /// </summary>
+        /// <param name="lId">请假项目id</param>
+        /// <remarks>获取请假信息</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Leave/GetLeaveInfo")]
+        public dynamic GetLeaveInfo(int lId)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var leave = db.Leave.Join(db.Member,a=>a.mId,b=>b.mId,(a,b)=>new { leave=a,member=b}).SingleOrDefault(a => a.leave.lId==lId);
+            if(leave is null)
+            {
+                return null;
+            }
+            else
+            {
+                return leave;
+            }
+        }
+
+        // GET: api/Leave/GetLeaveCount
+        /// <summary>
+        /// 获取员工请假次数
+        /// </summary>
+        /// <param name="account">员工账号</param>
+        /// <param name="start">起始时间</param>
+        /// <param name="end">终止时间</param>
+        /// <remarks>获取员工请假次数</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Leave/GetLeaveCount")]
+        public int GetLeaveCount(string account,DateTime start,DateTime end)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var leaveCount = db.Leave.Where(a => a.mId == account && DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0&&a.status==2).Count();
+            return leaveCount;
+        }
+        // GET: api/Leave/GetSuccessLeave
+        /// <summary>
+        /// 获取请假信息
+        /// </summary>
+        /// <param name="account">员工账号</param>
+        /// <param name="start">起始时间</param>
+        /// <param name="end">终止时间</param>
+        /// <remarks>获取请假信息</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Leave/GetLeaveInfoByAccount")]
+        public List<int> GetLeaveInfoByAccount(string account,DateTime start,DateTime end)
+        {
+            db = new DataClasses1DataContext(connstr);
+            List<int> list = new List<int>();
+            var leave = db.Leave.Where(a => a.mId==account&&DateTime.Compare(a.time,start)>=0&&DateTime.Compare(a.time,end)<=0);
+            if (leave is null)
+            {
+                return list;
+            }
+            else
+            {
+                foreach(var x in leave)
+                {
+                    list.Add(x.lId);
+                }
+            }
+            return list;
+        }
+        // POST: api/Leave/Post
         /// <summary>
         /// 添加员工请假信息
         /// </summary>
@@ -129,6 +195,7 @@ namespace ExpressStationSystem.Controllers
             }
             leave.reason = x.reason;
             leave.status = 0;
+            leave.mId = x.mId;
             leave.time = DateTime.Now;
             leave.srcTime = x.srcTime;
             leave.endTime = x.endTime;

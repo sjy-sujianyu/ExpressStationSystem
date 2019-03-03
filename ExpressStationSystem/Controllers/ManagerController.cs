@@ -12,11 +12,6 @@ namespace ExpressStationSystem.Controllers
     {
         private static string connstr = @"Data Source=172.16.34.153;Initial Catalog=Express;User ID=sa;Password=123456;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private DataClasses1DataContext db;
-
-        public string Options()
-        {
-            return null;
-        }
         // GET: api/Manager
         public IEnumerable<string> Get()
         {
@@ -95,8 +90,11 @@ namespace ExpressStationSystem.Controllers
             member.onDuty = true;
             try
             {
-                db.Login.InsertOnSubmit(login);
-                db.SubmitChanges();
+                if(y==null)
+                {
+                    db.Login.InsertOnSubmit(login);
+                    db.SubmitChanges();
+                }
                 db.Member.InsertOnSubmit(member);
                 db.SubmitChanges();
                 return true;
@@ -187,10 +185,10 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>解雇某个员工</remarks>
         /// <returns>返回</returns>
         [HttpDelete, Route("Manager/DeleteMember")]
-        public bool DeleteMember(string account)
+        public bool DeleteMember(accountClass aclass)
         {
             db = new DataClasses1DataContext(connstr);
-            var x = db.Member.SingleOrDefault(a => a.mId == account);
+            var x = db.Member.SingleOrDefault(a => a.mId == aclass.account);
             if(x is null)
             {
                 return false;

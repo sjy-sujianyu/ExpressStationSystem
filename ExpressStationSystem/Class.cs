@@ -1,6 +1,7 @@
 ﻿using Swashbuckle.Swagger;
 using System;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.Http.Description;
 
 namespace ExpressStationSystem
@@ -177,6 +178,8 @@ namespace ExpressStationSystem
         public int lId;
 
         public string reason;
+
+        public string mId;
 
         public System.DateTime srcTime;
 
