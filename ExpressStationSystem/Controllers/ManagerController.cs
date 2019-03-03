@@ -118,7 +118,7 @@ namespace ExpressStationSystem.Controllers
         public bool ChangeMemberInfo(MemberClass x)
         {
             db = new DataClasses1DataContext(connstr);
-            List<string> list = new List<string>() { "派件员","收件员", "出件员","休息中","经理","待定中" };
+            List<string> list = new List<string>() { "派件员","揽件员", "出件员","休息中","经理","待定中" };
             if(!list.Contains(x.job))
             {
                 return false;
