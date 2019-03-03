@@ -107,7 +107,7 @@ namespace ExpressStationSystem.Controllers
 
         // PUT: api/PickUp/ChangeMemberInfo?account={account}
         /// <summary>
-        /// 改变员工职位、名字、底薪、是否休息
+        /// 改变员工职位、名字、底薪
         /// </summary>
         /// <param name="x">员工实体</param>
         /// <remarks>改变员工职位、名字、底薪</remarks>
@@ -131,6 +131,29 @@ namespace ExpressStationSystem.Controllers
                 member.job = x.job;
                 member.name = x.name;
                 member.baseSalary = x.baseSalary;
+                db.SubmitChanges();
+                return true;
+            }
+        }
+
+        // PUT: api/PickUp/ChangeMemberInfo?account={account}
+        /// <summary>
+        /// 改变员工职位、名字、底薪
+        /// </summary>
+        /// <param name="x">员工实体</param>
+        /// <remarks>改变员工职位、名字、底薪</remarks>
+        /// <returns>返回</returns>
+        [HttpPut, Route("Manager/ChangeDuty")]
+        public bool ChangeDuty(onDutyClass x)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var member = db.Member.SingleOrDefault(a => a.mId == x.mId);
+            if (member is null)
+            {
+                return false;
+            }
+            else
+            {
                 member.onDuty = x.onDuty;
                 db.SubmitChanges();
                 return true;

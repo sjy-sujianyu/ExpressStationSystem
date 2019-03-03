@@ -126,9 +126,15 @@ namespace ExpressStationSystem
         public string job;
 
         public decimal baseSalary;
+    }
+
+    public class onDutyClass
+    {
+        public string mId;
 
         public bool onDuty;
     }
+
     public class accountClass
     {
         public string account;
