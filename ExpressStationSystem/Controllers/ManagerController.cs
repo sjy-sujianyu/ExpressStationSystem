@@ -110,13 +110,15 @@ namespace ExpressStationSystem.Controllers
         /// 改变员工职位、名字、底薪
         /// </summary>
         /// <param name="x">员工实体</param>
-        /// <remarks>改变员工职位、名字、底薪</remarks>
+        /// <remarks>改变员工职位、名字、底薪
+        /// <br>job状态: "派件员","收件员", "出件员","休息中","经理","待定中"</br>
+        /// </remarks>
         /// <returns>返回</returns>
         [HttpPut, Route("Manager/ChangeMemberInfo")]
         public bool ChangeMemberInfo(MemberClass x)
         {
             db = new DataClasses1DataContext(connstr);
-            List<string> list = new List<string>() { "派件员","收件员", "出件员","休息中","经理" };
+            List<string> list = new List<string>() { "派件员","收件员", "出件员","休息中","经理","待定中" };
             if(!list.Contains(x.job))
             {
                 return false;
