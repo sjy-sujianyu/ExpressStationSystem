@@ -10,9 +10,6 @@
     @*<script src="~/Views/Package/Package.js"></script>*@
 
     <script>
-        var showArray = @ViewBag.showArray;
-        var sum = @ViewBag.Sum;
-
         function changeShowCheckType(self) {
             var button = document.getElementById("showCheckType");
             button.innerHTML = self.innerText + ' <span class="caret"></span>';
@@ -23,92 +20,14 @@
             input.placeholder = self.innerText + '查找';
         }
 
-        @*function showAll() {
-            ViewBag.showArray.splice(0, ViewBag.showArray.Count);
-            for (var i = 0; i < ViewBag.Sum; i++) {
-                ViewBag.showArray[i] = i;
-            }
-            document.location.reload();
+        function turnToDetail(id) {
+            window.location.href = '/Member/DetailMember/?id=' + id ;
         }
-
-        function showUnknow() {
-            var showArray = @ViewBag.showArray;
-            var sum = @ViewBag.Sum;
-            showArray.splice(0, showArray.Length);
-            var num = 0;
-            for (var i = 0; i < sum; i++) {
-                if (ViewBag.jobList == "待定中") {
-                    ViewBag.showArray[num++] = i;
-                }
-            }
-            document.location.reload();
-        }*@
-
-        @*function showFree() {
-            var showArray = @ViewBag.showArray;
-            var sum = @ViewBag.Sum;
-            @ViewBag.showArray.Clear();
-            for (var i = 0, num = 0; i < sum; i++) {
-                if (@ViewBag.onDuty == false) {
-                   showArray[num++] = i;
-                }
-            }
-            @ViewBag.showArray = showArray;
-            document.location.reload();
-        }*@
-
-        //function showPie() {
-        //    ViewBag.showArray.splice(0, ViewBag.showArray.Count);
-        //    alert(ViewBag.showArray.Count);
-        //    var num = 0;
-        //    for (var i = 0; i < ViewBag.Sum; i++) {
-        //        if (ViewBag.jobList == "派件员") {
-        //            ViewBag.showArray[num++] = i;
-        //        }
-        //    }
-        //    document.location.reload();
-        //}
-
-        //function showTra() {
-        //    ViewBag.showArray.splice(0, ViewBag.showArray.Count);
-        //    alert(ViewBag.showArray.Count);
-        //    var num = 0;
-        //    for (var i = 0; i < ViewBag.Sum; i++) {
-        //        if (ViewBag.jobList == "转件员") {
-        //            ViewBag.showArray[num++] = i;
-        //        }
-        //    }
-        //    document.location.reload();
-        //}
-
-        //function showLan() {
-        //    ViewBag.showArray.splice(0, ViewBag.showArray.Count);
-        //    alert(ViewBag.showArray.Count);
-        //    var num = 0;
-        //    for (var i = 0; i < ViewBag.Sum; i++) {
-        //        if (ViewBag.jobList == "揽件员") {
-        //            ViewBag.showArray[num++] = i;
-        //        }
-        //    }
-        //    document.location.reload();
-        //}
-
-        //function showFire() {
-        //    ViewBag.showArray.splice(0, ViewBag.showArray.Count);
-        //    alert(ViewBag.showArray.Count);
-        //    var num = 0;
-        //    for (var i = 0; i < ViewBag.Sum; i++) {
-        //        if (ViewBag.isDelete == true) {
-        //            ViewBag.showArray[num++] = i;
-        //        }
-        //    }
-        //    document.location.reload();
-        //}
     </script>
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
-    
+
 
     <div class="navbar navbar-default navbar-fixed-top">
 
@@ -197,24 +116,29 @@
                         <th>姓名</th>
                         <th>联系手机</th>
                         <th>职位</th>
+                        <th>休假情况</th>
                     </tr>
 
                 </thead>
                 <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
 
-                    @for (int i = 0; i < ViewBag.showPhoneList.Count ; i++)
+                    @for (int i = 0; i < ViewBag.showPhoneList.Count; i++)
                     {
-                        <tr>
-                            <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.showImgList[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
-                            <td>@ViewBag.showNameList[i]</td>
-                            <td>@ViewBag.showPhoneList[i]</td>
-                            <td>@ViewBag.showJobList[i]</td>
-                        </tr>
+                    <tr>
+                        <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.showImgList[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                        <td>@ViewBag.showNameList[i]</td>
+                        <td>@ViewBag.showPhoneList[i]</td>
+                        <td>@ViewBag.showJobList[i]</td>
+                        <td>@ViewBag.showIsOnDutyList[i]</td>
+                        <th><button type="button" class="btn-sm btn-info" onclick="turnToDetail(@ViewBag.showPhoneList[i])">详情</button></th>
+                        
+
+                    </tr>
                     }
                 </tbody>
             </table>
         </div>
-        
+
 
         <div class='container-fluid col-sm-1.5'>
             <div class="list-group">
@@ -230,7 +154,7 @@
         </div>
     </div>
 
-    
+
 </body>
 </html>
 

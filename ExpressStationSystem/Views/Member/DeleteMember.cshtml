@@ -24,18 +24,18 @@
         }
 
         function deleteMember(id) {
-            var formData = new FormData();
-            formData.append("account", document.getElementById(id).value);
+            alert(id);
             $.ajax({
                 url: 'http://172.16.34.153:60062/Manager/DeleteMember', /*接口域名地址*/
-                type: 'post',
-                data: formData,
-                contentType: false,
-                processData: false,
+                contentType: "application/json;charset=UTF-8",
+                type: 'delete',
+                data: JSON.stringify({
+                    'account': id
+                }),
                 success: function (res) {
                     if (res == true) {
                         alert('已经删除该员工');
-                        document.location.reload();
+
                     } else {
                         alert('失败');
                         console.log(res);
@@ -96,7 +96,7 @@
                     </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
+        </div>
     </div>
 
     <h2 class='page-header'>员工开除</h2>
@@ -109,7 +109,6 @@
         <ul class="dropdown-menu">
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按工号</a></li>
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
-            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
         </ul>
 
         <div class="input-group">
@@ -140,10 +139,10 @@
                     <tr>
                         <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.imgList[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
                         <td>@ViewBag.nameList[i]</td>
-                        <td id="@i">@ViewBag.phoneList[i]</td>
+                        <td>@ViewBag.phoneList[i]</td>
                         <td>@ViewBag.jobList[i]</td>
                         <th>
-                            <button type="button" class="btn-sm btn-danger" onclick="deleteMember(@i)">开除</button>
+                            <button type="button" class="btn-sm btn-danger" onclick="deleteMember(@ViewBag.phoneList[i])">开除</button>
                         </th>
                     </tr>
                 }

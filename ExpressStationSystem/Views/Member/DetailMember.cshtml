@@ -94,7 +94,7 @@
         <br /><br />
 
         <div class="col-sm-offset-1" style="font-size:30px;margin-top:5rem;" id="mName">
-            王小明
+            @ViewBag.thisName
         </div>
 
     </div>
@@ -103,17 +103,12 @@
         <div style="margin-left:6.5rem;margin-top:2rem">
             <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
                 员工号:&nbsp;&nbsp;&nbsp;
-                <div id="mid">158xxxx3391</div>
+                <div id="mid">@ViewBag.thisID</div>
             </div>
 
             <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
                 职称:&nbsp;&nbsp;&nbsp;
-                <div id="mjob">站点派件员</div>
-            </div>
-
-            <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
-                入职时间:&nbsp;&nbsp;&nbsp;
-                <div id="mJoinTime">2019-2-27</div>
+                <div id="mjob">@ViewBag.thisJob</div>
             </div>
 
             <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
@@ -130,8 +125,8 @@
             </div>
 
             <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
-                月薪:&nbsp;&nbsp;&nbsp;
-                <div id="mjoinMoney">￥8500.00</div>
+                底薪:&nbsp;&nbsp;&nbsp;
+                <div id="mjoinMoney">￥@ViewBag.thisBaseSalary</div>
             </div>
         </div>
 

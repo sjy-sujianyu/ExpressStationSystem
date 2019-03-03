@@ -16,7 +16,7 @@ namespace ExpressStationSystem.Controllers.ViewController
         List<string> showNameList = new List<string>();
         List<string> showPhoneList = new List<string>();
         List<string> showJobList = new List<string>();
-
+        List<string> showIsOnDutyList = new List<string>();
         // GET: Member
         public ActionResult AllMember(string status)
         {
@@ -28,8 +28,9 @@ namespace ExpressStationSystem.Controllers.ViewController
             showNameList.Clear();
             showPhoneList.Clear();
             showJobList.Clear();
+            showIsOnDutyList.Clear();
 
-            if(status == "已辞职")
+            if (status == "已辞职")
             {
                 foreach (var one in MID)
                 {
@@ -39,6 +40,15 @@ namespace ExpressStationSystem.Controllers.ViewController
                         showNameList.Add(new QueryController().GetMemberAllInfo(one).name);
                         showPhoneList.Add(new QueryController().GetMemberAllInfo(one).mId);
                         showJobList.Add(new QueryController().GetMemberAllInfo(one).job);
+                        if(new QueryController().GetMemberAllInfo(one).onDuty)
+                        {
+                            showIsOnDutyList.Add("工作中");
+                        }
+                        else
+                        {
+                            showIsOnDutyList.Add("休息中");
+                        }
+                       
                     }
                 }
             }else if(status == null)
@@ -51,6 +61,14 @@ namespace ExpressStationSystem.Controllers.ViewController
                         showNameList.Add(new QueryController().GetMemberAllInfo(one).name);
                         showPhoneList.Add(new QueryController().GetMemberAllInfo(one).mId);
                         showJobList.Add(new QueryController().GetMemberAllInfo(one).job);
+                        if (new QueryController().GetMemberAllInfo(one).onDuty)
+                        {
+                            showIsOnDutyList.Add("工作中");
+                        }
+                        else
+                        {
+                            showIsOnDutyList.Add("休息中");
+                        }
                     }
                 }
             }else if(status == "休息中")
@@ -63,6 +81,7 @@ namespace ExpressStationSystem.Controllers.ViewController
                         showNameList.Add(new QueryController().GetMemberAllInfo(one).name);
                         showPhoneList.Add(new QueryController().GetMemberAllInfo(one).mId);
                         showJobList.Add(new QueryController().GetMemberAllInfo(one).job);
+                        showIsOnDutyList.Add("休息中");
                     }
                 }
             }else
@@ -75,6 +94,14 @@ namespace ExpressStationSystem.Controllers.ViewController
                         showNameList.Add(new QueryController().GetMemberAllInfo(one).name);
                         showPhoneList.Add(new QueryController().GetMemberAllInfo(one).mId);
                         showJobList.Add(new QueryController().GetMemberAllInfo(one).job);
+                        if (new QueryController().GetMemberAllInfo(one).onDuty)
+                        {
+                            showIsOnDutyList.Add("工作中");
+                        }
+                        else
+                        {
+                            showIsOnDutyList.Add("休息中");
+                        }
                     }
                 }
             }
@@ -83,40 +110,10 @@ namespace ExpressStationSystem.Controllers.ViewController
             ViewBag.showNameList = showNameList;
             ViewBag.showPhoneList = showPhoneList;
             ViewBag.showJobList = showJobList;
+            ViewBag.showIsOnDutyList = showIsOnDutyList;
 
             return View();
         }
-
-        //public ActionResult AllMember()
-        //{
-        //    //重新请求数据库，获取员工ID
-        //    List<string> MID = new ManagerController().GetAllMember();
-
-        //    //清空原本数组
-        //    showImgList.Clear();
-        //    showNameList.Clear();
-        //    showPhoneList.Clear();
-        //    showJobList.Clear();
-
-        //    //默认获取全部的人员
-        //    foreach (var one in MID)
-        //    {
-        //        if (!(new QueryController().GetMemberAllInfo(one).isDelete))
-        //        {
-        //            showImgList.Add(new QueryController().GetMemberAllInfo(one).imagePath);
-        //            showNameList.Add(new QueryController().GetMemberAllInfo(one).name);
-        //            showPhoneList.Add(new QueryController().GetMemberAllInfo(one).mId);
-        //            showJobList.Add(new QueryController().GetMemberAllInfo(one).job);
-        //        }
-        //    }
-
-        //    ViewBag.showImgList = showImgList;
-        //    ViewBag.showNameList = showNameList;
-        //    ViewBag.showPhoneList = showPhoneList;
-        //    ViewBag.showJobList = showJobList;
-
-        //    return View();
-        //}
 
         public ActionResult AddMember()
         {
@@ -162,8 +159,15 @@ namespace ExpressStationSystem.Controllers.ViewController
             return View();
         }
 
-        public ActionResult DetailMember()
+        public ActionResult DetailMember(string id)
         {
+            var member = new QueryController().GetMemberAllInfo(id);
+            ViewBag.thisID = id;
+            ViewBag.thisName = new QueryController().GetMemberAllInfo(id).name;
+            ViewBag.thisImagePath = new QueryController().GetMemberAllInfo(id).imagePath;
+            ViewBag.thisBaseSalary = new QueryController().GetMemberAllInfo(id).baseSalary;
+            ViewBag.thisJob = new QueryController().GetMemberAllInfo(id).job;
+
             return View();
         }
 
