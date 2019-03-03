@@ -136,12 +136,12 @@ namespace ExpressStationSystem.Controllers
             }
         }
 
-        // PUT: api/PickUp/ChangeMemberInfo?account={account}
+        // PUT: api/PickUp/ChangeDuty
         /// <summary>
-        /// 改变员工职位、名字、底薪
+        /// 改变员工休息或者上班状态
         /// </summary>
         /// <param name="x">员工实体</param>
-        /// <remarks>改变员工职位、名字、底薪</remarks>
+        /// <remarks>改变员工休息或者上班状态</remarks>
         /// <returns>返回</returns>
         [HttpPut, Route("Manager/ChangeDuty")]
         public bool ChangeDuty(onDutyClass x)
