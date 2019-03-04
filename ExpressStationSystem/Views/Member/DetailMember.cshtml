@@ -54,6 +54,7 @@
                             <li><a href="../Member/AddMember">员工录用</a></li>
                             <li><a href="../Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
+                            <li><a href="../Member/Fine">罚款</a></li>
                             <li><a href="../Member/Leave">请假条</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="../Member/Mission">任务分配</a></li>
@@ -86,8 +87,8 @@
     <div class="col-sm-9" style="left:0rem;display:flex">
         <div style="display:flex;align-items:center">
 
-            <button type="button" class="btn btn-default btn-group-lg" aria-label="Left Align" style="border-radius:8rem;height:8rem;width:8rem;font-size:3rem;">
-                <img class="img-circle" src=@("http://" + ViewBag.thisImagePath) alt="头像" style="width:5rem;height:5rem;" />
+            <button type="button" class="btn btn-default btn-group-lg" aria-label="Left Align" style="border-radius:8rem;height:8rem;width:8rem;font-size:3rem; background:url(@("http://" + ViewBag.thisImagePath));background-size:100%" disabled="disabled" >
+                @*<img class="img-circle" src= alt="头像" style="width:5rem;height:5rem;" />*@
             </button>
 
         </div>

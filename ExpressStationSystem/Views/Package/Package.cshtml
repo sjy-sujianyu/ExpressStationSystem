@@ -123,7 +123,7 @@
                         }
                         else if (@ViewBag.statusList[i] == "拒收" || @ViewBag.statusList[i] == "错件" || @ViewBag.statusList[i] == "漏件" || @ViewBag.statusList[i] == "破损")
                         {
-                            <tr class="list-group-item-info" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="detailImformation(@i)">
+                            <tr class="list-group-item-danger" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="detailImformation(@i)">
                                 <th scope="row">@ViewBag.packagesID[i]</th>
                                 <td>@ViewBag.nameList[i]</td>
                                 <td>@ViewBag.phoneList[i]</td>

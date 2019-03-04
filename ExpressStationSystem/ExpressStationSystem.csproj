@@ -283,6 +283,7 @@
     <Content Include="Views\Member\changeMemberDetail.cshtml" />
     <Content Include="Views\Package\ViewPage1.cshtml" />
     <Content Include="Views\Member\Leave.cshtml" />
+    <Content Include="Views\Member\Fine.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

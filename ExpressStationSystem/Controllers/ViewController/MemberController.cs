@@ -184,28 +184,76 @@ namespace ExpressStationSystem.Controllers.ViewController
 
         public ActionResult changeMemberDetail(string id)
         {
+            if(id == null)
+            {
+                id = "15813322560";
+            }
             var member = new QueryController().GetMemberAllInfo(id);
             ViewBag.thisID = id;
             ViewBag.thisName = new QueryController().GetMemberAllInfo(id).name;
             ViewBag.thisImagePath = new QueryController().GetMemberAllInfo(id).imagePath;
             ViewBag.thisBaseSalary = new QueryController().GetMemberAllInfo(id).baseSalary;
             ViewBag.thisJob = new QueryController().GetMemberAllInfo(id).job;
-            
+
             return View();
         }
 
         public ActionResult Leave(string type)
         {
+            List<string> applicantsImg = new List<string>();
+
+            List<string> applicantsID = new List<string>();
+            List<string> applicantsName = new List<string>();
+            List<string> applicantsJob = new List<string>();
+            List<string> applicantsReason = new List<string>();
+            List<DateTime> applicantsApplyTime = new List<DateTime>();
+            List<DateTime> applicantsStartTime = new List<DateTime>();
+            List<DateTime> applicantsEndTime = new List<DateTime>();
+
+
+            List<int> applicantsTimes = new List<int>();
+
+            //获取月份
+            DateTime thisMonthStart = DateTime.Now.AddDays(1 - DateTime.Now.Day).Date;
+            DateTime thisMonthEnd = DateTime.Now.AddDays(1 - DateTime.Now.Day).Date.AddMonths(1).AddSeconds(-1);
+
             //返回历史
-            if(type == "history")
+            if (type == "history")
             {
 
             }
             //返回未处理
             else
             {
+                //得到未处理的请假条ID
+                var unFinishLID = new LeaveController().GetLeaveList();
 
+                foreach(var lid in unFinishLID)
+                {
+                    var mid = new LeaveController().GetLeaveInfo(lid).member.mId;
+                    applicantsImg.Add(new LeaveController().GetLeaveInfo(lid).member.imagePath);
+                    applicantsID.Add(mid);
+                    applicantsName.Add(new LeaveController().GetLeaveInfo(lid).member.name);
+                    applicantsJob.Add(new LeaveController().GetLeaveInfo(lid).member.job);
+                    applicantsReason.Add(new LeaveController().GetLeaveInfo(lid).leave.reason);
+                    applicantsApplyTime.Add(new LeaveController().GetLeaveInfo(lid).leave.time);
+                    applicantsStartTime.Add(new LeaveController().GetLeaveInfo(lid).leave.srcTime);
+                    applicantsEndTime.Add(new LeaveController().GetLeaveInfo(lid).leave.endTime);
+
+                    applicantsTimes.Add(new LeaveController().GetLeaveCount(mid, thisMonthStart, thisMonthEnd));
+                }
+                ViewBag.unFinishLID = unFinishLID;
             }
+            
+            ViewBag.applicantsImg = applicantsImg;
+            ViewBag.applicantsID = applicantsID;
+            ViewBag.applicantsName = applicantsName;
+            ViewBag.applicantsJob = applicantsJob;
+            ViewBag.applicantsReason = applicantsReason;
+            ViewBag.applicantsApplyTime = applicantsApplyTime;
+            ViewBag.applicantsStartTime = applicantsStartTime;
+            ViewBag.applicantsEndTime = applicantsEndTime;
+            ViewBag.applicantsTimes = applicantsTimes;
             return View();
         }
     }

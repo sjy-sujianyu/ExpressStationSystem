@@ -8,17 +8,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @*<script src="~/Views/Package/Package.js"></script>*@
-    <style>
-        .btn-circle {
-            width: 30px;
-            height: 30px;
-            text - align: center;
-            padding: 6px 0;
-            font - size: 12px;
-            line - height: 1.428571429;
-            border - radius: 15px;
-        }
-    </style>
+    
     <script>
         function addimg() {
             var f = document.getElementById('upload');
@@ -86,7 +76,7 @@
         }
 
         function finish(OldID) {
-            var salary = Number(document.getElementById("newSalary").value);
+            //先修改ID
             $.ajax({
                 url: 'http://172.16.34.153:60062/Manager/ChangeMid', /*接口域名地址*/
                 contentType: "application/json;charset=UTF-8",
@@ -97,34 +87,60 @@
                 }),
                 success: function (res) {
                     if (res == true) {
-                        //修改信息
-                        $.ajax({
-                            url: 'http://172.16.34.153:60062/Manager/ChangeMemberInfo', /*接口域名地址*/
-                            contentType: "application/json;charset=UTF-8",
-                            type: 'put',
-                            data: JSON.stringify({
-                                "mId": document.getElementById("newPhone").value,
-                                "name": document.getElementById("newName").value,
-                                "job": "派件员",
-                                "baseSalary": salary
-                            }),
-                            success: function (res) {
-                                if (res == true) {
-                                    alert('修改信息成功');
-                                    window.location.href = '/Member/DetailMember?id=' + document.getElementById("newPhone").value;
-                                } else {
-                                    alert('失败');
-                                    console.log(res);
-                                }
-                            }
-                        })
-
+                        changeInfo();
+                        
                     } else {
                         alert('失败');
                         console.log(res);
                     }
                 }
             })
+        }
+
+        function changeInfo() {
+            var salary = Number(document.getElementById("newSalary").value);
+            //修改各项信息
+            $.ajax({
+                url: 'http://172.16.34.153:60062/Manager/ChangeMemberInfo', /*接口域名地址*/
+                contentType: "application/json;charset=UTF-8",
+                type: 'put',
+                data: JSON.stringify({
+                    "mId": document.getElementById("newPhone").value,
+                    "name": document.getElementById("newName").value,
+                    "job": "派件员",
+                    "baseSalary": salary
+                }),
+                success: function (res) {
+                    if (res == true) {
+                        alert('修改信息成功');
+                        postImg(document.getElementById("newPhone").value);
+                    } else {
+                        alert('失败');
+                    }
+                }
+            })
+        }
+
+        function postImg(phone) {
+            alert('修改头像');
+            var formData = new FormData();
+            formData.append("file", $("#upload")[0].files[0]);
+            $.ajax({
+                url: 'http://172.16.34.153:60062/Image/Post?account=' + phone, /*接口域名地址*/
+                type: 'post',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (res) {
+                    if (res == true) {
+                        alert('上传头像完成');
+                        window.location.reload();
+                        window.location.href = '/Member/DetailMember?id=' + document.getElementById("newPhone").value;
+                    } else {
+                        alert('上传头像失败');
+                    }
+                }
+            });
         }
 
         function tryPhone() {
@@ -152,9 +168,6 @@
             });
         }
 
-        function changeID() {
-
-        }
     </script>
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -185,6 +198,7 @@
                             <li><a href="../Member/AddMember">员工录用</a></li>
                             <li><a href="../Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
+                            <li><a href="../Member/Fine">罚款</a></li>
                             <li><a href="../Member/Leave">请假条</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="../Member/Mission">任务分配</a></li>

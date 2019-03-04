@@ -168,10 +168,10 @@
         }
 
         function postData(phone) {
-            //var mjob = document.getElementById("mJob").value;
-            //if (mjob == "") {
-            var mjob = "待定中";
-            //}
+            var mjob = document.getElementById("selectJob").innerText;
+            if (mjob == "职位") {
+                var mjob = "待定中";
+            }
             var msalary = document.getElementById("mSalary").value;
             if (msalary == "") {
                 msalary = 0;
@@ -195,6 +195,11 @@
                     }
                 }
             });
+        }
+
+        function changeJobType(self) {
+            var button = document.getElementById("selectJob");
+            button.innerHTML = self.innerText + ' <span class="caret"></span>';
         }
 
     </script>
@@ -227,6 +232,7 @@
                             <li><a href="../Member/AddMember">员工录用</a></li>
                             <li><a href="../Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
+                            <li><a href="../Member/Fine">罚款</a></li>
                             <li><a href="../Member/Leave">请假条</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="../Member/Mission">任务分配</a></li>
@@ -290,14 +296,14 @@
             <br />
             <div class="row col-sm-8 input-group" style="display:flex">
                 <div class="btn-group">
-                    <button type="button" class="btn-Mission btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="MissionType1">
+                    <button type="button" class="btn-Mission btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="selectJob">
                         职位<span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a>经理</a></li>
-                        <li><a>派件员</a></li>
-                        <li><a>揽件员</a></li>
-                        <li><a>转件员</a></li>
+                        <li><a onclick="changeJobType(this)">经理</a></li>
+                        <li><a onclick="changeJobType(this)">派件员</a></li>
+                        <li><a onclick="changeJobType(this)">揽件员</a></li>
+                        <li><a onclick="changeJobType(this)">转件员</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-6">
@@ -323,7 +329,6 @@
             </div>
         </div>
 
-        <iframe style="display:none" name="hiddenIFrame" id="hiddenIFrame" />
     </div>
 
 </body>
