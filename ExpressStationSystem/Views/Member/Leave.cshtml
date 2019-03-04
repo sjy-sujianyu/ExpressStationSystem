@@ -81,8 +81,6 @@
 
     <div class="col-sm-6 col-sm-offset-4" style="display:flex">
 
-
-
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
             按姓名 <span class="caret"></span>
         </button>
@@ -97,6 +95,8 @@
                 <button class="btn btn-default" type="button">Go!</button>
             </span>
         </div>
+
+        @*<input type="date" />*@
     </div>
 
     <br />
@@ -135,7 +135,7 @@
                                             <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <input type="text" placeholder="输入意见" id="accessView"/>
+                                            <input type="text" placeholder="输入意见" id="accessView" />
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-primary" data-dismiss="modal">提交批准</button>
@@ -152,7 +152,7 @@
                                             <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <input type="text" placeholder="输入意见" id="refuseView"/>
+                                            <input type="text" placeholder="输入意见" id="refuseView" />
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger" data-dismiss="modal">提交驳回</button>
@@ -190,6 +190,15 @@
                 </tbody>
             </table>
         </div>
+
+        <div class='container-fluid col-sm-1.5'>
+            <div class="list-group">
+                <h4 class="page-header">选择分类</h4>
+                <a class="list-group-item" href="/Member/Leave">未处理</a>
+                <a class="list-group-item" href="/Member/AllMember">历史记录</a>
+            </div>
+        </div>
+
     </div>
 
     

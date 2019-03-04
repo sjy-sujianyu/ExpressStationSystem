@@ -24,7 +24,6 @@
         }
 
         function deleteMember(id) {
-            alert(id);
             $.ajax({
                 url: 'http://172.16.34.153:60062/Manager/DeleteMember', /*接口域名地址*/
                 contentType: "application/json;charset=UTF-8",
@@ -35,7 +34,7 @@
                 success: function (res) {
                     if (res == true) {
                         alert('已经删除该员工');
-
+                        window.location.reload();
                     } else {
                         alert('失败');
                         console.log(res);
@@ -134,7 +133,7 @@
             </thead>
             <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
 
-                @for (int i = 0; i < ViewBag.MID.Count; i++)
+                @for (int i = 0; i < ViewBag.phoneList.Count; i++)
                 {
                     <tr>
                         <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.imgList[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>

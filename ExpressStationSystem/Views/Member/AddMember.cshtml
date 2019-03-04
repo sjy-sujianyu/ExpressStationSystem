@@ -168,17 +168,17 @@
         }
 
         function postData(phone) {
-            var mjob = document.getElementById("mJob").value;
-            if (mjob == "") {
-                mjob = "空闲";
-            }
+            //var mjob = document.getElementById("mJob").value;
+            //if (mjob == "") {
+            var mjob = "待定中";
+            //}
             var msalary = document.getElementById("mSalary").value;
             if (msalary == "") {
                 msalary = 0;
             }
             $.ajax({
                 type: 'post',
-                url: 'http://localhost:60062/Manager/PostMember',
+                url: 'http://172.16.34.153:60062/Manager/PostMember',
                 contentType: "application/json;charset=UTF-8",
                 data: JSON.stringify({
                     mId: phone,

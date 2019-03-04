@@ -19,6 +19,143 @@
             border - radius: 15px;
         }
     </style>
+    <script>
+        function addimg() {
+            var f = document.getElementById('upload');
+            f.click();
+        }
+
+        function loadimg(file) {
+
+            var MAXWIDTH = 100;
+            var MAXHEIGHT = 100;
+
+            if (file.files && file.files[0]) {
+                //div.innerHTML = '<img id=imghead>'; 
+                var img = document.getElementById('imghead');
+                img.onload = function () {
+                    var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                    img.width = rect.width;
+                    img.height = rect.height;
+                    img.style.marginLeft = rect.left + 'px';
+                    img.style.marginTop = rect.top + 'px';
+                }
+                var reader = new FileReader();
+                reader.onload = function (evt) {
+                    img.src = evt.target.result;
+                }
+                reader.readAsDataURL(file.files[0]);
+                //uploadPhoto();
+
+            } else {
+                var sFilter = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+                file.select();
+                var src = document.selection.createRange().text;
+                // div.innerHTML = '<img id=imghead>';
+                var img = document.getElementById('imghead');
+                img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+                var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+                status = ('rect:' + rect.top + ',' + rect.left + ',' + rect.width + ',' + rect.height);
+
+            }
+
+        }
+
+        function clacImgZoomParam(maxWidth, maxHeight, width, height) {
+            var param = {
+                top: 0,
+                left: 0,
+                width: width,
+                height: height
+            };
+            if (width > maxWidth || height > maxHeight) {
+                rateWidth = width / maxWidth;
+                rateHeight = height / maxHeight;
+
+                if (rateWidth > rateHeight) {
+                    param.width = maxWidth;
+                    param.height = Math.round(height / rateWidth);
+                } else {
+                    param.width = Math.round(width / rateHeight);
+                    param.height = maxHeight;
+                }
+            }
+            param.left = Math.round((maxWidth - param.width) / 2);
+            param.top = Math.round((maxHeight - param.height) / 2);
+            return param;
+        }
+
+        function finish(OldID) {
+            var salary = Number(document.getElementById("newSalary").value);
+            $.ajax({
+                url: 'http://172.16.34.153:60062/Manager/ChangeMid', /*接口域名地址*/
+                contentType: "application/json;charset=UTF-8",
+                type: 'put',
+                data: JSON.stringify({
+                    'oldMid': OldID,
+                    "newMid": document.getElementById("newPhone").value
+                }),
+                success: function (res) {
+                    if (res == true) {
+                        //修改信息
+                        $.ajax({
+                            url: 'http://172.16.34.153:60062/Manager/ChangeMemberInfo', /*接口域名地址*/
+                            contentType: "application/json;charset=UTF-8",
+                            type: 'put',
+                            data: JSON.stringify({
+                                "mId": document.getElementById("newPhone").value,
+                                "name": document.getElementById("newName").value,
+                                "job": "派件员",
+                                "baseSalary": salary
+                            }),
+                            success: function (res) {
+                                if (res == true) {
+                                    alert('修改信息成功');
+                                    window.location.href = '/Member/DetailMember?id=' + document.getElementById("newPhone").value;
+                                } else {
+                                    alert('失败');
+                                    console.log(res);
+                                }
+                            }
+                        })
+
+                    } else {
+                        alert('失败');
+                        console.log(res);
+                    }
+                }
+            })
+        }
+
+        function tryPhone() {
+            var phone = document.getElementById("newPhone").value;
+            if (phone == "") {
+                return;
+            }
+            $.ajax({
+                type: 'get',
+                url: 'http://172.16.34.153:60062/Query/isTel',
+                data: {
+                    tb: phone
+                },
+                success: function (res) {
+                    if (res == true) {
+                        //可用按钮
+                        document.getElementById("phoneIllegal").style.display = 'none';
+                        document.getElementById("finishChange").disabled = false;
+                    }
+                    else {
+                        document.getElementById("phoneIllegal").style.display = 'block';
+                        document.getElementById("finishChange").disabled = true;
+                    }
+                }
+            });
+        }
+
+        function changeID() {
+
+        }
+    </script>
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
@@ -77,43 +214,39 @@
 
     <h2 class='page-header'>员工详情</h2>
 
-    <div  style="left:0rem;display:flex">
+    <div style="left:0rem;display:flex">
         <div style="display:flex;align-items:center">
 
-            <button type="button" class="btn btn-default btn-group-lg" aria-label="Left Align" style="border-radius:8rem;height:8rem;width:8rem;font-size:3rem;">
-                <span class="glyphicon glyphicon glyphicon-camera" aria-hidden="true"></span><!-- 头像-->
-            </button>
+            <input type="file" class="parameter required hidden" name="file" id="upload" onchange="loadimg(this)">
+
+            <img src=@("http://" + ViewBag.thisImagePath) id="imghead" type="button" class="btn btn-default btn-group-lg " onclick="addimg()" aria-label="Left Align" style="width:9rem;height:11rem;border:0">
 
         </div>
         <br /><br />
-
-
     </div>
 
     <div style="display:flex">
         <div style="display:flex;flex-direction:column">
-            <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
-                <input type="text" class="form-control" placeholder="王小明" aria-describedby="sizing-addon1" style="margin: auto;height: 3rem;">
+            <div class="row" style="font-size:25px;margin-top:3rem;margin-left:7rem;display:flex">
+                员工姓名:&nbsp;&nbsp;&nbsp;
+                <input type="text" class="form-control" placeholder="@ViewBag.thisName" value="@ViewBag.thisName" aria-describedby="sizing-addon1" style="margin: auto;height: 3rem;" id="newName">
             </div>
 
-            <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
+            <div class="row" style="font-size:25px;margin-top:3rem;margin-left:7rem;display:flex">
                 员工号:&nbsp;&nbsp;&nbsp;
-                <div id="mid">
-                    <input type="text" class="form-control" placeholder="158xxxx3391" aria-describedby="sizing-addon1" style="width:16rem">
+                <div id="mid" style="display:flex">
+                    <input type="text" class="form-control" placeholder="@ViewBag.thisID" value="@ViewBag.thisID" aria-describedby="sizing-addon1" style="width:16rem" id="newPhone" onblur="tryPhone()">
+                    <span class="glyphicon glyphicon glyphicon-remove " style="color:red;display:none" id="phoneIllegal">错误的手机号</span>
+
                 </div>
             </div>
 
-            <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
+            <div class="row" style="font-size:25px;margin-top:3rem;margin-left:7rem;display:flex">
                 职称:&nbsp;&nbsp;
-                <div id="mjob">站点派件员</div>
+                <div id="newJob">@ViewBag.thisJob</div>
             </div>
 
-            <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex;width: 24rem;">
-                入职时间:&nbsp;&nbsp;&nbsp;
-                <input type="text" class="form-control" placeholder="2019-2-27" aria-describedby="sizing-addon1" style="width:16rem">
-            </div>
-
-            <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex">
+            <div class="row" style="font-size:25px;margin-top:3rem;margin-left:7rem;display:flex">
                 <div class="btn-group">
                     <button type="button" class="btn-Mission btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:15rem">
                         派件记录<span class="glyphicon glyphicon-triangle-bottom"></span>
@@ -126,12 +259,13 @@
                 </div>
             </div>
 
-            <div class="row" style="font-size:18px;margin-top:3rem;margin-left:7rem;display:flex" id="mjoinTime">
-                月薪:&nbsp;&nbsp;&nbsp;
-                <input type="text" class="form-control" placeholder="￥8500.00" aria-describedby="sizing-addon1" style="width:16rem">
+            <div class="row input-group" style="font-size:25px;margin-top:3rem;margin-left:7rem;display:flex" id="mjoinTime">
+                底薪:&nbsp;&nbsp;&nbsp;
+                <span class="input-group-addon">￥</span>
+                <input type="text" class="form-control" placeholder="@ViewBag.thisBaseSalary" value="@ViewBag.thisBaseSalary" aria-describedby="sizing-addon1" style="width:16rem" id="newSalary">
             </div>
 
-            <button type="button" class="btn btn-success btn-lg col-sm-offset-1" style="margin:auto;margin-right:0">完成</button>
+            <button type="button" class="btn btn-success btn-lg col-sm-offset-1" style="margin:auto;margin-right:0;" onclick="finish(@ViewBag.thisID)" id="finishChange">完成</button>
 
         </div>
 

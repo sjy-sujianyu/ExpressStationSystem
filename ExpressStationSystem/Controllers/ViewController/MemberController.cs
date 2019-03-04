@@ -131,14 +131,18 @@ namespace ExpressStationSystem.Controllers.ViewController
 
             foreach (var one in MID)
             {
-                var member = new QueryController().GetMemberAllInfo(one);
-                imgList.Add(member.imagePath);
+                if(! new QueryController().GetMemberAllInfo(one).isDelete)
+                {
+                    var member = new QueryController().GetMemberAllInfo(one);
+                    imgList.Add(member.imagePath);
 
-                nameList.Add(member.name);
+                    nameList.Add(member.name);
 
-                phoneList.Add(member.mId);
+                    phoneList.Add(member.mId);
 
-                jobList.Add(member.job);
+                    jobList.Add(member.job);
+                }
+                
             }
 
             ViewBag.MID = MID;
@@ -161,23 +165,47 @@ namespace ExpressStationSystem.Controllers.ViewController
 
         public ActionResult DetailMember(string id)
         {
+            if(id != null)
+            {
+                var member = new QueryController().GetMemberAllInfo(id);
+                ViewBag.thisID = id;
+                ViewBag.thisName = new QueryController().GetMemberAllInfo(id).name;
+                ViewBag.thisImagePath = new QueryController().GetMemberAllInfo(id).imagePath;
+                ViewBag.thisBaseSalary = new QueryController().GetMemberAllInfo(id).baseSalary;
+                ViewBag.thisJob = new QueryController().GetMemberAllInfo(id).job;
+
+                return View();
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        public ActionResult changeMemberDetail(string id)
+        {
             var member = new QueryController().GetMemberAllInfo(id);
             ViewBag.thisID = id;
             ViewBag.thisName = new QueryController().GetMemberAllInfo(id).name;
             ViewBag.thisImagePath = new QueryController().GetMemberAllInfo(id).imagePath;
             ViewBag.thisBaseSalary = new QueryController().GetMemberAllInfo(id).baseSalary;
             ViewBag.thisJob = new QueryController().GetMemberAllInfo(id).job;
-
+            
             return View();
         }
 
-        public ActionResult changeMemberDetail()
+        public ActionResult Leave(string type)
         {
-            return View();
-        }
+            //返回历史
+            if(type == "history")
+            {
 
-        public ActionResult Leave()
-        {
+            }
+            //返回未处理
+            else
+            {
+
+            }
             return View();
         }
     }
