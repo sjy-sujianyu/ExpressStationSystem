@@ -138,6 +138,37 @@ namespace ExpressStationSystem.Controllers
             }
         }
 
+
+        // PUT: api/PickUp/ChangeJob
+        /// <summary>
+        /// 改变员工职位
+        /// </summary>
+        /// <param name="x">员工实体</param>
+        /// <remarks>改变员工职位
+        /// <br>job状态: "派件员","收件员", "出件员","休息中","经理","待定中"</br>
+        /// </remarks>
+        /// <returns>返回</returns>
+        [HttpPut, Route("Manager/ChangeJob")]
+        public bool ChangeJob(jobClass x)
+        {
+            db = new DataClasses1DataContext(connstr);
+            List<string> list = new List<string>() { "派件员", "揽件员", "出件员", "休息中", "经理", "待定中" };
+            if (!list.Contains(x.job))
+            {
+                return false;
+            }
+            var member = db.Member.SingleOrDefault(a => a.mId == x.mId);
+            if (member is null)
+            {
+                return false;
+            }
+            else
+            {
+                member.job = x.job;
+                db.SubmitChanges();
+                return true;
+            }
+        }
         // PUT: api/PickUp/ChangeDuty
         /// <summary>
         /// 改变员工休息或者上班状态
@@ -206,7 +237,7 @@ namespace ExpressStationSystem.Controllers
         /// <summary>
         /// 解雇某个员工
         /// </summary>
-        /// <param name="account">员工的账号</param>
+        /// <param name="aclass">账户实体信息</param>
         /// <remarks>解雇某个员工</remarks>
         /// <returns>返回</returns>
         [HttpDelete, Route("Manager/DeleteMember")]

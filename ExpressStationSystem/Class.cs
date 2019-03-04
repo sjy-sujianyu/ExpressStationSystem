@@ -198,4 +198,11 @@ namespace ExpressStationSystem
         public string mId;
     }
 
+    public class jobClass
+    {
+        public string mId;
+
+        public string job;
+    }
+
 }
