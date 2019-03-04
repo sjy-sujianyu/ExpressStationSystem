@@ -107,16 +107,18 @@ namespace ExpressStationSystem.Controllers
 
         // PUT: api/PickUp/ChangeMemberInfo?account={account}
         /// <summary>
-        /// 改变员工职位、名字、底薪、是否休息
+        /// 改变员工职位、名字、底薪
         /// </summary>
         /// <param name="x">员工实体</param>
-        /// <remarks>改变员工职位、名字、底薪</remarks>
+        /// <remarks>改变员工职位、名字、底薪
+        /// <br>job状态: "派件员","收件员", "出件员","休息中","经理","待定中"</br>
+        /// </remarks>
         /// <returns>返回</returns>
         [HttpPut, Route("Manager/ChangeMemberInfo")]
         public bool ChangeMemberInfo(MemberClass x)
         {
             db = new DataClasses1DataContext(connstr);
-            List<string> list = new List<string>() { "派件员","收件员", "出件员","休息中","经理" };
+            List<string> list = new List<string>() { "派件员","揽件员", "出件员","休息中","经理","待定中" };
             if(!list.Contains(x.job))
             {
                 return false;
@@ -131,6 +133,29 @@ namespace ExpressStationSystem.Controllers
                 member.job = x.job;
                 member.name = x.name;
                 member.baseSalary = x.baseSalary;
+                db.SubmitChanges();
+                return true;
+            }
+        }
+
+        // PUT: api/PickUp/ChangeDuty
+        /// <summary>
+        /// 改变员工休息或者上班状态
+        /// </summary>
+        /// <param name="x">员工实体</param>
+        /// <remarks>改变员工休息或者上班状态</remarks>
+        /// <returns>返回</returns>
+        [HttpPut, Route("Manager/ChangeDuty")]
+        public bool ChangeDuty(onDutyClass x)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var member = db.Member.SingleOrDefault(a => a.mId == x.mId);
+            if (member is null)
+            {
+                return false;
+            }
+            else
+            {
                 member.onDuty = x.onDuty;
                 db.SubmitChanges();
                 return true;
