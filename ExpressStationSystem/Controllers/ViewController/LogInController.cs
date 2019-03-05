@@ -12,16 +12,17 @@ namespace ExpressStationSystem.Controllers.ViewController
         [HttpPost]
         public ActionResult AfterLogin(FormCollection form)
         {
-            string phone = Request.Form["UserPhone"];
-            string passWord = Request.Form["Password"];
-            if (new LoginController().LandOfManager(phone, passWord))
-            {
-                return View();
-            }
-            else
-            {
-                return Content(string.Format("<script>alert('登陆失败');parent.window.location='Login';</script>"));
-            }
+            //string phone = Request.Form["UserPhone"];
+            //string passWord = Request.Form["Password"];
+            //if (new LoginController().LandOfManager(phone, passWord))
+            //{
+            //    return View();
+            //}
+            //else
+            //{
+            //    return Content(string.Format("<script>alert('登陆失败');parent.window.location='Login';</script>"));
+            //}
+            return View();
         }
 
         public ActionResult Login()

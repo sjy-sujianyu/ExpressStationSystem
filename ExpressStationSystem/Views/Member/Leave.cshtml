@@ -24,42 +24,24 @@
         }
 
         function refuseApply(lid, mid) {
-            //删除失败的请假条
+            //请假条完成
             $.ajax({
-                url: 'http://172.16.34.153:60062/Leave/Delete', /*接口域名地址*/
+                url: 'http://172.16.34.153:60062/Leave/Deal', /*接口域名地址*/
                 contentType: "application/json;charset=UTF-8",
-                type: 'delete',
+                type: 'put',
                 data: JSON.stringify({
                     "lId": lid,
+                    "view": document.getElementById("accessView").value,
+                    "person": "经理",
+                    "isDone": false,
                     "mId": mid
                 }),
                 success: function (res) {
                     if (res == true) {
-                        alert('已拒绝');
-                        //请假条完成
-                        $.ajax({
-                            url: 'http://172.16.34.153:60062/Leave/Deal', /*接口域名地址*/
-                            contentType: "application/json;charset=UTF-8",
-                            type: 'put',
-                            data: JSON.stringify({
-                                "lId": lid,
-                                "view": document.getElementById("accessView").value,
-                                "person": "经理",
-                                "isDone": true,
-                                "mId": mid
-                            }),
-                            success: function (res) {
-                                if (res == true) {
-                                    alert('处理完成成功');
-                                    window.location.reload();
-                                } else {
-                                    alert('处理失败');
-                                }
-                            }
-                        })
+                        alert('处理完成成功');
+                        window.location.reload();
                     } else {
-                        alert('拒绝失败');
-                        console.log(res);
+                        alert('处理失败');
                     }
                 }
             })
@@ -101,7 +83,7 @@
                         })
                     } else {
                         alert('提交失败');
-                    }
+                    } 
                 }
             })
         }
@@ -118,26 +100,26 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../Login/AfterLogin">首页</a>
+                <a class="navbar-brand" href="/Login/AfterLogin">首页</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="../Package/Package">包裹一览</a></li>
+                    <li><a href="/Package/Package">包裹一览</a></li>
                     <li><a href="#">站点配车</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">人员管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="../Member/AllMember">员工一览</a></li>
-                            <li><a href="../Member/AddMember">员工录用</a></li>
-                            <li><a href="../Member/DeleteMember">员工开除</a></li>
+                            <li><a href="/Member/AllMember">员工一览</a></li>
+                            <li><a href="/Member/AddMember">员工录用</a></li>
+                            <li><a href="/Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../Member/Fine">罚款</a></li>
-                            <li><a href="../Member/Leave">请假条</a></li>
+                            <li><a href="/Member/Fine">补贴</a></li>
+                            <li><a href="/Member/Leave">请假条</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../Member/Mission">任务分配</a></li>
-                            <li><a href="../Member/Wages">工薪统计</a></li>
+                            <li><a href="/Member/Mission">任务分配</a></li>
+                            <li><a href="/Member/Wages">工薪统计</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -151,9 +133,9 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多 <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="../Login/changePassword">修改超级密码</a></li>
+                            <li><a href="/Login/changePassword">修改超级密码</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../Home/Index">退出用户</a></li>
+                            <li><a href="/Home/Index">退出用户</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -205,7 +187,7 @@
                     {
                         <tr>
                             <td>@ViewBag.unFinishLID[i]</td>
-                            <th scope="row"><img class="img-circle" src="@ViewBag.applicantsImg[i]" alt="头像" /></th>
+                            <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.applicantsImg[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
                             <td>@ViewBag.applicantsName[i]</td>
                             <td>@ViewBag.applicantsID[i]</td>
                             <td>@ViewBag.applicantsJob[i]</td>

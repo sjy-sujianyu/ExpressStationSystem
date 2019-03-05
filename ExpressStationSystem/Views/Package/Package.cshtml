@@ -22,25 +22,26 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../Login/AfterLogin">首页</a>
+                <a class="navbar-brand" href="/Login/AfterLogin">首页</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="Package">包裹一览</a></li>
+                    <li><a href="/Package/Package">包裹一览</a></li>
                     <li><a href="#">站点配车</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">人员管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="../Member/AllMember">员工一览</a></li>
-                            <li><a href="../Member/AddMember">员工录用</a></li>
-                            <li><a href="../Member/DeleteMember">员工开除</a></li>
+                            <li><a href="/Member/AllMember">员工一览</a></li>
+                            <li><a href="/Member/AddMember">员工录用</a></li>
+                            <li><a href="/Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../Member/Leave">请假条</a></li>
+                            <li><a href="/Member/Fine">补贴</a></li>
+                            <li><a href="/Member/Leave">请假条</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../Member/Mission">任务分配</a></li>
-                            <li><a href="../Member/Wages">工薪统计</a></li>
+                            <li><a href="/Member/Mission">任务分配</a></li>
+                            <li><a href="/Member/Wages">工薪统计</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -54,9 +55,9 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多 <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="../Login/changePassword">修改超级密码</a></li>
+                            <li><a href="/Login/changePassword">修改超级密码</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../Home/Index">退出用户</a></li>
+                            <li><a href="/Home/Index">退出用户</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -64,7 +65,36 @@
         </div><!-- /.container-fluid -->
     </div>
 
+
+
     <h2 class='page-header'>包裹一览</h2>
+
+    <div class="col-sm-6 col-sm-offset-4" style="display:flex">
+
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
+            按姓名 <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按单号</a></li>
+            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
+            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
+            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按时间</a></li>
+        </ul>
+        <div style="display: none;">
+            <input type="month" value="2015-09" style="height:3rem" />
+        </div>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="按姓名查找" id="showCheckContent">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" onclick="searchWith()">Go!</button>
+            </span>
+        </div>
+
+
+    </div>
+
+    <br />
+    <br />
 
     <div style="display:flex;justify-content:space-between">
 

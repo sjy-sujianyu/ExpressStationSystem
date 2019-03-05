@@ -46,20 +46,20 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="../Package/Package">包裹一览</a></li>
+                    <li><a href="/Package/Package">包裹一览</a></li>
                     <li><a href="#">站点配车</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">人员管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="../Member/AllMember">员工一览</a></li>
-                            <li><a href="../Member/AddMember">员工录用</a></li>
-                            <li><a href="../Member/DeleteMember">员工开除</a></li>
+                            <li><a href="/Member/AllMember">员工一览</a></li>
+                            <li><a href="/Member/AddMember">员工录用</a></li>
+                            <li><a href="/Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../Member/Fine">罚款</a></li>
-                            <li><a href="../Member/Leave">请假条</a></li>
+                            <li><a href="/Member/Fine">补贴</a></li>
+                            <li><a href="/Member/Leave">请假条</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../Member/Mission">任务分配</a></li>
-                            <li><a href="../Member/Wages">工薪统计</a></li>
+                            <li><a href="/Member/Mission">任务分配</a></li>
+                            <li><a href="/Member/Wages">工薪统计</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -73,9 +73,9 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多 <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="../Login/changePassword">修改超级密码</a></li>
+                            <li><a href="/Login/changePassword">修改超级密码</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../Home/Index">退出用户</a></li>
+                            <li><a href="/Home/Index">退出用户</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -117,25 +117,35 @@
                         <th>姓名</th>
                         <th>联系手机</th>
                         <th>职位</th>
-                        <th>休假情况</th>
+                        <th>补贴金额</th>
                     </tr>
 
                 </thead>
                 <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
 
-                    @for (int i = 0; i < ViewBag.showPhoneList.Count; i++)
-                    {
-                        <tr>
-                            <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.showImgList[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
-                            <td>@ViewBag.showNameList[i]</td>
-                            <td>@ViewBag.showPhoneList[i]</td>
-                            <td>@ViewBag.showJobList[i]</td>
-                            <td>@ViewBag.showIsOnDutyList[i]</td>
-                            <th><button type="button" class="btn-sm btn-info" onclick="turnToDetail(@ViewBag.showPhoneList[i])">详情</button></th>
+                    <tr>
+                        <th scope="row"><img class="img-circle" src="..." alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                        <td>王小明</td>
+                        <td>12121212121</td>
+                        <td>经理</td>
+                        <th><input type="text" oninput="value=value.replace(/[^\d]/g,'')"/></th>
 
 
-                        </tr>
-                    }
+                    </tr>
+
+                    @*@for (int i = 0; i < ViewBag.showPhoneList.Count; i++)
+        {
+            <tr>
+                <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.showImgList[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                <td>@ViewBag.showNameList[i]</td>
+                <td>@ViewBag.showPhoneList[i]</td>
+                <td>@ViewBag.showJobList[i]</td>
+                <td>@ViewBag.showIsOnDutyList[i]</td>
+                <th><button type="button" class="btn-sm btn-info" onclick="turnToDetail(@ViewBag.showPhoneList[i])">详情</button></th>
+
+
+            </tr>
+        }*@
                 </tbody>
             </table>
         </div>
