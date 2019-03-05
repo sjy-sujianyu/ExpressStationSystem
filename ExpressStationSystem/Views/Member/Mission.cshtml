@@ -14,27 +14,50 @@
 
     <script>
         function changeShowCheckType(self) {
-            var button = document.getElementById("showCheckType");
+            var button = document.getElementById("selectedJob");
             button.innerHTML = self.innerText + ' <span class="caret"></span>';
         }
 
         function changeInputContent(self) {
-            var input = document.getElementById("showCheckContent");
+            var input = document.getElementById("selectedJob");
             input.placeholder = self.innerText + '查找';
         }
 
         function update(self) {
-            var btn = document.getElementById(self.id);
+            var btn = document.getElementById("selectedJob");
             btn.innerHTML = self.innerText + ' <span class="caret"></span>';
         }
 
         function AllSleep() {
-            var myArray = new Array()
-            myArray = document.getElementsByClassName("btn-Mission");
-            for (let btn of myArray) {
-                btn.innerHTML = "休息中" + ' <span class="caret"></span>';
-            }
+
         }
+
+        function AllWork() {
+
+        }
+
+        function finish(mId, self) {
+            var newJob = self.innerText;
+            $.ajax({
+                type: 'put',
+                url: 'http://172.16.34.153:60062/Manager/ChangeJob',
+                data: JSON.stringify({
+                    mId: mId,
+                    job: newJob
+                }),
+                contentType: "application/json;charset=UTF-8",
+                success: function (res) {
+                    if (res == true) {
+                        alert("修改完成");
+                        window.location.reload();
+                    }
+                    else {
+                        alert("出错了");
+                    }
+                }
+            });
+        }
+        
     </script>
 
     <div class="navbar navbar-default navbar-fixed-top">
@@ -48,26 +71,26 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../Login/AfterLogin">首页</a>
+                <a class="navbar-brand" href="/Login/AfterLogin">首页</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="../Package/Package">包裹一览</a></li>
+                    <li><a href="/Package/Package">包裹一览</a></li>
                     <li><a href="#">站点配车</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">人员管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="../Member/AllMember">员工一览</a></li>
-                            <li><a href="../Member/AddMember">员工录用</a></li>
-                            <li><a href="../Member/DeleteMember">员工开除</a></li>
+                            <li><a href="/Member/AllMember">员工一览</a></li>
+                            <li><a href="/Member/AddMember">员工录用</a></li>
+                            <li><a href="/Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../Member/Fine">罚款</a></li>
-                            <li><a href="../Member/Leave">请假条</a></li>
+                            <li><a href="/Member/Fine">补贴</a></li>
+                            <li><a href="/Member/Leave">请假条</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../Member/Mission">任务分配</a></li>
-                            <li><a href="../Member/Wages">工薪统计</a></li>
+                            <li><a href="/Member/Mission">任务分配</a></li>
+                            <li><a href="/Member/Wages">工薪统计</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -81,9 +104,9 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多 <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="../Login/changePassword">修改超级密码</a></li>
+                            <li><a href="/Login/changePassword">修改超级密码</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../Home/Index">退出用户</a></li>
+                            <li><a href="/Home/Index">退出用户</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -120,29 +143,35 @@
                     <th>肖像</th>
                     <th>姓名</th>
                     <th>联系手机</th>
+                    <th>状态</th>
                     <th>职位</th>
                 </tr>
 
             </thead>
             <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
 
+                @for (int i = 0; i < ViewBag.showPhoneList.Count; i++)
+                {
                 <tr>
-                    <th scope="row"><img class="img-circle" src="img.jpg" alt="头像" /></th>
-                    <td>李小花</td>
-                    <td>158xxxx3391</td>
+                    <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.showImgList[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                    <td>@ViewBag.showNameList[i]</td>
+                    <td>@ViewBag.showPhoneList[i]</td>
+                    <td>@ViewBag.showIsOnDutyList[i]</td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn-Mission btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="MissionType2">
-                                派件员 <span class="caret"></span>
+                            <button type="button" class="btn-Mission btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="selectedJob">
+                                @ViewBag.showJobList[i] <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a onclick="update(this);" id="MissionType2">派件员</a></li>
-                                <li><a onclick="update(this);" id="MissionType2">揽件员</a></li>
-                                <li><a onclick="update(this);" id="MissionType2">转件员</a></li>
+                                <li><a onclick="update(this);finish(@ViewBag.showPhoneList[i],this)">派件员</a></li>
+                                <li><a onclick="update(this);finish(@ViewBag.showPhoneList[i],this)">揽件员</a></li>
+                                <li><a onclick="update(this);finish(@ViewBag.showPhoneList[i],this)">转件员</a></li>
                             </ul>
                         </div>
                     </td>
                 </tr>
+                }
+
             </tbody>
         </table>
 
@@ -150,6 +179,7 @@
             <div class="list-group">
                 <h4 class="page-header">选择分类</h4>
                 <button type="button" class="list-group-item">全部</button>
+                <button type="button" class="list-group-item">待定中</button>
                 <button type="button" class="list-group-item">派件员</button>
                 <button type="button" class="list-group-item">转件员</button>
                 <button type="button" class="list-group-item">揽件员</button>
@@ -159,14 +189,11 @@
             <button type="button" class="btn btn-info btn-lg" onclick="AllSleep()">一键休息</button>
             <br />
             <br />
-            <button type="button" class="btn btn-warning btn-lg" onclick="Reset()">重置职位</button>
-            <br />
-            <br />
-            <button type="button" class="btn btn-success btn-lg">分配完成</button>
+            <button type="button" class="btn btn-info btn-lg" onclick="AllWork()">一键开工</button>
         </div>
     </div>
 
-    
+
 
 
 </body>

@@ -18,7 +18,7 @@ namespace ExpressStationSystem.Controllers.ViewController
         List<string> showJobList = new List<string>();
         List<string> showIsOnDutyList = new List<string>();
         // GET: Member
-        public ActionResult AllMember(string status)
+        public ActionResult AllMember(string status, string searchWithName, string searchWithPhone)
         {
             //重新请求数据库，获取员工ID
             List<string> MID = new ManagerController().GetAllMember();
@@ -30,6 +30,66 @@ namespace ExpressStationSystem.Controllers.ViewController
             showJobList.Clear();
             showIsOnDutyList.Clear();
 
+            if (searchWithName != null)
+            {
+                //按名字查找
+                foreach (var one in MID)
+                {
+                    var info = new QueryController().GetMemberAllInfo(one);
+                    if (info.name == searchWithName || info.name.Contains(searchWithName))
+                    {
+                        showImgList.Add(info.imagePath);
+                        showNameList.Add(info.name);
+                        showPhoneList.Add(info.mId);
+                        showJobList.Add(info.job);
+                        if (info.onDuty)
+                        {
+                            showIsOnDutyList.Add("工作中");
+                        }
+                        else
+                        {
+                            showIsOnDutyList.Add("休息中");
+                        }
+                    }
+                }
+                ViewBag.showImgList = showImgList;
+                ViewBag.showNameList = showNameList;
+                ViewBag.showPhoneList = showPhoneList;
+                ViewBag.showJobList = showJobList;
+                ViewBag.showIsOnDutyList = showIsOnDutyList;
+                return View();
+            }
+            else if(searchWithPhone != null)
+            {
+                //按手机号查询
+                foreach (var one in MID)
+                {
+                    var info = new QueryController().GetMemberAllInfo(one);
+                    if (info.mId == searchWithPhone || info.mId.Contains(searchWithPhone))
+                    {
+                        showImgList.Add(info.imagePath);
+                        showNameList.Add(info.name);
+                        showPhoneList.Add(info.mId);
+                        showJobList.Add(info.job);
+                        if (info.onDuty)
+                        {
+                            showIsOnDutyList.Add("工作中");
+                        }
+                        else
+                        {
+                            showIsOnDutyList.Add("休息中");
+                        }
+                    }
+                }
+                ViewBag.showImgList = showImgList;
+                ViewBag.showNameList = showNameList;
+                ViewBag.showPhoneList = showPhoneList;
+                ViewBag.showJobList = showJobList;
+                ViewBag.showIsOnDutyList = showIsOnDutyList;
+                return View();
+            }
+            
+            //默认情况
             if (status == "已辞职")
             {
                 foreach (var one in MID)
@@ -40,7 +100,7 @@ namespace ExpressStationSystem.Controllers.ViewController
                         showNameList.Add(new QueryController().GetMemberAllInfo(one).name);
                         showPhoneList.Add(new QueryController().GetMemberAllInfo(one).mId);
                         showJobList.Add(new QueryController().GetMemberAllInfo(one).job);
-                        if(new QueryController().GetMemberAllInfo(one).onDuty)
+                        if (new QueryController().GetMemberAllInfo(one).onDuty)
                         {
                             showIsOnDutyList.Add("工作中");
                         }
@@ -48,10 +108,11 @@ namespace ExpressStationSystem.Controllers.ViewController
                         {
                             showIsOnDutyList.Add("休息中");
                         }
-                       
+
                     }
                 }
-            }else if(status == null)
+            }
+            else if (status == null)
             {
                 foreach (var one in MID)
                 {
@@ -71,7 +132,8 @@ namespace ExpressStationSystem.Controllers.ViewController
                         }
                     }
                 }
-            }else if(status == "休息中")
+            }
+            else if (status == "休息中")
             {
                 foreach (var one in MID)
                 {
@@ -81,10 +143,25 @@ namespace ExpressStationSystem.Controllers.ViewController
                         showNameList.Add(new QueryController().GetMemberAllInfo(one).name);
                         showPhoneList.Add(new QueryController().GetMemberAllInfo(one).mId);
                         showJobList.Add(new QueryController().GetMemberAllInfo(one).job);
-                        showIsOnDutyList.Add("休息中");
+                        showIsOnDutyList.Add(status);
                     }
                 }
-            }else
+            }
+            else if (status == "工作中")
+            {
+                foreach (var one in MID)
+                {
+                    if ((new QueryController().GetMemberAllInfo(one).onDuty) && !(new QueryController().GetMemberAllInfo(one).isDelete))
+                    {
+                        showImgList.Add(new QueryController().GetMemberAllInfo(one).imagePath);
+                        showNameList.Add(new QueryController().GetMemberAllInfo(one).name);
+                        showPhoneList.Add(new QueryController().GetMemberAllInfo(one).mId);
+                        showJobList.Add(new QueryController().GetMemberAllInfo(one).job);
+                        showIsOnDutyList.Add(status);
+                    }
+                }
+            }
+            else
             {
                 foreach (var one in MID)
                 {
@@ -121,45 +198,226 @@ namespace ExpressStationSystem.Controllers.ViewController
             return View();
         }
 
-        public ActionResult DeleteMember()
+        public ActionResult DeleteMember(string status, string searchWithName, string searchWithPhone)
         {
+            
             List<string> MID = new ManagerController().GetAllMember();
-            List<string> imgList = new List<string>();
-            List<string> nameList = new List<string>();
-            List<string> phoneList = new List<string>();
-            List<string> jobList = new List<string>();
+
+            //清空原本数组
+            showImgList.Clear();
+            showNameList.Clear();
+            showPhoneList.Clear();
+            showJobList.Clear();
+
+            if (searchWithName != null)
+            {
+                //按名字查找
+                foreach (var one in MID)
+                {
+                    var info = new QueryController().GetMemberAllInfo(one);
+                    if (info.job == "经理")
+                    {
+                        continue;
+                    }
+                    if (info.name == searchWithName || info.name.Contains(searchWithName))
+                    {
+                        showImgList.Add(info.imagePath);
+                        showNameList.Add(info.name);
+                        showPhoneList.Add(info.mId);
+                        showJobList.Add(info.job);
+                        
+                    }
+                }
+                ViewBag.imgList = showImgList;
+                ViewBag.phoneList = showPhoneList;
+                ViewBag.nameList = showNameList;
+                ViewBag.jobList = showJobList;
+                return View();
+            }
+            else if (searchWithPhone != null)
+            {
+                //按手机号查询
+                foreach (var one in MID)
+                {
+                    var info = new QueryController().GetMemberAllInfo(one);
+                    if (info.job == "经理")
+                    {
+                        continue;
+                    }
+                    if (info.mId == searchWithPhone || info.mId.Contains(searchWithPhone))
+                    {
+                        showImgList.Add(info.imagePath);
+                        showNameList.Add(info.name);
+                        showPhoneList.Add(info.mId);
+                        showJobList.Add(info.job);
+                        
+                    }
+                }
+                ViewBag.imgList = showImgList;
+                ViewBag.phoneList = showPhoneList;
+                ViewBag.nameList = showNameList;
+                ViewBag.jobList = showJobList;
+                return View();
+            }
 
             foreach (var one in MID)
             {
-                if(! new QueryController().GetMemberAllInfo(one).isDelete)
+                var member = new QueryController().GetMemberAllInfo(one);
+                if(member.job == "经理")
                 {
-                    var member = new QueryController().GetMemberAllInfo(one);
-                    imgList.Add(member.imagePath);
+                    continue;
+                }
+                if (status != null)
+                {
+                    if (! member.isDelete && member.job == status)
+                    {
+                        showImgList.Add(member.imagePath);
 
-                    nameList.Add(member.name);
+                        showNameList.Add(member.name);
 
-                    phoneList.Add(member.mId);
+                        showPhoneList.Add(member.mId);
 
-                    jobList.Add(member.job);
+                        showJobList.Add(member.job);
+                    }
+                }
+                else if(! member.isDelete)
+                {
+                    showImgList.Add(member.imagePath);
+
+                    showNameList.Add(member.name);
+
+                    showPhoneList.Add(member.mId);
+
+                    showJobList.Add(member.job);
                 }
                 
             }
-
-            ViewBag.MID = MID;
-            ViewBag.imgList = imgList;
-            ViewBag.phoneList = phoneList;
-            ViewBag.nameList = nameList;
-            ViewBag.jobList = jobList;
+            
+            ViewBag.imgList = showImgList;
+            ViewBag.phoneList = showPhoneList;
+            ViewBag.nameList = showNameList;
+            ViewBag.jobList = showJobList;
             return View();
         }
 
         public ActionResult Mission()
         {
+            //重新请求数据库，获取员工ID
+            List<string> MID = new ManagerController().GetAllMember();
+
+            //清空原本数组
+            showImgList.Clear();
+            showNameList.Clear();
+            showPhoneList.Clear();
+            showJobList.Clear();
+            showIsOnDutyList.Clear();
+
+            foreach (var one in MID)
+            {
+                var info = new QueryController().GetMemberAllInfo(one);
+                if (info.job != "经理")
+                    if (!info.isDelete)
+                    {
+                        showImgList.Add(info.imagePath);
+                        showNameList.Add(info.name);
+                        showPhoneList.Add(info.mId);
+                        showJobList.Add(info.job);
+                        if (info.onDuty)
+                        {
+                            showIsOnDutyList.Add("工作中");
+                        }
+                        else
+                        {
+                            showIsOnDutyList.Add("休息中");
+                        }
+                    }
+            }
+
+            ViewBag.showImgList = showImgList;
+            ViewBag.showNameList = showNameList;
+            ViewBag.showPhoneList = showPhoneList;
+            ViewBag.showJobList = showJobList;
+            ViewBag.showIsOnDutyList = showIsOnDutyList;
+
             return View();
         }
 
         public ActionResult Wages()
         {
+            //重新请求数据库，获取员工ID
+            List<string> MID = new ManagerController().GetAllMember();
+
+            int sumPickUp = 0;
+            int sumTransfer = 0;
+            int sumDelivery = 0;
+            decimal sumSalary = 0;
+
+            //清空原本数组
+            showImgList.Clear();
+            showNameList.Clear();
+            showPhoneList.Clear();
+
+            List<int> PickUpCount = new List<int>();
+            List<int> DeliveryCount = new List<int>();
+            List<int> TransferCount = new List<int>();
+            List<decimal> baseSalary = new List<decimal>();
+            List<decimal> subsidy = new List<decimal>();
+            List<decimal> fine = new List<decimal>();
+            
+            List<dynamic> totalSalary = new List<dynamic>();
+
+            foreach(var one in MID)
+            {
+                var info = new QueryController().GetMemberAllInfo(one);
+
+                if (info.job != "经理" && !info.isDelete)
+                {
+                    showImgList.Add(info.imagePath);
+                    showNameList.Add(info.name);
+                    showPhoneList.Add(info.mId);
+
+                    var money = new MoneyController().GetSalary(one, DateTime.Now.AddDays(1 - DateTime.Now.Day).Date.AddMonths(1).AddSeconds(-1));
+                    baseSalary.Add(money.baseSalary);
+                    PickUpCount.Add(money.commission.pickUp.PickUpCount);
+                    DeliveryCount.Add(money.commission.delivery.DeliveryCount);
+                    TransferCount.Add(money.commission.transfer.TransferCount);
+                    subsidy.Add(money.subsidy.total);
+                    fine.Add(money.fine.total);
+
+                    sumPickUp += money.commission.pickUp.PickUpCount;
+                    sumTransfer += money.commission.transfer.TransferCount;
+                    sumDelivery += money.commission.delivery.DeliveryCount;
+
+
+                    totalSalary.Add(money.baseSalary + money.commission.pickUp.total + money.commission.delivery.total + money.commission.transfer.total + money.subsidy.total - money.fine.total);
+
+                    sumSalary += (money.baseSalary + money.commission.pickUp.total + money.commission.delivery.total + money.commission.transfer.total + money.subsidy.total - money.fine.total);
+                }
+                
+            }
+
+            ViewBag.showImgList = showImgList;
+            ViewBag.showNameList = showNameList;
+            ViewBag.showPhoneList = showPhoneList;
+            ViewBag.baseSalary = baseSalary;
+            ViewBag.PickUpCount = PickUpCount;
+            ViewBag.DeliveryCount = DeliveryCount;
+            ViewBag.TransferCount = TransferCount;
+            ViewBag.subsidy = subsidy;
+            ViewBag.fine = fine;
+            ViewBag.totalSalary = totalSalary;
+
+            ViewBag.sumPickUp = sumPickUp;
+            ViewBag.sumTransfer = sumTransfer;
+            ViewBag.sumDelivery = sumDelivery;
+            ViewBag.sumSalary = sumSalary;
+
+            return View();
+        }
+
+        public ActionResult Fine()
+        {
+
             return View();
         }
 
@@ -220,7 +478,15 @@ namespace ExpressStationSystem.Controllers.ViewController
             //返回历史
             if (type == "history")
             {
+                //20年前
+                DateTime oldTime = DateTime.Now.AddYears(-20);
+                //当今时间
+                DateTime now = DateTime.Now;
 
+                for(int status = 1; status <= 3; status++)
+                {
+                    var getList = new LeaveController();
+                }
             }
             //返回未处理
             else

@@ -73,26 +73,26 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="../Login/AfterLogin">首页</a>
+                <a class="navbar-brand" href="/Login/AfterLogin">首页</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="../Package/Package">包裹一览</a></li>
+                    <li><a href="/Package/Package">包裹一览</a></li>
                     <li><a href="#">站点配车</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">人员管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="../Member/AllMember">员工一览</a></li>
-                            <li><a href="../Member/AddMember">员工录用</a></li>
-                            <li><a href="../Member/DeleteMember">员工开除</a></li>
+                            <li><a href="/Member/AllMember">员工一览</a></li>
+                            <li><a href="/Member/AddMember">员工录用</a></li>
+                            <li><a href="/Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../Member/Fine">罚款</a></li>
-                            <li><a href="../Member/Leave">请假条</a></li>
+                            <li><a href="/Member/Fine">补贴</a></li>
+                            <li><a href="/Member/Leave">请假条</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../Member/Mission">任务分配</a></li>
-                            <li><a href="../Member/Wages">工薪统计</a></li>
+                            <li><a href="/Member/Mission">任务分配</a></li>
+                            <li><a href="/Member/Wages">工薪统计</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -106,9 +106,9 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多 <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="../Login/changePassword">修改超级密码</a></li>
+                            <li><a href="/Login/changePassword">修改超级密码</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="../Home/Index">退出用户</a></li>
+                            <li><a href="/Home/Index">退出用户</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -146,36 +146,40 @@
                     <th>肖像</th>
                     <th>姓名</th>
                     <th>联系手机</th>
-                    <th>职位</th>
-                    <th>本月工资</th>
+                    <th>本月工资详情</th>
                 </tr>
 
             </thead>
             <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
+
+                @for (int i = 0; i < ViewBag.showPhoneList.Count; i++)
+                {
                 <tr>
-                    <th scope="row"><img class="img-circle" src="..." alt="头像" /></th>
-                    <td>王小明</td>
-                    <td>158xxxx3391</td>
-                    <td>派件中</td>
+                    <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.showImgList[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                    <td>@ViewBag.showNameList[i]</td>
+                    <td>@ViewBag.showPhoneList[i]</td>
                     <td>
                         <div class="btn-group" style="padding:1px">
                             <button type="button" class="btn-Mission btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="MissionType1">
                                 <span class="glyphicon glyphicon-triangle-bottom"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li style="display:flex"><a>本月派件:</a><a class="Pie" id="MissionType1">100</a></li>
-                                <li style="display:flex"><a>本月揽件:</a><a class="Docs" id="MissionType1">121</a></li>
-                                <li style="display:flex"><a>本月转件:</a><a class="Tra" id="MissionType1">133</a></li>
+                                <li style="display:flex"><a>本月派件:</a><a class="Pie" id="MissionType1">@ViewBag.DeliveryCount[i]</a></li>
+                                <li style="display:flex"><a>本月揽件:</a><a class="Docs" id="MissionType1">@ViewBag.PickUpCount[i]</a></li>
+                                <li style="display:flex"><a>本月转件:</a><a class="Tra" id="MissionType1">@ViewBag.TransferCount[i]</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li style="display:flex"><a>底薪:</a><a class="Tra" id="MissionType1">￥5000</a></li>
-                                <li style="display:flex"><a>提成:</a><a class="Tra" id="MissionType1">￥4000</a></li>
-                                <li style="display:flex"><a>罚款:</a><a class="Tra" id="MissionType1">￥1000</a></li>
+                                <li style="display:flex"><a>底薪:</a><a class="Tra" id="MissionType1">@ViewBag.baseSalary[i]</a></li>
+                                <li style="display:flex"><a>补贴:</a><a class="Tra" id="MissionType1">@ViewBag.subsidy[i]</a></li>
+                                <li style="display:flex"><a>罚款:</a><a class="Tra" id="MissionType1">@ViewBag.fine[i]</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li style="display:flex"><a>总工资:</a><a class="Wag" id="MissionType1">￥8000</a></li>
+                                <li style="display:flex"><a>总工资:</a><a class="Wag" id="MissionType1">@ViewBag.totalSalary[i]</a></li>
                             </ul>
                         </div>
                     </td>
                 </tr>
+                }
+
+
             </tbody>
         </table>
 
@@ -193,7 +197,7 @@
     <div class="row" style="font-size:20px">
         本月站点统计:</div>
     <div class="row" style="display:flex;font-size:20px;margin-left:1rem">
-        &nbsp;派件总数:&nbsp;<div id="SumPie" style="color:chartreuse">111&nbsp;&nbsp;</div>揽件总数:&nbsp;<div id="SumDocs" style="color:cornflowerblue">111&nbsp;&nbsp;</div>转件总数:&nbsp;<div id="SumTra" style="color:orangered">111&nbsp;&nbsp;</div>工资总额:&nbsp;<div id="SumWag">11100</div>
+        &nbsp;派件总数:&nbsp;<div id="SumPie" style="color:chartreuse">@ViewBag.sumDelivery&nbsp;&nbsp;</div>揽件总数:&nbsp;<div id="SumDocs" style="color:cornflowerblue">@ViewBag.sumPickUp&nbsp;&nbsp;</div>转件总数:&nbsp;<div id="SumTra" style="color:orangered">@ViewBag.sumTransfer&nbsp;&nbsp;</div>工资总额:&nbsp;<div id="SumWag">@ViewBag.sumSalary</div>
     </div>
 
 
