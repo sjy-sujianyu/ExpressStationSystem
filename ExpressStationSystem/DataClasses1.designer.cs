@@ -55,12 +55,12 @@ namespace ExpressStationSystem
     partial void InsertMember(Member instance);
     partial void UpdateMember(Member instance);
     partial void DeleteMember(Member instance);
-    partial void InsertPackage(Package instance);
-    partial void UpdatePackage(Package instance);
-    partial void DeletePackage(Package instance);
     partial void InsertMoney(Money instance);
     partial void UpdateMoney(Money instance);
     partial void DeleteMoney(Money instance);
+    partial void InsertPackage(Package instance);
+    partial void UpdatePackage(Package instance);
+    partial void DeletePackage(Package instance);
     partial void InsertPath(Path instance);
     partial void UpdatePath(Path instance);
     partial void DeletePath(Path instance);
@@ -169,19 +169,19 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		public System.Data.Linq.Table<Package> Package
-		{
-			get
-			{
-				return this.GetTable<Package>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Money> Money
 		{
 			get
 			{
 				return this.GetTable<Money>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Package> Package
+		{
+			get
+			{
+				return this.GetTable<Package>();
 			}
 		}
 		
@@ -2507,6 +2507,273 @@ namespace ExpressStationSystem
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Money")]
+	[global::System.Runtime.Serialization.DataContractAttribute()]
+	public partial class Money : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _sId;
+		
+		private string _mId;
+		
+		private decimal _subsidy;
+		
+		private decimal _fine;
+		
+		private System.DateTime _time;
+		
+		private string _reason;
+		
+		private string _person;
+		
+		private EntityRef<Member> _Member;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnsIdChanging(int value);
+    partial void OnsIdChanged();
+    partial void OnmIdChanging(string value);
+    partial void OnmIdChanged();
+    partial void OnsubsidyChanging(decimal value);
+    partial void OnsubsidyChanged();
+    partial void OnfineChanging(decimal value);
+    partial void OnfineChanged();
+    partial void OntimeChanging(System.DateTime value);
+    partial void OntimeChanged();
+    partial void OnreasonChanging(string value);
+    partial void OnreasonChanged();
+    partial void OnpersonChanging(string value);
+    partial void OnpersonChanged();
+    #endregion
+		
+		public Money()
+		{
+			this.Initialize();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+		public int sId
+		{
+			get
+			{
+				return this._sId;
+			}
+			set
+			{
+				if ((this._sId != value))
+				{
+					this.OnsIdChanging(value);
+					this.SendPropertyChanging();
+					this._sId = value;
+					this.SendPropertyChanged("sId");
+					this.OnsIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_mId", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+		public string mId
+		{
+			get
+			{
+				return this._mId;
+			}
+			set
+			{
+				if ((this._mId != value))
+				{
+					if (this._Member.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnmIdChanging(value);
+					this.SendPropertyChanging();
+					this._mId = value;
+					this.SendPropertyChanged("mId");
+					this.OnmIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_subsidy", DbType="Decimal(10,2) NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+		public decimal subsidy
+		{
+			get
+			{
+				return this._subsidy;
+			}
+			set
+			{
+				if ((this._subsidy != value))
+				{
+					this.OnsubsidyChanging(value);
+					this.SendPropertyChanging();
+					this._subsidy = value;
+					this.SendPropertyChanged("subsidy");
+					this.OnsubsidyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_fine", DbType="Decimal(10,2) NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+		public decimal fine
+		{
+			get
+			{
+				return this._fine;
+			}
+			set
+			{
+				if ((this._fine != value))
+				{
+					this.OnfineChanging(value);
+					this.SendPropertyChanging();
+					this._fine = value;
+					this.SendPropertyChanged("fine");
+					this.OnfineChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_time", DbType="DateTime NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+		public System.DateTime time
+		{
+			get
+			{
+				return this._time;
+			}
+			set
+			{
+				if ((this._time != value))
+				{
+					this.OntimeChanging(value);
+					this.SendPropertyChanging();
+					this._time = value;
+					this.SendPropertyChanged("time");
+					this.OntimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_reason", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
+		public string reason
+		{
+			get
+			{
+				return this._reason;
+			}
+			set
+			{
+				if ((this._reason != value))
+				{
+					this.OnreasonChanging(value);
+					this.SendPropertyChanging();
+					this._reason = value;
+					this.SendPropertyChanged("reason");
+					this.OnreasonChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_person", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
+		public string person
+		{
+			get
+			{
+				return this._person;
+			}
+			set
+			{
+				if ((this._person != value))
+				{
+					this.OnpersonChanging(value);
+					this.SendPropertyChanging();
+					this._person = value;
+					this.SendPropertyChanged("person");
+					this.OnpersonChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Money", Storage="_Member", ThisKey="mId", OtherKey="mId", IsForeignKey=true)]
+		public Member Member
+		{
+			get
+			{
+				return this._Member.Entity;
+			}
+			set
+			{
+				Member previousValue = this._Member.Entity;
+				if (((previousValue != value) 
+							|| (this._Member.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Member.Entity = null;
+						previousValue.Money.Remove(this);
+					}
+					this._Member.Entity = value;
+					if ((value != null))
+					{
+						value.Money.Add(this);
+						this._mId = value.mId;
+					}
+					else
+					{
+						this._mId = default(string);
+					}
+					this.SendPropertyChanged("Member");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._Member = default(EntityRef<Member>);
+			OnCreated();
+		}
+		
+		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Package")]
 	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class Package : INotifyPropertyChanging, INotifyPropertyChanged
@@ -3118,273 +3385,6 @@ namespace ExpressStationSystem
 		public void OnSerialized(StreamingContext context)
 		{
 			this.serializing = false;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Money")]
-	[global::System.Runtime.Serialization.DataContractAttribute()]
-	public partial class Money : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _sId;
-		
-		private string _mId;
-		
-		private decimal _subsidy;
-		
-		private decimal _fine;
-		
-		private System.DateTime _time;
-		
-		private string _reason;
-		
-		private string _person;
-		
-		private EntityRef<Member> _Member;
-		
-    #region 可扩展性方法定义
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnsIdChanging(int value);
-    partial void OnsIdChanged();
-    partial void OnmIdChanging(string value);
-    partial void OnmIdChanged();
-    partial void OnsubsidyChanging(decimal value);
-    partial void OnsubsidyChanged();
-    partial void OnfineChanging(decimal value);
-    partial void OnfineChanged();
-    partial void OntimeChanging(System.DateTime value);
-    partial void OntimeChanged();
-    partial void OnreasonChanging(string value);
-    partial void OnreasonChanged();
-    partial void OnpersonChanging(string value);
-    partial void OnpersonChanged();
-    #endregion
-		
-		public Money()
-		{
-			this.Initialize();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_sId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
-		public int sId
-		{
-			get
-			{
-				return this._sId;
-			}
-			set
-			{
-				if ((this._sId != value))
-				{
-					this.OnsIdChanging(value);
-					this.SendPropertyChanging();
-					this._sId = value;
-					this.SendPropertyChanged("sId");
-					this.OnsIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_mId", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
-		public string mId
-		{
-			get
-			{
-				return this._mId;
-			}
-			set
-			{
-				if ((this._mId != value))
-				{
-					if (this._Member.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnmIdChanging(value);
-					this.SendPropertyChanging();
-					this._mId = value;
-					this.SendPropertyChanged("mId");
-					this.OnmIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_subsidy", DbType="Decimal(10,2) NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
-		public decimal subsidy
-		{
-			get
-			{
-				return this._subsidy;
-			}
-			set
-			{
-				if ((this._subsidy != value))
-				{
-					this.OnsubsidyChanging(value);
-					this.SendPropertyChanging();
-					this._subsidy = value;
-					this.SendPropertyChanged("subsidy");
-					this.OnsubsidyChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_fine", DbType="Decimal(10,2) NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
-		public decimal fine
-		{
-			get
-			{
-				return this._fine;
-			}
-			set
-			{
-				if ((this._fine != value))
-				{
-					this.OnfineChanging(value);
-					this.SendPropertyChanging();
-					this._fine = value;
-					this.SendPropertyChanged("fine");
-					this.OnfineChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_time", DbType="Date NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
-		public System.DateTime time
-		{
-			get
-			{
-				return this._time;
-			}
-			set
-			{
-				if ((this._time != value))
-				{
-					this.OntimeChanging(value);
-					this.SendPropertyChanging();
-					this._time = value;
-					this.SendPropertyChanged("time");
-					this.OntimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_reason", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
-		public string reason
-		{
-			get
-			{
-				return this._reason;
-			}
-			set
-			{
-				if ((this._reason != value))
-				{
-					this.OnreasonChanging(value);
-					this.SendPropertyChanging();
-					this._reason = value;
-					this.SendPropertyChanged("reason");
-					this.OnreasonChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_person", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
-		public string person
-		{
-			get
-			{
-				return this._person;
-			}
-			set
-			{
-				if ((this._person != value))
-				{
-					this.OnpersonChanging(value);
-					this.SendPropertyChanging();
-					this._person = value;
-					this.SendPropertyChanged("person");
-					this.OnpersonChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Money", Storage="_Member", ThisKey="mId", OtherKey="mId", IsForeignKey=true)]
-		public Member Member
-		{
-			get
-			{
-				return this._Member.Entity;
-			}
-			set
-			{
-				Member previousValue = this._Member.Entity;
-				if (((previousValue != value) 
-							|| (this._Member.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Member.Entity = null;
-						previousValue.Money.Remove(this);
-					}
-					this._Member.Entity = value;
-					if ((value != null))
-					{
-						value.Money.Add(this);
-						this._mId = value.mId;
-					}
-					else
-					{
-						this._mId = default(string);
-					}
-					this.SendPropertyChanged("Member");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void Initialize()
-		{
-			this._Member = default(EntityRef<Member>);
-			OnCreated();
-		}
-		
-		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
-		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnDeserializing(StreamingContext context)
-		{
-			this.Initialize();
 		}
 	}
 	

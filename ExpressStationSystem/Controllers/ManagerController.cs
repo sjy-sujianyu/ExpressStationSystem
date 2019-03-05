@@ -71,6 +71,10 @@ namespace ExpressStationSystem.Controllers
             var y = db.Login.SingleOrDefault(a => a.account == x.mId);
             if (check !=null&&y!=null)
             {
+                check.job = x.job;
+                check.baseSalary = x.baseSalary;
+                check.imagePath = "无";
+                check.onDuty = true;
                 check.isDelete = false;
                 y.isDelete = false;
                 db.SubmitChanges();

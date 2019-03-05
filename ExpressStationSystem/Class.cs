@@ -205,4 +205,9 @@ namespace ExpressStationSystem
         public string job;
     }
 
+    public class lIdClass1
+    {
+        public int lId;
+    }
+
 }
