@@ -37,7 +37,7 @@ namespace ExpressStationSystem.Controllers
         /// </summary>
         /// <param name="start">起始时间</param>
         /// <param name="end">终止时间</param>
-        /// <param name="status">请假状态  0:初始 1:被拒绝 2:申请成功 3:已销假</param>
+        /// <param name="status">请假状态  0:审核中 1:被拒绝 2:申请成功 3:已销假</param>
         /// <remarks>获取请假信息</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Leave/GetLeaveListByStatus")]
@@ -97,21 +97,22 @@ namespace ExpressStationSystem.Controllers
             var leaveCount = db.Leave.Where(a => a.mId == account && DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0&&a.status==2).Count();
             return leaveCount;
         }
-        // GET: api/Leave/GetSuccessLeave
+        // GET: api/Leave/GetLeaveInfoByAccountBystatus
         /// <summary>
         /// 获取请假信息
         /// </summary>
         /// <param name="account">员工账号</param>
         /// <param name="start">起始时间</param>
         /// <param name="end">终止时间</param>
+        /// <param name="status">请假状态  0:审核中 1:被拒绝 2:申请成功 3:已销假</param>
         /// <remarks>获取请假信息</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Leave/GetLeaveInfoByAccount")]
-        public List<int> GetLeaveInfoByAccount(string account,DateTime start,DateTime end)
+        [HttpGet, Route("Leave/GetLeaveInfoByAccountBystatus")]
+        public List<int> GetLeaveInfoByAccountBystatus(string account,DateTime start,DateTime end,short status)
         {
             db = new DataClasses1DataContext(connstr);
             List<int> list = new List<int>();
-            var leave = db.Leave.Where(a => a.mId==account&&DateTime.Compare(a.time,start)>=0&&DateTime.Compare(a.time,end)<=0);
+            var leave = db.Leave.Where(a => a.mId==account&&DateTime.Compare(a.time,start)>=0&&DateTime.Compare(a.time,end)<=0&&a.status==status);
             if (leave is null)
             {
                 return list;
