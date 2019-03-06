@@ -204,7 +204,7 @@ namespace ExpressStationSystem
         {
             db = new DataClasses1DataContext(connstr);
             var x = db.Package.SingleOrDefault(a => a.id == iclass.id);
-            if (x is null || x.status != "派件中" || IsRefuse(iclass.id) == false)
+            if (x is null || x.status != "派件中" || IsRefuse(iclass.id))
             {
                 return false;
             }
