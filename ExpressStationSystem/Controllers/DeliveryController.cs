@@ -218,6 +218,7 @@ namespace ExpressStationSystem
                 error.id = iclass.id;
                 error.introduction = "拒签";
                 error.status = "已处理";
+                db.Error.InsertOnSubmit(error);
                 db.SubmitChanges();
                 return true;
             }
