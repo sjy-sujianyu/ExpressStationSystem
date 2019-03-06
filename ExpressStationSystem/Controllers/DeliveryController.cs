@@ -210,10 +210,7 @@ namespace ExpressStationSystem
             }
             else
             {
-                int temp = x.sendId;
-                x.sendId = x.receiverId;
-                x.receiverId = temp;
-                x.status = "已扫件";
+                RevokeDelivery(iclass);
                 Error error = new Error();
                 error.id = iclass.id;
                 error.introduction = "拒签";
