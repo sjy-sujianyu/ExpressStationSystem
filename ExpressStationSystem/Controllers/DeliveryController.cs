@@ -193,6 +193,25 @@ namespace ExpressStationSystem
             }
         }
 
+        // PUT: api/Delivery/SwapAddress
+        /// <summary>
+        /// 交换发件人和收件人地址
+        /// </summary>
+        /// <remarks>交换发件人和收件人地址</remarks>
+        /// <returns>返回</returns>
+        [HttpPut, Route("Delivery/SwapAddress")]
+        public bool SwapAddress(IdClass iclass)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var x = db.Package.SingleOrDefault(a => a.id == iclass.id);
+            if (x is null) return false;
+            int temp = x.receiverId;
+            int temp1 = x.sendId;
+            x.receiverId = temp1;
+            x.sendId = temp;
+            return true;
+        }
+
         //PUT: api/Delivery/Refuse
         /// <summary>
         /// 包裹拒签
@@ -211,6 +230,7 @@ namespace ExpressStationSystem
             else
             {
                 RevokeDelivery(iclass);
+                SwapAddress(iclass);
                 Error error = new Error();
                 error.id = iclass.id;
                 error.introduction = "拒签";
