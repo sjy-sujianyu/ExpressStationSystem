@@ -110,13 +110,11 @@ namespace ExpressStationSystem
         public List<int> GetReadytoDelivery()
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Package where a.status == "已扫件" select a.id;
+            var readytoDelivery = db.Package.Where(a=>a.status=="已扫件").Join(db.AddressBook.Where(a=>a.street.Contains("华南农业大学")), a => a.receiverId, b => b.aId, (a, b) => a.id);
             List<int> list = new List<int>();
-            foreach (var x in selectQuery)
+            foreach (var x in readytoDelivery)
             {
-                var selectQuery2 = from a in db.AddressBook where a.aId == x select a.street;
-                if(selectQuery2.SingleOrDefault() == "华南农业大学")
-                    list.Add(x);
+                list.Add(x);
             }
             return list;
         }
