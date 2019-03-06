@@ -132,7 +132,7 @@ namespace ExpressStationSystem
             try
             {
                 var package = db.Package.Single(a => a.id == x.Id);
-                if (package.status != "已下单")
+                if (package.status != "已扫件")
                 {
                     return false;
                 }
@@ -233,7 +233,7 @@ namespace ExpressStationSystem
         public List<int> GetDelivering(string account)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.PickUp.GroupBy(p => p.id).Select(g => g.OrderByDescending(t => t.time).First()) join b in db.Package on a.id equals b.id where b.status == "待派件" && a.mId == account && a.isDone == false select b.id;
+            var selectQuery = from a in db.Delivery.GroupBy(p => p.id).Select(g => g.OrderByDescending(t => t.time).First()) join b in db.Package on a.id equals b.id where b.status == "派件中" && a.mId == account && a.isDone == false select b.id;
             List<int> list = new List<int>();
             foreach (var x in selectQuery)
             {
