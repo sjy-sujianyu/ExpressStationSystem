@@ -214,11 +214,11 @@ namespace ExpressStationSystem
                 x.sendId = x.receiverId;
                 x.receiverId = temp;
                 x.status = "已扫件";
-                db.SubmitChanges();
                 Error error = new Error();
                 error.id = iclass.id;
                 error.introduction = "拒签";
                 error.status = "已处理";
+                db.SubmitChanges();
                 return true;
             }
         }
