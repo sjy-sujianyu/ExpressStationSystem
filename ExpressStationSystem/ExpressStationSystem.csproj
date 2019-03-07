@@ -177,7 +177,6 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Class.cs" />
     <Compile Include="Controllers\AddressBookController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
