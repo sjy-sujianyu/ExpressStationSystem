@@ -117,6 +117,10 @@ namespace ExpressStationSystem
         public int Id { get => id; set => id = value; }
         public string Mid { get => mid; set => mid = value; }
     }
+    public class MidClass
+    {
+        public string mid;
+    }
     public class TransferClass
     {
         public int id;
@@ -150,10 +154,6 @@ namespace ExpressStationSystem
     {
         public string oldMid;
         public string newMid;
-    }
-    public class VidClass
-    {
-        public int vId;
     }
     public class VehicleClass
     {

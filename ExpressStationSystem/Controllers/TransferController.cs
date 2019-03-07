@@ -43,7 +43,7 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>添加出站包裹信息</remarks>
         /// <returns>返回</returns>
         [HttpPost, Route("Transfer/PostList")]
-        public bool PostList(List<int> ids, VidClass v, MemberClass m)
+        public bool PostList(List<int> ids, IdClass v, MidClass m)
         {
             db = new DataClasses1DataContext(connstr);
             try
@@ -53,8 +53,8 @@ namespace ExpressStationSystem.Controllers
                     Transfer tran = new Transfer();
                     TransferClass t = new TransferClass();
                     t.id = id;
-                    t.mid = m.mId;
-                    t.vid = v.vId;
+                    t.mid = m.id;
+                    t.vid = v.id;
                     Post(t);
                     db.SubmitChanges();
                 }
