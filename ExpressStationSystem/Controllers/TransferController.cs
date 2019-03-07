@@ -33,6 +33,36 @@ namespace ExpressStationSystem.Controllers
             return list;
         }
 
+        // Post: api/Transfer/PostList
+        /// <summary>
+        /// 添加出站包裹信息
+        /// </summary>
+        /// <remarks>添加出站包裹信息</remarks>
+        /// <returns>返回</returns>
+        [HttpPost, Route("Transfer/PostList")]
+        public bool PostList(List<int> ids, VidClass v, MemberClass m)
+        {
+            db = new DataClasses1DataContext(connstr);
+            try
+            {
+                foreach (var id in ids)
+                {
+                    Transfer tran = new Transfer();
+                    TransferClass t = new TransferClass();
+                    t.id = id;
+                    t.mid = m.mId;
+                    t.vid = v.vId;
+                    Post(t);
+                    db.SubmitChanges();
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
 
         // Post: api/Transfer/Post
         /// <summary>
