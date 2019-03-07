@@ -37,6 +37,9 @@ namespace ExpressStationSystem.Controllers
         /// <summary>
         /// 添加出站包裹信息
         /// </summary>
+        /// <param name="ids">包裹id数组</param>
+        /// <param name="m">员工id</param>
+        /// <param name="v">交通工具id</param>
         /// <remarks>添加出站包裹信息</remarks>
         /// <returns>返回</returns>
         [HttpPost, Route("Transfer/PostList")]
@@ -68,6 +71,7 @@ namespace ExpressStationSystem.Controllers
         /// <summary>
         /// 添加出站包裹信息
         /// </summary>
+        /// <param name="x">出站包裹信息</param>
         /// <remarks>添加出站包裹信息</remarks>
         /// <returns>返回</returns>
         [HttpPost, Route("Transfer/Post")]
@@ -101,6 +105,7 @@ namespace ExpressStationSystem.Controllers
         /// <summary>
         /// 获取已上车的包裹ID
         /// </summary>
+        /// <param name="x">交通工具id</param>
         /// <remarks>获取已上车的包裹ID</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Transfer/GetPackageIdOnVehicle")]
@@ -122,6 +127,7 @@ namespace ExpressStationSystem.Controllers
         /// <summary>
         /// 交通工具从站点出发
         /// </summary>
+        /// <param name="x">交通工具id</param>
         /// <remarks>交通工具从站点出发</remarks>
         /// <returns>返回</returns>
         [HttpPost, Route("Transfer/Departure")]
@@ -155,6 +161,7 @@ namespace ExpressStationSystem.Controllers
         /// <summary>
         /// 把包裹从车上卸下
         /// </summary>
+        /// <param name="x">包裹id</param>
         /// <remarks>把包裹从车上卸下</remarks>
         /// <returns>返回</returns>
         [HttpPost, Route("Transfer/RevokeTransfer")]
