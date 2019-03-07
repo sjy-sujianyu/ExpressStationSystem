@@ -117,6 +117,12 @@ namespace ExpressStationSystem
         public int Id { get => id; set => id = value; }
         public string Mid { get => mid; set => mid = value; }
     }
+    public class TransferClass
+    {
+        public int id;
+        public string mid;
+        public int vid;
+    }
     public class MemberClass
     {
         public string mId;
