@@ -20,6 +20,13 @@
 
         function changeInputContent(self) {
             var input = document.getElementById("showCheckContent");
+            input.type = "text";
+            input.placeholder = self.innerText + '查找';
+        }
+
+        function changeInputContentMonth(self) {
+            var input = document.getElementById("showCheckContent");
+            input.type = "date";
             input.placeholder = self.innerText + '查找';
         }
 
@@ -45,7 +52,21 @@
                     }
                 }
             })
-            
+
+        }
+
+        function search() {
+            var searchMethod = document.getElementById("showCheckContent").placeholder;
+            if (searchMethod == "按姓名查找") {
+                window.location.href = '/Member/Leave?searchWithName=' + document.getElementById("showCheckContent").value;
+            }
+            else if (searchMethod == "按手机查找") {
+                window.location.href = '/Member/Leave?searchWithPhone=' + document.getElementById("showCheckContent").value;
+            }
+            else if (searchMethod == "按日期查找") {
+                alert(document.getElementById("showCheckContent").value);
+                window.location.href = '/Member/Leave?searchWithDate=' + document.getElementById("showCheckContent").value;
+            }
         }
 
         function accessApply(lid, mid) {
@@ -83,7 +104,7 @@
                         })
                     } else {
                         alert('提交失败');
-                    } 
+                    }
                 }
             })
         }
@@ -115,7 +136,7 @@
                             <li><a href="/Member/AddMember">员工录用</a></li>
                             <li><a href="/Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="/Member/Fine">补贴</a></li>
+                            <li><a href="/Member/Fine">奖罚款</a></li>
                             <li><a href="/Member/Leave">请假条</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/Member/Mission">任务分配</a></li>
@@ -135,7 +156,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="/Login/changePassword">修改超级密码</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="/Home/Index">退出用户</a></li>
+                            <li><a href="/Login/exitLogin">退出用户</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -153,12 +174,13 @@
         <ul class="dropdown-menu">
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
+            <li><a onclick="changeShowCheckType(this);changeInputContentMonth(this)">按月份</a></li>
         </ul>
 
         <div class="input-group">
             <input type="text" class="form-control" placeholder="按姓名查找" id="showCheckContent">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button">Go!</button>
+                <button class="btn btn-default" type="button" onclick="search()">Go!</button>
             </span>
         </div>
 
@@ -178,6 +200,7 @@
                         <th>联系手机</th>
                         <th>职位</th>
                         <th>本月请假次数</th>
+                        <th>请假条状态</th>
                         <th>操作</th>
                     </tr>
 
@@ -185,78 +208,311 @@
                 <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
                     @for (int i = 0; i < ViewBag.applicantsID.Count; i++)
                     {
-                        <tr>
-                            <td>@ViewBag.unFinishLID[i]</td>
-                            <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.applicantsImg[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
-                            <td>@ViewBag.applicantsName[i]</td>
-                            <td>@ViewBag.applicantsID[i]</td>
-                            <td>@ViewBag.applicantsJob[i]</td>
-                            <td>@ViewBag.applicantsTimes[i]</td>
-                            <th>
-                                <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#accessLeave">批准</button>
-                                <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#refuseLeave">驳回</button>
-                                <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#detailLeave">详情</button>
+                        if (@ViewBag.leaveStatus[i] == "被拒绝")
+                        {
+                            <tr class="label-danger">
+                                <td>@ViewBag.unFinishLID[i]</td>
+                                <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.applicantsImg[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                                <td>@ViewBag.applicantsName[i]</td>
+                                <td>@ViewBag.applicantsID[i]</td>
+                                <td>@ViewBag.applicantsJob[i]</td>
+                                <td>@ViewBag.applicantsTimes[i]</td>
+                                <td>@ViewBag.leaveStatus[i]</td>
+                                <th>
+                                    <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#accessLeave" disabled="disabled" style="color:gray">批准</button>
+                                    <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#refuseLeave" disabled="disabled" style="color:gray">驳回</button>
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#detailLeave">详情</button>
 
-                                <div class="modal fade" id="accessLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <input type="text" placeholder="输入意见" id="accessView" />
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="accessApply(@ViewBag.unFinishLID[i],@ViewBag.applicantsID[i])">提交批准</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="modal fade" id="refuseLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <input type="text" placeholder="输入意见" id="refuseView" />
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="refuseApply(@ViewBag.unFinishLID[i],@ViewBag.applicantsID[i])">提交驳回</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="modal fade" id="detailLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div id="Reason" class="row" style="display:flex">请假理由:</div><div><a style="color:darkgray">@ViewBag.applicantsReason[i]</a></div>
-                                                <div class="row" style="display:flex">
-                                                    申请时间: <div>@ViewBag.applicantsApplyTime[i]</div>
+                                    <div class="modal fade" id="accessLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
                                                 </div>
-                                                <div class="row" style="display:flex">
-                                                    请假时间: <div>@ViewBag.applicantsStartTime[i]</div>到<div>@ViewBag.applicantsEndTime[i]</div>
+                                                <div class="modal-body">
+                                                    <input type="text" placeholder="输入意见" id="accessView" />
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="accessApply(@ViewBag.unFinishLID[i],@ViewBag.applicantsID[i])">提交批准</button>
                                                 </div>
                                             </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="refuseLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="text" placeholder="输入意见" id="refuseView" />
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="refuseApply(@ViewBag.unFinishLID[i],@ViewBag.applicantsID[i])">提交驳回</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+
+                                    <div class="modal fade" id="detailLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div id="Reason" class="row" style="display:flex">请假理由:</div><div><a style="color:darkgray">@ViewBag.applicantsReason[i]</a></div>
+                                                    <div class="row" style="display:flex">
+                                                        申请时间: <div>@ViewBag.applicantsApplyTime[i]</div>
+                                                    </div>
+                                                    <div class="row" style="display:flex">
+                                                        请假时间: <div>@ViewBag.applicantsStartTime[i]</div>到<div>@ViewBag.applicantsEndTime[i]</div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
 
-                            </th>
-                        </tr>
+                                </th>
+                            </tr>
+                        }
+                        else if (@ViewBag.leaveStatus[i] == "申请成功")
+                        {
+                            <tr class="label-success">
+                                <td>@ViewBag.unFinishLID[i]</td>
+                                <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.applicantsImg[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                                <td>@ViewBag.applicantsName[i]</td>
+                                <td>@ViewBag.applicantsID[i]</td>
+                                <td>@ViewBag.applicantsJob[i]</td>
+                                <td>@ViewBag.applicantsTimes[i]</td>
+                                <td>@ViewBag.leaveStatus[i]</td>
+                                <th>
+                                    <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#accessLeave" disabled="disabled" style="color:gray">批准</button>
+                                    <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#refuseLeave" disabled="disabled" style="color:gray">驳回</button>
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#detailLeave">详情</button>
+
+                                    <div class="modal fade" id="accessLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="text" placeholder="输入意见" id="accessView" />
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="accessApply(@ViewBag.unFinishLID[i],@ViewBag.applicantsID[i])">提交批准</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="refuseLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="text" placeholder="输入意见" id="refuseView" />
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="refuseApply(@ViewBag.unFinishLID[i],@ViewBag.applicantsID[i])">提交驳回</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="detailLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div id="Reason" class="row" style="display:flex">请假理由:</div><div><a style="color:darkgray">@ViewBag.applicantsReason[i]</a></div>
+                                                    <div class="row" style="display:flex">
+                                                        申请时间: <div>@ViewBag.applicantsApplyTime[i]</div>
+                                                    </div>
+                                                    <div class="row" style="display:flex">
+                                                        请假时间: <div>@ViewBag.applicantsStartTime[i]</div>到<div>@ViewBag.applicantsEndTime[i]</div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </th>
+                            </tr>
+                        }
+                        else if (@ViewBag.leaveStatus[i] == "已销假")
+                        {
+                            <tr class="label-warning">
+                                <td>@ViewBag.unFinishLID[i]</td>
+                                <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.applicantsImg[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                                <td>@ViewBag.applicantsName[i]</td>
+                                <td>@ViewBag.applicantsID[i]</td>
+                                <td>@ViewBag.applicantsJob[i]</td>
+                                <td>@ViewBag.applicantsTimes[i]</td>
+                                <td>@ViewBag.leaveStatus[i]</td>
+                                <th>
+                                    <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#accessLeave" disabled="disabled" style="color:gray">批准</button>
+                                    <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#refuseLeave" disabled="disabled" style="color:gray">驳回</button>
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#detailLeave">详情</button>
+
+                                    <div class="modal fade" id="accessLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="text" placeholder="输入意见" id="accessView" />
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="accessApply(@ViewBag.unFinishLID[i],@ViewBag.applicantsID[i])">提交批准</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="refuseLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="text" placeholder="输入意见" id="refuseView" />
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="refuseApply(@ViewBag.unFinishLID[i],@ViewBag.applicantsID[i])">提交驳回</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="detailLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div id="Reason" class="row" style="display:flex">请假理由:</div><div><a style="color:darkgray">@ViewBag.applicantsReason[i]</a></div>
+                                                    <div class="row" style="display:flex">
+                                                        申请时间: <div>@ViewBag.applicantsApplyTime[i]</div>
+                                                    </div>
+                                                    <div class="row" style="display:flex">
+                                                        请假时间: <div>@ViewBag.applicantsStartTime[i]</div>到<div>@ViewBag.applicantsEndTime[i]</div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </th>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr class="label-info">
+                                <td>@ViewBag.unFinishLID[i]</td>
+                                <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.applicantsImg[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                                <td>@ViewBag.applicantsName[i]</td>
+                                <td>@ViewBag.applicantsID[i]</td>
+                                <td>@ViewBag.applicantsJob[i]</td>
+                                <td>@ViewBag.applicantsTimes[i]</td>
+                                <td>@ViewBag.leaveStatus[i]</td>
+                                <th>
+                                    <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#accessLeave">批准</button>
+                                    <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#refuseLeave">驳回</button>
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#detailLeave">详情</button>
+
+                                    <div class="modal fade" id="accessLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="text" placeholder="输入意见" id="accessView" />
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="accessApply(@ViewBag.unFinishLID[i],@ViewBag.applicantsID[i])">提交批准</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="refuseLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="text" placeholder="输入意见" id="refuseView" />
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="refuseApply(@ViewBag.unFinishLID[i],@ViewBag.applicantsID[i])">提交驳回</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="detailLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div id="Reason" class="row" style="display:flex">请假理由:</div><div><a style="color:darkgray">@ViewBag.applicantsReason[i]</a></div>
+                                                    <div class="row" style="display:flex">
+                                                        申请时间: <div>@ViewBag.applicantsApplyTime[i]</div>
+                                                    </div>
+                                                    <div class="row" style="display:flex">
+                                                        请假时间: <div>@ViewBag.applicantsStartTime[i]</div>到<div>@ViewBag.applicantsEndTime[i]</div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </th>
+                            </tr>
+                        }
+
                     }
 
 
@@ -267,14 +523,14 @@
         <div class='container-fluid col-sm-1.5'>
             <div class="list-group">
                 <h4 class="page-header">选择分类</h4>
-                <a class="list-group-item" href="/Member/Leave?type=?">未处理</a>
+                <a class="list-group-item" href="/Member/Leave?type=unFinish">未处理</a>
                 <a class="list-group-item" href="/Member/Leave?type=history">历史记录</a>
             </div>
         </div>
 
     </div>
 
-    
+
 </body>
 </html>
 

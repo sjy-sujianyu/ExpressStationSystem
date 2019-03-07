@@ -1,0 +1,90 @@
+﻿@*<div class="jumbotron">
+        <h1>ASP.NET</h1>
+        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
+        <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Getting started</h2>
+            <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
+            a broad range of clients, including browsers and mobile devices. ASP.NET Web API
+            is an ideal platform for building RESTful applications on the .NET Framework.</p>
+            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Get more libraries</h2>
+            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Web Hosting</h2>
+            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+            <p><a class="btn btn-default" href="http://localhost:60062/LogIn/ViewPage1">Learn more &raquo;</a></p>
+        </div>
+    </div>*@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+</head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="Index">首页</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="#">我要寄件</a></li>
+                    <li><a href="#">员工报道</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">关于我们</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="输入单号查询包裹">
+                    </div>
+                    <button type="submit" class="btn btn-default">查询</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $("#btn-Login").click(function () {
+                                    location.href = "../Login/Login";
+                                });
+                            });
+                        </script>
+
+                        <button id="btn-Login" class="btn btn-primary btn-lg active" onclick="">登陆</button>
+
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </div>
+
+</body>
+</html>
+

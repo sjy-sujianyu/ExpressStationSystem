@@ -8,6 +8,36 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @*<script src="~/Views/Package/Package.js"></script>*@
+
+    <script>
+        function changeShowCheckType(self) {
+            var button = document.getElementById("showCheckType");
+            button.innerHTML = self.innerText + ' <span class="caret"></span>';
+        }
+
+        function changeInputContent(self) {
+            var input = document.getElementById("showCheckContent");
+            input.placeholder = self.innerText + '查找';
+        }
+
+        function searchWith() {
+            var searchMethod = document.getElementById("showCheckContent").placeholder;
+            if (searchMethod == "按姓名查找") {
+                window.location.href = '/Package/Package?searchWithName=' + document.getElementById("showCheckContent").value;
+            }
+            else if (searchMethod == "按手机查找") {
+                window.location.href = '/Package/Package?searchWithPhone=' + document.getElementById("showCheckContent").value;
+            }
+            else if (searchMethod == "按单号查找") {
+                window.location.href = '/Package/Package?searchWithPID=' + document.getElementById("showCheckContent").value;
+            }
+            else if (searchMethod == "按时间查找") {
+                window.location.href = '/Package/Package?searchWithTime=' + document.getElementById("showCheckContent").value;
+            }
+
+        }
+    </script>
+
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
@@ -37,7 +67,7 @@
                             <li><a href="/Member/AddMember">员工录用</a></li>
                             <li><a href="/Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="/Member/Fine">补贴</a></li>
+                            <li><a href="/Member/Fine">奖罚款</a></li>
                             <li><a href="/Member/Leave">请假条</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/Member/Mission">任务分配</a></li>
@@ -57,7 +87,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="/Login/changePassword">修改超级密码</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="/Home/Index">退出用户</a></li>
+                            <li><a href="/Login/exitLogin">退出用户</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -115,11 +145,33 @@
 
                     @for (int i = 0; i < ViewBag.packagesID.Count; i++)
                     {
-                        if (@ViewBag.statusList[i] == "派件中" ||
-                            @ViewBag.statusList[i] == "运输中" ||
-                            @ViewBag.statusList[i] == "已扫件" ||
-                            @ViewBag.statusList[i] == "待揽件" ||
-                            @ViewBag.statusList[i] == "已下单")
+                        if (ViewBag.errorStatusList[i] == 1)
+                        {
+                            <tr class="list-group-item-danger" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="detailImformation(@i)">
+                                <th scope="row">
+                                    @ViewBag.packagesID[i]
+                                </th>
+                                <td> @ViewBag.nameList[i] </td>
+                                <td> @ViewBag.phoneList[i] </td>
+                                <td> @ViewBag.timeList[i] </td>
+                                <td> @ViewBag.statusList[i] </td>
+
+                                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            详细信息
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </tr>
+                            continue;
+                        }
+                        else if (@ViewBag.statusList[i] == "派件中" ||
+                                    @ViewBag.statusList[i] == "运输中" ||
+                                    @ViewBag.statusList[i] == "已扫件" ||
+                                    @ViewBag.statusList[i] == "待揽件" ||
+                                    @ViewBag.statusList[i] == "已下单")
                         {
                             <tr class="list-group-item-info" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="detailImformation(@i)">
                                 <th scope="row">@ViewBag.packagesID[i]</th>
@@ -151,27 +203,7 @@
                             </tr>
                             continue;
                         }
-                        else if (@ViewBag.statusList[i] == "拒收" || @ViewBag.statusList[i] == "错件" || @ViewBag.statusList[i] == "漏件" || @ViewBag.statusList[i] == "破损")
-                        {
-                            <tr class="list-group-item-danger" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="detailImformation(@i)">
-                                <th scope="row">@ViewBag.packagesID[i]</th>
-                                <td>@ViewBag.nameList[i]</td>
-                                <td>@ViewBag.phoneList[i]</td>
-                                <td>@ViewBag.timeList[i]</td>
-                                <td>@ViewBag.statusList[i]</td>
 
-                                <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-                                    <div class="modal-dialog modal-lg" role="document">
-                                        <div class="modal-content">
-                                            详细信息
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </tr>
-
-                            continue;
-                        }
                         else
                         {
                             <tr class="list-group-item-danger" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="detailImformation(@i)">
@@ -202,17 +234,17 @@
         <div class='container-fluid col-sm-offset-1 col-sm-2'>
             <div class="list-group">
                 <h4 class="page-header">选择分类</h4>
-                <button type="button" class="list-group-item">全部</button>
-                <button type="button" class="list-group-item" style="background:cornflowerblue">派件中</button>
-                <button type="button" class="list-group-item" style="background:cornflowerblue">运输中</button>
-                <button type="button" class="list-group-item" style="background:cornflowerblue">已扫件</button>
-                <button type="button" class="list-group-item" style="background:cornflowerblue">待揽件</button>
-                <button type="button" class="list-group-item" style="background:cornflowerblue">已下单</button>
-                <button type="button" class="list-group-item" style="background:greenyellow">已签收</button>
-                <button type="button" class="list-group-item" style="background:red">错件</button>
-                <button type="button" class="list-group-item" style="background:red">漏件</button>
-                <button type="button" class="list-group-item" style="background:red">破损</button>
-                <button type="button" class="list-group-item" style="background:gray">拒收</button>
+                <a class="list-group-item" href="/Package/Package">全部</a>
+                <a class="list-group-item" style="background:cornflowerblue" href="/Package/Package?status=派件中">派件中</a>
+                <a class="list-group-item" style="background:cornflowerblue" href="/Package/Package?status=运输中">运输中</a>
+                <a class="list-group-item" style="background:cornflowerblue" href="/Package/Package?status=已扫件">已扫件</a>
+                <a class="list-group-item" style="background:cornflowerblue" href="/Package/Package?status=待揽件">待揽件</a>
+                <a class="list-group-item" style="background:cornflowerblue" href="/Package/Package?status=已下单">已下单</a>
+                <a class="list-group-item" style="background:greenyellow" href="/Package/Package?status=已签收">已签收</a>
+                <a class="list-group-item" style="background:red" href="/Package/Package?status=错件">错件</a>
+                <a class="list-group-item" style="background:red" href="/Package/Package?status=漏件">漏件</a>
+                <a class="list-group-item" style="background:red" href="/Package/Package?status=破损">破损</a>
+                <a class="list-group-item" style="background:gray" href="/Package/Package?status=拒收">拒收</a>
             </div>
         </div>
         @*<div class='tabbable tabs-left'>

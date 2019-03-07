@@ -10,6 +10,11 @@
 
     <script>
         var countdown = 60
+
+        var phone_getCODE = 0;
+        var CODE = 0;
+        var phone_CHECK = 0;
+
         function sendemail() {
             var obj = $("#yanzhengma");
             settime(obj);
@@ -30,13 +35,69 @@
                 settime(obj)
             } , 1000)
         }
+
+        function getCODE() {
+          
+            phone_getCODE = document.getElementById("phoneWord").value;
+            $.ajax({
+                type: 'get',
+                url: 'http://172.16.34.153:60062/Wechat/CheckPhone',
+                contentType: "application/json;charset=UTF-8",
+                data: {
+                    phone: phone_getCODE
+                },
+                success: function (res) {
+                    CODE = res;
+                }
+            });
+        }
+
+        function checkCODE() {
+            phone_CHECK = document.getElementById("phoneWord").value;
+            if (phone_CHECK == phone_getCODE && CODE == document.getElementById("CODE").value) {
+                if (document.getElementById("NewPassword").value == document.getElementById("NewPassword2").value) {
+                    //通过了
+                    document.getElementById("unSame").style.display = 'none';
+
+                    var formData = new FormData();
+                    formData.append("account", phone_CHECK);
+                    formData.append("password", document.getElementById("NewPassword").value);
+
+                    $.ajax({
+                        url: 'http://172.16.34.153:60062/Login/ModifyPassword', /*接口域名地址*/
+                        contentType: "application/json;charset=UTF-8",
+                        type: 'put',
+                        data: JSON.stringify({
+                            'account': phone_CHECK,
+                            "password": document.getElementById("NewPassword").value
+                        }),
+                        success: function (res) {
+                            if (res == true) {
+                                alert("修改成功");
+                                window.location.href = "/Login/Login";
+                            } else {
+                                alert('失败');
+                            }
+                        }
+                    })
+                }
+                else {
+                    document.getElementById("unSame").style.display = 'block';
+                }
+            }
+            else {
+                alert("验证失败");
+
+            }
+            
+        }
+
     </script>
 
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
     <div class="navbar navbar-default navbar-fixed-top">
-
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -46,26 +107,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/Login/AfterLogin">返回</a>
+                <a class="navbar-brand" href="/Home/Index" style="color:crimson">返回</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="/Package/Package">包裹一览</a></li>
-                    <li><a href="#">站点配车</a></li>
+                    <li><a href="#">我要寄件</a></li>
+                    <li><a href="#">员工报道</a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">人员管理<span class="caret"></span></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/Member/AllMember">员工一览</a></li>
-                            <li><a href="/Member/AddMember">员工录用</a></li>
-                            <li><a href="/Member/DeleteMember">员工开除</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/Member/Fine">补贴</a></li>
-                            <li><a href="/Member/Leave">请假条</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/Member/Mission">任务分配</a></li>
-                            <li><a href="/Member/Wages">工薪统计</a></li>
+                            <li><a href="#">关于我们</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -73,16 +126,14 @@
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="输入单号查询包裹">
                     </div>
-                    <button type="submit" class="btn btn-default">查询</button>
+                    <button type="submit" class="btn btn-default" disabled="disabled">查询</button>
                 </form>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多 <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/Login/changePassword">修改超级密码</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="/Login/exitLogin">退出用户</a></li>
-                        </ul>
+
+                <ul class="nav navbar-nav navbar-right" hidden="hidden">
+                    <li>
+
+                        <button id="btn-Login" class="btn btn-primary btn-lg active" onclick="">登陆</button>
+
                     </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
@@ -106,13 +157,13 @@
                     <label for="exampleInputEmail1">手机号</label>
                     <div style="display:flex">
                         <input type="text" class="form-control" id="phoneWord" placeholder="确认手机号">
-                        <button class="btn-danger" style="word-break:keep-all;width:12rem" onclick="sendemail()" id="yanzhengma">获取验证码</button>
+                        <button class="btn-danger" style="word-break:keep-all;width:12rem" onclick="sendemail();getCODE()" id="yanzhengma">获取验证码</button>
                     </div>
                 </div>
 
                 <div class="row">
                     <label for="exampleInputEmail1">输入验证码</label>
-                    <input type="password" class="form-control" id="NewPassword" placeholder="验证码">
+                    <input type="text" class="form-control" id="CODE" placeholder="验证码">
                 </div>
 
                 <div class="row">
@@ -122,12 +173,16 @@
 
                 <div class="row">
                     <label for="exampleInputEmail1">确认新的超级密码</label>
-                    <input type="password" class="form-control" id="NewPassword2" placeholder="再次输入新的超级密码">
+                    <div style="display:flex">
+                        <input type="password" class="form-control" id="NewPassword2" placeholder="再次输入新的超级密码">
+                        <div style="color:red; display:none" id="unSame"><span class="glyphicon glyphicon-info-sign"></span>两次输入的密码不一致</div>
+                    </div>
+                    
                 </div>
 
                 <div class="row">
                     <div class="col-md-4" style="padding:0">
-                        <button type="button" class="btn btn-info" style="margin-top:1rem; width:100%" id="Login">确认修改</button>
+                        <button type="button" class="btn btn-info" style="margin-top:1rem; width:100%" id="Login" onclick="checkCODE()">确认修改</button>
                     </div>
                 </div>
 

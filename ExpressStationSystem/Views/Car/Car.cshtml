@@ -21,7 +21,7 @@
         }
 
         function turnToDetail(id) {
-            window.location.href = '/Member/DetailMember?id=' + id;
+            window.location.href = '/Member/DetailMember?id=' + id ;
         }
 
         function searchWith() {
@@ -29,10 +29,10 @@
             if (searchMethod == "按姓名查找") {
                 window.location.href = '/Member/AllMember?searchWithName=' + document.getElementById("showCheckContent").value;
             }
-            else if (searchMethod == "按手机查找") {
+            else if (searchMethod == "按手机查找"){
                 window.location.href = '/Member/AllMember?searchWithPhone=' + document.getElementById("showCheckContent").value;
             }
-            searchContent = document.getElementById("showCheckContent").value;
+
         }
 
     </script>
@@ -65,7 +65,7 @@
                             <li><a href="/Member/AddMember">员工录用</a></li>
                             <li><a href="/Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="/Member/Fine">奖罚款</a></li>
+                            <li><a href="/Member/Fine">罚款</a></li>
                             <li><a href="/Member/Leave">请假条</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/Member/Mission">任务分配</a></li>
@@ -95,25 +95,24 @@
 
     <h2 class='page-header'>员工一览</h2>
 
-    <form action="AllMember" method="post">
-        <div class="col-sm-6 col-sm-offset-4" style="display:flex">
+    <div class="col-sm-6 col-sm-offset-4" style="display:flex">
 
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
-               @ViewBag.searchWith  <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
-                <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
-            </ul>
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
+            按姓名 <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按车牌</a></li>
+            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按类型</a></li>
+        </ul>
 
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="@ViewBag.placeholder" id="showCheckContent" value="@ViewBag.searchContent">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" onclick="searchWith()">Go!</button>
-                </span>
-            </div>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="按车牌查找" id="showCheckContent">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" onclick="searchWith()">Go!</button>
+            </span>
         </div>
-    </form>
+    </div>
+
     <br />
 
     <div class="col-sm-12" style="display:flex">
@@ -121,11 +120,10 @@
             <table class="table table-hover">
                 <thead style="display: table-header-group;vertical-align: middle;border-color: inherit;">
                     <tr>
-                        <th>肖像</th>
-                        <th>姓名</th>
-                        <th>联系手机</th>
-                        <th>职位</th>
-                        <th>休假情况</th>
+                        <th>车牌号</th>
+                        <th>车辆类型</th>
+                        <th>在用情况</th>
+                        <th>操作</th>
                     </tr>
 
                 </thead>
@@ -151,13 +149,9 @@
         <div class='container-fluid col-sm-1.5'>
             <div class="list-group">
                 <h4 class="page-header">选择分类</h4>
-                <a class="list-group-item" href="/Member/AllMember">全部</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=休息中">休息中</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=工作中">工作中</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=派件员">派件员</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=转件员">转件员</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=揽件员">揽件员</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=已辞职">已辞职</a>
+                <a class="list-group-item" href="/Car/Car">全部</a>
+                <a class="list-group-item" href="/Car/Car/?status=在用中">在用中</a>
+                <a class="list-group-item" href="/Car/Car/?status=闲置中">闲置中</a>
             </div>
         </div>
     </div>

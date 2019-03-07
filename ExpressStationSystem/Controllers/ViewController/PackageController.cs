@@ -9,33 +9,178 @@ namespace ExpressStationSystem.Controllers.ViewController
 {
     public class PackageController : Controller
     {
-        public ActionResult Package()
+        List<int> PIDList = new List<int>();
+        List<string> nameList = new List<string>();
+        List<string> phoneList = new List<string>();
+        List<DateTime> timeList = new List<DateTime>();
+        List<string> statusList = new List<string>();
+        List<int> errorStatusList = new List<int>();
+
+        public ActionResult Package(string status, string searchWithName, string searchWithPhone, string searchWithPID, string searchWithTime)
         {
+            nameList.Clear();
+            phoneList.Clear();
+            timeList.Clear();
+            statusList.Clear();
+
+            //获取最新的包裹列表
             List<int> packagesID = new ManagerController().GetAllPackage();
-            List<string> nameList = new List<string>();
-            List<string> phoneList = new List<string>();
-            List<DateTime> timeList = new List<DateTime>();
-            List<string> statusList = new List<string>();
-            
+
             foreach (var one in packagesID)
             {
-                if(new QueryController().GetAllInfo(one).error == null)
+                var packageInfo = new QueryController().GetAllInfo(one);
+                //包裹状态
+                string packageStatus = packageInfo.package.status;
+                if (status != null)
                 {
-                    statusList.Add(new QueryController().GetAllInfo(one).package.status);
+                    if (packageInfo.error == null)
+                    {
+                        errorStatusList.Add(0);
+                    }
+                    else
+                    {
+                        errorStatusList.Add(1);
+                    }
+                    //状态相同就添加数组
+                    if(packageStatus == status)
+                    {
+                        PIDList.Add(one);
+
+                        statusList.Add(packageStatus);
+
+                        nameList.Add(packageInfo.dest.name);
+
+                        phoneList.Add(packageInfo.dest.phone);
+
+                        timeList.Add(packageInfo.package.time);
+                    }
+                    continue;
+                }
+                else if(searchWithName != null)
+                {
+                    if(packageInfo.dest.name.ToString().StartsWith(searchWithName))
+                    {
+                        if (packageInfo.error == null)
+                        {
+                            errorStatusList.Add(0);
+                        }
+                        else
+                        {
+                            errorStatusList.Add(1);
+                        }
+                        PIDList.Add(one);
+
+                        statusList.Add(packageInfo.package.status);
+
+                        nameList.Add(packageInfo.dest.name);
+
+                        phoneList.Add(packageInfo.dest.phone);
+
+                        timeList.Add(packageInfo.package.time);
+                    }
+                    continue;
+                }
+                else if(searchWithPhone != null)
+                {
+                    if (packageInfo.dest.phone.ToString().StartsWith(searchWithPhone))
+                    {
+                        if (packageInfo.error == null)
+                        {
+                            errorStatusList.Add(0);
+                        }
+                        else
+                        {
+                            errorStatusList.Add(1);
+                        }
+
+                        PIDList.Add(one);
+
+                        statusList.Add(packageInfo.package.status);
+
+                        nameList.Add(packageInfo.dest.name);
+
+                        phoneList.Add(packageInfo.dest.phone);
+
+                        timeList.Add(packageInfo.package.time);
+                    }
+                    continue;
+                }
+                else if (searchWithPID != null)
+                {
+                    if (one.ToString().ToString().StartsWith(searchWithPID))
+                    {
+                        if (packageInfo.error == null)
+                        {
+                            errorStatusList.Add(0);
+                        }
+                        else
+                        {
+                            errorStatusList.Add(1);
+                        }
+                        PIDList.Add(one);
+
+                        statusList.Add(packageInfo.package.status);
+
+                        nameList.Add(packageInfo.dest.name);
+
+                        phoneList.Add(packageInfo.dest.phone);
+
+                        timeList.Add(packageInfo.package.time);
+                    }
+                    continue;
+                }
+                else if (searchWithTime != null)
+                {
+                    
+                    if (packageInfo.package.time.ToString().StartsWith(searchWithTime))
+                    {
+                        if (packageInfo.error == null)
+                        {
+                            errorStatusList.Add(0);
+                        }
+                        else
+                        {
+                            errorStatusList.Add(1);
+                        }
+                        PIDList.Add(one);
+
+                        statusList.Add(packageInfo.package.status);
+
+                        nameList.Add(packageInfo.dest.name);
+
+                        phoneList.Add(packageInfo.dest.phone);
+
+                        timeList.Add(packageInfo.package.time);
+                    }
+                    continue;
                 }
                 else
                 {
-                    statusList.Add(new QueryController().GetAllInfo(one).error.status);
+                    if (packageInfo.error == null)
+                    {
+                        errorStatusList.Add(0);
+                    }
+                    else
+                    {
+                        errorStatusList.Add(1);
+                    }
+                    PIDList.Add(one);
+
+                    statusList.Add(packageInfo.package.status);
+
+                    nameList.Add(packageInfo.dest.name);
+
+                    phoneList.Add(packageInfo.dest.phone);
+
+                    timeList.Add(packageInfo.package.time);
+
+                    continue;
                 }
-
-                nameList.Add(new QueryController().GetAllInfo(one).dest.name);
-
-                phoneList.Add(new QueryController().GetAllInfo(one).dest.phone);
-
-                timeList.Add(new QueryController().GetAllInfo(one).package.time);
                 
             }
-            ViewBag.packagesID = packagesID;
+
+            ViewBag.errorStatusList = errorStatusList;
+            ViewBag.packagesID = PIDList;
             ViewBag.nameList = nameList;
             ViewBag.phoneList = phoneList;
             ViewBag.timeList = timeList;

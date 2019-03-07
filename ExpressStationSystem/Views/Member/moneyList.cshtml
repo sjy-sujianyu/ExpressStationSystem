@@ -32,7 +32,7 @@
             else if (searchMethod == "按手机查找") {
                 window.location.href = '/Member/AllMember?searchWithPhone=' + document.getElementById("showCheckContent").value;
             }
-            searchContent = document.getElementById("showCheckContent").value;
+
         }
 
     </script>
@@ -93,27 +93,26 @@
         </div>
     </div>
 
-    <h2 class='page-header'>员工一览</h2>
+    <h2 class='page-header'>奖罚款表单</h2>
 
-    <form action="AllMember" method="post">
-        <div class="col-sm-6 col-sm-offset-4" style="display:flex">
+    <div class="col-sm-6 col-sm-offset-4" style="display:flex">
 
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
-               @ViewBag.searchWith  <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
-                <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
-            </ul>
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
+            按姓名 <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
+            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
+        </ul>
 
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="@ViewBag.placeholder" id="showCheckContent" value="@ViewBag.searchContent">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" onclick="searchWith()">Go!</button>
-                </span>
-            </div>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="按姓名查找" id="showCheckContent">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" onclick="searchWith()">Go!</button>
+            </span>
         </div>
-    </form>
+    </div>
+
     <br />
 
     <div class="col-sm-12" style="display:flex">
@@ -125,24 +124,69 @@
                         <th>姓名</th>
                         <th>联系手机</th>
                         <th>职位</th>
-                        <th>休假情况</th>
+                        <th>奖罚款金额</th>
+                        <th>操作</th>
                     </tr>
 
                 </thead>
                 <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
 
-                    @for (int i = 0; i < ViewBag.showPhoneList.Count; i++)
-                    {
-                        <tr>
-                            <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.showImgList[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
-                            <td>@ViewBag.showNameList[i]</td>
-                            <td>@ViewBag.showPhoneList[i]</td>
-                            <td>@ViewBag.showJobList[i]</td>
-                            <td>@ViewBag.showIsOnDutyList[i]</td>
-                            <th><button type="button" class="btn-sm btn-info" onclick="turnToDetail(@ViewBag.showPhoneList[i])">详情</button></th>
+                    @*@for (int i = 0; i < ViewBag.showPhoneList.Count; i++)
+        {
+            <tr>
+                <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.showImgList[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                <td>@ViewBag.showNameList[i]</td>
+                <td>@ViewBag.showPhoneList[i]</td>
+                <td>@ViewBag.showJobList[i]</td>
+                <td>@ViewBag.showIsOnDutyList[i]</td>
+                <th><button type="button" class="btn-sm btn-info" onclick="turnToDetail(@ViewBag.showPhoneList[i])">详情</button></th>
 
-                        </tr>
-                    }
+            </tr>
+        }*@
+
+                    <tr class="list-group-item-danger">
+                        <th scope="row"><img class="img-circle" src="..." alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                        <td>五一红</td>
+                        <td>15813323391</td>
+                        <td>派件员</td>
+                        <td><font style="color:red">-10.00</font></td>
+                        <th>
+                            <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#back">撤消</button>
+                            <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#detail">详情</button>
+                        </th>
+                        <div class="modal fade" id="back" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">确认撤消</h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="">撤消</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">详细信息</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        发发发
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -152,12 +196,8 @@
             <div class="list-group">
                 <h4 class="page-header">选择分类</h4>
                 <a class="list-group-item" href="/Member/AllMember">全部</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=休息中">休息中</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=工作中">工作中</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=派件员">派件员</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=转件员">转件员</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=揽件员">揽件员</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=已辞职">已辞职</a>
+                <a class="list-group-item" href="/Member/AllMember/?status=休息中">补贴</a>
+                <a class="list-group-item" href="/Member/AllMember/?status=工作中">罚款</a>
             </div>
         </div>
     </div>

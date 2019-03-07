@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Controllers\ViewController\CarController.cs" />
     <Compile Include="SpecialMethodModule.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -284,6 +285,10 @@
     <Content Include="Views\Package\ViewPage1.cshtml" />
     <Content Include="Views\Member\Leave.cshtml" />
     <Content Include="Views\Member\Fine.cshtml" />
+    <Content Include="Views\Login\forget.cshtml" />
+    <Content Include="Views\Login\exitLogin.cshtml" />
+    <Content Include="Views\Car\Car.cshtml" />
+    <Content Include="Views\Member\moneyList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

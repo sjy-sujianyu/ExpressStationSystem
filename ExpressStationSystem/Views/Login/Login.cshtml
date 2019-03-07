@@ -1,28 +1,4 @@
-﻿@*<div class="jumbotron">
-        <h1>ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Getting started</h2>
-            <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
-            a broad range of clients, including browsers and mobile devices. ASP.NET Web API
-            is an ideal platform for building RESTful applications on the .NET Framework.</p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-default" href="http://localhost:60062/LogIn/ViewPage1">Learn more &raquo;</a></p>
-        </div>
-    </div>*@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -131,7 +107,7 @@
                     <div class="row">
                             <div style="display:flex;flex-direction:column;margin:auto;width:fit-content;">
                                 <label for="exampleInputEmail1">超级用户账号</label>
-                                <input type="text" class="form-control" placeholder="输入管理员账号" name="UserPhone">
+                                <input type="text" class="form-control" placeholder="输入管理员账号" name="UserPhone" id="UserPhone">
                             </div>
                             <div style="display:flex;flex-direction:column;margin:auto;width:fit-content;">
                                 <label for="exampleInputEmail1">超级密码</label>
@@ -141,7 +117,6 @@
 
                     <div class="row" style="display:flex;">
                         <div class="col-md-4" style="padding:0;margin:auto;">
-
                             <button type="submit" class="btn btn-info" style="margin-top:1rem; width:16rem;" id="Login" >登陆</button>
                         </div>
                     </div>
@@ -149,8 +124,8 @@
 
                 <div class="row" style="display:flex;">
                     <div class="col-md-7" style="margin:auto;margin-top:1rem;padding:5px;width:fit-content;">
-                        <span class="glyphicon glyphicon-info-sign" style="color:red"></span>
-                        <strong style="color:crimson">忘记密码请联系运维！</strong>
+                        <span class="glyphicon glyphicon-question-sign" style="color:cornflowerblue"></span>
+                        <a style="color:cornflowerblue" href="/Login/forget">忘记密码</a>
                     </div>
                 </div>
 
