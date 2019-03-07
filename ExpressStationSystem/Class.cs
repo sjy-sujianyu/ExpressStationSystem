@@ -151,6 +151,10 @@ namespace ExpressStationSystem
         public string oldMid;
         public string newMid;
     }
+    public class VidClass
+    {
+        public int vId;
+    }
     public class VehicleClass
     {
         public string type;

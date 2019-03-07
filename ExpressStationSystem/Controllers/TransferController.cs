@@ -55,7 +55,7 @@ namespace ExpressStationSystem.Controllers
                 tran.id = x.id;
                 tran.mId = x.mid;
                 tran.time = DateTime.Now;
-                tran.isDone = true;
+                tran.isDone = false;
                 db.Transfer.InsertOnSubmit(tran);
                 package.status = "运输中";
                 db.SubmitChanges();
@@ -66,5 +66,32 @@ namespace ExpressStationSystem.Controllers
                 return false;
             }
         }
+
+        // PUT: api/Transfer/Departure
+        /// <summary>
+        /// 交通工具从站点出发
+        /// </summary>
+        /// <remarks>添加出站包裹信息</remarks>
+        /// <returns>返回</returns>
+        [HttpPost, Route("Transfer/Departure")]
+        public bool Departure(VidClass x)
+        {
+            db = new DataClasses1DataContext(connstr);
+            try
+            {
+                var vehicle = db.Vehicle.Single(a => a.vId == x.vId);
+                if (vehicle == null) return false;
+                
+                db.SubmitChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
     }
+
+
 }
