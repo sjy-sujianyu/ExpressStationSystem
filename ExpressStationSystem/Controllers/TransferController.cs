@@ -81,7 +81,13 @@ namespace ExpressStationSystem.Controllers
             {
                 var vehicle = db.Vehicle.Single(a => a.vId == x.vId);
                 if (vehicle == null) return false;
-                
+                var transferOnVehicle = db.Transfer.Where(a => a.isDone == false && a.vId == x.vId);
+                foreach(var tran in transferOnVehicle)
+                {
+                    tran.isDone = true;
+                    var id = tran.id;
+                    var p = db.Package.SingleOrDefault(a => a.id == id);
+                }
                 db.SubmitChanges();
                 return true;
             }
