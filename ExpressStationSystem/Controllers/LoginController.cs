@@ -98,14 +98,14 @@ namespace ExpressStationSystem.Controllers
             }
         }
 
-        // GET: api/Login/ModifyPassword
+        // Put: api/Login/ModifyPassword
         /// <summary>
         /// 修改密码
         /// </summary>
         /// <param name="x">登陆实体</param>
         /// <remarks>修改密码</remarks>
         /// <returns>返回</returns>
-        [HttpPost, Route("Login/ModifyPassword")]
+        [HttpPut, Route("Login/ModifyPassword")]
         public bool ModifyPassword(LoginClass x)
         {
             db = new DataClasses1DataContext(connstr);

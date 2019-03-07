@@ -110,13 +110,11 @@ namespace ExpressStationSystem
         public List<int> GetReadytoDelivery()
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Package where a.status == "已扫件" select a.id;
+            var readytoDelivery = db.Package.Where(a=>a.status=="已扫件").Join(db.AddressBook.Where(a=>a.street.Contains("华南农业大学")), a => a.receiverId, b => b.aId, (a, b) => a.id);
             List<int> list = new List<int>();
-            foreach (var x in selectQuery)
+            foreach (var x in readytoDelivery)
             {
-                var selectQuery2 = from a in db.AddressBook where a.aId == x select a.street;
-                if(selectQuery2.SingleOrDefault() == "华南农业大学")
-                    list.Add(x);
+                list.Add(x);
             }
             return list;
         }
@@ -134,7 +132,7 @@ namespace ExpressStationSystem
             try
             {
                 var package = db.Package.Single(a => a.id == x.Id);
-                if (package.status != "已下单")
+                if (package.status != "已扫件")
                 {
                     return false;
                 }
@@ -195,6 +193,25 @@ namespace ExpressStationSystem
             }
         }
 
+        // PUT: api/Delivery/SwapAddress
+        /// <summary>
+        /// 交换发件人和收件人地址
+        /// </summary>
+        /// <remarks>交换发件人和收件人地址</remarks>
+        /// <returns>返回</returns>
+        [HttpPut, Route("Delivery/SwapAddress")]
+        public bool SwapAddress(IdClass iclass)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var x = db.Package.SingleOrDefault(a => a.id == iclass.id);
+            if (x is null) return false;
+            int temp = x.receiverId;
+            int temp1 = x.sendId;
+            x.receiverId = temp1;
+            x.sendId = temp;
+            return true;
+        }
+
         //PUT: api/Delivery/Refuse
         /// <summary>
         /// 包裹拒签
@@ -206,21 +223,20 @@ namespace ExpressStationSystem
         {
             db = new DataClasses1DataContext(connstr);
             var x = db.Package.SingleOrDefault(a => a.id == iclass.id);
-            if (x is null || x.status != "派件中" || IsRefuse(iclass.id) == false)
+            if (x is null || x.status != "派件中" || IsRefuse(iclass.id))
             {
                 return false;
             }
             else
             {
-                int temp = x.sendId;
-                x.sendId = x.receiverId;
-                x.receiverId = temp;
-                x.status = "已扫件";
-                db.SubmitChanges();
+                RevokeDelivery(iclass);
+                SwapAddress(iclass);
                 Error error = new Error();
                 error.id = iclass.id;
                 error.introduction = "拒签";
                 error.status = "已处理";
+                db.Error.InsertOnSubmit(error);
+                db.SubmitChanges();
                 return true;
             }
         }
@@ -235,7 +251,7 @@ namespace ExpressStationSystem
         public List<int> GetDelivering(string account)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.PickUp.GroupBy(p => p.id).Select(g => g.OrderByDescending(t => t.time).First()) join b in db.Package on a.id equals b.id where b.status == "待派件" && a.mId == account && a.isDone == false select b.id;
+            var selectQuery = from a in db.Delivery.GroupBy(p => p.id).Select(g => g.OrderByDescending(t => t.time).First()) join b in db.Package on a.id equals b.id where b.status == "派件中" && a.mId == account && a.isDone == false select b.id;
             List<int> list = new List<int>();
             foreach (var x in selectQuery)
             {

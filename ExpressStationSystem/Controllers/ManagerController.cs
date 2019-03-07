@@ -71,6 +71,10 @@ namespace ExpressStationSystem.Controllers
             var y = db.Login.SingleOrDefault(a => a.account == x.mId);
             if (check !=null&&y!=null)
             {
+                check.job = x.job;
+                check.baseSalary = x.baseSalary;
+                check.imagePath = "无";
+                check.onDuty = true;
                 check.isDelete = false;
                 y.isDelete = false;
                 db.SubmitChanges();
@@ -151,6 +155,10 @@ namespace ExpressStationSystem.Controllers
         [HttpPut, Route("Manager/ChangeJob")]
         public bool ChangeJob(jobClass x)
         {
+            if(!checkDoJob(x.mId))
+            {
+                return false;
+            }
             db = new DataClasses1DataContext(connstr);
             List<string> list = new List<string>() { "派件员", "揽件员", "出件员", "休息中", "经理", "待定中" };
             if (!list.Contains(x.job))
@@ -243,6 +251,10 @@ namespace ExpressStationSystem.Controllers
         [HttpDelete, Route("Manager/DeleteMember")]
         public bool DeleteMember(accountClass aclass)
         {
+            if (!checkDoJob(aclass.account))
+            {
+                return false;
+            }
             db = new DataClasses1DataContext(connstr);
             var x = db.Member.SingleOrDefault(a => a.mId == aclass.account);
             if(x is null)
@@ -251,6 +263,28 @@ namespace ExpressStationSystem.Controllers
             }
             x.isDelete = true;
             db.SubmitChanges();
+            return true;
+        }
+
+        private bool checkDoJob(string account)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var pickUpQuery = from a in db.PickUp orderby a.time descending join b in db.Package on a.id equals b.id where b.status == "待揽件"  group a by a.id into g select g.First();
+            foreach(var x in pickUpQuery)
+            {
+                if(x.mId==account&&x.isDone==false)
+                {
+                    return false;
+                }
+            }
+            var delieryQuery= from a in db.Delivery orderby a.time descending join b in db.Package on a.id equals b.id where b.status == "待揽件"  group a by a.id into g select g.First();
+            foreach (var x in delieryQuery)
+            {
+                if (x.mId == account && x.isDone == false)
+                {
+                    return false;
+                }
+            }
             return true;
         }
     }

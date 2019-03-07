@@ -228,13 +228,14 @@ namespace ExpressStationSystem.Controllers
             leave.time = DateTime.Now;
             leave.srcTime = x.srcTime;
             leave.endTime = x.endTime;
+            leave.person = null;
+            leave.view = null;
             try
             {
-                db.Leave.InsertOnSubmit(leave);
                 db.SubmitChanges();
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return false;
             }
@@ -309,7 +310,7 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>删除未批准的请假记录</remarks>
         /// <returns>返回</returns>
         [HttpDelete, Route("Leave/Delete")]
-        public bool Delete(lIdClass x)
+        public bool Delete(lIdClass1 x)
         {
             db = new DataClasses1DataContext(connstr);
             var leave = db.Leave.SingleOrDefault(a => a.lId == x.lId);

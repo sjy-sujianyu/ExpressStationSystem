@@ -35,7 +35,7 @@ namespace ExpressStationSystem.Controllers
                 return null;
             }
             //提成
-            dynamic commission = new { pickUp = new { PickUpCount = record.PickUpCount, value = value.pickUpValue, total = record.PickUpCount * value.pickUpValue }, delivery = new { DeliveryCount = record.DeliveryCount, value = value.deliveryValue, total = record.DeliveryCount * value.deliveryValue }, transfer = new { TransferCount = record.TransferCount, value = value.deliveryValue, total = record.TransferCount * value.deliveryValue } };
+            dynamic commission = new { pickUp = new { PickUpCount = record.PickUpCount, value = value.pickUpValue, total = record.PickUpCount * value.pickUpValue }, delivery = new { DeliveryCount = record.DeliveryCount, value = value.deliveryValue, total = record.DeliveryCount * value.deliveryValue }, transfer = new { TransferCount = record.TransferCount, value = value.transferValue, total = record.TransferCount * value.transferValue }, total= record.PickUpCount * value.pickUpValue + record.DeliveryCount * value.deliveryValue + record.TransferCount * value.transferValue };
             //补贴
             decimal subsidy = 0;
             //罚款
@@ -59,7 +59,7 @@ namespace ExpressStationSystem.Controllers
                     fineList.Add(x);
                 }
             }
-            return new { baseSalary = member.baseSalary, commission = commission, subsidy = new { details = subsidyList, total = subsidy }, fine = new { details = fineList, total = fine } };
+            return new { baseSalary = member.baseSalary, commission = commission, subsidy = new { details = subsidyList, total = subsidy }, fine = new { details = fineList, total = fine }, total = member.baseSalary + commission.pickUp.total + commission.delivery.total + commission.transfer.total + subsidy + fine };
         }
 
         // GET: api/Salary/5
