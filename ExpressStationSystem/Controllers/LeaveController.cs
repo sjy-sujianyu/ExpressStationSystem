@@ -1,4 +1,6 @@
-﻿ using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -31,21 +33,20 @@ namespace ExpressStationSystem.Controllers
             return list;
         }
 
-        // GET: api/Leave/GetLeaveListByStatus
+        // GET: api/Leave/GetHistoryLeave
         /// <summary>
         /// 获取请假信息
         /// </summary>
         /// <param name="start">起始时间</param>
         /// <param name="end">终止时间</param>
-        /// <param name="status">请假状态  0:审核中 1:被拒绝 2:申请成功 3:已销假</param>
         /// <remarks>获取请假信息</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Leave/GetLeaveListByStatus")]
-        public List<int> GetLeaveListByStatus(DateTime start, DateTime end,short status)
+        [HttpGet, Route("Leave/GetHistoryLeave")]
+        public List<int> GetHistoryLeave(DateTime start, DateTime end)
         {
             db = new DataClasses1DataContext(connstr);
             List<int> list = new List<int>();
-            var leave = db.Leave.Where(a => DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0&&a.status==status);
+            var leave = db.Leave.Where(a => DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0&&(a.status==2||a.status==3));
             if (leave is null)
             {
                 return list;
@@ -69,6 +70,7 @@ namespace ExpressStationSystem.Controllers
         [HttpGet, Route("Leave/GetLeaveInfo")]
         public dynamic GetLeaveInfo(int lId)
         {
+            string[] statusArray = new string[] { "审核中", "失败", "成功", "已销假" };
             db = new DataClasses1DataContext(connstr);
             var leave = db.Leave.Join(db.Member,a=>a.mId,b=>b.mId,(a,b)=>new { leave=a,member=b}).SingleOrDefault(a => a.leave.lId==lId);
             if(leave is null)
@@ -77,7 +79,11 @@ namespace ExpressStationSystem.Controllers
             }
             else
             {
-                return leave;
+                var josnStr = JsonConvert.SerializeObject(leave);
+                JObject jo = (JObject)JsonConvert.DeserializeObject(josnStr);
+                int status= Int32.Parse(jo["leave"]["status"].ToString());
+                jo["leave"]["status"] = statusArray[status];
+                return jo;
             }
         }
 

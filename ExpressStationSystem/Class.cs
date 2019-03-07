@@ -209,5 +209,16 @@ namespace ExpressStationSystem
     {
         public int lId;
     }
+    public class MoneyClass
+    {
+        public string mId;
 
+        public decimal subsidy;
+
+        public decimal fine;
+
+        public string reason;
+
+        public string person;
+    }
 }
