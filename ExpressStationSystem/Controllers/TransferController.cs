@@ -33,40 +33,6 @@ namespace ExpressStationSystem.Controllers
             return list;
         }
 
-        // Post: api/Transfer/PostList
-        /// <summary>
-        /// 添加出站包裹信息
-        /// </summary>
-        /// <param name="ids">包裹id数组</param>
-        /// <param name="m">员工id</param>
-        /// <param name="v">交通工具id</param>
-        /// <remarks>添加出站包裹信息</remarks>
-        /// <returns>返回</returns>
-        [HttpPost, Route("Transfer/PostList")]
-        public bool PostList(List<int> ids, IdClass v, MidClass m)
-        {
-            db = new DataClasses1DataContext(connstr);
-            try
-            {
-                foreach (var id in ids)
-                {
-                    Transfer tran = new Transfer();
-                    TransferClass t = new TransferClass();
-                    t.id = id;
-                    t.mid = m.mid;
-                    t.vid = v.id;
-                    Post(t);
-                    db.SubmitChanges();
-                }
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-
         // Post: api/Transfer/Post
         /// <summary>
         /// 添加出站包裹信息
@@ -88,6 +54,7 @@ namespace ExpressStationSystem.Controllers
                 Transfer tran = new Transfer();
                 tran.id = x.id;
                 tran.mId = x.mid;
+                tran.vId = x.vid;
                 tran.time = DateTime.Now;
                 tran.isDone = false;
                 db.Transfer.InsertOnSubmit(tran);
