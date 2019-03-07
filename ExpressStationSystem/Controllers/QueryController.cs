@@ -86,8 +86,8 @@ namespace ExpressStationSystem.Controllers
         private List<dynamic> GetLogisticsInfo(int id)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Path join b in db.Branch on a.curId equals b.bId where a.id==id orderby a.time
-                              select new { path = a, branch = b };
+            var selectQuery = from a in db.Path where a.id==id orderby a.time
+                              select new {pId=a.pId,id=a.id,srcPlace=splitPlace(a.srcPlace),destPlace=splitPlace(a.destPlace),curPlace=splitPlace(a.curPlace),isArrival=a.isArrival,time=a.time,vehicle=a.vehicle };
             List<dynamic> list = new List<dynamic>();
             foreach (var x in selectQuery)
             {
@@ -218,6 +218,13 @@ namespace ExpressStationSystem.Controllers
         // DELETE: api/Query/5
         public void Delete(int id)
         {
+        }
+
+
+        private dynamic splitPlace(string place)
+        {
+            string[] str = place.Split('-');
+            return new { province = str[0],city=str[1],street=str[2] };
         }
     }
 }
