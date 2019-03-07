@@ -53,7 +53,7 @@ namespace ExpressStationSystem.Controllers
                     Transfer tran = new Transfer();
                     TransferClass t = new TransferClass();
                     t.id = id;
-                    t.mid = m.id;
+                    t.mid = m.mid;
                     t.vid = v.id;
                     Post(t);
                     db.SubmitChanges();
