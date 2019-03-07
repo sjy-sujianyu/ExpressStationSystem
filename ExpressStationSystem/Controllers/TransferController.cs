@@ -109,7 +109,7 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>获取已上车的包裹ID</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Transfer/GetPackageIdOnVehicle")]
-        public List<int> GetPackageIdOnVehicle(VidClass x)
+        public List<int> GetPackageIdOnVehicle(IdClass x)
         {
             db = new DataClasses1DataContext(connstr);
             var transfering = db.Package.Where(a => a.status == "运输中");
@@ -131,12 +131,12 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>交通工具从站点出发</remarks>
         /// <returns>返回</returns>
         [HttpPost, Route("Transfer/Departure")]
-        public bool Departure(VidClass x)
+        public bool Departure(IdClass x)
         {
             db = new DataClasses1DataContext(connstr);
             try
             {
-                var vehicle = db.Vehicle.Single(a => a.vId == x.vId);
+                var vehicle = db.Vehicle.Single(a => a.vId == x.id);
                 if (vehicle == null) return false;
                 var packageOnVehicle = GetPackageIdOnVehicle(x);
                 foreach(var id in packageOnVehicle)
