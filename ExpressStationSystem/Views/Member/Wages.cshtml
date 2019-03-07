@@ -20,46 +20,31 @@
 
         function changeInputContent(self) {
             var input = document.getElementById("showCheckContent");
+            input.type = "text";
             input.placeholder = self.innerText + '查找';
         }
 
-        //function sumUp() {
-        //    var sum = 0;
-        //    var pie = document.getElementById("SumPie");
-        //    var pieArray = new Array()
-        //    myArray = document.getElementsByClassName("Pie");
-        //    for (let a of myArray) {
-        //        sum += a.innerHTML;
-        //    }
-        //    pie.innerHTML = sum;
+        function changeInputContentMonth(self) {
+            var input = document.getElementById("showCheckContent");
+            input.type = "month";
+            input.placeholder = self.innerText + '查找';
+        }
 
-        //    sum = 0;
-        //    var docs = document.getElementById("SumDocs");
-        //    var pieArray = new Array()
-        //    myArray = document.getElementsByClassName("Docs");
-        //    for (let a of myArray) {
-        //        sum += a.innerHTML;
-        //    }
-        //    docs.innerHTML = sum;
+        function searchWith() {
+            var searchMethod = document.getElementById("showCheckContent").placeholder;
+            if (searchMethod == "按姓名查找") {
+                window.location.href = '/Member/Wages?searchWithName=' + document.getElementById("showCheckContent").value;
+            }
+            else if (searchMethod == "按手机查找") {
+                window.location.href = '/Member/Wages?searchWithPhone=' + document.getElementById("showCheckContent").value;
+            }
+            else if(searchMethod == "按月份查找"){
+                alert(document.getElementById("showCheckContent").value);
+                window.location.href = '/Member/Wages?searchWithMonth=' + document.getElementById("showCheckContent").value;
+            }
 
-        //    sum = 0;
-        //    var tra = document.getElementById("SumTra");
-        //    var pieArray = new Array()
-        //    myArray = document.getElementsByClassName("Tra");
-        //    for (let a of myArray) {
-        //        sum += a.innerHTML;
-        //    }
-        //    tra.innerHTML = sum;
-
-        //    sum = 0;
-        //    var wag = document.getElementById("SumWag");
-        //    var pieArray = new Array()
-        //    myArray = document.getElementsByClassName("Wag");
-        //    for (let a of myArray) {
-        //        sum += a.innerHTML;
-        //    }
-        //    wag.innerHTML = sum;
-        //}
+        }
+        
     </script>
 
     <div class="navbar navbar-default navbar-fixed-top">
@@ -88,7 +73,7 @@
                             <li><a href="/Member/AddMember">员工录用</a></li>
                             <li><a href="/Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="/Member/Fine">补贴</a></li>
+                            <li><a href="/Member/Fine">奖罚款</a></li>
                             <li><a href="/Member/Leave">请假条</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/Member/Mission">任务分配</a></li>
@@ -108,7 +93,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="/Login/changePassword">修改超级密码</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="/Home/Index">退出用户</a></li>
+                            <li><a href="/Login/exitLogin">退出用户</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -127,12 +112,13 @@
         <ul class="dropdown-menu">
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
+            <li><a onclick="changeShowCheckType(this);changeInputContentMonth(this)">按月份</a></li>
         </ul>
-
+        
         <div class="input-group">
             <input type="text" class="form-control" placeholder="按手机查找" id="showCheckContent">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button">Go!</button>
+                <button class="btn btn-default" type="button" onclick="searchWith()">Go!</button>
             </span>
         </div>
     </div>
@@ -154,34 +140,56 @@
 
                 @for (int i = 0; i < ViewBag.showPhoneList.Count; i++)
                 {
-                <tr>
-                    <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.showImgList[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
-                    <td>@ViewBag.showNameList[i]</td>
-                    <td>@ViewBag.showPhoneList[i]</td>
-                    <td>
-                        <div class="btn-group" style="padding:1px">
-                            <button type="button" class="btn-Mission btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="MissionType1">
-                                <span class="glyphicon glyphicon-triangle-bottom"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li style="display:flex"><a>本月派件:</a><a class="Pie" id="MissionType1">@ViewBag.DeliveryCount[i]</a></li>
-                                <li style="display:flex"><a>本月揽件:</a><a class="Docs" id="MissionType1">@ViewBag.PickUpCount[i]</a></li>
-                                <li style="display:flex"><a>本月转件:</a><a class="Tra" id="MissionType1">@ViewBag.TransferCount[i]</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li style="display:flex"><a>底薪:</a><a class="Tra" id="MissionType1">@ViewBag.baseSalary[i]</a></li>
-                                <li style="display:flex"><a>补贴:</a><a class="Tra" id="MissionType1">@ViewBag.subsidy[i]</a></li>
-                                <li style="display:flex"><a>罚款:</a><a class="Tra" id="MissionType1">@ViewBag.fine[i]</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li style="display:flex"><a>总工资:</a><a class="Wag" id="MissionType1">@ViewBag.totalSalary[i]</a></li>
-                            </ul>
+                    <tr>
+                        <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.showImgList[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                        <td>@ViewBag.showNameList[i]</td>
+                        <td>@ViewBag.showPhoneList[i]</td>
+                        <td>
+                            <div class="btn-group" style="padding:1px">
+                                <button type="button" class="btn-Mission btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="MissionType1">
+                                    <span class="glyphicon glyphicon-triangle-bottom"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li style="display:flex"><a>本月派件:</a><a class="Pie" id="MissionType1">@ViewBag.DeliveryCount[i]</a></li>
+                                    <li style="display:flex"><a>本月揽件:</a><a class="Docs" id="MissionType1">@ViewBag.PickUpCount[i]</a></li>
+                                    <li style="display:flex"><a>本月转件:</a><a class="Tra" id="MissionType1">@ViewBag.TransferCount[i]</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li style="display:flex"><a>底薪:</a><a class="Tra" id="MissionType1">@ViewBag.baseSalary[i]</a></li>
+                                    <li style="display:flex"><a>补贴:</a><a class="Tra" id="MissionType1">@ViewBag.subsidy[i]</a></li>
+
+                                    <li style="display:flex" data-toggle="modal" data-target="#@i">
+                                        <a>罚款:</a><a class="Tra" id="MissionType1">@ViewBag.fine[i]</a>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li style="display:flex"><a>总工资:</a><a class="Wag" id="MissionType1">@ViewBag.totalSalary[i]</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <div class="modal fade" id="@i" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">罚款记录</h4>
+                                </div>
+                                <div class="modal-body">
+                                    你被罚了
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                </div>
+                            </div>
                         </div>
-                    </td>
-                </tr>
+                    </div>
                 }
 
 
             </tbody>
         </table>
+
+        
 
         <div class='container-fluid col-sm-2'>
             <div class="list-group">
