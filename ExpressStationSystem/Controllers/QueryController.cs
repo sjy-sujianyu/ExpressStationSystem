@@ -86,8 +86,8 @@ namespace ExpressStationSystem.Controllers
         private List<dynamic> GetLogisticsInfo(int id)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Path join b in db.Branch on a.curId equals b.bId join c in db.Vehicle on a.vId equals c.vId where a.id==id orderby a.time
-                              select new { path = a, branch = b,vehicle=c };
+            var selectQuery = from a in db.Path join b in db.Branch on a.curId equals b.bId where a.id==id orderby a.time
+                              select new { path = a, branch = b };
             List<dynamic> list = new List<dynamic>();
             foreach (var x in selectQuery)
             {

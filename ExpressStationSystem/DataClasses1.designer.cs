@@ -3405,8 +3405,6 @@ namespace ExpressStationSystem
 		
 		private int _curId;
 		
-		private int _vId;
-		
 		private bool _isArrival;
 		
 		private System.DateTime _time;
@@ -3418,8 +3416,6 @@ namespace ExpressStationSystem
 		private EntityRef<Branch> _Branch1;
 		
 		private EntityRef<Branch> _Branch2;
-		
-		private EntityRef<Vehicle> _Vehicle;
 		
     #region 可扩展性方法定义
     partial void OnLoaded();
@@ -3435,8 +3431,6 @@ namespace ExpressStationSystem
     partial void OndestIdChanged();
     partial void OncurIdChanging(int value);
     partial void OncurIdChanged();
-    partial void OnvIdChanging(int value);
-    partial void OnvIdChanged();
     partial void OnisArrivalChanging(bool value);
     partial void OnisArrivalChanged();
     partial void OntimeChanging(System.DateTime value);
@@ -3569,33 +3563,8 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vId", DbType="Int NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
-		public int vId
-		{
-			get
-			{
-				return this._vId;
-			}
-			set
-			{
-				if ((this._vId != value))
-				{
-					if (this._Vehicle.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnvIdChanging(value);
-					this.SendPropertyChanging();
-					this._vId = value;
-					this.SendPropertyChanged("vId");
-					this.OnvIdChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isArrival", DbType="Bit NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
 		public bool isArrival
 		{
 			get
@@ -3616,7 +3585,7 @@ namespace ExpressStationSystem
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_time", DbType="DateTime NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=8)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
 		public System.DateTime time
 		{
 			get
@@ -3772,40 +3741,6 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Vehicle_Path", Storage="_Vehicle", ThisKey="vId", OtherKey="vId", IsForeignKey=true)]
-		public Vehicle Vehicle
-		{
-			get
-			{
-				return this._Vehicle.Entity;
-			}
-			set
-			{
-				Vehicle previousValue = this._Vehicle.Entity;
-				if (((previousValue != value) 
-							|| (this._Vehicle.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Vehicle.Entity = null;
-						previousValue.Path.Remove(this);
-					}
-					this._Vehicle.Entity = value;
-					if ((value != null))
-					{
-						value.Path.Add(this);
-						this._vId = value.vId;
-					}
-					else
-					{
-						this._vId = default(int);
-					}
-					this.SendPropertyChanged("Vehicle");
-				}
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -3832,7 +3767,6 @@ namespace ExpressStationSystem
 			this._Branch = default(EntityRef<Branch>);
 			this._Branch1 = default(EntityRef<Branch>);
 			this._Branch2 = default(EntityRef<Branch>);
-			this._Vehicle = default(EntityRef<Vehicle>);
 			OnCreated();
 		}
 		
@@ -4092,9 +4026,13 @@ namespace ExpressStationSystem
 		
 		private bool _isDone;
 		
+		private int _vId;
+		
 		private EntityRef<Package> _Package;
 		
 		private EntityRef<Member> _Member;
+		
+		private EntityRef<Vehicle> _Vehicle;
 		
     #region 可扩展性方法定义
     partial void OnLoaded();
@@ -4108,6 +4046,8 @@ namespace ExpressStationSystem
     partial void OntimeChanged();
     partial void OnisDoneChanging(bool value);
     partial void OnisDoneChanged();
+    partial void OnvIdChanging(int value);
+    partial void OnvIdChanged();
     #endregion
 		
 		public Transfer()
@@ -4207,6 +4147,31 @@ namespace ExpressStationSystem
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vId", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+		public int vId
+		{
+			get
+			{
+				return this._vId;
+			}
+			set
+			{
+				if ((this._vId != value))
+				{
+					if (this._Vehicle.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnvIdChanging(value);
+					this.SendPropertyChanging();
+					this._vId = value;
+					this.SendPropertyChanged("vId");
+					this.OnvIdChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Transfer", Storage="_Package", ThisKey="id", OtherKey="id", IsForeignKey=true)]
 		public Package Package
 		{
@@ -4275,6 +4240,40 @@ namespace ExpressStationSystem
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Vehicle_Transfer", Storage="_Vehicle", ThisKey="vId", OtherKey="vId", IsForeignKey=true)]
+		public Vehicle Vehicle
+		{
+			get
+			{
+				return this._Vehicle.Entity;
+			}
+			set
+			{
+				Vehicle previousValue = this._Vehicle.Entity;
+				if (((previousValue != value) 
+							|| (this._Vehicle.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Vehicle.Entity = null;
+						previousValue.Transfer.Remove(this);
+					}
+					this._Vehicle.Entity = value;
+					if ((value != null))
+					{
+						value.Transfer.Add(this);
+						this._vId = value.vId;
+					}
+					else
+					{
+						this._vId = default(int);
+					}
+					this.SendPropertyChanged("Vehicle");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -4299,6 +4298,7 @@ namespace ExpressStationSystem
 		{
 			this._Package = default(EntityRef<Package>);
 			this._Member = default(EntityRef<Member>);
+			this._Vehicle = default(EntityRef<Vehicle>);
 			OnCreated();
 		}
 		
@@ -4327,7 +4327,7 @@ namespace ExpressStationSystem
 		
 		private string _plateNumber;
 		
-		private EntitySet<Path> _Path;
+		private EntitySet<Transfer> _Transfer;
 		
 		private bool serializing;
 		
@@ -4457,22 +4457,22 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Vehicle_Path", Storage="_Path", ThisKey="vId", OtherKey="vId")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Vehicle_Transfer", Storage="_Transfer", ThisKey="vId", OtherKey="vId")]
 		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6, EmitDefaultValue=false)]
-		public EntitySet<Path> Path
+		public EntitySet<Transfer> Transfer
 		{
 			get
 			{
 				if ((this.serializing 
-							&& (this._Path.HasLoadedOrAssignedValues == false)))
+							&& (this._Transfer.HasLoadedOrAssignedValues == false)))
 				{
 					return null;
 				}
-				return this._Path;
+				return this._Transfer;
 			}
 			set
 			{
-				this._Path.Assign(value);
+				this._Transfer.Assign(value);
 			}
 		}
 		
@@ -4496,13 +4496,13 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		private void attach_Path(Path entity)
+		private void attach_Transfer(Transfer entity)
 		{
 			this.SendPropertyChanging();
 			entity.Vehicle = this;
 		}
 		
-		private void detach_Path(Path entity)
+		private void detach_Transfer(Transfer entity)
 		{
 			this.SendPropertyChanging();
 			entity.Vehicle = null;
@@ -4510,7 +4510,7 @@ namespace ExpressStationSystem
 		
 		private void Initialize()
 		{
-			this._Path = new EntitySet<Path>(new Action<Path>(this.attach_Path), new Action<Path>(this.detach_Path));
+			this._Transfer = new EntitySet<Transfer>(new Action<Transfer>(this.attach_Transfer), new Action<Transfer>(this.detach_Transfer));
 			OnCreated();
 		}
 		
