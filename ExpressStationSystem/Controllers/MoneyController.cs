@@ -62,33 +62,110 @@ namespace ExpressStationSystem.Controllers
             return new { baseSalary = member.baseSalary, commission = commission, subsidy = new { details = subsidyList, total = subsidy }, fine = new { details = fineList, total = fine }, total = member.baseSalary + commission.pickUp.total + commission.delivery.total + commission.transfer.total + subsidy + fine };
         }
 
-        // GET: api/Salary/5
-        public string Get(int id)
+        // GET: api/Leave/GetMoneyInfo
+        /// <summary>
+        /// 获取奖罚信息
+        /// </summary>
+        /// <param name="id">奖罚信息id</param>
+        /// <remarks>获取奖罚信息</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Leave/GetMoneyInfo")]
+        public dynamic GetMoneyInfo(int id)
         {
-            return "value";
+            db = new DataClasses1DataContext(connstr);
+            var money = db.Money.Join(db.Member, a => a.mId, b => b.mId, (a, b) => new { money = a, member = b }).SingleOrDefault(a => a.money.sId == id);
+            if (money is null)
+            {
+                return null;
+            }
+            else
+            {
+                
+                return money;
+            }
+        }
+        // PUT: api/Money/GetMoneyHistory
+        /// <summary>
+        /// 获取金钱条目历史记录
+        /// </summary>
+        /// <param name="start">起始时间</param>
+        /// <param name="end">终止时间</param>
+        /// <remarks>获取金钱条目历史记录</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Money/GetMoneyHistory")]
+        public List<int> GetMoneyHistory(DateTime start, DateTime end)
+        {
+            db = new DataClasses1DataContext(connstr);
+            List<int> list = new List<int>();
+            var money = db.Money.Where(a => DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0);
+            if (money is null)
+            {
+                return list;
+            }
+            else
+            {
+                foreach (var x in money)
+                {
+                    list.Add(x.sId);
+                }
+            }
+            return list;
         }
 
-        // POST: api/Salary
-        public void Post([FromBody]string value)
-        {
-        }
 
-        // PUT: api/Salary/Fine
+
+        // PUT: api/Money/FineorPrize
         /// <summary>
         /// 罚款
         /// </summary>
         /// <param name="x">罚款实体信息</param>
         /// <remarks>罚款</remarks>
         /// <returns>返回</returns>
-        [HttpPut, Route("Money/Fine")]
-        public bool Fine(dynamic x)
+        [HttpPost, Route("Money/FineorPrize")]
+        public bool FineorPrize(MoneyClass x)
         {
-            return false;
+            db = new DataClasses1DataContext(connstr);
+            Money money = new Money();
+            money.mId = x.mId;
+            money.subsidy = x.subsidy;
+            money.fine = x.fine;
+            money.time = DateTime.Now;
+            money.reason = x.reason;
+            money.person = x.person;
+            try
+            {
+                db.Money.InsertOnSubmit(money);
+                db.SubmitChanges();
+                return true;
+            }
+            catch(Exception)
+            {
+                return false;
+            }
         }
 
-        // DELETE: api/Salary/5
-        public void Delete(int id)
+        // DELETE: api/Money/Delete
+        /// <summary>
+        /// 删除罚款
+        /// </summary>
+        /// <param name="id">金额项目id</param>
+        /// <remarks>删除罚款</remarks>
+        /// <returns>返回</returns>
+        [HttpDelete, Route("Money/Delete")]
+        public bool Delete(int id)
         {
+            db = new DataClasses1DataContext(connstr);
+            var money = db.Money.SingleOrDefault(a => a.sId == id);
+            if(money is null)
+            {
+                return false;
+            }
+            else
+            {
+                db.Money.DeleteOnSubmit(money);
+                db.SubmitChanges();
+                return true;
+            }
         }
     }
 }
