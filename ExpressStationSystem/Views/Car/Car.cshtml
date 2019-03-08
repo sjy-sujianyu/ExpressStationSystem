@@ -25,15 +25,14 @@
         }
 
         function searchWith() {
-            var searchMethod = document.getElementById("showCheckContent").placeholder;
-            if (searchMethod == "按姓名查找") {
-                window.location.href = '/Member/AllMember?searchWithName=' + document.getElementById("showCheckContent").value;
-            }
-            else if (searchMethod == "按手机查找"){
-                window.location.href = '/Member/AllMember?searchWithPhone=' + document.getElementById("showCheckContent").value;
-            }
-
+            window.location.href = "/Car/Car?status=" + document.getElementById("selectType").innerText.innerText.replace(/\s+/g, "") + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value;
+            
         }
+
+        function JumpTo(status) {
+            window.location.href = "/Car/Car?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value;
+        }
+        
 
     </script>
 </head>
@@ -93,12 +92,12 @@
         </div>
     </div>
 
-    <h2 class='page-header'>员工一览</h2>
+    <h2 class='page-header'>车辆一览</h2>
 
     <div class="col-sm-6 col-sm-offset-4" style="display:flex">
 
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
-            按姓名 <span class="caret"></span>
+            @ViewBag.searchWith<span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按车牌</a></li>
@@ -106,7 +105,7 @@
         </ul>
 
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="按车牌查找" id="showCheckContent">
+            <input type="text" class="form-control" placeholder="按车牌查找" id="showCheckContent" value="@ViewBag.searchWithContent">
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" onclick="searchWith()">Go!</button>
             </span>
@@ -129,15 +128,20 @@
                 </thead>
                 <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
 
-                    @for (int i = 0; i < ViewBag.showPhoneList.Count; i++)
+                    @for (int i = 0; i < ViewBag.showCar.Count; i++)
                     {
                         <tr>
-                            <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.showImgList[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
-                            <td>@ViewBag.showNameList[i]</td>
-                            <td>@ViewBag.showPhoneList[i]</td>
-                            <td>@ViewBag.showJobList[i]</td>
-                            <td>@ViewBag.showIsOnDutyList[i]</td>
-                            <th><button type="button" class="btn-sm btn-info" onclick="turnToDetail(@ViewBag.showPhoneList[i])">详情</button></th>
+                            <td>@ViewBag.showCar[i].plateNumber</td>
+                            <td>@ViewBag.showCar[i].type</td>
+                            @if (@ViewBag.showCar[i].onDuty)
+                            {
+                                <td>在用中</td>
+                            }
+                            else
+                            {
+                                <td>闲置中</td>
+                            }
+                            <th><button type="button" class="btn-sm btn-danger">删除车辆</button></th>
 
                         </tr>
                     }
@@ -148,10 +152,10 @@
 
         <div class='container-fluid col-sm-1.5'>
             <div class="list-group">
-                <h4 class="page-header">选择分类</h4>
-                <a class="list-group-item" href="/Car/Car">全部</a>
-                <a class="list-group-item" href="/Car/Car/?status=在用中">在用中</a>
-                <a class="list-group-item" href="/Car/Car/?status=闲置中">闲置中</a>
+                <h4 class="page-header" id="selectType">@ViewBag.status</h4>
+                <a class="list-group-item" onclick="JumpTo()">全部</a>
+                <a class="list-group-item" onclick="JumpTo('在用中')">在用中</a>
+                <a class="list-group-item" onclick="JumpTo('闲置中')">闲置中</a>
             </div>
         </div>
     </div>

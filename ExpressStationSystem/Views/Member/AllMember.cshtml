@@ -25,14 +25,11 @@
         }
 
         function searchWith() {
-            var searchMethod = document.getElementById("showCheckContent").placeholder;
-            if (searchMethod == "按姓名查找") {
-                window.location.href = '/Member/AllMember?searchWithName=' + document.getElementById("showCheckContent").value;
-            }
-            else if (searchMethod == "按手机查找") {
-                window.location.href = '/Member/AllMember?searchWithPhone=' + document.getElementById("showCheckContent").value;
-            }
-            searchContent = document.getElementById("showCheckContent").value;
+            window.location.href = "/Member/AllMember?status=" + document.getElementById("selectType").innerText + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value;
+
+        }
+        function JumpTo(status) {
+            window.location.href = "/Member/AllMember?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value;
         }
 
     </script>
@@ -99,7 +96,7 @@
         <div class="col-sm-6 col-sm-offset-4" style="display:flex">
 
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
-               @ViewBag.searchWith  <span class="caret"></span>
+               @ViewBag.searchWith<span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
                 <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
@@ -107,7 +104,7 @@
             </ul>
 
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="@ViewBag.placeholder" id="showCheckContent" value="@ViewBag.searchContent">
+                <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button" onclick="searchWith()">Go!</button>
                 </span>
@@ -131,15 +128,22 @@
                 </thead>
                 <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
 
-                    @for (int i = 0; i < ViewBag.showPhoneList.Count; i++)
+                    @foreach (var man in ViewBag.showMen)
                     {
                         <tr>
-                            <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.showImgList[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
-                            <td>@ViewBag.showNameList[i]</td>
-                            <td>@ViewBag.showPhoneList[i]</td>
-                            <td>@ViewBag.showJobList[i]</td>
-                            <td>@ViewBag.showIsOnDutyList[i]</td>
-                            <th><button type="button" class="btn-sm btn-info" onclick="turnToDetail(@ViewBag.showPhoneList[i])">详情</button></th>
+                            <th scope="row"><img class="img-circle" src=@("http://" + man.imagePath) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                            <td>@man.name</td>
+                            <td>@man.mId</td>
+                            <td>@man.job</td>
+                            @if (man.onDuty)
+                            {
+                                <td>工作中</td>
+                            }
+                            else
+                            {
+                                <td>休息中</td>
+                            }
+                            <th><button type="button" class="btn-sm btn-info" onclick="turnToDetail(@man.mId)">详情</button></th>
 
                         </tr>
                     }
@@ -150,14 +154,15 @@
 
         <div class='container-fluid col-sm-1.5'>
             <div class="list-group">
-                <h4 class="page-header">选择分类</h4>
-                <a class="list-group-item" href="/Member/AllMember">全部</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=休息中">休息中</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=工作中">工作中</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=派件员">派件员</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=转件员">转件员</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=揽件员">揽件员</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=已辞职">已辞职</a>
+                <h4 class="page-header" id="selectType">@ViewBag.status</h4>
+                <a class="list-group-item" onclick="JumpTo()">全部</a>
+                <a class="list-group-item" onclick="JumpTo('休息中')">休息中</a>
+                <a class="list-group-item" onclick="JumpTo('工作中')">工作中</a>
+                <a class="list-group-item" onclick="JumpTo('待定中')">待定中</a>
+                <a class="list-group-item" onclick="JumpTo('派件员')">派件员</a>
+                <a class="list-group-item" onclick="JumpTo('转件员')">转件员</a>
+                <a class="list-group-item" onclick="JumpTo('揽件员')">揽件员</a>
+                <a class="list-group-item" onclick="JumpTo('已辞职')">已辞职</a>
             </div>
         </div>
     </div>

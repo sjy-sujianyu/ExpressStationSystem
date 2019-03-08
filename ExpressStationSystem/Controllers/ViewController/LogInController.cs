@@ -62,7 +62,7 @@ namespace ExpressStationSystem.Controllers.ViewController
             }
             else
             {
-                return Content(string.Format("<script>alert('请重新登陆');parent.window.location='/Login/Login';</script>"));
+                return View();
             }
         }
 
@@ -75,7 +75,7 @@ namespace ExpressStationSystem.Controllers.ViewController
                     return true;
                 }
             }
-             return true;
+            return false;
         }
 
         public ActionResult changePassword()
