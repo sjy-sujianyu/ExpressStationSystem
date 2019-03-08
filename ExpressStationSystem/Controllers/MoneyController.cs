@@ -28,7 +28,7 @@ namespace ExpressStationSystem.Controllers
             {
                 return null;
             }
-            var record = new QueryController().GetRecordByAccount(account, time.AddMonths(-1), time);
+            var record = GetRecordByAccount(account, time.AddMonths(-1), time);
             var value = db.Commission.OrderBy(a => a.time).FirstOrDefault();
             if (value is null)
             {
@@ -166,6 +166,18 @@ namespace ExpressStationSystem.Controllers
                 db.SubmitChanges();
                 return true;
             }
+        }
+        
+        private dynamic GetRecordByAccount(string account, DateTime start, DateTime end)
+        {
+            db = new DataClasses1DataContext(connstr);
+            int pCount = 0;
+            int dCount = 0;
+            int tCount = 0;
+            pCount = db.PickUp.Where(a => a.mId == account && a.isDone == true && DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0).Count();
+            dCount = db.Delivery.Where(a => a.mId == account && a.isDone == true && DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0).Count();
+            tCount = db.Transfer.Where(a => a.mId == account && a.isDone == true && DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0).Count();
+            return new { PickUpCount = pCount, DeliveryCount = dCount, TransferCount = tCount };
         }
     }
 }
