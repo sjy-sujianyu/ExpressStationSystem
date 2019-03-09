@@ -57,7 +57,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="/Package/Package">包裹一览</a></li>
-                    <li><a href="#">站点配车</a></li>
+                    <li><a href="/Car/Car">站点配车</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">人员管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -66,6 +66,7 @@
                             <li><a href="/Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/Member/Fine">奖罚款</a></li>
+                            <li><a href="/Member/moneyList">奖罚款条单</a></li>
                             <li><a href="/Member/Leave">请假条</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/Member/Mission">任务分配</a></li>
@@ -142,18 +143,18 @@
                                 <span class="glyphicon glyphicon-triangle-bottom"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                @*<li style="display:flex"><a>本月派件:</a><a class="Pie" id="MissionType1">@ViewBag.moneyInfo[i].commission.delivery.DeliveryCount</a></li>
-                                <li style="display:flex"><a>本月揽件:</a><a class="Docs" id="MissionType1">@ViewBag.moneyInfo[i].commission.pickUp.PickUpCount</a></li>
-                                <li style="display:flex"><a>本月转件:</a><a class="Tra" id="MissionType1">@ViewBag.moneyInfo[i].commission.transfer.TransferCount</a></li>
+                                <li style="display:flex"><a>本月派件:</a><a class="Pie" id="MissionType1">@ViewBag.moneyInfo[i]["commission"]["delivery"]["DeliveryCount"]</a></li>
+                                <li style="display:flex"><a>本月揽件:</a><a class="Docs" id="MissionType1">@ViewBag.moneyInfo[i]["commission"]["pickUp"]["PickUpCount"]</a></li>
+                                <li style="display:flex"><a>本月转件:</a><a class="Tra" id="MissionType1">@ViewBag.moneyInfo[i]["commission"]["transfer"]["TransferCount"]</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li style="display:flex"><a>底薪:</a><a class="Tra" id="MissionType1">@ViewBag.moneyInfo[i].baseSalary</a></li>
-                                <li style="display:flex"><a>补贴:</a><a class="Tra" id="MissionType1">@ViewBag.moneyInfo[i].subsidy.total</a></li>
+                                <li style="display:flex"><a>底薪:</a><a class="Tra" id="MissionType1">@ViewBag.moneyInfo[i]["baseSalary"]</a></li>
+                                <li style="display:flex"><a>补贴:</a><a class="Tra" id="MissionType1">@ViewBag.moneyInfo[i]["subsidy"]["total"]</a></li>
 
                                 <li style="display:flex" data-toggle="modal" data-target="#@i">
-                                    <a>罚款:</a><a class="Tra" id="MissionType1">@ViewBag.moneyInfo[i].fine.total</a>
-                                </li>*@
+                                    <a>罚款:</a><a class="Tra" id="MissionType1">@ViewBag.moneyInfo[i]["fine"]["total"]</a>
+                                </li>
                                 <li role="separator" class="divider"></li>
-                                <li style="display:flex"><a>总工资:</a><a class="wag" id="missiontype1">@ViewBag.moneyinfo[i]</a></li>
+                                <li style="display:flex"><a>总工资:</a><a class="wag" id="missiontype1">@ViewBag.moneyinfo[i]["total"]</a></li>
                             </ul>
                         </div>
                     </td>
@@ -198,7 +199,7 @@
     <div class="row" style="font-size:20px">
         本月站点统计:</div>
     <div class="row" style="display:flex;font-size:20px;margin-left:1rem">
-        &nbsp;派件总数:&nbsp;<div id="SumPie" style="color:chartreuse">@ViewBag.sumDelivery&nbsp;&nbsp;</div>揽件总数:&nbsp;<div id="SumDocs" style="color:cornflowerblue">@ViewBag.sumPickUp&nbsp;&nbsp;</div>转件总数:&nbsp;<div id="SumTra" style="color:orangered">@ViewBag.sumTransfer&nbsp;&nbsp;</div>工资总额:&nbsp;<div id="SumWag">@ViewBag.sumSalary</div>
+        &nbsp;派件总数:&nbsp;<div id="SumPie" style="color:chartreuse">@ViewBag.sumD&nbsp;&nbsp;</div>揽件总数:&nbsp;<div id="SumDocs" style="color:cornflowerblue">@ViewBag.sumP&nbsp;&nbsp;</div>转件总数:&nbsp;<div id="SumTra" style="color:orangered">@ViewBag.sumT&nbsp;&nbsp;</div>工资总额:&nbsp;<div id="SumWag">@ViewBag.sumS</div>
     </div>
 
 

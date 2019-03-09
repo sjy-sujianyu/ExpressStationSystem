@@ -280,7 +280,6 @@
     <Content Include="Views\Member\DeleteMember.cshtml" />
     <Content Include="Views\Member\Mission.cshtml" />
     <Content Include="Views\Member\Wages.cshtml" />
-    <Content Include="Views\Package\DetailPack.cshtml" />
     <Content Include="Views\Member\DetailMember.cshtml" />
     <Content Include="Views\Member\changeMemberDetail.cshtml" />
     <Content Include="Views\Package\ViewPage1.cshtml" />
