@@ -25,14 +25,11 @@
         }
 
         function searchWith() {
-            var searchMethod = document.getElementById("showCheckContent").placeholder;
-            if (searchMethod == "按姓名查找") {
-                window.location.href = '/Member/AllMember?searchWithName=' + document.getElementById("showCheckContent").value;
-            }
-            else if (searchMethod == "按手机查找") {
-                window.location.href = '/Member/AllMember?searchWithPhone=' + document.getElementById("showCheckContent").value;
-            }
+            window.location.href = "/Member/moneyList?status=" + document.getElementById("selectType").innerText + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value;
 
+        }
+        function JumpTo(status) {
+            window.location.href = "/Member/moneyList?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value;
         }
 
     </script>
@@ -57,7 +54,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="/Package/Package">包裹一览</a></li>
-                    <li><a href="#">站点配车</a></li>
+                    <li><a href="/Car/Car">站点配车</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">人员管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -66,6 +63,7 @@
                             <li><a href="/Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/Member/Fine">奖罚款</a></li>
+                            <li><a href="/Member/moneyList">奖罚款条单</a></li>
                             <li><a href="/Member/Leave">请假条</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/Member/Mission">任务分配</a></li>
@@ -98,7 +96,7 @@
     <div class="col-sm-6 col-sm-offset-4" style="display:flex">
 
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
-            按姓名 <span class="caret"></span>
+            @ViewBag.searchWith<span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
@@ -106,7 +104,7 @@
         </ul>
 
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="按姓名查找" id="showCheckContent">
+            <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent">
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" onclick="searchWith()">Go!</button>
             </span>
@@ -127,82 +125,117 @@
                         <th>奖罚款金额</th>
                         <th>操作</th>
                     </tr>
-
                 </thead>
                 <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
-
-                    @*@for (int i = 0; i < ViewBag.showPhoneList.Count; i++)
-        {
-            <tr>
-                <th scope="row"><img class="img-circle" src=@("http://" + ViewBag.showImgList[i]) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
-                <td>@ViewBag.showNameList[i]</td>
-                <td>@ViewBag.showPhoneList[i]</td>
-                <td>@ViewBag.showJobList[i]</td>
-                <td>@ViewBag.showIsOnDutyList[i]</td>
-                <th><button type="button" class="btn-sm btn-info" onclick="turnToDetail(@ViewBag.showPhoneList[i])">详情</button></th>
-
-            </tr>
-        }*@
-
-                    <tr class="list-group-item-danger">
-                        <th scope="row"><img class="img-circle" src="..." alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
-                        <td>五一红</td>
-                        <td>15813323391</td>
-                        <td>派件员</td>
-                        <td><font style="color:red">-10.00</font></td>
-                        <th>
-                            <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#back">撤消</button>
-                            <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#detail">详情</button>
-                        </th>
-                        <div class="modal fade" id="back" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title" id="myModalLabel">确认撤消</h4>
+                    @foreach (var money in ViewBag.showMoneyList)
+                    {
+                        if (money.money.fine != 0)
+                        {
+                            <tr class="list-group-item-danger">
+                                <th scope="row"><img class="img-circle" src=@("http://" + money.member.imagePath) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                                <td>@money.member.name</td>
+                                <td>@money.member.mId</td>
+                                <td>@money.member.job</td>
+                                <td><font style="color:red">-@money.money.subsidy</font></td>
+                                <th>
+                                    <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#back">撤消</button>
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#detail">详情</button>
+                                    <div class="modal fade" id="back" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">确认撤消</h4>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="">撤消</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">关闭</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="">撤消</button>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">关闭</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="modal fade" id="detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title" id="myModalLabel">详细信息</h4>
+                                    <div class="modal fade" id="detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">详细信息</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    @money.money.reason
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">关闭</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-body">
-                                        发发发
+                                </th>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr class="list-group-item-success">
+                                <th scope="row"><img class="img-circle" src=@("http://" + money.member.imagePath) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                                <td>@money.member.name</td>
+                                <td>@money.member.mId</td>
+                                <td>@money.member.job</td>
+                                <td><font style="color:green">+@money.money.subsidy</font></td>
+                                <th>
+                                    <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#back">撤消</button>
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#detail">详情</button>
+                                    <div class="modal fade" id="back" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">确认撤消</h4>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="">撤消</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">关闭</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">关闭</button>
+
+                                    <div class="modal fade" id="detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">详细信息</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    @money.money.reason
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">关闭</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                                </th>
+                            </tr>
+                        }
+                    }
+                    </tbody>
+                </table>
+            </div>
 
-                    </tr>
-                </tbody>
-            </table>
-        </div>
 
-
-        <div class='container-fluid col-sm-1.5'>
-            <div class="list-group">
-                <h4 class="page-header">选择分类</h4>
-                <a class="list-group-item" href="/Member/AllMember">全部</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=休息中">补贴</a>
-                <a class="list-group-item" href="/Member/AllMember/?status=工作中">罚款</a>
+            <div class='container-fluid col-sm-1.5'>
+                <div class="list-group">
+                    <h4 class="page-header" id="selectType">@ViewBag.status</h4>
+                    <a class="list-group-item" onclick="JumpTo()">全部</a>
+                    <a class="list-group-item" onclick="JumpTo('补贴')">补贴</a>
+                    <a class="list-group-item" onclick="JumpTo('罚款')">罚款</a>
+                </div>
             </div>
         </div>
-    </div>
 
 
-</body>
+    </body>
 </html>
 
