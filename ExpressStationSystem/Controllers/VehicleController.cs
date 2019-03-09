@@ -17,12 +17,12 @@ namespace ExpressStationSystem.Controllers
         /// </summary>
         /// <remarks>返回空闲车辆信息</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Vehicle/GetVehicleOnDuty")]
-        public List<dynamic> GetRole()
+        [HttpGet, Route("Vehicle/GetAllVehicle")]
+        public List<dynamic> GetAllVehicle()
         {
             db = new DataClasses1DataContext(connstr);
             List<dynamic> list = new List<dynamic>();
-            var vehicle = db.Vehicle.Where(a => a.isDelete == false && a.onDuty == false);
+            var vehicle = db.Vehicle.Where(a => a.isDelete == false);
             foreach(var x in vehicle)
             {
                 list.Add(x);
