@@ -267,6 +267,7 @@ namespace ExpressStationSystem.Controllers
                 return false;
             }
             x.isDelete = true;
+            x.onDuty = false;
             db.SubmitChanges();
             return true;
         }
