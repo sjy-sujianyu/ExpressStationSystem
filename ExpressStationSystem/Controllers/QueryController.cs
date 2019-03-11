@@ -215,10 +215,10 @@ namespace ExpressStationSystem.Controllers
         {
             db = new DataClasses1DataContext(connstr);
             List<dynamic> list = new List<dynamic>();
-            var error = from a in db.Error join b in db.Delivery on a.id equals b.id where (a.status == "破损" || a.status == "丢件") orderby b.time descending group b by b.id into g select g.First();
+            var error = from a in db.Error join b in db.Delivery on a.id equals b.id where (a.status == "破损" || a.status == "丢件") orderby b.time descending group new { error=a, delivery=b } by b.id into g select g.First();
             foreach(var x in error)
             {
-                if(x.mId==account)
+                if(x.delivery.mId==account)
                 {
                     list.Add(x);
                 }
