@@ -60,7 +60,7 @@ namespace ExpressStationSystem.Controllers.ViewController
                     step.Add(jo);
                     continue;
                 }
-                else if(PackageInfo.error != null && status == PackageInfo.error.status)
+                else if (PackageInfo.error != null && status == PackageInfo.error.status)
                 {
                     step.Add(jo);
                     continue;
@@ -225,7 +225,7 @@ namespace ExpressStationSystem.Controllers.ViewController
             //    }
             //    else if (searchWithTime != null)
             //    {
-                    
+
             //        if (packageInfo.package.time.ToString().StartsWith(searchWithTime))
             //        {
             //            if (packageInfo.error == null)
@@ -270,7 +270,7 @@ namespace ExpressStationSystem.Controllers.ViewController
 
             //        continue;
             //    }
-                
+
             //}
 
             //ViewBag.errorStatusList = errorStatusList;
@@ -281,6 +281,26 @@ namespace ExpressStationSystem.Controllers.ViewController
             //ViewBag.statusList = statusList;
             //return View();
         }
-        
+
+
+        public ActionResult checkPackage(string id)
+        {
+            if (id == "" || id == null)
+            {
+                return View();
+            }
+            var pack = new QueryController().GetAllInfo(Convert.ToInt32(id));
+
+            var josnStr = JsonConvert.SerializeObject(pack);
+            JObject jo = (JObject)JsonConvert.DeserializeObject(josnStr);
+
+            ViewBag.package = jo;
+
+            return View();
+
+        }
+
     }
+
+
 }

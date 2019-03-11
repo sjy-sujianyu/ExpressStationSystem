@@ -7,35 +7,20 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <script>
+        function checkPack() {
+            window.location.href = "/Package/checkPackage?id=" + document.getElementById("pid").value;
+        }
 
-    <script type="text/javascript">
-        //$(document).ready(function () {
-        //    $("#Login").click(function () {
-        //        var UserPhone = document.getElementById("UserPhone").value;
-        //        var Password = document.getElementById("Password").value;
-        //        //$.ajax({
-        //        //    type: 'get',
-        //        //    url: 'http://172.16.34.153:60062/Login/LandOfManager',
-        //        //    data: {
-        //        //        account: UserPhone,
-        //        //        password: Password
-        //        //    },
-        //        //    success: function (res) {
-        //        //        if (res == true) {
-        //        //            location.href = "../Login/AfterLogin";
-        //        //        } else {
-        //        //            alert('大失败');
-        //        //            location.reload();
-        //        //        }
-                        
-        //        //    }
-        //        //});
-        //    });
-        //});
-
-
+        function showBtn() {
+            if (document.getElementById("pid").value != null && document.getElementById("pid").value != "") {
+                document.getElementById("check").disabled = false;
+            }
+            else {
+                document.getElementById("check").disabled = true;
+            }
+        }
     </script>
-
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
@@ -64,12 +49,12 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="navbar-form navbar-left">
+                <div class="navbar-form navbar-left">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="输入单号查询包裹">
+                        <input type="text" class="form-control" placeholder="输入单号查询包裹" id="pid" onblur="showBtn()">
                     </div>
-                    <button type="submit" class="btn btn-default" disabled="disabled">查询</button>
-                </form>
+                    <button type="submit" class="btn btn-default" disabled="disabled" onclick="checkPack()" id="check">查询</button>
+                </div>
 
                 <ul class="nav navbar-nav navbar-right" hidden="hidden">
                     <li>
@@ -91,18 +76,9 @@
 
     <div class="row" style="display:flex;">
 
-        @*<div class="col-xs-6" style="display:block;margin-left:auto;margin-right:auto;">
-                <img src="..." alt="小程序的二维码" class="img-responsive center-block" style="margin:7rem;margin-left:16rem">
-            </div>*@
-
-
 
         <div class="col-sm-6" style="padding:0;margin:auto;">
             <div style="margin:3rem;">
-                @*<div class="row">
-                        <label for="exampleInputEmail1">账号</label>
-                        <input type="email" class="form-control" id="Account" placeholder="你的账号">
-                    </div>*@
                 <form action="AfterLogin" method="post">
                     <div class="row">
                             <div style="display:flex;flex-direction:column;margin:auto;width:fit-content;">

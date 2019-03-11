@@ -28,6 +28,59 @@
             window.location.href = "/Member/Fine?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value;
         }
 
+        function fine(id) {
+            if (document.getElementById(id).value == 0 || document.getElementById(id).value == null) {
+                alert("金额不得为0或空值")
+                return;
+            }
+            $.ajax({
+                type: 'post',
+                url: 'http://172.16.34.153:60062/Money/FineorPrize',
+                contentType: "application/json;charset=UTF-8",
+                data: JSON.stringify({
+                    "mId": id,
+                    "subsidy": 0,
+                    "fine": document.getElementById(id).value,
+                    "reason": document.getElementById("fineView").value,
+                    "person": "经理"
+                }),
+                success: function (res) {
+                    if (res == true) {
+                        alert("罚款单号已提交");
+                    }
+                    else {
+                        alert("提交失败");
+                    }
+                }
+            });
+        }
+
+        function subsidy(id) {
+            if (document.getElementById(id).value == 0 || document.getElementById(id).value == null) {
+                alert("金额不得为0或空值")
+                return;
+            }
+            $.ajax({
+                type: 'post',
+                url: 'http://172.16.34.153:60062/Money/FineorPrize',
+                contentType: "application/json;charset=UTF-8",
+                data: JSON.stringify({
+                    "mId": id,
+                    "subsidy": document.getElementById(id).value,
+                    "fine": 0 ,
+                    "reason": document.getElementById("subsidyView").value,
+                    "person": "经理"
+                }),
+                success: function (res) {
+                    if (res == true) {
+                        alert("补贴单号已提交");
+                    }
+                    else {
+                        alert("提交失败");
+                    }
+                }
+            });
+        }
 
     </script>
 </head>
@@ -70,12 +123,12 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="navbar-form navbar-left">
+                @*<form class="navbar-form navbar-left">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="输入单号查询包裹">
                     </div>
                     <button type="submit" class="btn btn-default">查询</button>
-                </form>
+                </form>*@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多 <span class="caret"></span></a>
@@ -136,12 +189,12 @@
                         <td>@man.name</td>
                         <td>@man.mId</td>
                         <td>@man.job</td>
-                        <th><input type="text" class="money" oninput="value=value.replace(/[^\d]/g,'')" /></th>
+                        <th><input type="text" class="money" oninput="value=value.replace(/[^\d]/g,'')" id="@man.mId"/></th>
                         <th>
-                            <button type="button" class="btn-sm btn-success" data-toggle="modal" data-target="#accessLeave">补贴</button>
-                            <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#refuseLeave">罚款</button>
+                            <button type="button" class="btn-sm btn-success" data-toggle="modal" data-target="#subsidy">补贴</button>
+                            <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#fine">罚款</button>
 
-                            <div class="modal fade" id="accessLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal fade" id="subsidy" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                 <div class="modal-dialog alert-success" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -149,16 +202,16 @@
                                             <h4 class="modal-title" id="myModalLabel">奖赏条例</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <input type="text" placeholder="奖赏原因" id="accessView" />
+                                            <input type="text" placeholder="奖赏原因" id="subsidyView" />
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-success" data-dismiss="modal" onclick="">奖赏</button>
+                                            <button type="button" class="btn btn-success" data-dismiss="modal" onclick="subsidy(@man.mId)">奖赏</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="modal fade" id="refuseLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal fade" id="fine" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                 <div class="modal-dialog alert-success" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -166,10 +219,10 @@
                                             <h4 class="modal-title" id="myModalLabel">罚款条例</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <input type="text" placeholder="罚款原因" id="refuseView" />
+                                            <input type="text" placeholder="罚款原因" id="fineView" />
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="">罚款</button>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="fine(@man.mId)">罚款</button>
                                         </div>
                                     </div>
                                 </div>
@@ -192,7 +245,7 @@
                 <a class="list-group-item" onclick="JumpTo('工作中')">工作中</a>
                 <a class="list-group-item" onclick="JumpTo('待定中')">待定中</a>
                 <a class="list-group-item" onclick="JumpTo('派件员')">派件员</a>
-                <a class="list-group-item" onclick="JumpTo('转件员')">转件员</a>
+                <a class="list-group-item" onclick="JumpTo('出件员')">出件员</a>
                 <a class="list-group-item" onclick="JumpTo('揽件员')">揽件员</a>
             </div>
         </div>

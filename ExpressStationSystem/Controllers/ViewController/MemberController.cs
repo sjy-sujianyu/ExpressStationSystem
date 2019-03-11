@@ -293,7 +293,7 @@ namespace ExpressStationSystem.Controllers.ViewController
             {
                 var menInfo = new QueryController().GetMemberAllInfo(menID);
                 //已经辞职的不需要
-                if (status != "已辞职" && menInfo.isDelete)
+                if ((status != "已辞职" && menInfo.isDelete) || menInfo.job == "经理")
                 {
                     continue;
                 }
@@ -816,6 +816,11 @@ namespace ExpressStationSystem.Controllers.ViewController
         {
             if(id != null)
             {
+                var record = new QueryController().GetTotalRecordByAccount(id);
+                ViewBag.DeliveryCount = record.DeliveryCount;
+                ViewBag.PickUpCount = record.PickUpCount;
+                ViewBag.TransferCount = record.TransferCount;
+
                 var member = new QueryController().GetMemberAllInfo(id);
                 ViewBag.thisID = id;
                 ViewBag.thisName = new QueryController().GetMemberAllInfo(id).name;
@@ -837,6 +842,12 @@ namespace ExpressStationSystem.Controllers.ViewController
             {
                 id = "15813322560";
             }
+
+            var record = new QueryController().GetTotalRecordByAccount(id);
+            ViewBag.DeliveryCount = record.DeliveryCount;
+            ViewBag.PickUpCount = record.PickUpCount;
+            ViewBag.TransferCount = record.TransferCount;
+
             var member = new QueryController().GetMemberAllInfo(id);
             ViewBag.thisID = id;
             ViewBag.thisName = new QueryController().GetMemberAllInfo(id).name;
