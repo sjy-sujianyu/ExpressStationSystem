@@ -37,7 +37,8 @@
   </Table>
   <Table Name="dbo.Error" Member="Error">
     <Type Name="Error">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="eId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="introduction" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Association Name="Package_Error" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
@@ -109,7 +110,7 @@
       <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="isDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Package_Delivery" Member="Delivery" ThisKey="id" OtherKey="id" Type="Delivery" />
-      <Association Name="Package_Error" Member="Error" ThisKey="id" OtherKey="id" Type="Error" Cardinality="One" />
+      <Association Name="Package_Error" Member="Error" ThisKey="id" OtherKey="id" Type="Error" />
       <Association Name="Package_Path" Member="Path" ThisKey="id" OtherKey="id" Type="Path" />
       <Association Name="Package_PickUp" Member="PickUp" ThisKey="id" OtherKey="id" Type="PickUp" />
       <Association Name="Package_Transfer" Member="Transfer" ThisKey="id" OtherKey="id" Type="Transfer" />
