@@ -204,7 +204,24 @@ namespace ExpressStationSystem.Controllers
             }
             return list;
         }
-
+        // GET: api/Query/GetErrorPackage
+        /// <summary>
+        /// 获得某员工被投诉的记录
+        /// </summary>
+        /// <remarks>获得某员工被投诉的记录</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Query/GetErrorByAccount")]
+        public List<dynamic> GetErrorByAccount(string account)
+        {
+            db = new DataClasses1DataContext(connstr);
+            List<dynamic> list = new List<dynamic>();
+            var error = from a in db.Error join b in db.Delivery on a.id equals b.id where (a.status == "破损" || a.status == "丢件")&&b.isDone==true&&b.mId==account select a;
+            foreach(var x in error)
+            {
+                list.Add(x);
+            }
+            return list;
+        }
 
         private dynamic splitPlace(string place)
         {
