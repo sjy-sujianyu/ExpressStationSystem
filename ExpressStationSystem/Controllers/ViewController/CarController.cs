@@ -41,7 +41,7 @@ namespace ExpressStationSystem.Controllers.ViewController
                 ViewBag.searchWithContent = searchWithContent;
             }
             //得到返回的车辆信息
-            var carInfoList = new VehicleController().GetRole();
+            var carInfoList = new VehicleController().GetAllVehicle();
             //决定显示的car
             List<dynamic> step = new List<dynamic>();
             List<dynamic> showCar = new List<dynamic>();
@@ -99,6 +99,10 @@ namespace ExpressStationSystem.Controllers.ViewController
 
 
             ViewBag.showCar = showCar;
+            return View();
+        }
+        public ActionResult AddCar()
+        {
             return View();
         }
     }

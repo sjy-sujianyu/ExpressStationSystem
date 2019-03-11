@@ -282,13 +282,14 @@
     <Content Include="Views\Member\Wages.cshtml" />
     <Content Include="Views\Member\DetailMember.cshtml" />
     <Content Include="Views\Member\changeMemberDetail.cshtml" />
-    <Content Include="Views\Package\ViewPage1.cshtml" />
+    <Content Include="Views\Package\checkPackage.cshtml" />
     <Content Include="Views\Member\Leave.cshtml" />
     <Content Include="Views\Member\Fine.cshtml" />
     <Content Include="Views\Login\forget.cshtml" />
     <Content Include="Views\Login\exitLogin.cshtml" />
     <Content Include="Views\Car\Car.cshtml" />
     <Content Include="Views\Member\moneyList.cshtml" />
+    <Content Include="Views\Car\AddCar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

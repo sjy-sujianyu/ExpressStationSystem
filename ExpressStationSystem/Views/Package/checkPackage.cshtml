@@ -1,28 +1,4 @@
-﻿@*<div class="jumbotron">
-        <h1>ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Getting started</h2>
-            <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
-            a broad range of clients, including browsers and mobile devices. ASP.NET Web API
-            is an ideal platform for building RESTful applications on the .NET Framework.</p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-            <h2>Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-default" href="http://localhost:60062/LogIn/ViewPage1">Learn more &raquo;</a></p>
-        </div>
-    </div>*@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -31,7 +7,7 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    @*<script src="~/Views/Package/Package.js"></script>*@
 
     <script>
         function checkPack() {
@@ -46,7 +22,9 @@
                 document.getElementById("check").disabled = true;
             }
         }
+
     </script>
+
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
@@ -83,7 +61,6 @@
                 </div>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-
                         <script type="text/javascript">
                             $(document).ready(function () {
                                 $("#btn-Login").click(function () {
@@ -100,6 +77,67 @@
         </div><!-- /.container-fluid -->
     </div>
 
+
+
+    <h2 class='page-header'>包裹查询</h2>
+
+    <br />
+    <br />
+
+    <div style="display:flex;justify-content:space-between">
+
+
+        <div class="col-sm-9" style="left:0rem">
+            <table class="table table-hover">
+                <thead style="display: table-header-group;vertical-align: middle;border-color: inherit;">
+                    <tr>
+                        <th>快递单号</th>
+                        <th>收件人姓名</th>
+                        <th>收件人手机</th>
+                        <th>处理时间</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+
+                </thead>
+                <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;">
+
+                    @if (@ViewBag.package != null)
+                    {
+                        <tr class="list-group-item-default" data-toggle="modal" data-target=".bs-example-modal-lg">
+                            <th scope="row">@ViewBag.package.package.id</th>
+                            <td> @ViewBag.package.dest.name</td>
+                            <td> @ViewBag.package.dest.phone</td>
+                            <td> @ViewBag.package.package.time</td>
+                            <td> @ViewBag.package.package.status</td>
+                            <th>
+                                <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#detail">详情</button>
+                                <div class="modal fade" id="detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">包裹详细信息</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                信息
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    }
+
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html>
 

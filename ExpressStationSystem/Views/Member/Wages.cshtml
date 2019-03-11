@@ -74,12 +74,12 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="navbar-form navbar-left">
+                @*<form class="navbar-form navbar-left">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="输入单号查询包裹">
                     </div>
                     <button type="submit" class="btn btn-default">查询</button>
-                </form>
+                </form>*@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多 <span class="caret"></span></a>
@@ -143,18 +143,18 @@
                                 <span class="glyphicon glyphicon-triangle-bottom"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li style="display:flex"><a>本月派件:</a><a class="Pie" id="MissionType1">@ViewBag.moneyInfo[i]["commission"]["delivery"]["DeliveryCount"]</a></li>
-                                <li style="display:flex"><a>本月揽件:</a><a class="Docs" id="MissionType1">@ViewBag.moneyInfo[i]["commission"]["pickUp"]["PickUpCount"]</a></li>
-                                <li style="display:flex"><a>本月转件:</a><a class="Tra" id="MissionType1">@ViewBag.moneyInfo[i]["commission"]["transfer"]["TransferCount"]</a></li>
+                                <li style="display:flex"><a>派件提成:</a><a class="Pie" id="MissionType1">￥@ViewBag.moneyInfo[i]["commission"]["delivery"]["total"]</a></li>
+                                <li style="display:flex"><a>揽件提成:</a><a class="Docs" id="MissionType1">￥@ViewBag.moneyInfo[i]["commission"]["pickUp"]["total"]</a></li>
+                                <li style="display:flex"><a>出件提成:</a><a class="Tra" id="MissionType1">￥@ViewBag.moneyInfo[i]["commission"]["transfer"]["total"]</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li style="display:flex"><a>底薪:</a><a class="Tra" id="MissionType1">@ViewBag.moneyInfo[i]["baseSalary"]</a></li>
-                                <li style="display:flex"><a>补贴:</a><a class="Tra" id="MissionType1">@ViewBag.moneyInfo[i]["subsidy"]["total"]</a></li>
+                                <li style="display:flex"><a>底薪:</a><a class="Tra" id="MissionType1">￥@ViewBag.moneyInfo[i]["baseSalary"]</a></li>
+                                <li style="display:flex"><a>补贴:</a><a class="Tra" id="MissionType1">￥@ViewBag.moneyInfo[i]["subsidy"]["total"]</a></li>
 
                                 <li style="display:flex" data-toggle="modal" data-target="#@i">
-                                    <a>罚款:</a><a class="Tra" id="MissionType1">@ViewBag.moneyInfo[i]["fine"]["total"]</a>
+                                    <a>罚款:</a><a class="Tra" id="MissionType1">￥@ViewBag.moneyInfo[i]["fine"]["total"]</a>
                                 </li>
                                 <li role="separator" class="divider"></li>
-                                <li style="display:flex"><a>总工资:</a><a class="wag" id="missiontype1">@ViewBag.moneyinfo[i]["total"]</a></li>
+                                <li style="display:flex"><a>总工资:</a><a class="wag" id="missiontype1">￥@ViewBag.moneyinfo[i]["total"]</a></li>
                             </ul>
                         </div>
                     </td>
@@ -191,7 +191,7 @@
                 <a class="list-group-item" onclick="JumpTo('休息中')">休息中</a>
                 <a class="list-group-item" onclick="JumpTo('工作中')">工作中</a>
                 <a class="list-group-item" onclick="JumpTo('派件员')">派件员</a>
-                <a class="list-group-item" onclick="JumpTo('转件员')">转件员</a>
+                <a class="list-group-item" onclick="JumpTo('出件员')">出件员</a>
                 <a class="list-group-item" onclick="JumpTo('揽件员')">揽件员</a>
             </div>
         </div>
