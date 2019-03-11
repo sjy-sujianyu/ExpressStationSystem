@@ -66,6 +66,11 @@ namespace ExpressStationSystem.Controllers
         [HttpPost, Route("Manager/PostMember")]
         public bool PostMember(MemberClass x)
         {
+            List<string> list = new List<string>() { "派件员", "揽件员", "出件员", "休息中", "经理", "待定中" };
+            if(!list.Contains(x.job))
+            {
+                return false;
+            }
             db = new DataClasses1DataContext(connstr);
             var check = db.Member.SingleOrDefault(a => a.mId == x.mId && a.name == x.name);
             var y = db.Login.SingleOrDefault(a => a.account == x.mId);
@@ -262,6 +267,7 @@ namespace ExpressStationSystem.Controllers
                 return false;
             }
             x.isDelete = true;
+            x.onDuty = false;
             db.SubmitChanges();
             return true;
         }

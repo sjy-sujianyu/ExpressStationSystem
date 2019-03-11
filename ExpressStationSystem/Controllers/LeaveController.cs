@@ -46,7 +46,7 @@ namespace ExpressStationSystem.Controllers
         {
             db = new DataClasses1DataContext(connstr);
             List<int> list = new List<int>();
-            var leave = db.Leave.Where(a => DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0&&(a.status==2||a.status==3));
+            var leave = db.Leave.Where(a => DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0&&(a.status == 1||a.status==2||a.status==3));
             if (leave is null)
             {
                 return list;
@@ -247,6 +247,39 @@ namespace ExpressStationSystem.Controllers
             }
         }
 
+        // GET: api/Leave/UpdateLeave
+        /// <summary>
+        /// 撤销被拒绝或者成功状态的请假项目
+        /// </summary>
+        /// <param name="x">请假信息实体</param>
+        /// <remarks>撤销被拒绝或者成功状态的请假项目</remarks>
+        /// <returns>返回</returns>
+        [HttpPut, Route("Leave/RevokeLeave")]
+        public bool RevokeLeave(lIdClass1 x)
+        {
+            db = new DataClasses1DataContext(connstr);
+            Leave leave = db.Leave.SingleOrDefault(a => a.lId == x.lId);
+            if (leave is null)
+            {
+                return false;
+            }
+            if (leave.status != 1&& leave.status != 2)
+            {
+                return false;
+            }
+            try
+            {
+                leave.status = 0;
+                leave.view = null;
+                leave.person = null;
+                db.SubmitChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
         // PUT: api/Leave/ComeBack
         /// <summary>
         /// 销假
