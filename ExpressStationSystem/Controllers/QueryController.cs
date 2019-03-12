@@ -142,7 +142,7 @@ namespace ExpressStationSystem.Controllers
         /// <param name="id">包裹ID</param>
         /// <remarks>得到包裹全部信息 包裹状态有已下单、待揽件、已扫件、运输中、派件中、已签收状态
         /// <br>
-        /// 错误状态：错件，漏件，拒收，破损
+        /// 错误状态：错件，漏件，拒收，破损，丢件
         /// </br>
         /// </remarks>
         /// <returns>返回</returns>
@@ -183,7 +183,7 @@ namespace ExpressStationSystem.Controllers
             int tCount = 0;
             pCount = db.PickUp.Where(a => a.mId == account && a.isDone == true).Count();
             dCount = db.Delivery.Where(a => a.mId == account && a.isDone == true).Count();
-            tCount = db.Transfer.Where(a => a.mId == account && a.isDone == true).Count();
+            tCount = db.Transfer.Where(a => a.mId == account).Count();
             return new { PickUpCount = pCount, DeliveryCount = dCount, TransferCount = tCount };
         }
         // GET: api/Query/GetErrorPackage
@@ -225,7 +225,34 @@ namespace ExpressStationSystem.Controllers
             }
             return list;
         }
-
+        // GET: api/Query/GetStatistic
+        /// <summary>
+        /// 获得各种统计量
+        /// </summary>
+        /// <param name="start">起始时间</param>
+        /// <param name="end">终止时间</param>
+        /// <remarks>获得各种统计量</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Query/GetStatistic")]
+        public dynamic GetStatistic(DateTime start,DateTime end)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var errorError = from a in db.Error where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.status == "错件" select a;
+            var errorLeak = from a in db.Error where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.status == "漏件" select a;
+            var errorDamaged= from a in db.Error where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.status == "破损" select a;
+            var errorRefused = from a in db.Error where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.status == "拒签" select a;
+            var errorLose = from a in db.Error where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.status == "丢件" select a;
+            var delivery = from a in db.Delivery where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.isDone == true select a;
+            var pickUp = from a in db.PickUp where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.isDone == true select a;
+            var transfer = from a in db.Transfer where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 select a;
+            var leave = from a in db.Leave where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.status == 2 select a;
+            var memberEmploy = from a in db.Member where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.isDelete == false select a;
+            var memberFired= from a in db.Member where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.isDelete == true select a;
+            var commission = from a in db.Commission where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 select a;
+            var vehicleEmploy = from a in db.Vehicle where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.isDelete == false select a;
+            var vehicleFired = from a in db.Vehicle where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.isDelete == true select a;
+            return null;
+        }
         private dynamic splitPlace(string place)
         {
             string[] str = place.Split('-');

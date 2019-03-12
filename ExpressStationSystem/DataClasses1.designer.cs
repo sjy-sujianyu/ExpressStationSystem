@@ -1032,6 +1032,8 @@ namespace ExpressStationSystem
 		
 		private string _status;
 		
+		private System.DateTime _time;
+		
 		private EntityRef<Package> _Package;
 		
     #region 可扩展性方法定义
@@ -1046,6 +1048,8 @@ namespace ExpressStationSystem
     partial void OnintroductionChanged();
     partial void OnstatusChanging(string value);
     partial void OnstatusChanged();
+    partial void OntimeChanging(System.DateTime value);
+    partial void OntimeChanged();
     #endregion
 		
 		public Error()
@@ -1137,6 +1141,27 @@ namespace ExpressStationSystem
 					this._status = value;
 					this.SendPropertyChanged("status");
 					this.OnstatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_time", DbType="DateTime NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+		public System.DateTime time
+		{
+			get
+			{
+				return this._time;
+			}
+			set
+			{
+				if ((this._time != value))
+				{
+					this.OntimeChanging(value);
+					this.SendPropertyChanging();
+					this._time = value;
+					this.SendPropertyChanged("time");
+					this.OntimeChanged();
 				}
 			}
 		}
@@ -1795,6 +1820,8 @@ namespace ExpressStationSystem
 		
 		private bool _onDuty;
 		
+		private System.DateTime _time;
+		
 		private EntitySet<Delivery> _Delivery;
 		
 		private EntitySet<Leave> _Leave;
@@ -1827,6 +1854,8 @@ namespace ExpressStationSystem
     partial void OnbaseSalaryChanged();
     partial void OnonDutyChanging(bool value);
     partial void OnonDutyChanged();
+    partial void OntimeChanging(System.DateTime value);
+    partial void OntimeChanged();
     #endregion
 		
 		public Member()
@@ -1985,8 +2014,29 @@ namespace ExpressStationSystem
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_time", DbType="DateTime NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=8)]
+		public System.DateTime time
+		{
+			get
+			{
+				return this._time;
+			}
+			set
+			{
+				if ((this._time != value))
+				{
+					this.OntimeChanging(value);
+					this.SendPropertyChanging();
+					this._time = value;
+					this.SendPropertyChanged("time");
+					this.OntimeChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Delivery", Storage="_Delivery", ThisKey="mId", OtherKey="mId")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=8, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=9, EmitDefaultValue=false)]
 		public EntitySet<Delivery> Delivery
 		{
 			get
@@ -2005,7 +2055,7 @@ namespace ExpressStationSystem
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Leave", Storage="_Leave", ThisKey="mId", OtherKey="mId")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=9, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=10, EmitDefaultValue=false)]
 		public EntitySet<Leave> Leave
 		{
 			get
@@ -2024,7 +2074,7 @@ namespace ExpressStationSystem
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Money", Storage="_Money", ThisKey="mId", OtherKey="mId")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=10, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=11, EmitDefaultValue=false)]
 		public EntitySet<Money> Money
 		{
 			get
@@ -2043,7 +2093,7 @@ namespace ExpressStationSystem
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_PickUp", Storage="_PickUp", ThisKey="mId", OtherKey="mId")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=11, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=12, EmitDefaultValue=false)]
 		public EntitySet<PickUp> PickUp
 		{
 			get
@@ -2062,7 +2112,7 @@ namespace ExpressStationSystem
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Member_Transfer", Storage="_Transfer", ThisKey="mId", OtherKey="mId")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=12, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=13, EmitDefaultValue=false)]
 		public EntitySet<Transfer> Transfer
 		{
 			get
@@ -3642,8 +3692,6 @@ namespace ExpressStationSystem
 		
 		private System.DateTime _time;
 		
-		private bool _isDone;
-		
 		private int _vId;
 		
 		private EntityRef<Package> _Package;
@@ -3662,8 +3710,6 @@ namespace ExpressStationSystem
     partial void OnmIdChanged();
     partial void OntimeChanging(System.DateTime value);
     partial void OntimeChanged();
-    partial void OnisDoneChanging(bool value);
-    partial void OnisDoneChanged();
     partial void OnvIdChanging(int value);
     partial void OnvIdChanged();
     #endregion
@@ -3744,29 +3790,8 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isDone", DbType="Bit NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
-		public bool isDone
-		{
-			get
-			{
-				return this._isDone;
-			}
-			set
-			{
-				if ((this._isDone != value))
-				{
-					this.OnisDoneChanging(value);
-					this.SendPropertyChanging();
-					this._isDone = value;
-					this.SendPropertyChanged("isDone");
-					this.OnisDoneChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vId", DbType="Int NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
 		public int vId
 		{
 			get
@@ -3945,6 +3970,8 @@ namespace ExpressStationSystem
 		
 		private string _plateNumber;
 		
+		private System.DateTime _time;
+		
 		private EntitySet<Transfer> _Transfer;
 		
 		private bool serializing;
@@ -3963,6 +3990,8 @@ namespace ExpressStationSystem
     partial void OnonDutyChanged();
     partial void OnplateNumberChanging(string value);
     partial void OnplateNumberChanged();
+    partial void OntimeChanging(System.DateTime value);
+    partial void OntimeChanged();
     #endregion
 		
 		public Vehicle()
@@ -4075,8 +4104,29 @@ namespace ExpressStationSystem
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_time", DbType="DateTime NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
+		public System.DateTime time
+		{
+			get
+			{
+				return this._time;
+			}
+			set
+			{
+				if ((this._time != value))
+				{
+					this.OntimeChanging(value);
+					this.SendPropertyChanging();
+					this._time = value;
+					this.SendPropertyChanged("time");
+					this.OntimeChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Vehicle_Transfer", Storage="_Transfer", ThisKey="vId", OtherKey="vId")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7, EmitDefaultValue=false)]
 		public EntitySet<Transfer> Transfer
 		{
 			get

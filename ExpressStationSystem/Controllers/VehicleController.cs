@@ -11,19 +11,37 @@ namespace ExpressStationSystem.Controllers
     {
         private static string connstr = @"Data Source=172.16.34.153;Initial Catalog=Express;User ID=sa;Password=123456;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private DataClasses1DataContext db;
-        // GET: api/Vehicle/GetVehicleOnDuty
+        // GET: api/Vehicle/GetAllVehicle
         /// <summary>
-        /// 返回空闲车辆信息
+        /// 返回所有车辆信息(被占用的，空闲的，被删除的)
         /// </summary>
-        /// <remarks>返回空闲车辆信息</remarks>
+        /// <remarks>返回所有车辆信息</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Vehicle/GetAllVehicle")]
         public List<dynamic> GetAllVehicle()
         {
             db = new DataClasses1DataContext(connstr);
             List<dynamic> list = new List<dynamic>();
-            var vehicle = db.Vehicle.Where(a => a.isDelete == false);
+            var vehicle = from a in db.Vehicle select a;
             foreach(var x in vehicle)
+            {
+                list.Add(x);
+            }
+            return list;
+        }
+        // GET: api/Vehicle/GetAllVehicleOnDuty
+        /// <summary>
+        /// 返回空闲车辆信息
+        /// </summary>
+        /// <remarks>返回空闲车辆信息</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Vehicle/GetAllVehicleOnDuty")]
+        public List<dynamic> GetAllVehicleOnDuty()
+        {
+            db = new DataClasses1DataContext(connstr);
+            List<dynamic> list = new List<dynamic>();
+            var vehicle = from a in db.Vehicle where a.isDelete == false&&a.onDuty==false select a;
+            foreach (var x in vehicle)
             {
                 list.Add(x);
             }
@@ -55,6 +73,7 @@ namespace ExpressStationSystem.Controllers
                 vehicle.plateNumber = x.plateNumber;
                 vehicle.isDelete = false;
                 vehicle.onDuty = false;
+                vehicle.time = DateTime.Now;
                 try
                 {
                     db.Vehicle.InsertOnSubmit(vehicle);
@@ -113,6 +132,7 @@ namespace ExpressStationSystem.Controllers
                 else
                 {
                     vehicle.isDelete = true;
+                    vehicle.time = DateTime.Now;
                     db.SubmitChanges();
                     return true;
                 }

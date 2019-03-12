@@ -56,7 +56,6 @@ namespace ExpressStationSystem.Controllers
                 tran.mId = x.mid;
                 tran.vId = x.vid;
                 tran.time = DateTime.Now;
-                tran.isDone = false;
                 db.Transfer.InsertOnSubmit(tran);
                 package.status = "运输中";
                 db.SubmitChanges();
@@ -84,7 +83,7 @@ namespace ExpressStationSystem.Controllers
             foreach (var t in transfering)
             {
                 var tran = db.Transfer.Where(a => a.id == t.id).OrderByDescending(a => a.time).FirstOrDefault();
-                if(tran != null && tran.isDone)
+                if(tran != null)
                     list.Add(tran.id);
             }
             return list;
@@ -112,7 +111,7 @@ namespace ExpressStationSystem.Controllers
                     var tran = db.Transfer.Where(a => a.id == p.id).OrderByDescending(a => a.time).FirstOrDefault();
                     if (p != null)
                     {
-                        tran.isDone = true;
+                        //tran.isDone = true;
                     }
                 }
                 db.SubmitChanges();
@@ -138,7 +137,7 @@ namespace ExpressStationSystem.Controllers
             try
             {
                 var transfer = db.Transfer.Where(a => a.id == x.id).OrderByDescending(a=>a.id == x.id).FirstOrDefault();
-                if (transfer.isDone == true) return false;
+                //if (transfer.isDone == true) return false;
                 var p = db.Package.SingleOrDefault(a => a.id == x.id);
                 p.status = "已扫件";
                 db.SubmitChanges();

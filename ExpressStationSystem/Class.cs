@@ -231,4 +231,12 @@ namespace ExpressStationSystem
 
         public string person;
     }
+    public partial class ErrorClass
+    {
+        public int id;
+
+        public string introduction;
+
+        public string status;
+    }
 }

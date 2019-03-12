@@ -25,10 +25,10 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>获取所有包裹记录</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Manager/GetAllPackage")]
-        public List<int> GetAllPackage()
+        public List<int> GetAllPackage(DateTime start, DateTime end)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Package select a.id;
+            var selectQuery = from a in db.Package where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 select a.id;
             List<int> list = new List<int>();
             foreach (var x in selectQuery)
             {
@@ -81,6 +81,7 @@ namespace ExpressStationSystem.Controllers
                 check.imagePath = "无";
                 check.onDuty = true;
                 check.isDelete = false;
+                check.time = DateTime.Now;
                 y.isDelete = false;
                 db.SubmitChanges();
                 return true;
@@ -268,6 +269,7 @@ namespace ExpressStationSystem.Controllers
             }
             x.isDelete = true;
             x.onDuty = false;
+            x.time = DateTime.Now;
             db.SubmitChanges();
             return true;
         }
