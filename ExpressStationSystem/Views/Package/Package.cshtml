@@ -7,7 +7,40 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <script>
+        function changeShowCheckType(self) {
+            var button = document.getElementById("showCheckType");
+            button.innerHTML = self.innerText + ' <span class="caret"></span>';
+        }
 
+        function changeInputContent(self) {
+            document.getElementById("showCheckContent").style.display = "block";
+            document.getElementById("searchWithMonth").style.display = "none";
+            var input = document.getElementById("showCheckContent");
+            input.placeholder = self.innerText + '查找';
+        }
+
+        function searchWith() {
+            if (document.getElementById("showCheckType").innerText.replace(/\s+/g, "") == "按时间") {
+                window.location.href = "/Package/Package?status=" + document.getElementById("selectType").innerText + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("date1").value + "&searchWithContent2=" + document.getElementById("date2").value;
+            }
+            else {
+                window.location.href = "/Package/Package?status=" + document.getElementById("selectType").innerText + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value;
+            }
+            
+
+        }
+        function JumpTo(status) {
+            window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value;
+        }
+
+        function changeInputContentMonth(self) {
+            var input = document.getElementById("showCheckContent");
+            input.style.display = "none";
+            document.getElementById("searchWithMonth").style.display = "block";
+        }
+
+    </script>
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
@@ -46,11 +79,11 @@
                     </li>
                 </ul>
                 @*<form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="输入单号查询包裹">
-                    </div>
-                    <button type="submit" class="btn btn-default">查询</button>
-                </form>*@
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="输入单号查询包裹">
+                        </div>
+                        <button type="submit" class="btn btn-default">查询</button>
+                    </form>*@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多 <span class="caret"></span></a>
@@ -78,12 +111,15 @@
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按单号</a></li>
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
-            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按时间</a></li>
+            <li><a onclick="changeShowCheckType(this);changeInputContentMonth(this)">按时间</a></li>
         </ul>
-        <div style="display: none;">
-            <input type="month" value="2015-09" style="height:3rem" />
-        </div>
+        
         <div class="input-group">
+            <div style="display: none;" id="searchWithMonth">
+                <input type="date" style="height:3rem" id="date1" />
+                到
+                <input type="date" style="height:3rem" id="date2" />
+            </div>
             <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent">
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" onclick="searchWith()">Go!</button>

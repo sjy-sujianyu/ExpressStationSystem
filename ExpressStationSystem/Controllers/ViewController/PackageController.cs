@@ -11,7 +11,7 @@ namespace ExpressStationSystem.Controllers.ViewController
 {
     public class PackageController : Controller
     {
-        public ActionResult Package(string status, string searchWith, string searchWithContent)
+        public ActionResult Package(string status, string searchWith, string searchWithContent, string searchWithContent2)
         {
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
@@ -99,7 +99,12 @@ namespace ExpressStationSystem.Controllers.ViewController
                     }
                     else if (searchWith == "按时间")
                     {
-                        if (PInfo.package.time.ToString().StartsWith(searchWithContent))
+                        DateTime t1 = Convert.ToDateTime(PInfo.package.time.ToString());
+                        DateTime t2 = Convert.ToDateTime(searchWithContent);
+                        DateTime t3 = Convert.ToDateTime(searchWithContent2);
+                        int compNum = DateTime.Compare(t1, t2);
+                        int compNum2 = DateTime.Compare(t1, t3);
+                        if (compNum >= 0 && compNum2 <=0)
                         {
                             showPackage.Add(PInfo);
                         }
