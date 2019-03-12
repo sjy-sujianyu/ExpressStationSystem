@@ -37,9 +37,11 @@
   </Table>
   <Table Name="dbo.Error" Member="Error">
     <Type Name="Error">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="eId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="introduction" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Package_Error" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
     </Type>
   </Table>
@@ -76,6 +78,7 @@
       <Column Name="imagePath" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
       <Column Name="baseSalary" Type="System.Decimal" DbType="Decimal(10,0) NOT NULL" CanBeNull="false" />
       <Column Name="onDuty" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Member_Delivery" Member="Delivery" ThisKey="mId" OtherKey="mId" Type="Delivery" />
       <Association Name="Member_Leave" Member="Leave" ThisKey="mId" OtherKey="mId" Type="Leave" />
       <Association Name="Member_Money" Member="Money" ThisKey="mId" OtherKey="mId" Type="Money" />
@@ -109,7 +112,7 @@
       <Column Name="status" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="isDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Package_Delivery" Member="Delivery" ThisKey="id" OtherKey="id" Type="Delivery" />
-      <Association Name="Package_Error" Member="Error" ThisKey="id" OtherKey="id" Type="Error" Cardinality="One" />
+      <Association Name="Package_Error" Member="Error" ThisKey="id" OtherKey="id" Type="Error" />
       <Association Name="Package_Path" Member="Path" ThisKey="id" OtherKey="id" Type="Path" />
       <Association Name="Package_PickUp" Member="PickUp" ThisKey="id" OtherKey="id" Type="PickUp" />
       <Association Name="Package_Transfer" Member="Transfer" ThisKey="id" OtherKey="id" Type="Transfer" />
@@ -146,7 +149,6 @@
       <Column Name="id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="mId" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="isDone" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="vId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Package_Transfer" Member="Package" ThisKey="id" OtherKey="id" Type="Package" IsForeignKey="true" />
       <Association Name="Member_Transfer" Member="Member" ThisKey="mId" OtherKey="mId" Type="Member" IsForeignKey="true" />
@@ -160,6 +162,7 @@
       <Column Name="isDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="onDuty" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="plateNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="Vehicle_Transfer" Member="Transfer" ThisKey="vId" OtherKey="vId" Type="Transfer" />
     </Type>
   </Table>

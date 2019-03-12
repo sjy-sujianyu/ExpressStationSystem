@@ -112,8 +112,44 @@ namespace ExpressStationSystem.Controllers
             return list;
         }
 
-
-
+        // PUT: api/Money/ErrorPost
+        /// <summary>
+        /// 需要定时调用的函数插入漏件，错件
+        /// </summary>
+        /// <remarks>需要定时调用的函数插入漏件，错件</remarks>
+        /// <returns>返回</returns>
+        [HttpPost, Route("Money/ErrorPost")]
+        public bool ErrorPost()
+        {
+            return true;
+        }
+        // PUT: api/Money/Complaint
+        /// <summary>
+        /// 客户投诉
+        /// </summary>
+        /// <param name="x">罚款实体信息</param>
+        /// <remarks>客户投诉</remarks>
+        /// <returns>返回</returns>
+        [HttpPost, Route("Money/Complaint")]
+        public bool Complaint(ErrorClass x)
+        {
+            db = new DataClasses1DataContext(connstr);
+            Error error = new Error();
+            error.id = x.id;
+            error.introduction = x.introduction;
+            error.status = x.status;
+            error.time = DateTime.Now;
+            try
+            {
+                db.Error.InsertOnSubmit(error);
+                db.SubmitChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         // PUT: api/Money/FineorPrize
         /// <summary>
         /// 罚款
@@ -176,7 +212,7 @@ namespace ExpressStationSystem.Controllers
             int tCount = 0;
             pCount = db.PickUp.Where(a => a.mId == account && a.isDone == true && DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0).Count();
             dCount = db.Delivery.Where(a => a.mId == account && a.isDone == true && DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0).Count();
-            tCount = db.Transfer.Where(a => a.mId == account && a.isDone == true && DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0).Count();
+            tCount = db.Transfer.Where(a => a.mId == account && DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0).Count();
             return new { PickUpCount = pCount, DeliveryCount = dCount, TransferCount = tCount };
         }
     }

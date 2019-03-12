@@ -43,34 +43,34 @@ namespace ExpressStationSystem.Controllers.ViewController
                 ViewBag.searchWithContent = searchWithContent;
             }
             //人员信息
-            List<int> PIDList = new ManagerController().GetAllPackage();
+            //List<int> PIDList = new ManagerController().GetAllPackage();
             //中间数组
             List<dynamic> step = new List<dynamic>();
             //决定显示的前端数组
             List<dynamic> showPackage = new List<dynamic>();
             //第一次筛选
-            foreach (var PID in PIDList)
-            {
-                var PackageInfo = new QueryController().GetAllInfo(PID);
-                var josnStr = JsonConvert.SerializeObject(PackageInfo);
-                JObject jo = (JObject)JsonConvert.DeserializeObject(josnStr);
+            //foreach (var PID in PIDList)
+            //{
+            //    var PackageInfo = new QueryController().GetAllInfo(PID);
+            //    var josnStr = JsonConvert.SerializeObject(PackageInfo);
+            //    JObject jo = (JObject)JsonConvert.DeserializeObject(josnStr);
 
-                if (status == PackageInfo.package.status)
-                {
-                    step.Add(jo);
-                    continue;
-                }
-                else if (PackageInfo.error != null && status == PackageInfo.error.status)
-                {
-                    step.Add(jo);
-                    continue;
-                }
-                else if (status == defaultStatus)
-                {
-                    step.Add(jo);
-                    continue;
-                }
-            }
+            //    if (status == PackageInfo.package.status)
+            //    {
+            //        step.Add(jo);
+            //        continue;
+            //    }
+            //    else if (PackageInfo.error != null && status == PackageInfo.error.status)
+            //    {
+            //        step.Add(jo);
+            //        continue;
+            //    }
+            //    else if (status == defaultStatus)
+            //    {
+            //        step.Add(jo);
+            //        continue;
+            //    }
+            //}
 
             foreach (var PInfo in step)
             {

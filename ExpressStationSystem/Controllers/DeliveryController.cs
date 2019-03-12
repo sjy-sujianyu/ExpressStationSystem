@@ -163,7 +163,7 @@ namespace ExpressStationSystem
         public bool IsRefuse(int id)
         {
             db = new DataClasses1DataContext(connstr);
-            if (db.Error.SingleOrDefault(a => a.id == id && a.introduction == "拒签") is null)
+            if (db.Error.SingleOrDefault(a => a.id == id && a.status == "拒签") is null)
             {
                 return false;
             }
@@ -233,8 +233,9 @@ namespace ExpressStationSystem
                 SwapAddress(iclass);
                 Error error = new Error();
                 error.id = iclass.id;
-                error.introduction = "拒签";
-                error.status = "已处理";
+                error.introduction = "客户拒收快递";
+                error.status = "拒签";
+                error.time = DateTime.Now;
                 db.Error.InsertOnSubmit(error);
                 db.SubmitChanges();
                 return true;
