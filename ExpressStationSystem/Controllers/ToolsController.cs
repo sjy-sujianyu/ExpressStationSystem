@@ -11,9 +11,11 @@ using System.Text;
 using System.Web.Http;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using System.Device.Location;
+
 namespace ExpressStationSystem.Controllers
 {
-    public class WechatController : ApiController
+    public class ToolsController : ApiController
     {
         //private static string connstr = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Express;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         //private DataClasses1DataContext db;
@@ -104,13 +106,13 @@ namespace ExpressStationSystem.Controllers
 
         //    return result;
         //}
-        // GET: api/Wechat/CheckPhone
+        // GET: api/Tools/CheckPhone
         /// <summary>
         /// 检查手机号码是否本人，并返回短信验证码
         /// </summary>
         /// <param name="phone">手机号码</param>
         /// <returns>返回</returns>
-        [HttpGet, Route("Wechat/CheckPhone")]
+        [HttpGet, Route("Tools/CheckPhone")]
         public string CheckPhone(string phone)
         {
             const String host = "http://dingxin.market.alicloudapi.com";
@@ -176,6 +178,30 @@ namespace ExpressStationSystem.Controllers
             }
             
             
+        }
+        // GET: api/Tools/GetLocationProperty
+        /// <summary>
+        /// 获取经纬度
+        /// </summary>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Tools/GetLocationProperty")]
+        public dynamic GetLocationProperty()
+        {
+            GeoCoordinateWatcher watcher = new GeoCoordinateWatcher();
+
+            // Do not suppress prompt, and wait 1000 milliseconds to start.
+            watcher.TryStart(false, TimeSpan.FromMilliseconds(1000));
+
+            GeoCoordinate coord = watcher.Position.Location;
+
+            if (coord.IsUnknown != true)
+            {
+                return new { Lat = coord.Latitude, Long = coord.Longitude };
+            }
+            else
+            {
+                return null;
+            }
         }
         private bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
         {
