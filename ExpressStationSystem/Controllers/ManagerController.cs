@@ -98,7 +98,7 @@ namespace ExpressStationSystem.Controllers
             member.baseSalary = x.baseSalary;
             member.imagePath = "无";
             member.onDuty = true;
-            member.time]= DateTime.Now;
+            member.time= DateTime.Now;
             try
             {
                 if(y==null)
