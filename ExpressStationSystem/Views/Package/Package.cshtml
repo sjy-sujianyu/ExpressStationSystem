@@ -7,6 +7,8 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+    <script src="~/Content/laydate/laydate.js"></script>
     <script>
         function changeShowCheckType(self) {
             var button = document.getElementById("showCheckType");
@@ -14,32 +16,26 @@
         }
 
         function changeInputContent(self) {
-            document.getElementById("showCheckContent").style.display = "block";
-            document.getElementById("searchWithMonth").style.display = "none";
             var input = document.getElementById("showCheckContent");
             input.placeholder = self.innerText + '查找';
         }
 
-        function searchWith() {
-            if (document.getElementById("showCheckType").innerText.replace(/\s+/g, "") == "按时间") {
-                window.location.href = "/Package/Package?status=" + document.getElementById("selectType").innerText + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("date1").value + "&searchWithContent2=" + document.getElementById("date2").value;
-            }
-            else {
-                window.location.href = "/Package/Package?status=" + document.getElementById("selectType").innerText + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value;
-            }
+        function searchWith(currentPage) {
+
+            window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=" + (currentPage).toString();
             
-
         }
-        function JumpTo(status) {
-            window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value;
-        }
-
-        function changeInputContentMonth(self) {
-            var input = document.getElementById("showCheckContent");
-            input.style.display = "none";
-            document.getElementById("searchWithMonth").style.display = "block";
+        function JumpTo(status, currentPage) {
+            window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=" + (currentPage).toString();
         }
 
+        function JumpToPage(status, currentPage, count) {
+            window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=" + (currentPage + count).toString();
+        }
+
+        function dateChange(status, currentPage) {
+            window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=" + (currentPage).toString();
+        }
     </script>
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -78,12 +74,6 @@
                         </ul>
                     </li>
                 </ul>
-                @*<form class="navbar-form navbar-left">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="输入单号查询包裹">
-                        </div>
-                        <button type="submit" class="btn btn-default">查询</button>
-                    </form>*@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多 <span class="caret"></span></a>
@@ -102,7 +92,24 @@
 
     <h2 class='page-header'>包裹一览</h2>
 
-    <div class="col-sm-6 col-sm-offset-4" style="display:flex">
+    <div class="col-sm-10 col-sm-offset-2" style="display:flex">
+
+        <script>
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#date1' //指定元素
+
+            });
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#date2' //指定元素
+            });
+        </script>
+
+        <input type="text" id="date1" value="@ViewBag.date1">
+        <input type="text" id="date2" value="@ViewBag.date2">
+
+        <button class="btn btn-default" type="button" onclick="dateChange('@ViewBag.status',1)">OK!</button>
 
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
             @ViewBag.searchWith<span class="caret"></span>
@@ -111,18 +118,12 @@
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按单号</a></li>
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
             <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
-            <li><a onclick="changeShowCheckType(this);changeInputContentMonth(this)">按时间</a></li>
         </ul>
-        
+
         <div class="input-group">
-            <div style="display: none;" id="searchWithMonth">
-                <input type="date" style="height:3rem" id="date1" />
-                到
-                <input type="date" style="height:3rem" id="date2" />
-            </div>
             <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button" onclick="searchWith()">Go!</button>
+                <button class="btn btn-default" type="button" onclick="searchWith(1)">Go!</button>
             </span>
         </div>
 
@@ -154,7 +155,7 @@
                     {
                         if (package.error != null)
                         {
-                            <tr class="list-group-item-danger" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="detailImformation(@package.package.id)">
+                            <tr class="list-group-item-danger" data-toggle="modal" data-target=".bs-example-modal-lg">
                                 <th scope="row">@package.package.id</th>
                                 <td> @package.dest.name </td>
                                 <td> @package.dest.phone </td>
@@ -188,7 +189,7 @@
                                     @package.package.status == "待揽件" ||
                                     @package.package.status == "已下单")
                         {
-                            <tr class="list-group-item-info" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="detailImformation(@package.package.id)">
+                            <tr class="list-group-item-info" data-toggle="modal" data-target=".bs-example-modal-lg">
                                 <th scope="row">@package.package.id</th>
                                 <td> @package.dest.name </td>
                                 <td> @package.dest.phone </td>
@@ -218,7 +219,7 @@
                         }
                         else if (@package.package.status == "已签收")
                         {
-                            <tr class="list-group-item-success" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="detailImformation(@package.package.id)">
+                            <tr class="list-group-item-success" data-toggle="modal" data-target=".bs-example-modal-lg">
                                 <th scope="row">@package.package.id</th>
                                 <td> @package.dest.name </td>
                                 <td> @package.dest.phone </td>
@@ -249,7 +250,7 @@
 
                         else
                         {
-                            <tr class="list-group-item-danger" data-toggle="modal" data-target=".bs-example-modal-lg" onclick="detailImformation(@package.package.id)">
+                            <tr class="list-group-item-danger" data-toggle="modal" data-target=".bs-example-modal-lg">
                                 <th scope="row">@package.package.id</th>
                                 <td> @package.dest.name </td>
                                 <td> @package.dest.phone </td>
@@ -287,20 +288,80 @@
         <div class='container-fluid col-sm-offset-1 col-sm-2'>
             <div class="list-group">
                 <h4 class="page-header" id="selectType">@ViewBag.status</h4>
-                <a class="list-group-item" onclick="JumpTo()">全部</a>
-                <a class="list-group-item" onclick="JumpTo('派件中')">派件中</a>
-                <a class="list-group-item" onclick="JumpTo('运输中')">运输中</a>
-                <a class="list-group-item" onclick="JumpTo('已扫件')">已扫件</a>
-                <a class="list-group-item" onclick="JumpTo('已下单')">已下单</a>
-                <a class="list-group-item" onclick="JumpTo('已签收')">已签收</a>
-                <a class="list-group-item" onclick="JumpTo('已处理')">已处理</a>
-                <a class="list-group-item" onclick="JumpTo('错件')">错件</a>
-                <a class="list-group-item" onclick="JumpTo('漏件')">漏件</a>
-                <a class="list-group-item" onclick="JumpTo('破损')">破损</a>
-                <a class="list-group-item" onclick="JumpTo('拒签')">拒签</a>
-                <a class="list-group-item" onclick="JumpTo('丢件')">丢件</a>
+                <a class="list-group-item" onclick="JumpTo('',1)">全部</a>
+                <a class="list-group-item" onclick="JumpTo('派件中',1)">派件中</a>
+                <a class="list-group-item" onclick="JumpTo('运输中',1)">运输中</a>
+                <a class="list-group-item" onclick="JumpTo('已扫件',1)">已扫件</a>
+                <a class="list-group-item" onclick="JumpTo('已下单',1)">已下单</a>
+                <a class="list-group-item" onclick="JumpTo('已签收',1)">已签收</a>
+                <a class="list-group-item" onclick="JumpTo('已处理',1)">已处理</a>
+                <a class="list-group-item" onclick="JumpTo('错件',1)">错件</a>
+                <a class="list-group-item" onclick="JumpTo('漏件',1)">漏件</a>
+                <a class="list-group-item" onclick="JumpTo('破损',1)">破损</a>
+                <a class="list-group-item" onclick="JumpTo('拒签',1)">拒签</a>
+                <a class="list-group-item" onclick="JumpTo('丢件',1)">丢件</a>
             </div>
         </div>
+    </div>
+
+    <div style="display:flex;margin:auto">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.currentPage,-1)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                @if (ViewBag.currentPage >= 3 && ViewBag.currentPage <= ViewBag.PageSum - 2)
+                {
+                    if (ViewBag.currentPage - 2 > 1)
+                    {
+                        <li><a href="#">...</a></li>
+                    }
+                    for (int i = 0, j = ViewBag.currentPage - 2; i < 5; i++, j++)
+                    {
+                        <li><a onclick="JumpToPage('@ViewBag.status',@j,0)">@j</a></li>
+                    }
+                    if (ViewBag.currentPage + 2 < ViewBag.PageSum)
+                    {
+                        <li><a href="#">...</a></li>
+                    }
+
+                }
+                else if (ViewBag.currentPage <= 3)
+                {
+                    for (int i = 1; i < 5 && i <= ViewBag.PageSum; i++)
+                    {
+                        <li><a onclick="JumpToPage('@ViewBag.status',@i,0)">@i</a></li>
+                    }
+                    if (ViewBag.PageSum > 5)
+                    {
+                        <li><a href="#">...</a></li>
+                    }
+
+                }
+                else if (ViewBag.currentPage > ViewBag.PageSum - 2)
+                {
+                    if (ViewBag.PageSum > 5)
+                    {
+                        <li><a href="#">...</a></li>
+                    }
+                    for (int i = ViewBag.PageSum - 5, j = 0; j <= 5; j++, i++)
+                    {
+                        <li><a onclick="JumpToPage('@ViewBag.status',@i,0)">@i</a></li>
+                    }
+                }
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.currentPage,1)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="row" style="display:flex;font-size:20px;margin-left:1rem">
+        &nbsp;派件总数:&nbsp;<div id="SumPie" style="color:chartreuse">@ViewBag.sumD&nbsp;&nbsp;</div>揽件总数:&nbsp;<div id="SumDocs" style="color:cornflowerblue">@ViewBag.sumP&nbsp;&nbsp;</div>转件总数:&nbsp;<div id="SumTra" style="color:orangered">@ViewBag.sumT&nbsp;&nbsp;</div>工资总额:&nbsp;<div id="SumWag">@ViewBag.sumS</div>
     </div>
 </body>
 </html>

@@ -168,7 +168,7 @@
         }
 
         function postData(phone) {
-            var mjob = document.getElementById("selectJob").innerText;
+            var mjob = document.getElementById("selectJob").innerText.replace(/\s*/g, "");
             if (mjob == "职位") {
                 var mjob = "待定中";
             }
@@ -181,17 +181,17 @@
                 url: 'http://172.16.34.153:60062/Manager/PostMember',
                 contentType: "application/json;charset=UTF-8",
                 data: JSON.stringify({
-                    mId: phone,
-                    name: document.getElementById("mName").value,
-                    job: mjob,
-                    salary: msalary
+                    'mId': phone,
+                    'name': document.getElementById("mName").value,
+                    'job': mjob,
+                    'salary': msalary
                 }),
                 success: function (res) {
                     if (res == true) {
                         postImg(phone);
                     }
                     else {
-                        alert("该员工ID已经存在");
+                        alert("提交数据失败，可能是ID有重复");
                     }
                 }
             });
@@ -304,6 +304,7 @@
                         <li><a onclick="changeJobType(this)">派件员</a></li>
                         <li><a onclick="changeJobType(this)">揽件员</a></li>
                         <li><a onclick="changeJobType(this)">出件员</a></li>
+                        <li><a onclick="changeJobType(this)">待定中</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-6">

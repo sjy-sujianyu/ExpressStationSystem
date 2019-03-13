@@ -7,7 +7,7 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @*<script src="~/Views/Package/Package.js"></script>*@
+    <script src="~/Content/laydate/laydate.js"></script>
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
@@ -20,21 +20,41 @@
 
         function changeInputContent(self) {
             var input = document.getElementById("showCheckContent");
-            input.type = "text";
+            input.style.display = 'block';
+            document.getElementById("date1").style.display = 'none';
+            document.getElementById("date2").style.display = 'none';
             input.placeholder = self.innerText + '查找';
+        }
+
+        function JumpToPage(status,currentPage, count) {
+            window.location.href = "/Member/Leave?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s*/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=" + (currentPage + count).toString();
+        }
+
+        function dateChange(status,currentPage) {
+            window.location.href = "/Member/Leave?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s*/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=" + (currentPage).toString();
         }
 
         function changeInputContentMonth(self) {
             var input = document.getElementById("showCheckContent");
-            input.type = "date";
+            input.style.display = 'none';
+            document.getElementById("date1").style.display = 'block';
+            document.getElementById("date2").style.display = 'block';
             input.placeholder = self.innerText + '查找';
-        }
-        function searchWith() {
-            window.location.href = "/Member/Leave?status=" + document.getElementById("selectType").innerText + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value;
 
         }
-        function JumpTo(status) {
-            window.location.href = "/Member/Leave?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value;
+
+        function searchWith(status,currentPage) {
+            if (document.getElementById("showCheckType").innerText == "按日期") {
+                dateChange(status,currentPage);
+            }
+            else {
+                window.location.href = "/Member/Leave?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s*/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=" + (currentPage).toString();
+
+            }
+
+        }
+        function JumpTo(status, currentPage) {
+            window.location.href = "/Member/Leave?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s*/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value;
         }
 
         function refuseApply(lid, mid) {
@@ -136,12 +156,6 @@
                         </ul>
                     </li>
                 </ul>
-                @*<form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="输入单号查询包裹">
-                    </div>
-                    <button type="submit" class="btn btn-default">查询</button>
-                </form>*@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多 <span class="caret"></span></a>
@@ -170,9 +184,36 @@
         </ul>
 
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent">
+            <script>
+                //执行一个laydate实例
+                laydate.render({
+                    elem: '#date1' //指定元素
+
+                });
+                //执行一个laydate实例
+                laydate.render({
+                    elem: '#date2' //指定元素
+                });
+            </script>
+            @if (ViewBag.searchWith == "按日期")
+            {
+                <div>
+                    <input type="text" id="date1" value="@ViewBag.date1" style="display:block">
+                    <input type="text" id="date2" value="@ViewBag.date2" style="display:block">
+                </div>
+                <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent" style="display:none">
+            }
+            else
+            {
+                <div>
+                    <input type="text" id="date1" value="@ViewBag.date1" style="display:none">
+                    <input type="text" id="date2" value="@ViewBag.date2" style="display:none">
+                </div>
+                <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent" style="display:block">
+            }
+
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button" onclick="searchWith()">Go!</button>
+                <button class="btn btn-default" type="button" onclick="searchWith('@ViewBag.status',1)">Go!</button>
             </span>
         </div>
 
@@ -210,14 +251,14 @@
                                 <td>@leaveInfo.leave.status</td>
                                 <th>
                                     <button type="button" class="btn-sm btn-warning" data-toggle="modal" data-target="#accessLeave">撤消</button>
-                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#detailLeave">详情</button>
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#@leaveInfo.leave.lId">详情</button>
 
                                     <div class="modal fade" id="accessLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                                    <h4 class="modal-title" id="myModalLabel">撤消请假条</h4>
                                                 </div>
                                                 <div class="modal-body">
                                                     <input type="text" placeholder="输入意见" id="accessView" />
@@ -229,7 +270,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="modal fade" id="detailLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal fade" id="@leaveInfo.leave.lId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -266,14 +307,14 @@
                                 <th>
                                     <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#accessLeave">批准</button>
                                     <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#refuseLeave">驳回</button>
-                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#detailLeave">详情</button>
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#@leaveInfo.leave.lId">详情</button>
 
                                     <div class="modal fade" id="accessLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                                    <h4 class="modal-title" id="myModalLabel">请假条批准</h4>
                                                 </div>
                                                 <div class="modal-body">
                                                     <input type="text" placeholder="输入意见" id="accessView" />
@@ -290,7 +331,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                                    <h4 class="modal-title" id="myModalLabel">请假条驳回</h4>
                                                 </div>
                                                 <div class="modal-body">
                                                     <input type="text" placeholder="输入意见" id="refuseView" />
@@ -302,7 +343,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="modal fade" id="detailLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal fade" id="@leaveInfo.leave.lId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -337,43 +378,9 @@
                                 <td>@leaveInfo.member.job</td>
                                 <td>@leaveInfo.leave.status</td>
                                 <th>
-                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#detailLeave">详情</button>
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#@leaveInfo.leave.lId">详情</button>
 
-                                    <div class="modal fade" id="accessLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <input type="text" placeholder="输入意见" id="accessView" />
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="accessApply(@leaveInfo.leave.lId,@leaveInfo.member.mId)">提交批准</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="modal fade" id="refuseLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <input type="text" placeholder="输入意见" id="refuseView" />
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="refuseApply(@leaveInfo.leave.lId,@leaveInfo.member.mId)">提交驳回</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="modal fade" id="detailLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal fade" id="@leaveInfo.leave.lId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -400,7 +407,7 @@
                         }
                         else
                         {
-                            <tr class="label-warning">
+                            <tr class="label-danger">
                                 <td>@leaveInfo.lId</td>
                                 <th scope="row"><img class="img-circle" src=@("http://" + leaveInfo.member.imagePath) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
                                 <td>@leaveInfo.member.name</td>
@@ -408,45 +415,27 @@
                                 <td>@leaveInfo.member.job</td>
                                 <td>@leaveInfo.leave.status</td>
                                 <th>
-                                    <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#accessLeave" disabled="disabled" style="color:gray">批准</button>
-                                    <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#refuseLeave" disabled="disabled" style="color:gray">驳回</button>
-                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#detailLeave">详情</button>
+                                    <button type="button" class="btn-sm btn-warning" data-toggle="modal" data-target="#accessLeave">撤消</button>
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#@leaveInfo.leave.lId">详情</button>
 
                                     <div class="modal fade" id="accessLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
+                                                    <h4 class="modal-title" id="myModalLabel">撤消请假条</h4>
                                                 </div>
                                                 <div class="modal-body">
                                                     <input type="text" placeholder="输入意见" id="accessView" />
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="accessApply(@leaveInfo.leave.lId,@leaveInfo.member.mId)">提交批准</button>
+                                                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="accessApply(@leaveInfo.lId,@leaveInfo.member.mId)">确认撤消</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="modal fade" id="refuseLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title" id="myModalLabel">请假条详细信息</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <input type="text" placeholder="输入意见" id="refuseView" />
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="refuseApply(@leaveInfo.leave.lId,@leaveInfo.member.mId)">提交驳回</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="modal fade" id="detailLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal fade" id="@leaveInfo.leave.lId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -482,13 +471,72 @@
         <div class='container-fluid col-sm-1.5'>
             <div class="list-group">
                 <h4 class="page-header" id="selectType">@ViewBag.status</h4>
-                <a class="list-group-item" onclick="JumpTo('未处理')">未处理</a>
-                <a class="list-group-item" onclick="JumpTo('历史记录')">历史记录</a>
+                <a class="list-group-item" onclick="JumpTo('未处理',1)">未处理</a>
+                <a class="list-group-item" onclick="JumpTo('历史记录',1)">历史记录</a>
             </div>
         </div>
 
     </div>
 
+    <div style="display:flex;margin:auto">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.currentPage,-1)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                @if (ViewBag.currentPage >= 3 && ViewBag.currentPage <= ViewBag.PageSum - 2)
+                {
+                    if (ViewBag.currentPage - 2 > 1)
+                    {
+                        <li><a href="#">...</a></li>
+                    }
+                    for (int i = 0, j = ViewBag.currentPage - 2; i < 5; i++, j++)
+                    {
+                        <li><a onclick="JumpToPage('@ViewBag.status',@j,0)">@j</a></li>
+                    }
+                    if (ViewBag.currentPage + 2 < ViewBag.PageSum)
+                    {
+                        <li><a href="#">...</a></li>
+                    }
+
+                }
+                else if (ViewBag.currentPage <= 3)
+                {
+                    for (int i = 1; i < 5 && i <= ViewBag.PageSum; i++)
+                    {
+                        <li><a onclick="JumpToPage('@ViewBag.status',@i,0)">@i</a></li>
+                    }
+                    if (ViewBag.PageSum > 5)
+                    {
+                        <li><a href="#">...</a></li>
+                    }
+
+                }
+                else if (ViewBag.currentPage > ViewBag.PageSum - 2)
+                {
+                    if (ViewBag.PageSum > 5)
+                    {
+                        <li><a href="#">...</a></li>
+                    }
+                    for (int i = ViewBag.PageSum - 5, j = 0; j <= 5; j++, i++)
+                    {
+                        if(i <= 0)
+                        {
+                            continue;
+                        }
+                        <li><a onclick="JumpToPage('@ViewBag.status',@i,0)">@i</a></li>
+                    }
+                }
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.currentPage,1)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
 </body>
 </html>

@@ -211,10 +211,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
+    <Content Include="Content\datetimepicker\bootstrap-datetimepicker.min.css" />
+    <Content Include="Content\datetimepicker\bootstrap-datetimepicker.min.js" />
+    <Content Include="Content\datetimepicker\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\laydate\laydate.js" />
+    <Content Include="Content\laydate\theme\default\font\iconfont.svg" />
+    <Content Include="Content\laydate\theme\default\laydate.css" />
+    <Content Include="Content\datetimepicker\moment-with-locales.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -244,6 +251,9 @@
       <LastGenOutput>DataClasses1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Content\laydate\theme\default\font\iconfont.eot" />
+    <Content Include="Content\laydate\theme\default\font\iconfont.ttf" />
+    <Content Include="Content\laydate\theme\default\font\iconfont.woff" />
     <None Include="DataClasses1.dbml.layout">
       <DependentUpon>DataClasses1.dbml</DependentUpon>
     </None>

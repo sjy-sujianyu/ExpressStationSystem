@@ -34,9 +34,27 @@
         function check() {
             if (document.getElementById("mName").value != "") {
                 //录用汽车
+                $.ajax({
+                    type: 'post',
+                    url: 'http://172.16.34.153:60062/Vehicle/Post',
+                    contentType: "application/json;charset=UTF-8",
+                    data: JSON.stringify({
+                        "type": document.getElementById("selectJob").innerText.replace(/\s*/g, ""),
+                        "plateNumber": document.getElementById("mName").value
+                    }),
+                    success: function (res) {
+                        if (res == true) {
+                            alert("汽车信息上传成功");
+                            window.location.reload();
+                        }
+                        else {
+                            alert("汽车信息上传失败");
+                        }
+                    }
+                });
             }
             else {
-
+                alert("车牌不能为空")
             }
         }
 

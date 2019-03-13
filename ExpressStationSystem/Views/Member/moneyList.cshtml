@@ -24,16 +24,17 @@
             window.location.href = '/Member/DetailMember?id=' + id;
         }
 
-        function searchWith() {
-            window.location.href = "/Member/moneyList?status=" + document.getElementById("selectType").innerText + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value;
+        function searchWith(currentPage) {
+            window.location.href = "/Member/moneyList?status=" + document.getElementById("selectType").innerText + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&page=" + (currentPage).toString();
 
         }
-        function JumpTo(status) {
-            window.location.href = "/Member/moneyList?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value;
+        function JumpTo(status, currentPage) {
+            window.location.href = "/Member/moneyList?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&page=" + (currentPage).toString();
         }
-
+        function JumpToPage(status, currentPage, count) {
+            window.location.href = "/Member/moneyList?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&page=" + (currentPage + count).toString();
+        }
         function cancel(sId) {
-            alert(sId);
             $.ajax({
                 url: 'http://172.16.34.153:60062/Money/Delete?id=' + sId, /*接口域名地址*/
                 contentType: "application/json;charset=UTF-8",
@@ -92,11 +93,11 @@
                     </li>
                 </ul>
                 @*<form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="输入单号查询包裹">
-                    </div>
-                    <button type="submit" class="btn btn-default">查询</button>
-                </form>*@
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="输入单号查询包裹">
+                        </div>
+                        <button type="submit" class="btn btn-default">查询</button>
+                    </form>*@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多 <span class="caret"></span></a>
@@ -126,7 +127,7 @@
         <div class="input-group">
             <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button" onclick="searchWith()">Go!</button>
+                <button class="btn btn-default" type="button" onclick="searchWith(1)">Go!</button>
             </span>
         </div>
     </div>
@@ -138,7 +139,7 @@
             <table class="table table-hover">
                 <thead style="display: table-header-group;vertical-align: middle;border-color: inherit;">
                     <tr>
-                        <th>肖像</th>
+                        <th>流水号</th>
                         <th>姓名</th>
                         <th>联系手机</th>
                         <th>职位</th>
@@ -152,15 +153,15 @@
                         if (money.money.fine != 0)
                         {
                             <tr class="list-group-item-danger">
-                                <th scope="row"><img class="img-circle" src=@("http://" + money.member.imagePath) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                                <td>@money.money.sId</td>
                                 <td>@money.member.name</td>
                                 <td>@money.member.mId</td>
                                 <td>@money.member.job</td>
-                                <td><font style="color:red">-@money.money.subsidy</font></td>
+                                <td><font style="color:red">-@money.money.fine</font></td>
                                 <th>
-                                    <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#back">撤消</button>
-                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#@money.money.sId">详情</button>
-                                    <div class="modal fade" id="back" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#b_@money.money.sId">撤消</button>
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#x_@money.money.sId">详情</button>
+                                    <div class="modal fade" id="b_@money.money.sId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -175,7 +176,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="modal fade" id="@money.money.sId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal fade" id="x_@money.money.sId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -197,15 +198,15 @@
                         else
                         {
                             <tr class="list-group-item-success">
-                                <th scope="row"><img class="img-circle" src=@("http://" + money.member.imagePath) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                                <td>@money.money.sId</td>
                                 <td>@money.member.name</td>
                                 <td>@money.member.mId</td>
                                 <td>@money.member.job</td>
                                 <td><font style="color:green">+@money.money.subsidy</font></td>
                                 <th>
-                                    <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#back">撤消</button>
-                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#@money.money.sId">详情</button>
-                                    <div class="modal fade" id="back" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#b_@money.money.sId">撤消</button>
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#x_@money.money.sId">详情</button>
+                                    <div class="modal fade" id="b_@money.money.sId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -220,7 +221,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="modal fade" id="@money.money.sId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal fade" id="x_@money.money.sId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -240,22 +241,80 @@
                             </tr>
                         }
                     }
-                    </tbody>
-                </table>
-            </div>
-
-
-            <div class='container-fluid col-sm-1.5'>
-                <div class="list-group">
-                    <h4 class="page-header" id="selectType">@ViewBag.status</h4>
-                    <a class="list-group-item" onclick="JumpTo()">全部</a>
-                    <a class="list-group-item" onclick="JumpTo('补贴')">补贴</a>
-                    <a class="list-group-item" onclick="JumpTo('罚款')">罚款</a>
-                </div>
-            </div>
+                </tbody>
+            </table>
         </div>
 
 
-    </body>
+        <div class='container-fluid col-sm-1.5'>
+            <div class="list-group">
+                <h4 class="page-header" id="selectType">@ViewBag.status</h4>
+                <a class="list-group-item" onclick="JumpTo('',1)">全部</a>
+                <a class="list-group-item" onclick="JumpTo('补贴',1)">补贴</a>
+                <a class="list-group-item" onclick="JumpTo('罚款',1)">罚款</a>
+            </div>
+        </div>
+    </div>
+
+    <div style="display:flex;margin:auto">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.currentPage,-1)" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                @if (ViewBag.currentPage >= 3 && ViewBag.currentPage <= ViewBag.PageSum - 2)
+                {
+                    if (ViewBag.currentPage - 2 > 1)
+                    {
+                        <li><a href="#">...</a></li>
+                    }
+                    for (int i = 0, j = ViewBag.currentPage - 2; i < 5; i++, j++)
+                    {
+                        <li><a onclick="JumpToPage('@ViewBag.status',@j,0)">@j</a></li>
+                    }
+                    if (ViewBag.currentPage + 2 < ViewBag.PageSum)
+                    {
+                        <li><a href="#">...</a></li>
+                    }
+
+                }
+                else if (ViewBag.currentPage <= 3)
+                {
+                    for (int i = 1; i < 5 && i <= ViewBag.PageSum; i++)
+                    {
+                        <li><a onclick="JumpToPage('@ViewBag.status',@i,0)">@i</a></li>
+                    }
+                    if (ViewBag.PageSum > 5)
+                    {
+                        <li><a href="#">...</a></li>
+                    }
+
+                }
+                else if (ViewBag.currentPage > ViewBag.PageSum - 2)
+                {
+                    if (ViewBag.PageSum > 5)
+                    {
+                        <li><a href="#">...</a></li>
+                    }
+                    for (int i = ViewBag.PageSum - 5, j = 0; j <= 5; j++, i++)
+                    {
+                        if (i <= 0)
+                        {
+                            continue;
+                        }
+                        <li><a onclick="JumpToPage('@ViewBag.status',@i,0)">@i</a></li>
+                    }
+                }
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.currentPage,1)" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</body>
 </html>
 

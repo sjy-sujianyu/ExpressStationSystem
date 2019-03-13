@@ -37,6 +37,26 @@
             window.location.href = "/Car/AddCar";
         }
 
+        function deleteCar(id) {
+            $.ajax({
+                url: 'http://172.16.34.153:60062/Vehicle/Delete?id='+ id, /*接口域名地址*/
+                contentType: "application/json;charset=UTF-8",
+                type: 'delete',
+                data: JSON.stringify({
+                    'id': id
+                }),
+                success: function (res) {
+                    if (res == true) {
+                        alert('已经删除该汽车');
+                        window.location.reload();
+                    } else {
+                        alert('删除失败');
+                        console.log(res);
+                    }
+                }
+            })
+        }
+
     </script>
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -59,7 +79,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="/Package/Package">包裹一览</a></li>
-                    <li><a href="#">站点配车</a></li>
+                    <li><a href="/Car/Car">站点配车</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">人员管理<span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -67,7 +87,8 @@
                             <li><a href="/Member/AddMember">员工录用</a></li>
                             <li><a href="/Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="/Member/Fine">罚款</a></li>
+                            <li><a href="/Member/Fine">奖罚款</a></li>
+                            <li><a href="/Member/moneyList">奖罚款条单</a></li>
                             <li><a href="/Member/Leave">请假条</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/Member/Mission">任务分配</a></li>
@@ -144,7 +165,7 @@
                             {
                                 <td>闲置中</td>
                             }
-                            <th><button type="button" class="btn-sm btn-danger">删除车辆</button></th>
+                            <th><button type="button" class="btn-sm btn-danger" onclick="deleteCar(@ViewBag.showCar[i].vId)">删除车辆</button></th>
 
                         </tr>
                     }

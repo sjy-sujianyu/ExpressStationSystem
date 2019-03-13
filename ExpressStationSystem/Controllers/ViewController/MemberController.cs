@@ -18,13 +18,14 @@ namespace ExpressStationSystem.Controllers.ViewController
     public class MemberController : Controller
     {
         // GET: Member
-        public ActionResult AllMember(string status, string searchWith, string searchWithContent)
+        public ActionResult AllMember(string status, string searchWith, string searchWithContent, string page)
         {
+            int pageNum = 10;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
             string defaultStatus = "选择分类";
 
-            if (status == "undefined" || status == null)
+            if (status == "undefined" || status == null || status =="")
             {
                 status = defaultStatus;
                 ViewBag.status = status;
@@ -128,7 +129,39 @@ namespace ExpressStationSystem.Controllers.ViewController
                     showMen.Add(menInfo);
                 }
             }
-            ViewBag.showMen = showMen;
+
+            //默认在第一页
+            if (page == null || page == "" || page == "0")
+            {
+                page = "1";
+            }
+            //临时数据
+            int pageTemp = Convert.ToInt32(page);
+            List<dynamic> showMen2 = new List<dynamic>();
+            //第三次筛选，是把该页的信息的插进临时数组
+            for (int i = (pageTemp - 1) * pageNum; i < pageTemp * pageNum; i++)
+            {
+                if (i >= showMen.Count)
+                {
+                    break;
+                }
+                else
+                {
+                    showMen2.Add(showMen[i]);
+                }
+
+            }
+            //前端数据
+            if (showMen.Count % pageNum == 0)
+            {
+                ViewBag.PageSum = showMen.Count / pageNum;
+            }
+            else
+            {
+                ViewBag.PageSum = showMen.Count / pageNum + 1;
+            }
+            ViewBag.currentPage = pageTemp;
+            ViewBag.showMen = showMen2;
             return View();
         }
 
@@ -137,13 +170,14 @@ namespace ExpressStationSystem.Controllers.ViewController
             return View();
         }
 
-        public ActionResult DeleteMember(string status, string searchWith, string searchWithContent)
+        public ActionResult DeleteMember(string status, string searchWith, string searchWithContent, string page)
         {
+            int pageNum = 10;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
             string defaultStatus = "选择分类";
 
-            if (status == "undefined" || status == null)
+            if (status == "undefined" || status == null || status == "")
             {
                 status = defaultStatus;
                 ViewBag.status = status;
@@ -247,17 +281,49 @@ namespace ExpressStationSystem.Controllers.ViewController
                     showMen.Add(menInfo);
                 }
             }
-            ViewBag.showMen = showMen;
+            //默认在第一页
+            if (page == null || page == "" || page == "0")
+            {
+                page = "1";
+            }
+            //临时数据
+            int pageTemp = Convert.ToInt32(page);
+            List<dynamic> showMen2 = new List<dynamic>();
+            //第三次筛选，是把该页的信息的插进临时数组
+            for (int i = (pageTemp - 1) * pageNum; i < pageTemp * pageNum; i++)
+            {
+                if (i >= showMen.Count)
+                {
+                    break;
+                }
+                else
+                {
+                    showMen2.Add(showMen[i]);
+                }
+
+            }
+            //前端数据
+            if (showMen.Count % pageNum == 0)
+            {
+                ViewBag.PageSum = showMen.Count / pageNum;
+            }
+            else
+            {
+                ViewBag.PageSum = showMen.Count / pageNum + 1;
+            }
+            ViewBag.currentPage = pageTemp;
+            ViewBag.showMen = showMen2;
             return View();
         }
 
-        public ActionResult Mission(string status, string searchWith, string searchWithContent)
+        public ActionResult Mission(string status, string searchWith, string searchWithContent,string page)
         {
+            int pageNum = 10;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
             string defaultStatus = "选择分类";
            
-            if (status == "undefined" || status == null)
+            if (status == "undefined" || status == null || status == "")
             {
                 status = defaultStatus;
                 ViewBag.status = status;
@@ -336,7 +402,38 @@ namespace ExpressStationSystem.Controllers.ViewController
                     showMen.Add(menInfo);
                 }
             }
-            ViewBag.showMen = showMen;
+            //默认在第一页
+            if (page == null || page == "" || page == "0")
+            {
+                page = "1";
+            }
+            //临时数据
+            int pageTemp = Convert.ToInt32(page);
+            List<dynamic> showMen2 = new List<dynamic>();
+            //第三次筛选，是把该页的信息的插进临时数组
+            for (int i = (pageTemp - 1) * pageNum; i < pageTemp * pageNum; i++)
+            {
+                if (i >= showMen.Count)
+                {
+                    break;
+                }
+                else
+                {
+                    showMen2.Add(showMen[i]);
+                }
+
+            }
+            //前端数据
+            if (showMen.Count % pageNum == 0)
+            {
+                ViewBag.PageSum = showMen.Count / pageNum;
+            }
+            else
+            {
+                ViewBag.PageSum = showMen.Count / pageNum + 1;
+            }
+            ViewBag.currentPage = pageTemp;
+            ViewBag.showMen = showMen2;
             return View();
             ////重新请求数据库，获取员工ID
             //List<string> MID = new ManagerController().GetAllMember();
@@ -376,13 +473,14 @@ namespace ExpressStationSystem.Controllers.ViewController
             //ViewBag.showIsOnDutyList = showIsOnDutyList;
         }
 
-        public ActionResult Wages(string status, string searchWith, string searchWithContent)
+        public ActionResult Wages(string status, string searchWith, string searchWithContent, string page)
         {
+            int pageNum = 10;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
             string defaultStatus = "选择分类";
 
-            if (status == "undefined" || status == null)
+            if (status == "undefined" || status == null || status == "")
             {
                 status = defaultStatus;
                 ViewBag.status = status;
@@ -496,6 +594,37 @@ namespace ExpressStationSystem.Controllers.ViewController
                     showMen.Add(menInfo);
                 }
             }
+            //默认在第一页
+            if (page == null || page == "" || page == "0")
+            {
+                page = "1";
+            }
+            //临时数据
+            int pageTemp = Convert.ToInt32(page);
+            List<dynamic> showMen2 = new List<dynamic>();
+            //第三次筛选，是把该页的信息的插进临时数组
+            for (int i = (pageTemp - 1) * pageNum; i < pageTemp * pageNum; i++)
+            {
+                if (i >= showMen.Count)
+                {
+                    break;
+                }
+                else
+                {
+                    showMen2.Add(showMen[i]);
+                }
+
+            }
+            //前端数据
+            if (showMen.Count % pageNum == 0)
+            {
+                ViewBag.PageSum = showMen.Count / pageNum;
+            }
+            else
+            {
+                ViewBag.PageSum = showMen.Count / pageNum + 1;
+            }
+            ViewBag.currentPage = pageTemp;
             //获取工资详情
             double sumD = 0;
             double sumP = 0;
@@ -521,18 +650,19 @@ namespace ExpressStationSystem.Controllers.ViewController
             ViewBag.sumS = sumS;
 
             ViewBag.moneyInfo = moneyInfo;
-            ViewBag.showMen = showMen;
+            ViewBag.showMen = showMen2;
             return View();
 
         }
 
-        public ActionResult Fine(string status, string searchWith, string searchWithContent)
+        public ActionResult Fine(string status, string searchWith, string searchWithContent, string page)
         {
+            int pageNum = 10;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
             string defaultStatus = "选择分类";
 
-            if (status == "undefined" || status == null)
+            if (status == "undefined" || status == null || status == "")
             {
                 status = defaultStatus;
                 ViewBag.status = status;
@@ -638,7 +768,38 @@ namespace ExpressStationSystem.Controllers.ViewController
                     showMen.Add(menInfo);
                 }
             }
-            ViewBag.showMen = showMen;
+            //默认在第一页
+            if (page == null || page == "" || page == "0")
+            {
+                page = "1";
+            }
+            //临时数据
+            int pageTemp = Convert.ToInt32(page);
+            List<dynamic> showMen2 = new List<dynamic>();
+            //第三次筛选，是把该页的信息的插进临时数组
+            for (int i = (pageTemp - 1) * pageNum; i < pageTemp * pageNum; i++)
+            {
+                if (i >= showMen.Count)
+                {
+                    break;
+                }
+                else
+                {
+                    showMen2.Add(showMen[i]);
+                }
+
+            }
+            //前端数据
+            if (showMen.Count % pageNum == 0)
+            {
+                ViewBag.PageSum = showMen.Count / pageNum;
+            }
+            else
+            {
+                ViewBag.PageSum = showMen.Count / pageNum + 1;
+            }
+            ViewBag.currentPage = pageTemp;
+            ViewBag.showMen = showMen2;
             return View();
             ////重新请求数据库，获取员工ID
             //List<string> MID = new ManagerController().GetAllMember();
@@ -858,8 +1019,9 @@ namespace ExpressStationSystem.Controllers.ViewController
             return View();
         }
 
-        public ActionResult Leave(string status, string searchWith, string searchWithContent)
+        public ActionResult Leave(string status, string searchWith, string searchWithContent, string date1, string date2, string page)
         {
+            int pageNum = 7;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
             string defaultStatus = "选择分类";
@@ -889,9 +1051,24 @@ namespace ExpressStationSystem.Controllers.ViewController
             {
                 ViewBag.searchWithContent = searchWithContent;
             }
-
+            //时间
+            if (date1 == "" || date1 == null)
+            {
+                date1 = DateTime.Now.AddYears(-20).ToString("yyyy-MM-dd");
+            }
+            if (date2 == "" || date2 == null)
+            {
+                date2 = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            if (date1.CompareTo(date2) > 0)
+            {
+                string temp = date1;
+                date1 = date2;
+                date2 = date1;
+            }
             //默认是未处理
             var LIDList = new LeaveController().GetLeaveList();
+            //如果是历史记录的就改变数组
             if(status == "历史记录")
             {
                 //20年前
@@ -926,7 +1103,11 @@ namespace ExpressStationSystem.Controllers.ViewController
                     }
                     else if(searchWith == "按日期")
                     {
-                        if(LeaveInfo.leave.time.ToString().StartsWith(searchWithContent))
+                        string time = LeaveInfo.leave.time.ToString("d").Replace('/', '-');
+                        DateTime t = Convert.ToDateTime(time);
+                        DateTime t1 = Convert.ToDateTime(date1);
+                        DateTime t2 = Convert.ToDateTime(date2);
+                        if (DateTime.Compare(t, t1) >= 0 && DateTime.Compare(t, t2) <= 0)
                         {
                             showLeaveInfoList.Add(LeaveInfo);
                         }
@@ -942,13 +1123,45 @@ namespace ExpressStationSystem.Controllers.ViewController
                 }
 
             }
+            List<dynamic> showLeaveInfoList2 = new List<dynamic>();
+            //默认在第一页
+            if (page == null || page == "")
+            {
+                page = "1";
+            }
+            //临时数据
+            int pageTemp = Convert.ToInt32(page);
+            //第三次筛选，是把该页的信息的插进临时数组
+            for (int i = (pageTemp - 1) * pageNum; i < pageTemp * pageNum; i++)
+            {
+                if (i >= showLeaveInfoList.Count)
+                {
+                    break;
+                }
+                else
+                {
+                    showLeaveInfoList2.Add(showLeaveInfoList[i]);
+                }
 
-            ViewBag.showLeaveInfoList = showLeaveInfoList;
+            }
+            ViewBag.showLeaveInfoList = showLeaveInfoList2;
+            if (showLeaveInfoList.Count % pageNum == 0)
+            {
+                ViewBag.PageSum = showLeaveInfoList.Count / pageNum;
+            }
+            else
+            {
+                ViewBag.PageSum = showLeaveInfoList.Count / pageNum + 1;
+            }
+            ViewBag.currentPage = pageTemp;
+            ViewBag.date1 = date1;
+            ViewBag.date2 = date2;
             return View();
         }
 
-        public ActionResult moneyList(string status, string searchWith, string searchWithContent)
+        public ActionResult moneyList(string status, string searchWith, string searchWithContent, string page)
         {
+            int pageNum = 10;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
             string defaultStatus = "选择分类";
@@ -1055,7 +1268,38 @@ namespace ExpressStationSystem.Controllers.ViewController
                     showMoneyList.Add(jo);
                 }
             }
-            ViewBag.showMoneyList = showMoneyList;
+            //默认在第一页
+            if (page == null || page == "" || page == "0")
+            {
+                page = "1";
+            }
+            //临时数据
+            int pageTemp = Convert.ToInt32(page);
+            List<dynamic> showMen2 = new List<dynamic>();
+            //第三次筛选，是把该页的信息的插进临时数组
+            for (int i = (pageTemp - 1) * pageNum; i < pageTemp * pageNum; i++)
+            {
+                if (i >= showMoneyList.Count)
+                {
+                    break;
+                }
+                else
+                {
+                    showMen2.Add(showMoneyList[i]);
+                }
+
+            }
+            //前端数据
+            if (showMoneyList.Count % pageNum == 0)
+            {
+                ViewBag.PageSum = showMoneyList.Count / pageNum;
+            }
+            else
+            {
+                ViewBag.PageSum = showMoneyList.Count / pageNum + 1;
+            }
+            ViewBag.currentPage = pageTemp;
+            ViewBag.showMoneyList = showMen2;
             return View();
         }
     }

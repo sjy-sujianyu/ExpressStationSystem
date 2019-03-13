@@ -37,11 +37,10 @@
         }
 
         function getCODE() {
-          
             phone_getCODE = document.getElementById("phoneWord").value;
             $.ajax({
                 type: 'get',
-                url: 'http://172.16.34.153:60062/Wechat/CheckPhone',
+                url: 'http://172.16.34.153:60062/Tools/CheckPhone',
                 contentType: "application/json;charset=UTF-8",
                 data: {
                     phone: phone_getCODE

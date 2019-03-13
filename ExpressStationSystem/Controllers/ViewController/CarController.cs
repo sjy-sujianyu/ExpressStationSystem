@@ -48,6 +48,10 @@ namespace ExpressStationSystem.Controllers.ViewController
             //第一次筛选
             foreach (var car in carInfoList)
             {
+                if(car.isDelete)
+                {
+                    continue;
+                }
                 //在用
                 if (status == "在用中")
                 {
