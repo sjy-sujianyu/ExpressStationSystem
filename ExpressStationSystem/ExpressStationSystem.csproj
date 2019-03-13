@@ -54,6 +54,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Device" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -194,7 +195,7 @@
     <Compile Include="Controllers\ViewController\LogInController.cs" />
     <Compile Include="Controllers\ViewController\MemberController.cs" />
     <Compile Include="Controllers\ViewController\PackageController.cs" />
-    <Compile Include="Controllers\WechatController.cs" />
+    <Compile Include="Controllers\ToolsController.cs" />
     <Compile Include="DataClasses1.cs">
       <DependentUpon>DataClasses1.dbml</DependentUpon>
     </Compile>
