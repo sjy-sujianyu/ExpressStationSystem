@@ -132,6 +132,7 @@ namespace ExpressStationSystem.Controllers
                 else
                 {
                     vehicle.isDelete = true;
+                    vehicle.onDuty = false;
                     vehicle.time = DateTime.Now;
                     db.SubmitChanges();
                     return true;
