@@ -61,7 +61,26 @@ namespace ExpressStationSystem.Controllers
             }
             return new { baseSalary = member.baseSalary, commission = commission, subsidy = new { details = subsidyList, total = subsidy }, fine = new { details = fineList, total = fine }, total = member.baseSalary + commission.pickUp.total + commission.delivery.total + commission.transfer.total + subsidy + fine };
         }
-
+        // GET: api/Leave/GetMoneyInfo
+        /// <summary>
+        /// 获取历史提成价格
+        /// </summary>
+        /// <remarks>获取历史提成价格</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Money/GetCommision")]
+        public dynamic GetCommision()
+        {
+            db = new DataClasses1DataContext(connstr);
+            var commision = from a in db.Commission select a;
+            if (commision is null)
+            {
+                return null;
+            }
+            else
+            {
+                return commision.ToList();
+            }
+        }
         // GET: api/Leave/GetMoneyInfo
         /// <summary>
         /// 获取奖罚信息
@@ -69,7 +88,7 @@ namespace ExpressStationSystem.Controllers
         /// <param name="id">奖罚信息id</param>
         /// <remarks>获取奖罚信息</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Leave/GetMoneyInfo")]
+        [HttpGet, Route("Money/GetMoneyInfo")]
         public dynamic GetMoneyInfo(int id)
         {
             db = new DataClasses1DataContext(connstr);
