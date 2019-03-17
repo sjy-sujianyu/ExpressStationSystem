@@ -150,6 +150,32 @@ namespace ExpressStationSystem.Controllers
                 return false;
             }
         }
+        // PUT: api/Money/PostCommission
+        /// <summary>
+        /// 插入提成价格
+        /// </summary>
+        /// <param name="x">提成价格实体</param>
+        /// <remarks>插入提成价格</remarks>
+        /// <returns>返回</returns>
+        [HttpPost, Route("Money/PostCommission")]
+        public bool FineorPrize(CommisionClass x)
+        {
+            db = new DataClasses1DataContext(connstr);
+            Commission com = new Commission();
+            try
+            {
+                com.pickUpValue = x.pickUpValue;
+                com.deliveryValue = x.deliveryValue;
+                com.transferValue = x.transferValue;
+                db.Commission.InsertOnSubmit(com);
+                db.SubmitChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         // PUT: api/Money/FineorPrize
         /// <summary>
         /// 罚款

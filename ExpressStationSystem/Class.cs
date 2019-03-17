@@ -231,7 +231,7 @@ namespace ExpressStationSystem
 
         public string person;
     }
-    public partial class ErrorClass
+    public class ErrorClass
     {
         public int id;
 
@@ -239,4 +239,11 @@ namespace ExpressStationSystem
 
         public string status;
     }
+    public class CommisionClass
+    {
+        public decimal pickUpValue;
+        public decimal transferValue;
+        public decimal deliveryValue;
+    }
+
 }

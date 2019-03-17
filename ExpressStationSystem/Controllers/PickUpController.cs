@@ -262,6 +262,7 @@ namespace ExpressStationSystem.Controllers
                     return false;
                 }
                 x.status = "已扫件";
+                x.time = DateTime.Now;
                 db.SubmitChanges();
                 return true; 
             }
