@@ -64,21 +64,24 @@
     </div>
     <script>
         function Money_PostCommision() {
-            //alert($("#i1").val() + $("#i2").val() + $("#i3").val())
-            $.post("http://172.16.34.153:60062/Money/PostCommission",
-            {
-                pickUpValue: $("#i1").val(),
-                transferValue: $("#i2").val(),
-                deliveryValue: $("#i3").val()
-            },
-                function (data, status) {
+            alert($("#i1").val() + $("#i2").val() + $("#i3").val())
+            $.ajax({
+                type: 'POST',
+                url: "http://172.16.34.153:60062/Money/PostCommission",
+                contentType: "application/json;charset=UTF-8",
+                data: JSON.stringify({
+                    pickUpValue: parseFloat($("#i1").val()),
+                    transferValue: parseFloat($("#i2").val()),
+                    deliveryValue: parseFloat($("#i3").val())
+                }),
+                success: function (data, status) {
                     if (data == false) {
                         alert("修改失败");
                     } else {
                         alert("修改成功");
                     }
-                    //alert("Data: " + data + "\nStatus: " + status);
-            })
+                }
+            });
         }
         function ReSet() {
             $(" #i1").val("");
