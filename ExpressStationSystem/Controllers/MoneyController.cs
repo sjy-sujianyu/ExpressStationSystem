@@ -186,6 +186,8 @@ namespace ExpressStationSystem.Controllers
                 com.pickUpValue = x.pickUpValue;
                 com.deliveryValue = x.deliveryValue;
                 com.transferValue = x.transferValue;
+                com.time = DateTime.Now;
+                com.person = x.person;
                 db.Commission.InsertOnSubmit(com);
                 db.SubmitChanges();
                 return true;
