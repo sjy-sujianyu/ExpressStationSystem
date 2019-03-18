@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Content/laydate/laydate.js"></script>
+</head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">关于</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="/Package/Package">包裹一览</a></li>
+                    <li><a href="/Car/Car">站点配车</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">人员管理<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/Member/AllMember">员工一览</a></li>
+                            <li><a href="/Member/AddMember">员工录用</a></li>
+                            <li><a href="/Member/DeleteMember">员工开除</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/Member/Fine">补贴</a></li>
+                            <li><a href="/Member/Leave">请假条</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/Member/Mission">任务分配</a></li>
+                            <li><a href="/Member/Wages">工薪统计</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/Login/changePassword">修改超级密码</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/Login/exitLogin">退出用户</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+
+    </div>
+    <div class="col-sm-10 col-sm-offset-1" style="display:flex;margin-top:3rem;align-items:center;justify-content:space-between;">
+
+        <script>
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#date1' //指定元素
+
+            });
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#date2' //指定元素
+            });
+        </script>
+
+        <div>起始时间</div>
+        <input type="text" id="date1" value="@ViewBag.date1">
+        <div>结束时间</div>
+        <input type="text" id="date2" value="@ViewBag.date2">
+
+        <button class="btn btn-default" type="button" onclick="dateChange('@ViewBag.status',1)">OK!</button>
+
+    </div>
+
+        <ul class="list-group" style="margin-top:2rem;">
+            <li class="list-group-item list-group-item-success list-group-item-action" style="display: flex;justify-content: space-between;">
+                <div>错件数</div>
+                <div>100件</div>
+            </li>
+            <li class="list-group-item list-group-item-secondary list-group-item-action" style="display: flex;justify-content: space-between;">
+                <div>漏件数</div>
+                <div>100件</div>
+            </li>
+            <li class="list-group-item list-group-item-info list-group-item-action" style="display: flex;justify-content: space-between;">
+                <div>破损件数</div>
+                <div>100件</div>
+            </li>
+            <li class="list-group-item list-group-item-warning list-group-item-action" style="display: flex;justify-content: space-between;">
+                <div>拒签数</div>
+                <div>100件</div>
+            </li>
+            <li class="list-group-item list-group-item-danger list-group-item-action" style="display: flex;justify-content: space-between;">
+                <div>丢件数</div>
+                <div>100件</div>
+            </li>
+            <li class="list-group-item list-group-item-success list-group-item-action" style="display: flex;justify-content: space-between;">
+                <div>派件数</div>
+                <div>100件</div>
+            </li>
+            <li class="list-group-item list-group-item-secondary list-group-item-action" style="display: flex;justify-content: space-between;">
+                <div>入站数</div>
+                <div>100件</div>
+            </li>
+            <li class="list-group-item list-group-item-info list-group-item-action" style="display: flex;justify-content: space-between;">
+                <div>出件数</div>
+                <div>100件</div>
+            </li>
+            <li class="list-group-item list-group-item-warning list-group-item-action" style="display: flex;justify-content: space-between;">
+                <div>请假数</div>
+                <div>100次</div>
+            </li>
+            <li class="list-group-item list-group-item-danger list-group-item-action" style="display: flex;justify-content: space-between;">
+                <div>雇用数</div>
+                <div>100人</div>
+            </li>
+            <li class="list-group-item list-group-item-secondary list-group-item-action" style="display: flex;justify-content: space-between;">
+                <div>辞职数</div>
+                <div>100人</div>
+            </li>
+            <li class="list-group-item list-group-item-info list-group-item-action" style="display: flex;justify-content: space-between;">
+                <div>历史提成项目数</div>
+                <div>100项</div>
+            </li>
+            <li class="list-group-item list-group-item-warning list-group-item-action" style="display: flex;justify-content: space-between;">
+                <div>车录用数</div>
+                <div>100辆</div>
+            </li>
+            <li class="list-group-item list-group-item-danger list-group-item-action" style="display: flex;justify-content: space-between;">
+                <div>车删除数</div>
+                <div>100辆</div>
+            </li>
+        </ul>
+
+</body>
+</html>
+
