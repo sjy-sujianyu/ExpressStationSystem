@@ -107,7 +107,7 @@
                 data: JSON.stringify({
                     "mId": document.getElementById("newPhone").value,
                     "name": document.getElementById("newName").value,
-                    "job": "派件员",
+                    "job": document.getElementById("selectedJob").innerText.replace(/\s*/g, ""),
                     "baseSalary": salary
                 }),
                 success: function (res) {
@@ -131,9 +131,10 @@
                 contentType: false,
                 success: function (res) {
                     if (res == true) {
-                        alert('录用完成');
+                        alert('修改完成');
                     } else {
-                        alert('上传头像失败');
+                        //什么都不做
+                        alert('修改完成');
                     }
                 }
             });
@@ -166,6 +167,11 @@
                     }
                 }
             });
+        }
+
+        function update(self) {
+            var btn = document.getElementById("selectedJob");
+            btn.innerHTML = self.innerText + ' <span class="caret"></span>';
         }
 
     </script>
@@ -229,10 +235,10 @@
 
     <h2 class='page-header'>员工详情</h2>
 
-    <div style="left:0rem;display:flex">
+    <div class="col-sm-4">
         <div style="display:flex;align-items:center">
 
-            <input type="file" class="parameter required hidden" name="file" id="upload" onchange="loadimg(this)">
+            <input type="file" class="parameter required hidden" name="file" id="upload" onchange="loadimg(this)" style="display:none">
 
             <img src=@("http://" + ViewBag.thisImagePath) id="imghead" type="button" class="btn btn-default btn-group-lg " onclick="addimg()" aria-label="Left Align" style="width:9rem;height:11rem;border:0">
 
@@ -240,7 +246,7 @@
         <br /><br />
     </div>
 
-    <div style="display:flex">
+    <div style="display:flex" class="col-sm-5 col-sm-offset-1">
         <div style="display:flex;flex-direction:column">
             <div class="row" style="font-size:25px;margin-top:3rem;margin-left:7rem;display:flex">
                 员工姓名:&nbsp;&nbsp;&nbsp;
@@ -258,7 +264,21 @@
 
             <div class="row" style="font-size:25px;margin-top:3rem;margin-left:7rem;display:flex">
                 职称:&nbsp;&nbsp;
-                <div id="newJob">@ViewBag.thisJob</div>
+                <div id="newJob">
+                    <div class="btn-group">
+                        <button type="button" class="btn-Mission btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="selectedJob">
+                            @ViewBag.thisJob<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a onclick="update(this)">派件员</a></li>
+                            <li><a onclick="update(this)">揽件员</a></li>
+                            <li><a onclick="update(this)">出件员</a></li>
+                            <li><a onclick="update(this)">待定中</a></li>
+                        </ul>
+                    </div>
+                    
+                
+                </div>
             </div>
 
             <div class="row" style="font-size:25px;margin-top:3rem;margin-left:7rem;display:flex">

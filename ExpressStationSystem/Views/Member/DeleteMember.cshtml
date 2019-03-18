@@ -171,6 +171,11 @@
         <nav aria-label="Page navigation">
             <ul class="pagination">
                 <li>
+                    <a onclick="JumpToPage('@ViewBag.status',1 ,0)" aria-label="Previous">
+                        <span aria-hidden="true">首页</span>
+                    </a>
+                </li>
+                <li>
                     <a onclick="JumpToPage('@ViewBag.status',@ViewBag.currentPage,-1)" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
@@ -221,6 +226,11 @@
                 <li>
                     <a onclick="JumpToPage('@ViewBag.status',@ViewBag.currentPage,1)" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.PageSum,0)" aria-label="Previous">
+                        <span aria-hidden="true">尾页</span>
                     </a>
                 </li>
             </ul>

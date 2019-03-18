@@ -13,9 +13,25 @@ namespace ExpressStationSystem.Controllers.ViewController
         string defaultSearchWithContent = "";
         string defaultStatus = "选择分类";
         // GET: Car
-        public ActionResult Car(string status, string searchWith, string searchWithContent)
+        private Boolean checkCookies()
         {
-            if(status == "undefined" || status == null)
+            if (Request.Cookies["MyCook"] != null)
+            {
+                if (new LoginController().LandOfManager(Request.Cookies["MyCook"]["userid"], Request.Cookies["MyCook"]["password"]))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public ActionResult Car(string status, string searchWith, string searchWithContent, string page)
+        {
+            int pageNum = 10;
+            if (!checkCookies())
+            {
+                return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
+            }
+            if (status == "undefined" || status == null)
             {
                 ViewBag.status = defaultStatus;
             }
@@ -45,6 +61,7 @@ namespace ExpressStationSystem.Controllers.ViewController
             //决定显示的car
             List<dynamic> step = new List<dynamic>();
             List<dynamic> showCar = new List<dynamic>();
+            List<dynamic> showCar2 = new List<dynamic>();
             //第一次筛选
             foreach (var car in carInfoList)
             {
@@ -101,12 +118,44 @@ namespace ExpressStationSystem.Controllers.ViewController
                 }
             }
 
-
-            ViewBag.showCar = showCar;
+            //默认在第一页
+            if (page == null || page == "" || Convert.ToInt32(page) <= 0)
+            {
+                page = "1";
+            }
+            //临时数据
+            int pageTemp = Convert.ToInt32(page);
+            //第三次筛选，是把该页的信息的插进临时数组
+            for (int i = (pageTemp - 1) * pageNum; i < pageTemp * pageNum; i++)
+            {
+                if (i >= showCar.Count)
+                {
+                    break;
+                }
+                else
+                {
+                    showCar2.Add(showCar[i]);
+                }
+            }
+            //前端要用到的数据
+            if (showCar.Count % pageNum == 0)
+            {
+                ViewBag.PageSum = showCar.Count / pageNum;
+            }
+            else
+            {
+                ViewBag.PageSum = showCar.Count / pageNum + 1;
+            }
+            ViewBag.currentPage = pageTemp;
+            ViewBag.showCar = showCar2;
             return View();
         }
         public ActionResult AddCar()
         {
+            if (!checkCookies())
+            {
+                return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
+            }
             return View();
         }
     }

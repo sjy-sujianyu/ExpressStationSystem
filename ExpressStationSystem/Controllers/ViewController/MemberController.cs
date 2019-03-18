@@ -17,9 +17,24 @@ namespace ExpressStationSystem.Controllers.ViewController
    
     public class MemberController : Controller
     {
-        // GET: Member
-        public ActionResult AllMember(string status, string searchWith, string searchWithContent, string page)
+        private Boolean checkCookies()
         {
+            if (Request.Cookies["MyCook"] != null)
+            {
+                if (new LoginController().LandOfManager(Request.Cookies["MyCook"]["userid"], Request.Cookies["MyCook"]["password"]))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        // GET: Member
+        public ActionResult AllMember(string status, string searchWith, string searchWithContent, string date1, string date2, string page)
+        {
+            if (!checkCookies())
+            {
+                return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
+            }
             int pageNum = 10;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
@@ -50,6 +65,22 @@ namespace ExpressStationSystem.Controllers.ViewController
             {
                 ViewBag.searchWithContent = searchWithContent;
             }
+            if (date1 == "" || date1 == null)
+            {
+                ViewBag.thisDate1 = "";
+            }
+            else
+            {
+                ViewBag.thisDate1 = date1;
+            }
+            if (date2 == "" || date2 == null)
+            {
+                ViewBag.thisDate2 = "";
+            }
+            else
+            {
+                ViewBag.thisDate2 = date2;
+            }
             //人员信息
             var memberIDList = new ManagerController().GetAllMember();
             //中间数组
@@ -62,6 +93,15 @@ namespace ExpressStationSystem.Controllers.ViewController
                 var menInfo = new QueryController().GetMemberAllInfo(menID);
                 //已经辞职的不需要
                 if (status != "已辞职" && menInfo.isDelete)
+                {
+                    continue;
+                }
+                //不对时间的也不要
+                if ((date1 != null && date1 != "") && menInfo.time.CompareTo(Convert.ToDateTime(date1)) <= 0)
+                {
+                    continue;
+                }
+                if ((date2 != null && date2 != "") && menInfo.time.CompareTo(Convert.ToDateTime(date2).AddDays(1)) >= 0)
                 {
                     continue;
                 }
@@ -131,7 +171,7 @@ namespace ExpressStationSystem.Controllers.ViewController
             }
 
             //默认在第一页
-            if (page == null || page == "" || page == "0")
+            if (page == null || page == "" || Convert.ToInt32(page) <= 0)
             {
                 page = "1";
             }
@@ -167,11 +207,19 @@ namespace ExpressStationSystem.Controllers.ViewController
 
         public ActionResult AddMember()
         {
+            if (!checkCookies())
+            {
+                return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
+            }
             return View();
         }
 
         public ActionResult DeleteMember(string status, string searchWith, string searchWithContent, string page)
         {
+            if (!checkCookies())
+            {
+                return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
+            }
             int pageNum = 10;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
@@ -282,7 +330,7 @@ namespace ExpressStationSystem.Controllers.ViewController
                 }
             }
             //默认在第一页
-            if (page == null || page == "" || page == "0")
+            if (page == null || page == "" || Convert.ToInt32(page) <= 0)
             {
                 page = "1";
             }
@@ -318,6 +366,10 @@ namespace ExpressStationSystem.Controllers.ViewController
 
         public ActionResult Mission(string status, string searchWith, string searchWithContent,string page)
         {
+            if (!checkCookies())
+            {
+                return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
+            }
             int pageNum = 10;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
@@ -403,7 +455,7 @@ namespace ExpressStationSystem.Controllers.ViewController
                 }
             }
             //默认在第一页
-            if (page == null || page == "" || page == "0")
+            if (page == null || page == "" || Convert.ToInt32(page) <= 0)
             {
                 page = "1";
             }
@@ -473,8 +525,12 @@ namespace ExpressStationSystem.Controllers.ViewController
             //ViewBag.showIsOnDutyList = showIsOnDutyList;
         }
 
-        public ActionResult Wages(string status, string searchWith, string searchWithContent, string page)
+        public ActionResult Wages(string status, string searchWith, string searchWithContent,string month, string page)
         {
+            if (!checkCookies())
+            {
+                return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
+            }
             int pageNum = 10;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
@@ -560,7 +616,16 @@ namespace ExpressStationSystem.Controllers.ViewController
 
             }
             //先定好日期，当前月的的第一天
-            DateTime date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            DateTime date;
+            if (month == "" || month == null)
+            {
+                date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            }
+            else
+            {
+                date = Convert.ToDateTime(month);
+            }
+            ViewBag.thisMonth = date.Year.ToString() + "-" + date.Month.ToString();
             //第二次是搜索的筛选
             foreach (var menInfo in step)
             {
@@ -580,14 +645,6 @@ namespace ExpressStationSystem.Controllers.ViewController
                             showMen.Add(menInfo);
                         }
                     }
-                    else if(searchWith == "按月份")
-                    {
-                        //改变日期
-                        string[] arr = searchWithContent.Split('-');
-                        date = new DateTime(Convert.ToInt32(arr[0]), Convert.ToInt32(arr[1]), 1);
-                        showMen = step;
-                        break;
-                    }
                 }
                 else
                 {
@@ -595,7 +652,7 @@ namespace ExpressStationSystem.Controllers.ViewController
                 }
             }
             //默认在第一页
-            if (page == null || page == "" || page == "0")
+            if (page == null || page == "" || Convert.ToInt32(page) <= 0)
             {
                 page = "1";
             }
@@ -632,16 +689,24 @@ namespace ExpressStationSystem.Controllers.ViewController
             double sumS = 0;
 
             List<dynamic> moneyInfo = new List<dynamic>();
+            //统计工资
             foreach(var man in showMen)
             {
+                //得到工资
                 var josnStr = JsonConvert.SerializeObject(new MoneyController().GetSalary(man.mId, date));
                 JObject jo = (JObject)JsonConvert.DeserializeObject(josnStr);
-                moneyInfo.Add(jo);
 
                 sumD += Convert.ToDouble(jo["commission"]["delivery"]["DeliveryCount"]);
                 sumP += Convert.ToDouble(jo["commission"]["pickUp"]["PickUpCount"]);
                 sumT += Convert.ToDouble(jo["commission"]["transfer"]["TransferCount"]);
                 sumS += Convert.ToDouble(jo["total"]);
+            }
+            //显示的数组
+            foreach(var man in showMen2)
+            {
+                var josnStr = JsonConvert.SerializeObject(new MoneyController().GetSalary(man.mId, date));
+                JObject jo = (JObject)JsonConvert.DeserializeObject(josnStr);
+                moneyInfo.Add(jo);
             }
 
             ViewBag.sumD = sumD;
@@ -657,6 +722,10 @@ namespace ExpressStationSystem.Controllers.ViewController
 
         public ActionResult Fine(string status, string searchWith, string searchWithContent, string page)
         {
+            if (!checkCookies())
+            {
+                return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
+            }
             int pageNum = 10;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
@@ -769,7 +838,7 @@ namespace ExpressStationSystem.Controllers.ViewController
                 }
             }
             //默认在第一页
-            if (page == null || page == "" || page == "0")
+            if (page == null || page == "" || Convert.ToInt32(page) <= 0)
             {
                 page = "1";
             }
@@ -969,13 +1038,15 @@ namespace ExpressStationSystem.Controllers.ViewController
             //ViewBag.showPhoneList = showPhoneList;
             //ViewBag.showJobList = showJobList;
             //ViewBag.showIsOnDutyList = showIsOnDutyList;
-
-            return View();
         }
 
         public ActionResult DetailMember(string id)
         {
-            if(id != null)
+            if (!checkCookies())
+            {
+                return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
+            }
+            if (id != null)
             {
                 var record = new QueryController().GetTotalRecordByAccount(id);
                 ViewBag.DeliveryCount = record.DeliveryCount;
@@ -999,7 +1070,11 @@ namespace ExpressStationSystem.Controllers.ViewController
 
         public ActionResult changeMemberDetail(string id)
         {
-            if(id == null)
+            if (!checkCookies())
+            {
+                return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
+            }
+            if (id == null)
             {
                 id = "15813322560";
             }
@@ -1021,6 +1096,10 @@ namespace ExpressStationSystem.Controllers.ViewController
 
         public ActionResult Leave(string status, string searchWith, string searchWithContent, string date1, string date2, string page)
         {
+            if (!checkCookies())
+            {
+                return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
+            }
             int pageNum = 7;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
@@ -1051,22 +1130,24 @@ namespace ExpressStationSystem.Controllers.ViewController
             {
                 ViewBag.searchWithContent = searchWithContent;
             }
-            //时间
+            //处理日期
             if (date1 == "" || date1 == null)
             {
-                date1 = DateTime.Now.AddYears(-20).ToString("yyyy-MM-dd");
+                ViewBag.thisDate1 = "";
+            }
+            else
+            {
+                ViewBag.thisDate1 = date1;
             }
             if (date2 == "" || date2 == null)
             {
-                date2 = DateTime.Now.ToString("yyyy-MM-dd");
+                ViewBag.thisDate2 = "";
             }
-            if (date1.CompareTo(date2) > 0)
+            else
             {
-                string temp = date1;
-                date1 = date2;
-                date2 = date1;
+                ViewBag.thisDate2 = date2;
             }
-            //默认是未处理
+            //默认是未处理列表
             var LIDList = new LeaveController().GetLeaveList();
             //如果是历史记录的就改变数组
             if(status == "历史记录")
@@ -1084,8 +1165,15 @@ namespace ExpressStationSystem.Controllers.ViewController
             foreach(var LID in LIDList)
             {
                 var LeaveInfo = new LeaveController().GetLeaveInfo(LID);
-
-                if(searchWith != null)
+                if ((date1 != null && date1 != "") && Convert.ToDateTime(date1).CompareTo(Convert.ToDateTime(LeaveInfo.leave.time)) >= 0)
+                {
+                    continue;
+                }
+                if ((date2 != null && date2 != "") && Convert.ToDateTime(date2).AddDays(1).CompareTo(Convert.ToDateTime(LeaveInfo.leave.time)) <= 0)
+                {
+                    continue;
+                }
+                if (searchWith != null)
                 {
                     if(searchWith == "按姓名")
                     {
@@ -1097,17 +1185,6 @@ namespace ExpressStationSystem.Controllers.ViewController
                     else if(searchWith == "按手机")
                     {
                         if (LeaveInfo.member.mId.ToString().StartsWith(searchWithContent))
-                        {
-                            showLeaveInfoList.Add(LeaveInfo);
-                        }
-                    }
-                    else if(searchWith == "按日期")
-                    {
-                        string time = LeaveInfo.leave.time.ToString("d").Replace('/', '-');
-                        DateTime t = Convert.ToDateTime(time);
-                        DateTime t1 = Convert.ToDateTime(date1);
-                        DateTime t2 = Convert.ToDateTime(date2);
-                        if (DateTime.Compare(t, t1) >= 0 && DateTime.Compare(t, t2) <= 0)
                         {
                             showLeaveInfoList.Add(LeaveInfo);
                         }
@@ -1125,7 +1202,7 @@ namespace ExpressStationSystem.Controllers.ViewController
             }
             List<dynamic> showLeaveInfoList2 = new List<dynamic>();
             //默认在第一页
-            if (page == null || page == "")
+            if (page == null || page == "" || Convert.ToInt32(page) <= 0)
             {
                 page = "1";
             }
@@ -1154,13 +1231,15 @@ namespace ExpressStationSystem.Controllers.ViewController
                 ViewBag.PageSum = showLeaveInfoList.Count / pageNum + 1;
             }
             ViewBag.currentPage = pageTemp;
-            ViewBag.date1 = date1;
-            ViewBag.date2 = date2;
             return View();
         }
 
-        public ActionResult moneyList(string status, string searchWith, string searchWithContent, string page)
+        public ActionResult moneyList(string status, string searchWith, string searchWithContent, string date1, string date2, string page)
         {
+            if (!checkCookies())
+            {
+                return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
+            }
             int pageNum = 10;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
@@ -1191,6 +1270,22 @@ namespace ExpressStationSystem.Controllers.ViewController
             {
                 ViewBag.searchWithContent = searchWithContent;
             }
+            if(date1 == "" || date1 == null)
+            {
+                ViewBag.thisDate1 = "";
+            }
+            else
+            {
+                ViewBag.thisDate1 = date1;
+            }
+            if (date2 == "" || date2 == null)
+            {
+                ViewBag.thisDate2 = "";
+            }
+            else
+            {
+                ViewBag.thisDate2 = date2;
+            }
             //20年前
             DateTime oldTime = DateTime.Now.AddYears(-20);
             //当今
@@ -1208,6 +1303,14 @@ namespace ExpressStationSystem.Controllers.ViewController
 
                 //已经辞职的不需要
                 if (status != "已辞职" && moneyInfo.member.isDelete)
+                {
+                    continue;
+                }
+                if ((date1 != null && date1 != "")&& moneyInfo.money.time.CompareTo(Convert.ToDateTime(date1)) <= 0)
+                {
+                    continue;
+                }
+                if((date2 != null && date2 != "") && moneyInfo.money.time.CompareTo(Convert.ToDateTime(date2).AddDays(1)) >= 0)
                 {
                     continue;
                 }
@@ -1255,13 +1358,6 @@ namespace ExpressStationSystem.Controllers.ViewController
                             showMoneyList.Add(jo);
                         }
                     }
-                    else if (searchWith == "按月份")
-                    {
-                        if (menInfo.money.time.ToString().StartsWith(searchWithContent))
-                        {
-                            showMoneyList.Add(jo);
-                        }
-                    }
                 }
                 else
                 {
@@ -1269,7 +1365,7 @@ namespace ExpressStationSystem.Controllers.ViewController
                 }
             }
             //默认在第一页
-            if (page == null || page == "" || page == "0")
+            if (page == null || page == "" || Convert.ToInt32(page) <= 0)
             {
                 page = "1";
             }
