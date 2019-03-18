@@ -303,6 +303,7 @@
     <Content Include="Views\Member\moneyList.cshtml" />
     <Content Include="Views\Car\AddCar.cshtml" />
     <Content Include="Views\Info\AllInfo.cshtml" />
+    <Content Include="Views\Info\ModifyCommision.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
