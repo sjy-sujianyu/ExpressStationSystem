@@ -600,8 +600,6 @@ namespace ExpressStationSystem
 		
 		private System.DateTime _time;
 		
-		private string _person;
-		
     #region 可扩展性方法定义
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -616,8 +614,6 @@ namespace ExpressStationSystem
     partial void OntransferValueChanged();
     partial void OntimeChanging(System.DateTime value);
     partial void OntimeChanged();
-    partial void OnpersonChanging(string value);
-    partial void OnpersonChanged();
     #endregion
 		
 		public Commission()
@@ -726,27 +722,6 @@ namespace ExpressStationSystem
 					this._time = value;
 					this.SendPropertyChanged("time");
 					this.OntimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_person", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
-		public string person
-		{
-			get
-			{
-				return this._person;
-			}
-			set
-			{
-				if ((this._person != value))
-				{
-					this.OnpersonChanging(value);
-					this.SendPropertyChanging();
-					this._person = value;
-					this.SendPropertyChanged("person");
-					this.OnpersonChanged();
 				}
 			}
 		}

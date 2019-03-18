@@ -318,7 +318,6 @@ namespace ExpressStationSystem.Controllers
                     {
                         db.Money.InsertOnSubmit(money);
                         db.SubmitChanges();
-                        return true;
                     }
                     catch(Exception)
                     {

@@ -61,7 +61,26 @@ namespace ExpressStationSystem.Controllers
             }
             return new { baseSalary = member.baseSalary, commission = commission, subsidy = new { details = subsidyList, total = subsidy }, fine = new { details = fineList, total = fine }, total = member.baseSalary + commission.pickUp.total + commission.delivery.total + commission.transfer.total + subsidy + fine };
         }
-
+        // GET: api/Leave/GetMoneyInfo
+        /// <summary>
+        /// 获取历史提成价格
+        /// </summary>
+        /// <remarks>获取历史提成价格</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Money/GetCommision")]
+        public dynamic GetCommision()
+        {
+            db = new DataClasses1DataContext(connstr);
+            var commision = from a in db.Commission select a;
+            if (commision is null)
+            {
+                return null;
+            }
+            else
+            {
+                return commision.ToList();
+            }
+        }
         // GET: api/Leave/GetMoneyInfo
         /// <summary>
         /// 获取奖罚信息
@@ -69,7 +88,7 @@ namespace ExpressStationSystem.Controllers
         /// <param name="id">奖罚信息id</param>
         /// <remarks>获取奖罚信息</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Leave/GetMoneyInfo")]
+        [HttpGet, Route("Money/GetMoneyInfo")]
         public dynamic GetMoneyInfo(int id)
         {
             db = new DataClasses1DataContext(connstr);
@@ -150,7 +169,34 @@ namespace ExpressStationSystem.Controllers
                 return false;
             }
         }
-        // PUT: api/Money/FineorPrize
+        // PUT: api/Money/PostCommission
+        /// <summary>
+        /// 插入提成价格
+        /// </summary>
+        /// <param name="x">提成价格实体</param>
+        /// <remarks>插入提成价格</remarks>
+        /// <returns>返回</returns>
+        [HttpPost, Route("Money/PostCommission")]
+        public bool FineorPrize(CommisionClass x)
+        {
+            db = new DataClasses1DataContext(connstr);
+            Commission com = new Commission();
+            try
+            {
+                com.pickUpValue = x.pickUpValue;
+                com.deliveryValue = x.deliveryValue;
+                com.transferValue = x.transferValue;
+                com.time = DateTime.Now;
+                db.Commission.InsertOnSubmit(com);
+                db.SubmitChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        // POST: api/Money/FineorPrize
         /// <summary>
         /// 罚款
         /// </summary>
@@ -179,7 +225,37 @@ namespace ExpressStationSystem.Controllers
                 return false;
             }
         }
-
+        // PUT: api/Money/UpdateMoneyItem
+        /// <summary>
+        /// 更新罚款补贴信息
+        /// </summary>
+        /// <param name="x">罚款补贴实体信息</param>
+        /// <remarks>更新罚款补贴信息</remarks>
+        /// <returns>返回</returns>
+        [HttpPut, Route("Money/UpdateMoneyItem")]
+        public bool UpdateMoneyItem(MoneyClassPlus x)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var money = db.Money.Where(a => a.sId == x.sId).FirstOrDefault();
+            if(money is null)
+            {
+                return false;
+            }
+            money.subsidy = x.subsidy;
+            money.fine = x.fine;
+            money.time = DateTime.Now;
+            money.reason = x.reason;
+            money.person = x.person;
+            try
+            {
+                db.SubmitChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         // DELETE: api/Money/Delete
         /// <summary>
         /// 删除罚款

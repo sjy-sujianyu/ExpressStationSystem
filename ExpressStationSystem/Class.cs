@@ -231,7 +231,19 @@ namespace ExpressStationSystem
 
         public string person;
     }
-    public partial class ErrorClass
+    public class MoneyClassPlus
+    {
+        public int sId;
+
+        public decimal subsidy;
+
+        public decimal fine;
+
+        public string reason;
+
+        public string person;
+    }
+    public class ErrorClass
     {
         public int id;
 
@@ -239,4 +251,11 @@ namespace ExpressStationSystem
 
         public string status;
     }
+    public class CommisionClass
+    {
+        public decimal pickUpValue;
+        public decimal transferValue;
+        public decimal deliveryValue;
+    }
+
 }
