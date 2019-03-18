@@ -235,8 +235,6 @@ namespace ExpressStationSystem
     {
         public int sId;
 
-        public string mId;
-
         public decimal subsidy;
 
         public decimal fine;

@@ -240,7 +240,6 @@ namespace ExpressStationSystem.Controllers
             {
                 return false;
             }
-            money.mId = x.mId;
             money.subsidy = x.subsidy;
             money.fine = x.fine;
             money.time = DateTime.Now;
