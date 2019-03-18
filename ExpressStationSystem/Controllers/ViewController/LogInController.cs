@@ -21,7 +21,7 @@ namespace ExpressStationSystem.Controllers.ViewController
                 {
                     HttpCookie cookie = new HttpCookie("MyCook");//初使化并设置Cookie的名称
                     DateTime dt = DateTime.Now;
-                    TimeSpan ts = new TimeSpan(0, 0, 1, 0, 0);//过期时间为1分钟
+                    TimeSpan ts = new TimeSpan(1, 0, 0, 0, 0);//过期时间为1分钟
                     cookie.Expires = dt.Add(ts);//设置过期时间
                     cookie.Values.Add("userid", phone);
                     cookie.Values.Add("password", passWord);
