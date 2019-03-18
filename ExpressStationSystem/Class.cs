@@ -231,6 +231,20 @@ namespace ExpressStationSystem
 
         public string person;
     }
+    public class MoneyClassPlus
+    {
+        public int sId;
+
+        public string mId;
+
+        public decimal subsidy;
+
+        public decimal fine;
+
+        public string reason;
+
+        public string person;
+    }
     public class ErrorClass
     {
         public int id;

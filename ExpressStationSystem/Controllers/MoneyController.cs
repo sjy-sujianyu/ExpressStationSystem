@@ -195,7 +195,7 @@ namespace ExpressStationSystem.Controllers
                 return false;
             }
         }
-        // PUT: api/Money/FineorPrize
+        // POST: api/Money/FineorPrize
         /// <summary>
         /// 罚款
         /// </summary>
@@ -224,7 +224,38 @@ namespace ExpressStationSystem.Controllers
                 return false;
             }
         }
-
+        // PUT: api/Money/UpdateMoneyItem
+        /// <summary>
+        /// 更新罚款补贴信息
+        /// </summary>
+        /// <param name="x">罚款补贴实体信息</param>
+        /// <remarks>更新罚款补贴信息</remarks>
+        /// <returns>返回</returns>
+        [HttpPut, Route("Money/UpdateMoneyItem")]
+        public bool UpdateMoneyItem(MoneyClassPlus x)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var money = db.Money.Where(a => a.sId == x.sId).FirstOrDefault();
+            if(money is null)
+            {
+                return false;
+            }
+            money.mId = x.mId;
+            money.subsidy = x.subsidy;
+            money.fine = x.fine;
+            money.time = DateTime.Now;
+            money.reason = x.reason;
+            money.person = x.person;
+            try
+            {
+                db.SubmitChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         // DELETE: api/Money/Delete
         /// <summary>
         /// 删除罚款
