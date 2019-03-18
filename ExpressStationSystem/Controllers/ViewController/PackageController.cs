@@ -11,8 +11,12 @@ namespace ExpressStationSystem.Controllers.ViewController
 {
     public class PackageController : Controller
     {
-        public ActionResult Package(string status, string searchWith, string searchWithContent, string date1, string date2, string page)
+        public ActionResult Package(string status, string searchWith, string searchWithContent, string date1, string date2, string page, string car)
         {
+            if (!checkCookies())
+            {
+                return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
+            }
             int pageNum = 7;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
@@ -60,6 +64,15 @@ namespace ExpressStationSystem.Controllers.ViewController
             }
             //包裹信息
             List<int> PIDList = new ManagerController().GetAllPackage(Convert.ToDateTime(date1), Convert.ToDateTime(date2));
+            if (car != null && car != "")
+            {
+                PIDList = new TransferController().GetPackageIdOnVehicle(Convert.ToInt32(car));
+                ViewBag.car = car;
+            }
+            else
+            {
+                ViewBag.car = "";
+            }
             //中间数组
             List<dynamic> step = new List<dynamic>();
             //也是中间数组
@@ -121,8 +134,30 @@ namespace ExpressStationSystem.Controllers.ViewController
                     showPackage.Add(PInfo);
                 }
             }
+            //统计
+            int sumL = 0;
+            int sumP = 0;
+            int sumT = 0;
+            foreach(var p in showPackage)
+            {
+                if(p.package.status == "已扫件")
+                {
+                    sumL++;
+                }
+                else if(p.package.status == "已签收")
+                {
+                    sumP++;
+                }
+                else if (p.package.status == "运输中")
+                {
+                    sumT++;
+                }
+            }
+            ViewBag.sumL = sumL;
+            ViewBag.sumP = sumP;
+            ViewBag.sumT = sumT;
             //默认在第一页
-            if (page == null || page == "")
+            if (page == null || page == "" || Convert.ToInt32(page) <= 0)
             {
                 page = "1";
             }
@@ -157,6 +192,17 @@ namespace ExpressStationSystem.Controllers.ViewController
             return View();
         }
 
+        private Boolean checkCookies()
+        {
+            if (Request.Cookies["MyCook"] != null)
+            {
+                if (new LoginController().LandOfManager(Request.Cookies["MyCook"]["userid"], Request.Cookies["MyCook"]["password"]))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public ActionResult checkPackage(string id)
         {

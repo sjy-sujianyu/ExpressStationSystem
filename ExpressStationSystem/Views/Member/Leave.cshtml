@@ -27,34 +27,28 @@
         }
 
         function JumpToPage(status,currentPage, count) {
-            window.location.href = "/Member/Leave?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s*/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=" + (currentPage + count).toString();
+            window.location.href = "/Member/Leave?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s*/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("thisDate1").value + "&date2=" + document.getElementById("thisDate2").value + "&page=" + (currentPage + count).toString();
         }
 
-        function dateChange(status,currentPage) {
-            window.location.href = "/Member/Leave?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s*/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=" + (currentPage).toString();
-        }
-
-        function changeInputContentMonth(self) {
-            var input = document.getElementById("showCheckContent");
-            input.style.display = 'none';
-            document.getElementById("date1").style.display = 'block';
-            document.getElementById("date2").style.display = 'block';
-            input.placeholder = self.innerText + '查找';
-
-        }
-
-        function searchWith(status,currentPage) {
-            if (document.getElementById("showCheckType").innerText == "按日期") {
-                dateChange(status,currentPage);
+        function changeInputContentMonth(status, date1, date2) {
+            if (date1 == null || date1 == "") {
+                date1 = document.getElementById("thisDate1").value;
             }
-            else {
-                window.location.href = "/Member/Leave?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s*/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=" + (currentPage).toString();
-
+            if (date2 == null || date2 == "") {
+                date2 = document.getElementById("thisDate2").value;
             }
+            window.location.href = "/Member/Leave?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + date1 + "&date2=" + date2 + "&page=1";
+
 
         }
-        function JumpTo(status, currentPage) {
-            window.location.href = "/Member/Leave?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s*/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value;
+
+        function searchWith(status) {
+            window.location.href = "/Member/Leave?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s*/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("thisDate1").value + "&date2=" + document.getElementById("thisDate2").value + "&page=1";
+            
+
+        }
+        function JumpTo(status) {
+            window.location.href = "/Member/Leave?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s*/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("thisDate1").value + "&date2=" + document.getElementById("thisDate2").value +"&page=1";
         }
 
         function refuseApply(lid, mid) {
@@ -82,6 +76,10 @@
         }
 
         function accessApply(lid, mid) {
+            var view = document.getElementById("accessView").value;
+            if (view == null || view == "") {
+                view = "同意";
+            }
             //把员工休息
             $.ajax({
                 url: 'http://172.16.34.153:60062/Manager/ChangeDuty', /*接口域名地址*/
@@ -99,7 +97,7 @@
                             type: 'put',
                             data: JSON.stringify({
                                 "lId": lid,
-                                "view": document.getElementById("accessView").value,
+                                "view": view,
                                 "person": "经理",
                                 "isDone": true,
                                 "mId": mid
@@ -115,6 +113,25 @@
                         })
                     } else {
                         alert('提交失败');
+                    }
+                }
+            })
+        }
+
+        function remove(lid) {
+            $.ajax({
+                url: 'http://172.16.34.153:60062/Leave/RevokeLeave', /*接口域名地址*/
+                contentType: "application/json;charset=UTF-8",
+                type: 'put',
+                data: JSON.stringify({
+                    "lId": lid
+                }),
+                success: function (res) {
+                    if (res == true) {
+                        alert('撤消成功');
+                        window.location.reload();
+                    } else {
+                        alert('操作失败');
                     }
                 }
             })
@@ -172,52 +189,51 @@
 
     <h2 class='page-header'>员工请假条</h2>
 
-    <div class="col-sm-6 col-sm-offset-4" style="display:flex">
+    <div class="col-sm-10 col-sm-offset-2" style="display:flex">
 
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
-            @ViewBag.searchWith<span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
-            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
-            <li><a onclick="changeShowCheckType(this);changeInputContentMonth(this)">按日期</a></li>
-        </ul>
+        <script>
+            laydate.render({
+                elem: '#thisDate1',
+                type: 'date',
+                done: function (value, date, endDate) {
+                    console.log(value); //得到日期生成的值，如：2017-08-18
+                    console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                    console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+                    changeInputContentMonth('@ViewBag.status', value)
+                }
+            });
+            laydate.render({
+                elem: '#thisDate2',
+                type: 'date',
+                done: function (value, date, endDate) {
+                    console.log(value); //得到日期生成的值，如：2017-08-18
+                    console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                    console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+                    changeInputContentMonth('@ViewBag.status', '', value)
+                }
+            });
+        </script>
+
+        <input type="text" id="thisDate1" value="@ViewBag.thisDate1">
+        <input type="text" id="thisDate2" value="@ViewBag.thisDate2">
+        <button class="btn btn-default" type="button" onclick="changeInputContentMonth('@ViewBag.status')">OK!</button>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
+                @ViewBag.searchWith<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
+                <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
+            </ul>
+        </div>
 
         <div class="input-group">
-            <script>
-                //执行一个laydate实例
-                laydate.render({
-                    elem: '#date1' //指定元素
-
-                });
-                //执行一个laydate实例
-                laydate.render({
-                    elem: '#date2' //指定元素
-                });
-            </script>
-            @if (ViewBag.searchWith == "按日期")
-            {
-                <div>
-                    <input type="text" id="date1" value="@ViewBag.date1" style="display:block">
-                    <input type="text" id="date2" value="@ViewBag.date2" style="display:block">
-                </div>
-                <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent" style="display:none">
-            }
-            else
-            {
-                <div>
-                    <input type="text" id="date1" value="@ViewBag.date1" style="display:none">
-                    <input type="text" id="date2" value="@ViewBag.date2" style="display:none">
-                </div>
-                <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent" style="display:block">
-            }
-
+            <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent">
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" onclick="searchWith('@ViewBag.status',1)">Go!</button>
             </span>
         </div>
 
-        @*<input type="date" />*@
     </div>
 
     <br />
@@ -250,27 +266,24 @@
                                 <td>@leaveInfo.member.job</td>
                                 <td>@leaveInfo.leave.status</td>
                                 <th>
-                                    <button type="button" class="btn-sm btn-warning" data-toggle="modal" data-target="#accessLeave">撤消</button>
-                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#@leaveInfo.leave.lId">详情</button>
+                                    <button type="button" class="btn-sm btn-warning" data-toggle="modal" data-target="#c_@leaveInfo.leave.lId">撤消</button>
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#d_@leaveInfo.leave.lId">详情</button>
 
-                                    <div class="modal fade" id="accessLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal fade" id="c_@leaveInfo.leave.lId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                     <h4 class="modal-title" id="myModalLabel">撤消请假条</h4>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <input type="text" placeholder="输入意见" id="accessView" />
-                                                </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="accessApply(@leaveInfo.lId,@leaveInfo.member.mId)">确认撤消</button>
+                                                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="remove(@leaveInfo.leave.lId)">确认撤消</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="modal fade" id="@leaveInfo.leave.lId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal fade" id="d_@leaveInfo.leave.lId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -284,6 +297,12 @@
                                                     </div>
                                                     <div class="row" style="display:flex">
                                                         请假时间: <div>@leaveInfo.leave.srcTime</div>到<div>@leaveInfo.leave.endTime</div>
+                                                    </div>
+                                                    <div class="row" style="display:flex">
+                                                        经办人: <div>@leaveInfo.leave.person</div>
+                                                    </div>
+                                                    <div class="row" style="display:flex">
+                                                        经办人意见: <div>@leaveInfo.leave.view</div>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -395,6 +414,12 @@
                                                     <div class="row" style="display:flex">
                                                         请假时间: <div>@leaveInfo.leave.srcTime</div>到<div>@leaveInfo.leave.endTime</div>
                                                     </div>
+                                                    <div class="row" style="display:flex">
+                                                        经办人: <div>@leaveInfo.leave.person</div>
+                                                    </div>
+                                                    <div class="row" style="display:flex">
+                                                        经办人意见: <div>@leaveInfo.leave.view</div>
+                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
@@ -408,34 +433,31 @@
                         else
                         {
                             <tr class="label-danger">
-                                <td>@leaveInfo.lId</td>
+                                <td>@leaveInfo.leave.lId</td>
                                 <th scope="row"><img class="img-circle" src=@("http://" + leaveInfo.member.imagePath) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
                                 <td>@leaveInfo.member.name</td>
                                 <td>@leaveInfo.member.mId</td>
                                 <td>@leaveInfo.member.job</td>
                                 <td>@leaveInfo.leave.status</td>
                                 <th>
-                                    <button type="button" class="btn-sm btn-warning" data-toggle="modal" data-target="#accessLeave">撤消</button>
-                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#@leaveInfo.leave.lId">详情</button>
+                                    <button type="button" class="btn-sm btn-warning" data-toggle="modal" data-target="#c_@leaveInfo.leave.lId">撤消</button>
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#d_@leaveInfo.leave.lId">详情</button>
 
-                                    <div class="modal fade" id="accessLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal fade" id="c_@leaveInfo.leave.lId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                     <h4 class="modal-title" id="myModalLabel">撤消请假条</h4>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <input type="text" placeholder="输入意见" id="accessView" />
-                                                </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="accessApply(@leaveInfo.lId,@leaveInfo.member.mId)">确认撤消</button>
+                                                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="remove(@leaveInfo.leave.lId)">确认撤消</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="modal fade" id="@leaveInfo.leave.lId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal fade" id="d_@leaveInfo.leave.lId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -449,6 +471,12 @@
                                                     </div>
                                                     <div class="row" style="display:flex">
                                                         请假时间: <div>@leaveInfo.leave.srcTime</div>到<div>@leaveInfo.leave.endTime</div>
+                                                    </div>
+                                                    <div class="row" style="display:flex">
+                                                        经办人: <div>@leaveInfo.leave.person</div>
+                                                    </div>
+                                                    <div class="row" style="display:flex">
+                                                        经办人意见: <div>@leaveInfo.leave.view</div>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -481,6 +509,11 @@
     <div style="display:flex;margin:auto">
         <nav aria-label="Page navigation">
             <ul class="pagination">
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status',1 ,0)" aria-label="Previous">
+                        <span aria-hidden="true">首页</span>
+                    </a>
+                </li>
                 <li>
                     <a onclick="JumpToPage('@ViewBag.status',@ViewBag.currentPage,-1)" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
@@ -522,7 +555,7 @@
                     }
                     for (int i = ViewBag.PageSum - 5, j = 0; j <= 5; j++, i++)
                     {
-                        if(i <= 0)
+                        if (i <= 0)
                         {
                             continue;
                         }
@@ -532,6 +565,11 @@
                 <li>
                     <a onclick="JumpToPage('@ViewBag.status',@ViewBag.currentPage,1)" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.PageSum,0)" aria-label="Previous">
+                        <span aria-hidden="true">尾页</span>
                     </a>
                 </li>
             </ul>

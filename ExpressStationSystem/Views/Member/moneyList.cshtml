@@ -7,6 +7,7 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Content/laydate/laydate.js"></script>
     @*<script src="~/Views/Package/Package.js"></script>*@
 
     <script>
@@ -24,15 +25,27 @@
             window.location.href = '/Member/DetailMember?id=' + id;
         }
 
-        function searchWith(currentPage) {
-            window.location.href = "/Member/moneyList?status=" + document.getElementById("selectType").innerText + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&page=" + (currentPage).toString();
+        function searchWith() {
+            date1 = document.getElementById("thisDate1").value;
+            date2 = document.getElementById("thisDate2").value;
+            window.location.href = "/Member/moneyList?status=" + document.getElementById("selectType").innerText + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + date1 + "&date2=" + date2 + "&page=1";
 
         }
-        function JumpTo(status, currentPage) {
-            window.location.href = "/Member/moneyList?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&page=" + (currentPage).toString();
+        function JumpTo(status) {
+            date1 = document.getElementById("thisDate1").value;
+            date2 = document.getElementById("thisDate2").value;
+            window.location.href = "/Member/moneyList?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + date1 + "&date2=" + date2 + "&page=1";
         }
         function JumpToPage(status, currentPage, count) {
-            window.location.href = "/Member/moneyList?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&page=" + (currentPage + count).toString();
+            date1 = document.getElementById("thisDate1").value;
+            date2 = document.getElementById("thisDate2").value;
+            if (currentPage + count <= 0) {
+                currentPage = 1;
+            }
+            else {
+                currentPage = currentPage + count;
+            }
+            window.location.href = "/Member/moneyList?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + date1 + "&date2=" + date2 + "&page=" + (currentPage).toString();
         }
         function cancel(sId) {
             $.ajax({
@@ -53,12 +66,31 @@
             })
         }
 
+        function changeInputContentMonth(status, date1, date2) {
+            if (date1 == null || date1 == "") {
+                date1 = document.getElementById("thisDate1").value;
+            }
+            if (date2 == null || date2 == "") {
+                date2 = document.getElementById("thisDate2").value;
+            }
+            window.location.href = "/Member/moneyList?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + date1 + "&date2=" + date2+ "&page=1";
+        }
+
+        function changeMoney(id) {
+            var element = document.getElementById(id);
+            var lastMoney = element.innerText;
+            element.innerHTML = "<input placeholder='" + lastMoney + "' onblur='finishChange(this)' />";
+        }
+
+        function finishChange(self) {
+            var changeMoney = self.value;
+            
+        }
     </script>
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
     <div class="navbar navbar-default navbar-fixed-top">
-
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -92,12 +124,6 @@
                         </ul>
                     </li>
                 </ul>
-                @*<form class="navbar-form navbar-left">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="输入单号查询包裹">
-                        </div>
-                        <button type="submit" class="btn btn-default">查询</button>
-                    </form>*@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">显示更多 <span class="caret"></span></a>
@@ -114,20 +140,50 @@
 
     <h2 class='page-header'>奖罚款表单</h2>
 
-    <div class="col-sm-6 col-sm-offset-4" style="display:flex">
+    <div class="col-sm-10 col-sm-offset-2" style="display:flex">
 
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
-            @ViewBag.searchWith<span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
-            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
-        </ul>
+        <script>
+            laydate.render({
+                elem: '#thisDate1',
+                type: 'date',
+                done: function (value, date, endDate) {
+                    console.log(value); //得到日期生成的值，如：2017-08-18
+                    console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                    console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+                    changeInputContentMonth('@ViewBag.status', value)
+                }
+            });
+            laydate.render({
+                elem: '#thisDate2',
+                type: 'date',
+                done: function (value, date, endDate) {
+                    console.log(value); //得到日期生成的值，如：2017-08-18
+                    console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                    console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+                    changeInputContentMonth('@ViewBag.status', '', value)
+                }
+            });
+        </script>
+
+        <input type="text" id="thisDate1" value="@ViewBag.thisDate1">
+        <input type="text" id="thisDate2" value="@ViewBag.thisDate2">
+        <button class="btn btn-default" type="button" onclick="changeInputContentMonth('@ViewBag.status')">OK!</button>
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
+                @ViewBag.searchWith<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
+                <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
+            </ul>
+        </div>
+        
 
         <div class="input-group">
             <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button" onclick="searchWith(1)">Go!</button>
+                <button class="btn btn-default" type="button" onclick="searchWith(1,@ViewBag.thisDate)">Go!</button>
             </span>
         </div>
     </div>
@@ -144,6 +200,7 @@
                         <th>联系手机</th>
                         <th>职位</th>
                         <th>奖罚款金额</th>
+                        <th>落定时间</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -157,8 +214,10 @@
                                 <td>@money.member.name</td>
                                 <td>@money.member.mId</td>
                                 <td>@money.member.job</td>
-                                <td><font style="color:red">-@money.money.fine</font></td>
+                                <td id="m_@money.money.sId"><font style="color:red">-@money.money.fine</font></td>
+                                <td>@money.money.time</td>
                                 <th>
+                                    <button type="button" class="btn-sm btn-warning" onclick="changeMoney('m_@money.money.sId')">修改</button>
                                     <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#b_@money.money.sId">撤消</button>
                                     <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#x_@money.money.sId">详情</button>
                                     <div class="modal fade" id="b_@money.money.sId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -184,7 +243,12 @@
                                                     <h4 class="modal-title" id="myModalLabel">详细信息</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    @money.money.reason
+                                                    <div class="row" style="border:1px">
+                                                        @money.money.reason
+                                                    </div>
+                                                    <div class="row">
+                                                        经办人：@money.money.person
+                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">关闭</button>
@@ -202,8 +266,10 @@
                                 <td>@money.member.name</td>
                                 <td>@money.member.mId</td>
                                 <td>@money.member.job</td>
-                                <td><font style="color:green">+@money.money.subsidy</font></td>
+                                <td id="m_@money.money.sId"><font style="color:green">+@money.money.subsidy</font></td>
+                                <td>@money.money.time</td>
                                 <th>
+                                    <button type="button" class="btn-sm btn-warning" onclick="changeMoney('m_@money.money.sId')">修改</button>
                                     <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#b_@money.money.sId">撤消</button>
                                     <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#x_@money.money.sId">详情</button>
                                     <div class="modal fade" id="b_@money.money.sId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -229,7 +295,12 @@
                                                     <h4 class="modal-title" id="myModalLabel">详细信息</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    @money.money.reason
+                                                    <div class="row" style="border:1px">
+                                                        @money.money.reason
+                                                    </div>
+                                                    <div class="row">
+                                                        经办人：@money.money.person
+                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">关闭</button>
@@ -249,9 +320,9 @@
         <div class='container-fluid col-sm-1.5'>
             <div class="list-group">
                 <h4 class="page-header" id="selectType">@ViewBag.status</h4>
-                <a class="list-group-item" onclick="JumpTo('',1)">全部</a>
-                <a class="list-group-item" onclick="JumpTo('补贴',1)">补贴</a>
-                <a class="list-group-item" onclick="JumpTo('罚款',1)">罚款</a>
+                <a class="list-group-item" onclick="JumpTo('',1,'@ViewBag.thisDate')">全部</a>
+                <a class="list-group-item" onclick="JumpTo('补贴',1,'@ViewBag.thisDate')">补贴</a>
+                <a class="list-group-item" onclick="JumpTo('罚款',1,'@ViewBag.thisDate')">罚款</a>
             </div>
         </div>
     </div>
@@ -260,7 +331,12 @@
         <nav aria-label="Page navigation">
             <ul class="pagination">
                 <li>
-                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.currentPage,-1)" aria-label="Previous">
+                    <a onclick="JumpToPage('@ViewBag.status',1 ,0)" aria-label="Previous">
+                        <span aria-hidden="true">首页</span>
+                    </a>
+                </li>
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.currentPage,-1,'@ViewBag.thisDate')" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -272,7 +348,7 @@
                     }
                     for (int i = 0, j = ViewBag.currentPage - 2; i < 5; i++, j++)
                     {
-                        <li><a onclick="JumpToPage('@ViewBag.status',@j,0)">@j</a></li>
+                        <li><a onclick="JumpToPage('@ViewBag.status',@j,0,'@ViewBag.thisDate')">@j</a></li>
                     }
                     if (ViewBag.currentPage + 2 < ViewBag.PageSum)
                     {
@@ -284,7 +360,7 @@
                 {
                     for (int i = 1; i < 5 && i <= ViewBag.PageSum; i++)
                     {
-                        <li><a onclick="JumpToPage('@ViewBag.status',@i,0)">@i</a></li>
+                        <li><a onclick="JumpToPage('@ViewBag.status',@i,0,'@ViewBag.thisDate')">@i</a></li>
                     }
                     if (ViewBag.PageSum > 5)
                     {
@@ -304,12 +380,17 @@
                         {
                             continue;
                         }
-                        <li><a onclick="JumpToPage('@ViewBag.status',@i,0)">@i</a></li>
+                        <li><a onclick="JumpToPage('@ViewBag.status',@i,0,'@ViewBag.thisDate')">@i</a></li>
                     }
                 }
                 <li>
-                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.currentPage,1)" aria-label="Next">
+                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.currentPage,1,'@ViewBag.thisDate')" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.PageSum,0)" aria-label="Previous">
+                        <span aria-hidden="true">尾页</span>
                     </a>
                 </li>
             </ul>

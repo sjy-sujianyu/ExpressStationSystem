@@ -10,6 +10,7 @@
 
     <script src="~/Content/laydate/laydate.js"></script>
     <script>
+
         function changeShowCheckType(self) {
             var button = document.getElementById("showCheckType");
             button.innerHTML = self.innerText + ' <span class="caret"></span>';
@@ -20,22 +21,49 @@
             input.placeholder = self.innerText + '查找';
         }
 
-        function searchWith(currentPage) {
-
-            window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=" + (currentPage).toString();
-            
+        function searchWith() {
+            var car = document.getElementById("Car").value;
+            if (car == null || car == "") {
+                window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=1";
+            }
+            else {
+                window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=1&car=" + car;
+            }
         }
-        function JumpTo(status, currentPage) {
-            window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=" + (currentPage).toString();
-        }
+        function JumpTo(status) {
+            var car = document.getElementById("Car").value;
+            if (car == null || car == "") {
+                window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=1";
 
+            }
+            else {
+                window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=1&car=" + car;
+            }
+        }
         function JumpToPage(status, currentPage, count) {
-            window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=" + (currentPage + count).toString();
+            var car = document.getElementById("Car").value;
+            if (car == null || car == "") {
+                window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=" + (currentPage + count).toString();
+            }
+            else {
+                window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=" + (currentPage + count).toString() + "&car=" + car;
+            }
+        }
+        function dateChange(status) {
+            var car = document.getElementById("Car").value;
+            if (car == null || car == "") {
+                window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=1";
+            } else {
+                window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=1&car=" + car;
+
+            }
+
         }
 
-        function dateChange(status, currentPage) {
-            window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=" + (currentPage).toString();
+        function changeCar() {
+            window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=1&car=" + document.getElementById("Car").value;
         }
+
     </script>
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -89,46 +117,77 @@
     </div>
 
 
-
     <h2 class='page-header'>包裹一览</h2>
 
-    <div class="col-sm-10 col-sm-offset-2" style="display:flex">
+    <div class="col-sm-12" style="display:flex;">
 
-        <script>
+        @if (ViewBag.car == "")
+        {
+            <div style="display:none;height:5rem" class="col-sm-1">
+                <input id="Car" value="@ViewBag.car" style="height:100%;width:100%;font-size: 43px; color: red;text-align: center;" onblur="changeCar()">
+            </div>
+        }
+        else
+        {
+            <div style="display:block;height:5rem" class="col-sm-1">
+                <input id="Car" value="@ViewBag.car" style="height:100%;width:100%;font-size: 43px; color: red;text-align: center;" onblur="changeCar()">
+            </div>
+        }
+
+
+        <div class="col-sm-11 input-group" style="display:flex">
+            <script>
             //执行一个laydate实例
             laydate.render({
-                elem: '#date1' //指定元素
+                elem: '#date1', //指定元素
+                type: 'date',
+                done: function (value, date, endDate) {
+                    console.log(value); //得到日期生成的值，如：2017-08-18
+                    console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                    console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+                    dateChange('@ViewBag.status');
+                }
 
             });
             //执行一个laydate实例
             laydate.render({
-                elem: '#date2' //指定元素
+                elem: '#date2', //指定元素
+                type: 'date',
+                done: function (value, date, endDate) {
+                    console.log(value); //得到日期生成的值，如：2017-08-18
+                    console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                    console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+                    dateChange('@ViewBag.status');
+                }
             });
-        </script>
+            </script>
 
-        <input type="text" id="date1" value="@ViewBag.date1">
-        <input type="text" id="date2" value="@ViewBag.date2">
+            <input type="text" id="date1" class="form-control" value="@ViewBag.date1">
+            <input type="text" id="date2" class="form-control" value="@ViewBag.date2">
 
-        <button class="btn btn-default" type="button" onclick="dateChange('@ViewBag.status',1)">OK!</button>
+            <div class="btn-group">
+                <button class="btn btn-default" type="button" onclick="dateChange('@ViewBag.status')">OK!</button>
+            </div>
 
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
-            @ViewBag.searchWith<span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按单号</a></li>
-            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
-            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
-        </ul>
-
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent">
-            <span class="input-group-btn">
-                <button class="btn btn-default" type="button" onclick="searchWith(1)">Go!</button>
-            </span>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
+                    @ViewBag.searchWith<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按单号</a></li>
+                    <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
+                    <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
+                </ul>
+            </div>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" onclick="searchWith()">Go!</button>
+                </span>
+            </div>
         </div>
-
-
     </div>
+
 
     <br />
     <br />
@@ -162,16 +221,91 @@
                                 <td> @package.package.time </td>
                                 <td> @package.package.status </td>
                                 <th>
-                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#accessLeave">详情</button>
-                                    <div class="modal fade" id="accessLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#p_@package.package.id">详情</button>
+                                    <div class="modal fade" id="p_@package.package.id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title" id="myModalLabel">包裹详细信息</h4>
+                                                    <h4 class="modal-title" id="myModalLabel">包裹物流信息</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    信息
+
+                                                    <div class="row">
+                                                        <div>错误信息:@package.error.status</div>
+                                                        <div>@package.error.introduction</div>
+                                                    </div>
+
+                                                    @if (@package.package.status == "已签收")
+                                                    {
+                                                        <div class="row" style="border-top:1px solid #000;">
+                                                            <div>@package.package.time</div>
+                                                            <div>已签收</div>
+                                                        </div>
+                                                    }
+
+                                                    @for (int i = 0; i < package.delivery.Count; i++)
+                                                    {
+                                                        <div class="row" style="border-top:1px solid #000;">
+                                                            <div>@package.delivery[i].delivery.time</div>
+                                                            <div>@package.delivery[i].member.name @package.delivery[i].member.mId</div>
+                                                            <div>正在为您派件</div>
+                                                        </div>
+                                                    }
+                                                    @for (int i = 0; i < package.transfer.Count; i++)
+                                                    {
+                                                        <div class="row" style="border-top:1px solid #000;">
+                                                            <div>@package.transfer[i].transfer.time</div>
+                                                            <div>@package.transfer[i].member.name</div>
+                                                            <div>正在为您转件</div>
+                                                        </div>
+
+                                                    }
+                                                    @for (int i = 0; i < package.pathList.Count; i++)
+                                                    {
+                                                        if (package.pathList[i].isArrival == "False")
+                                                        {
+                                                            <div class="row" style="border-top:1px solid #000;">
+                                                                <div>@package.pathList[i].time</div>
+                                                                <div>已到达</div>
+                                                                <div>@package.pathList[i].destPlace.street</div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="row" style="border-top:1px solid #000;">
+                                                                <div>@package.pathList[i].time</div>
+                                                                <div>正从</div>
+                                                                <div>@package.pathList[i].curPlace.street</div>
+                                                                <div>发往</div>
+                                                                <div>@package.pathList[i].destPlace.street</div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    @for (int i = 0; i < package.pickup.Count; i++)
+                                                    {
+                                                        if (package.pickup[i].pickup.isDone == "true")
+                                                        {
+                                                            <div class="row" style="border-top:1px solid #000;">
+                                                                <div>@package.pickup[i].pickup.time</div>
+                                                                <div>@package.pickup[i].member.name</div>
+                                                                <div>已揽件</div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="row" style="border-top:1px solid #000;">
+                                                                <div>@package.pickup[i].pickup.time</div>
+                                                                <div>@package.pickup[i].member.name</div>
+                                                                <div>正在为您揽件</div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    <div class="row" style="border-top:1px solid #000;">
+                                                        <div>@package.package.time</div>
+                                                        <div>已下单</div>
+                                                    </div>
+
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -196,16 +330,86 @@
                                 <td> @package.package.time </td>
                                 <td> @package.package.status </td>
                                 <th>
-                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#accessLeave">详情</button>
-                                    <div class="modal fade" id="accessLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#p_@package.package.id">详情</button>
+                                    <div class="modal fade" id="p_@package.package.id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title" id="myModalLabel">包裹详细信息</h4>
+                                                    <h4 class="modal-title" id="myModalLabel">包裹物流信息</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <input type="text" placeholder="输入意见" id="accessView" />
+
+                                                    @if (@package.package.status == "已签收")
+                                                    {
+                                                        <div class="row" style="border-top:1px solid #000;">
+                                                            <div>@package.package.time</div>
+                                                            <div>已签收</div>
+                                                        </div>
+                                                    }
+
+                                                    @for (int i = 0; i < package.delivery.Count; i++)
+                                                    {
+                                                        <div class="row" style="border-top:1px solid #000;">
+                                                            <div>@package.delivery[i].delivery.time</div>
+                                                            <div>@package.delivery[i].member.name @package.delivery[i].member.mId</div>
+                                                            <div>正在为您派件</div>
+                                                        </div>
+                                                    }
+                                                    @for (int i = 0; i < package.transfer.Count; i++)
+                                                    {
+                                                        <div class="row" style="border-top:1px solid #000;">
+                                                            <div>@package.transfer[i].transfer.time</div>
+                                                            <div>@package.transfer[i].member.name</div>
+                                                            <div>正在为您转件</div>
+                                                        </div>
+
+                                                    }
+                                                    @for (int i = 0; i < package.pathList.Count; i++)
+                                                    {
+                                                        if (package.pathList[i].isArrival == "False")
+                                                        {
+                                                            <div class="row" style="border-top:1px solid #000;">
+                                                                <div>@package.pathList[i].time</div>
+                                                                <div>已到达</div>
+                                                                <div>@package.pathList[i].destPlace.street</div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="row" style="border-top:1px solid #000;">
+                                                                <div>@package.pathList[i].time</div>
+                                                                <div>正从</div>
+                                                                <div>@package.pathList[i].curPlace.street</div>
+                                                                <div>发往</div>
+                                                                <div>@package.pathList[i].destPlace.street</div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    @for (int i = 0; i < package.pickup.Count; i++)
+                                                    {
+                                                        if (package.pickup[i].pickup.isDone == "true")
+                                                        {
+                                                            <div class="row" style="border-top:1px solid #000;">
+                                                                <div>@package.pickup[i].pickup.time</div>
+                                                                <div>@package.pickup[i].member.name</div>
+                                                                <div>已揽件</div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="row" style="border-top:1px solid #000;">
+                                                                <div>@package.pickup[i].pickup.time</div>
+                                                                <div>@package.pickup[i].member.name</div>
+                                                                <div>正在为您揽件</div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    <div class="row" style="border-top:1px solid #000;">
+                                                        <div>@package.package.time</div>
+                                                        <div>已下单</div>
+                                                    </div>
+
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -215,7 +419,6 @@
                                     </div>
                                 </th>
                             </tr>
-                            continue;
                         }
                         else if (@package.package.status == "已签收")
                         {
@@ -226,16 +429,86 @@
                                 <td> @package.package.time </td>
                                 <td> @package.package.status </td>
                                 <th>
-                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#accessLeave">详情</button>
-                                    <div class="modal fade" id="accessLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#p_@package.package.id">详情</button>
+                                    <div class="modal fade" id="p_@package.package.id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title" id="myModalLabel">包裹详细信息</h4>
+                                                    <h4 class="modal-title" id="myModalLabel">包裹物流信息</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    信息
+
+                                                    @if (@package.package.status == "已签收")
+                                                    {
+                                                        <div class="row" style="border-top:1px solid #000;">
+                                                            <div>@package.package.time</div>
+                                                            <div>已签收</div>
+                                                        </div>
+                                                    }
+
+                                                    @for (int i = 0; i < package.delivery.Count; i++)
+                                                    {
+                                                        <div class="row" style="border-top:1px solid #000;">
+                                                            <div>@package.delivery[i].delivery.time</div>
+                                                            <div>@package.delivery[i].member.name @package.delivery[i].member.mId</div>
+                                                            <div>正在为您派件</div>
+                                                        </div>
+                                                    }
+                                                    @for (int i = 0; i < package.transfer.Count; i++)
+                                                    {
+                                                        <div class="row" style="border-top:1px solid #000;">
+                                                            <div>@package.transfer[i].transfer.time</div>
+                                                            <div>@package.transfer[i].member.name</div>
+                                                            <div>正在为您转件</div>
+                                                        </div>
+
+                                                    }
+                                                    @for (int i = 0; i < package.pathList.Count; i++)
+                                                    {
+                                                        if (package.pathList[i].isArrival == "False")
+                                                        {
+                                                            <div class="row" style="border-top:1px solid #000;">
+                                                                <div>@package.pathList[i].time</div>
+                                                                <div>已到达</div>
+                                                                <div>@package.pathList[i].destPlace.street</div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="row" style="border-top:1px solid #000;">
+                                                                <div>@package.pathList[i].time</div>
+                                                                <div>正从</div>
+                                                                <div>@package.pathList[i].curPlace.street</div>
+                                                                <div>发往</div>
+                                                                <div>@package.pathList[i].destPlace.street</div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    @for (int i = 0; i < package.pickup.Count; i++)
+                                                    {
+                                                        if (package.pickup[i].pickup.isDone == "true")
+                                                        {
+                                                            <div class="row" style="border-top:1px solid #000;">
+                                                                <div>@package.pickup[i].pickup.time</div>
+                                                                <div>@package.pickup[i].member.name</div>
+                                                                <div>已揽件</div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="row" style="border-top:1px solid #000;">
+                                                                <div>@package.pickup[i].pickup.time</div>
+                                                                <div>@package.pickup[i].member.name</div>
+                                                                <div>正在为您揽件</div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    <div class="row" style="border-top:1px solid #000;">
+                                                        <div>@package.package.time</div>
+                                                        <div>已下单</div>
+                                                    </div>
+
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -245,7 +518,6 @@
                                     </div>
                                 </th>
                             </tr>
-                            continue;
                         }
 
                         else
@@ -257,16 +529,86 @@
                                 <td> @package.package.time </td>
                                 <td> @package.package.status </td>
                                 <th>
-                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#accessLeave">详情</button>
-                                    <div class="modal fade" id="accessLeave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#p_@package.package.id">详情</button>
+                                    <div class="modal fade" id="p_@package.package.id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    <h4 class="modal-title" id="myModalLabel">包裹详细信息</h4>
+                                                    <h4 class="modal-title" id="myModalLabel">包裹物流信息</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    信息
+
+                                                    @if (@package.package.status == "已签收")
+                                                    {
+                                                        <div class="row" style="border-top:1px solid #000;">
+                                                            <div>@package.package.time</div>
+                                                            <div>已签收</div>
+                                                        </div>
+                                                    }
+
+                                                    @for (int i = 0; i < package.delivery.Count; i++)
+                                                    {
+                                                        <div class="row" style="border-top:1px solid #000;">
+                                                            <div>@package.delivery[i].delivery.time</div>
+                                                            <div>@package.delivery[i].member.name @package.delivery[i].member.mId</div>
+                                                            <div>正在为您派件</div>
+                                                        </div>
+                                                    }
+                                                    @for (int i = 0; i < package.transfer.Count; i++)
+                                                    {
+                                                        <div class="row" style="border-top:1px solid #000;">
+                                                            <div>@package.transfer[i].transfer.time</div>
+                                                            <div>@package.transfer[i].member.name</div>
+                                                            <div>正在为您转件</div>
+                                                        </div>
+
+                                                    }
+                                                    @for (int i = 0; i < package.pathList.Count; i++)
+                                                    {
+                                                        if (package.pathList[i].isArrival == "False")
+                                                        {
+                                                            <div class="row" style="border-top:1px solid #000;">
+                                                                <div>@package.pathList[i].time</div>
+                                                                <div>已到达</div>
+                                                                <div>@package.pathList[i].destPlace.street</div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="row" style="border-top:1px solid #000;">
+                                                                <div>@package.pathList[i].time</div>
+                                                                <div>正从</div>
+                                                                <div>@package.pathList[i].curPlace.street</div>
+                                                                <div>发往</div>
+                                                                <div>@package.pathList[i].destPlace.street</div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    @for (int i = 0; i < package.pickup.Count; i++)
+                                                    {
+                                                        if (package.pickup[i].pickup.isDone == "true")
+                                                        {
+                                                            <div class="row" style="border-top:1px solid #000;">
+                                                                <div>@package.pickup[i].pickup.time</div>
+                                                                <div>@package.pickup[i].member.name</div>
+                                                                <div>已揽件</div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="row" style="border-top:1px solid #000;">
+                                                                <div>@package.pickup[i].pickup.time</div>
+                                                                <div>@package.pickup[i].member.name</div>
+                                                                <div>正在为您揽件</div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    <div class="row" style="border-top:1px solid #000;">
+                                                        <div>@package.package.time</div>
+                                                        <div>已下单</div>
+                                                    </div>
+
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -276,7 +618,6 @@
                                     </div>
                                 </th>
                             </tr>
-                            continue;
                         }
 
                     }
@@ -288,18 +629,18 @@
         <div class='container-fluid col-sm-offset-1 col-sm-2'>
             <div class="list-group">
                 <h4 class="page-header" id="selectType">@ViewBag.status</h4>
-                <a class="list-group-item" onclick="JumpTo('',1)">全部</a>
-                <a class="list-group-item" onclick="JumpTo('派件中',1)">派件中</a>
-                <a class="list-group-item" onclick="JumpTo('运输中',1)">运输中</a>
-                <a class="list-group-item" onclick="JumpTo('已扫件',1)">已扫件</a>
-                <a class="list-group-item" onclick="JumpTo('已下单',1)">已下单</a>
-                <a class="list-group-item" onclick="JumpTo('已签收',1)">已签收</a>
-                <a class="list-group-item" onclick="JumpTo('已处理',1)">已处理</a>
-                <a class="list-group-item" onclick="JumpTo('错件',1)">错件</a>
-                <a class="list-group-item" onclick="JumpTo('漏件',1)">漏件</a>
-                <a class="list-group-item" onclick="JumpTo('破损',1)">破损</a>
-                <a class="list-group-item" onclick="JumpTo('拒签',1)">拒签</a>
-                <a class="list-group-item" onclick="JumpTo('丢件',1)">丢件</a>
+                <a class="list-group-item" onclick="JumpTo('')">全部</a>
+                <a class="list-group-item" onclick="JumpTo('派件中')">派件中</a>
+                <a class="list-group-item" onclick="JumpTo('运输中')">运输中</a>
+                <a class="list-group-item" onclick="JumpTo('已扫件')">已扫件</a>
+                <a class="list-group-item" onclick="JumpTo('已下单')">已下单</a>
+                <a class="list-group-item" onclick="JumpTo('已签收')">已签收</a>
+                <a class="list-group-item" onclick="JumpTo('已处理')">已处理</a>
+                <a class="list-group-item" onclick="JumpTo('错件')">错件</a>
+                <a class="list-group-item" onclick="JumpTo('漏件')">漏件</a>
+                <a class="list-group-item" onclick="JumpTo('破损')">破损</a>
+                <a class="list-group-item" onclick="JumpTo('拒签')">拒签</a>
+                <a class="list-group-item" onclick="JumpTo('丢件')">丢件</a>
             </div>
         </div>
     </div>
@@ -307,6 +648,11 @@
     <div style="display:flex;margin:auto">
         <nav aria-label="Page navigation">
             <ul class="pagination">
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status',1 ,0)" aria-label="Previous">
+                        <span aria-hidden="true">首页</span>
+                    </a>
+                </li>
                 <li>
                     <a onclick="JumpToPage('@ViewBag.status',@ViewBag.currentPage,-1)" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
@@ -348,6 +694,10 @@
                     }
                     for (int i = ViewBag.PageSum - 5, j = 0; j <= 5; j++, i++)
                     {
+                        if (i <= 0)
+                        {
+                            continue;
+                        }
                         <li><a onclick="JumpToPage('@ViewBag.status',@i,0)">@i</a></li>
                     }
                 }
@@ -356,12 +706,17 @@
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.PageSum,0)" aria-label="Previous">
+                        <span aria-hidden="true">尾页</span>
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>
 
     <div class="row" style="display:flex;font-size:20px;margin-left:1rem">
-        &nbsp;派件总数:&nbsp;<div id="SumPie" style="color:chartreuse">@ViewBag.sumD&nbsp;&nbsp;</div>揽件总数:&nbsp;<div id="SumDocs" style="color:cornflowerblue">@ViewBag.sumP&nbsp;&nbsp;</div>转件总数:&nbsp;<div id="SumTra" style="color:orangered">@ViewBag.sumT&nbsp;&nbsp;</div>工资总额:&nbsp;<div id="SumWag">@ViewBag.sumS</div>
+        &nbsp;派件总数:&nbsp;<div id="SumPie" style="color:chartreuse">@ViewBag.sumP&nbsp;&nbsp;</div>揽件总数:&nbsp;<div id="SumDocs" style="color:cornflowerblue">@ViewBag.sumL&nbsp;&nbsp;</div>转件总数:&nbsp;<div id="SumTra" style="color:orangered">@ViewBag.sumT&nbsp;&nbsp;</div>
     </div>
 </body>
 </html>

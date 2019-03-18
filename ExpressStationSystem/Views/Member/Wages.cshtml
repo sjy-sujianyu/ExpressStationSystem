@@ -7,6 +7,7 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Content/laydate/laydate.js"></script>
     @*<script src="~/Views/Package/Package.js"></script>*@
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -24,21 +25,21 @@
             input.placeholder = self.innerText + '查找';
         }
 
-        function changeInputContentMonth(self) {
-            var input = document.getElementById("showCheckContent");
-            input.type = "month";
-            input.placeholder = self.innerText + '查找';
+        function changeInputContentMonth(month) {
+            window.location.href = "/Member/Wages?status=" + document.getElementById("selectType").innerText + "&searchWith" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&month=" + month + "&page=1";
         }
 
-        function searchWith(currentPage) {
-            window.location.href = "/Member/Wages?status=" + document.getElementById("selectType").innerText + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&page=" + (currentPage).toString();
+        function searchWith(month) {
+            alert(month);
+            window.location.href = "/Member/Wages?status=" + document.getElementById("selectType").innerText + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&month=" + month + "&page=1";
 
         }
-        function JumpTo(status, currentPage) {
-            window.location.href = "/Member/Wages?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&page=" + (currentPage).toString();
+        function JumpTo(status, month) {
+            window.location.href = "/Member/Wages?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&month=" + month + "&page=1";
         }
-        function JumpToPage(status, currentPage, count) {
-            window.location.href = "/Member/Wages?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&page=" + (currentPage + count).toString();
+        function JumpToPage(status, currentPage, count, ym) {
+            currentPage = parseInt(currentPage) + parseInt(count);
+            window.location.href = "/Member/Wages?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&month=" + ym + "&page=" + currentPage;
         }
     </script>
 
@@ -102,19 +103,35 @@
 
 
     <div class="col-sm-6 col-sm-offset-4" style="display:flex">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
-            @ViewBag.searchWith<span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
-            <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
-            <li><a onclick="changeShowCheckType(this);changeInputContentMonth(this)">按月份</a></li>
-        </ul>
+        <script>
+            laydate.render({
+                elem: '#thisMonth',
+                type: 'month',
+                done: function (value, date, endDate) {
+                    console.log(value); //得到日期生成的值，如：2017-08-18
+                    console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                    console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+                    changeInputContentMonth(value)
+                }
+            });
+        </script>
+
+        <input type="text" id="thisMonth" value="@ViewBag.thisMonth">
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
+                @ViewBag.searchWith<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
+                <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
+            </ul>
+        </div>
 
         <div class="input-group">
             <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent">
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button" onclick="searchWith(1)">Go!</button>
+                <button class="btn btn-default" type="button" onclick="searchWith('@ViewBag.thisMonth')">Go!</button>
             </span>
         </div>
     </div>
@@ -142,28 +159,28 @@
                         <td>@ViewBag.showMen[i].mId</td>
                         <td>
                             <div class="btn-group" style="padding:1px">
-                                <button type="button" class="btn-Mission btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="MissionType1">
+                                <button type="button" class="btn-Mission btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="glyphicon glyphicon-triangle-bottom"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li style="display:flex"><a>派件提成:</a><a class="Pie" id="MissionType1">￥@ViewBag.moneyInfo[i]["commission"]["delivery"]["total"]</a></li>
-                                    <li style="display:flex"><a>揽件提成:</a><a class="Docs" id="MissionType1">￥@ViewBag.moneyInfo[i]["commission"]["pickUp"]["total"]</a></li>
-                                    <li style="display:flex"><a>出件提成:</a><a class="Tra" id="MissionType1">￥@ViewBag.moneyInfo[i]["commission"]["transfer"]["total"]</a></li>
+                                    <li style="display:flex"><a>派件提成:</a><a class="Pie">￥@ViewBag.moneyInfo[i]["commission"]["delivery"]["total"]</a></li>
+                                    <li style="display:flex"><a>揽件提成:</a><a class="Docs">￥@ViewBag.moneyInfo[i]["commission"]["pickUp"]["total"]</a></li>
+                                    <li style="display:flex"><a>出件提成:</a><a class="Tra">￥@ViewBag.moneyInfo[i]["commission"]["transfer"]["total"]</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li style="display:flex"><a>底薪:</a><a class="Tra" id="MissionType1">￥@ViewBag.moneyInfo[i]["baseSalary"]</a></li>
-                                    <li style="display:flex"><a>补贴:</a><a class="Tra" id="MissionType1">￥@ViewBag.moneyInfo[i]["subsidy"]["total"]</a></li>
+                                    <li style="display:flex"><a>底薪:</a><a class="Tra">￥@ViewBag.moneyInfo[i]["baseSalary"]</a></li>
+                                    <li style="display:flex"><a>补贴:</a><a class="Tra">￥@ViewBag.moneyInfo[i]["subsidy"]["total"]</a></li>
 
                                     <li style="display:flex" data-toggle="modal" data-target="#@i">
-                                        <a>罚款:</a><a class="Tra" id="MissionType1">￥@ViewBag.moneyInfo[i]["fine"]["total"]</a>
+                                        <a>罚款:</a><a class="Tra">￥@ViewBag.moneyInfo[i]["fine"]["total"]</a>
                                     </li>
                                     <li role="separator" class="divider"></li>
-                                    <li style="display:flex"><a>总工资:</a><a class="wag" id="missiontype1">￥@ViewBag.moneyinfo[i]["total"]</a></li>
+                                    <li style="display:flex"><a>总工资:</a><a class="wag">￥@ViewBag.moneyinfo[i]["total"]</a></li>
                                 </ul>
                             </div>
                         </td>
                     </tr>
 
-                    <div class="modal fade" id="@i" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    @*<div class="modal fade" id="@i" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -178,7 +195,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>*@
                 }
 
 
@@ -190,12 +207,12 @@
         <div class='container-fluid col-sm-2'>
             <div class="list-group">
                 <h4 class="page-header" id="selectType">@ViewBag.status</h4>
-                <a class="list-group-item" onclick="JumpTo('',1)">全部</a>
-                <a class="list-group-item" onclick="JumpTo('休息中',1)">休息中</a>
-                <a class="list-group-item" onclick="JumpTo('工作中',1)">工作中</a>
-                <a class="list-group-item" onclick="JumpTo('派件员',1)">派件员</a>
-                <a class="list-group-item" onclick="JumpTo('出件员',1)">出件员</a>
-                <a class="list-group-item" onclick="JumpTo('揽件员',1)">揽件员</a>
+                <a class="list-group-item" onclick="JumpTo('',@ViewBag.thisMonth)">全部</a>
+                <a class="list-group-item" onclick="JumpTo('休息中',@ViewBag.thisMonth)">休息中</a>
+                <a class="list-group-item" onclick="JumpTo('工作中',@ViewBag.thisMonth)">工作中</a>
+                <a class="list-group-item" onclick="JumpTo('派件员',@ViewBag.thisMonth)">派件员</a>
+                <a class="list-group-item" onclick="JumpTo('出件员',@ViewBag.thisMonth)">出件员</a>
+                <a class="list-group-item" onclick="JumpTo('揽件员',@ViewBag.thisMonth)">揽件员</a>
             </div>
         </div>
     </div>
@@ -203,7 +220,12 @@
         <nav aria-label="Page navigation">
             <ul class="pagination">
                 <li>
-                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.currentPage,-1)" aria-label="Previous">
+                    <a onclick="JumpToPage('@ViewBag.status',1 ,0)" aria-label="Previous">
+                        <span aria-hidden="true">首页</span>
+                    </a>
+                </li>
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status','@ViewBag.currentPage',-1,'@ViewBag.thisMonth')" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -215,7 +237,7 @@
                     }
                     for (int i = 0, j = ViewBag.currentPage - 2; i < 5; i++, j++)
                     {
-                        <li><a onclick="JumpToPage('@ViewBag.status',@j,0)">@j</a></li>
+                        <li><a onclick="JumpToPage('@ViewBag.status',@j,0,'@ViewBag.thisMonth')">@j</a></li>
                     }
                     if (ViewBag.currentPage + 2 < ViewBag.PageSum)
                     {
@@ -227,7 +249,7 @@
                 {
                     for (int i = 1; i < 5 && i <= ViewBag.PageSum; i++)
                     {
-                        <li><a onclick="JumpToPage('@ViewBag.status',@i,0)">@i</a></li>
+                        <li><a onclick="JumpToPage('@ViewBag.status',@i,0,'@ViewBag.thisMonth')">@i</a></li>
                     }
                     if (ViewBag.PageSum > 5)
                     {
@@ -247,12 +269,17 @@
                         {
                             continue;
                         }
-                        <li><a onclick="JumpToPage('@ViewBag.status',@i,0)">@i</a></li>
+                        <li><a onclick="JumpToPage('@ViewBag.status', @i, 0, '@ViewBag.thisMonth')">@i</a></li>
                     }
                 }
                 <li>
-                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.currentPage,1)" aria-label="Next">
+                    <a onclick="JumpToPage('@ViewBag.status', @ViewBag.currentPage,1 , '@ViewBag.thisMonth')" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.PageSum,0)" aria-label="Previous">
+                        <span aria-hidden="true">尾页</span>
                     </a>
                 </li>
             </ul>
@@ -262,7 +289,7 @@
         本月站点统计:
     </div>
     <div class="row" style="display:flex;font-size:20px;margin-left:1rem">
-        &nbsp;派件总数:&nbsp;<div id="SumPie" style="color:chartreuse">@ViewBag.sumD&nbsp;&nbsp;</div>揽件总数:&nbsp;<div id="SumDocs" style="color:cornflowerblue">@ViewBag.sumP&nbsp;&nbsp;</div>转件总数:&nbsp;<div id="SumTra" style="color:orangered">@ViewBag.sumT&nbsp;&nbsp;</div>工资总额:&nbsp;<div id="SumWag">@ViewBag.sumS</div>
+        &nbsp;派件总数:&nbsp;<div id="SumPie" style="color:chartreuse">@ViewBag.sumD&nbsp;&nbsp;</div>揽件总数:&nbsp;<div id="SumDocs" style="color:cornflowerblue">@ViewBag.sumP&nbsp;&nbsp;</div>出件总数:&nbsp;<div id="SumTra" style="color:orangered">@ViewBag.sumT&nbsp;&nbsp;</div>工资总额:&nbsp;<div id="SumWag">@ViewBag.sumS</div>
     </div>
 
 

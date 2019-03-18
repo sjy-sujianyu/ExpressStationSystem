@@ -25,16 +25,32 @@
         }
 
         function searchWith() {
-            window.location.href = "/Car/Car?status=" + document.getElementById("selectType").innerText.innerText.replace(/\s+/g, "") + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value;
+            var status = document.getElementById("selectType").innerText;
+            var searchWith = document.getElementById("showCheckType").innerText;
+            if (status != "" || status != null) {
+                status = status.replace(/\s+/g, "");
+            }
+            if (searchWith != "" || searchWith != null) {
+                searchWith = searchWith.replace(/\s+/g, "");
+            }
+            window.location.href = "/Car/Car?status=" + status + "&searchWith=" + searchWith + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&page=1";
             
         }
 
         function JumpTo(status) {
-            window.location.href = "/Car/Car?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value;
+            var searchWith = document.getElementById("showCheckType").innerText;
+            if (searchWith != "" || searchWith != null) {
+                searchWith = searchWith.replace(/\s+/g, "");
+            }
+            window.location.href = "/Car/Car?status=" + status + "&searchWith=" + searchWith + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&page=1";
         }
 
         function toAdd() {
             window.location.href = "/Car/AddCar";
+        }
+
+        function showPackage(id) {
+            window.location.href = "/Package/Package?car=" + id;
         }
 
         function deleteCar(id) {
@@ -55,6 +71,11 @@
                     }
                 }
             })
+        }
+
+        function JumpToPage(status, currentPage, count, ym) {
+            currentPage = parseInt(currentPage) + parseInt(count);
+            window.location.href = "/Car/Car?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&page=" + currentPage;
         }
 
     </script>
@@ -165,8 +186,10 @@
                             {
                                 <td>闲置中</td>
                             }
-                            <th><button type="button" class="btn-sm btn-danger" onclick="deleteCar(@ViewBag.showCar[i].vId)">删除车辆</button></th>
-
+                            <th>
+                                <button type="button" class="btn-sm btn-danger" onclick="deleteCar(@ViewBag.showCar[i].vId)">删除车辆</button>
+                                <button type="button" class="btn-sm btn-info" onclick="showPackage(@ViewBag.showCar[i].vId)">车上包裹</button>
+                            </th>
                         </tr>
                     }
                 </tbody>
@@ -186,7 +209,75 @@
 
 
     </div>
+    <div style="display:flex;margin:auto">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status',1 ,0)" aria-label="Previous">
+                        <span aria-hidden="true">首页</span>
+                    </a>
+                </li>
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status','@ViewBag.currentPage',-1,'@ViewBag.thisMonth')" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                @if (ViewBag.currentPage >= 3 && ViewBag.currentPage <= ViewBag.PageSum - 2)
+                {
+                    if (ViewBag.currentPage - 2 > 1)
+                    {
+                        <li><a href="#">...</a></li>
+                    }
+                    for (int i = 0, j = ViewBag.currentPage - 2; i < 5; i++, j++)
+                    {
+                        <li><a onclick="JumpToPage('@ViewBag.status',@j,0,'@ViewBag.thisMonth')">@j</a></li>
+                    }
+                    if (ViewBag.currentPage + 2 < ViewBag.PageSum)
+                    {
+                        <li><a href="#">...</a></li>
+                    }
 
+                }
+                else if (ViewBag.currentPage <= 3)
+                {
+                    for (int i = 1; i < 5 && i <= ViewBag.PageSum; i++)
+                    {
+                        <li><a onclick="JumpToPage('@ViewBag.status',@i,0,'@ViewBag.thisMonth')">@i</a></li>
+                    }
+                    if (ViewBag.PageSum > 5)
+                    {
+                        <li><a href="#">...</a></li>
+                    }
+
+                }
+                else if (ViewBag.currentPage > ViewBag.PageSum - 2)
+                {
+                    if (ViewBag.PageSum > 5)
+                    {
+                        <li><a href="#">...</a></li>
+                    }
+                    for (int i = ViewBag.PageSum - 5, j = 0; j <= 5; j++, i++)
+                    {
+                        if (i <= 0)
+                        {
+                            continue;
+                        }
+                        <li><a onclick="JumpToPage('@ViewBag.status', @i, 0, '@ViewBag.thisMonth')">@i</a></li>
+                    }
+                }
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status', @ViewBag.currentPage,1 , '@ViewBag.thisMonth')" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li>
+                    <a onclick="JumpToPage('@ViewBag.status',@ViewBag.PageSum,0)" aria-label="Previous">
+                        <span aria-hidden="true">尾页</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
     <button onclick="toAdd()">车辆登记</button>
 
 </body>
