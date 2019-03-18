@@ -256,7 +256,6 @@ namespace ExpressStationSystem
         public decimal pickUpValue;
         public decimal transferValue;
         public decimal deliveryValue;
-        public string person;
     }
 
 }
