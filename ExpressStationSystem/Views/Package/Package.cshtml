@@ -49,12 +49,19 @@
                 window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=" + (currentPage + count).toString() + "&car=" + car;
             }
         }
-        function dateChange(status) {
+        function dateChange(status,date1,date2) {
             var car = document.getElementById("Car").value;
+            if (date1 == '' || date1 == null) {
+                date1 = document.getElementById("date1").value;
+            }
+            if (date2 == '' || date1 == null) {
+                date2 = document.getElementById("date2").value;
+            }
             if (car == null || car == "") {
-                window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=1";
+                window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + date1 + "&date2=" + date2 + "&page=1";
             } else {
-                window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + document.getElementById("date1").value + "&date2=" + document.getElementById("date2").value + "&page=1&car=" + car;
+               
+                window.location.href = "/Package/Package?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText.replace(/\s+/g, "") + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + date1 + "&date2=" + date2 + "&page=1&car=" + car;
 
             }
 
@@ -135,17 +142,14 @@
         }
 
 
-        <div class="col-sm-11 input-group" style="display:flex">
+        <div class="col-sm-10 col-sm-offset-2" style="display:flex">
             <script>
             //执行一个laydate实例
             laydate.render({
                 elem: '#date1', //指定元素
                 type: 'date',
                 done: function (value, date, endDate) {
-                    console.log(value); //得到日期生成的值，如：2017-08-18
-                    console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
-                    console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
-                    dateChange('@ViewBag.status');
+                    dateChange('@ViewBag.status', value);
                 }
 
             });
@@ -154,20 +158,16 @@
                 elem: '#date2', //指定元素
                 type: 'date',
                 done: function (value, date, endDate) {
-                    console.log(value); //得到日期生成的值，如：2017-08-18
-                    console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
-                    console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
-                    dateChange('@ViewBag.status');
+                    dateChange('@ViewBag.status', '', value);
                 }
+
             });
             </script>
 
-            <input type="text" id="date1" class="form-control" value="@ViewBag.date1">
-            <input type="text" id="date2" class="form-control" value="@ViewBag.date2">
+            <input type="text" id="date1" value="@ViewBag.date1">
+            <input type="text" id="date2" value="@ViewBag.date2">
 
-            <div class="btn-group">
-                <button class="btn btn-default" type="button" onclick="dateChange('@ViewBag.status')">OK!</button>
-            </div>
+            <button class="btn btn-default" type="button" onclick="dateChange('@ViewBag.status')">OK!</button>
 
             <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
@@ -179,6 +179,7 @@
                     <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
                 </ul>
             </div>
+
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent">
                 <span class="input-group-btn">
