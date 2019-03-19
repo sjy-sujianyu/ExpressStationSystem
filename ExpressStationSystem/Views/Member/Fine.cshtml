@@ -42,7 +42,7 @@
                     "subsidy": 0,
                     "fine": document.getElementById(id).value,
                     "reason": document.getElementById("fineView").value,
-                    "person": "经理"
+                    "person": "@ViewBag.managername"
                 }),
                 success: function (res) {
                     if (res == true) {
@@ -70,7 +70,7 @@
                     "subsidy": document.getElementById(id).value,
                     "fine": 0 ,
                     "reason": document.getElementById("subsidyView").value,
-                    "person": "经理"
+                    "person": "@ViewBag.managername"
                 }),
                 success: function (res) {
                     if (res == true) {

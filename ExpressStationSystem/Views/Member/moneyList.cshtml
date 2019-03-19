@@ -66,6 +66,62 @@
             })
         }
 
+        function fine(id) {
+            if (document.getElementById("cm_" + id).value == 0 || document.getElementById("cm_" + id).value == null) {
+                alert("金额不得为0或空值")
+                return;
+            }
+            $.ajax({
+                type: 'put',
+                url: 'http://172.16.34.153:60062/Money/UpdateMoneyItem',
+                contentType: "application/json;charset=UTF-8",
+                data: JSON.stringify({
+                    "sId": id,
+                    "subsidy": 0,
+                    "fine": document.getElementById("cm_" + id).value,
+                    "reason": document.getElementById("cr_" + id).value,
+                    "person": "@ViewBag.managername"
+                }),
+                success: function (res) {
+                    if (res == true) {
+                        alert("修改成功");
+                        setTimeout(function () { window.location.reload(); }, 1000);
+                    }
+                    else {
+                        alert("提交失败");
+                    }
+                }
+            });
+        }
+
+        function subsidy(id) {
+            if (document.getElementById("cm_" + id).value == 0 || document.getElementById("cm_" + id).value == null) {
+                alert("金额不得为0或空值")
+                return;
+            }
+            $.ajax({
+                type: 'put',
+                url: 'http://172.16.34.153:60062/Money/UpdateMoneyItem',
+                contentType: "application/json;charset=UTF-8",
+                data: JSON.stringify({
+                    "sId": id,
+                    "subsidy": document.getElementById("cm_" + id).value,
+                    "fine": 0,
+                    "reason": document.getElementById("cr_" + id).value,
+                    "person": "@ViewBag.managername"
+                }),
+                success: function (res) {
+                    if (res == true) {
+                        alert("修改成功");
+                        setTimeout(function () { window.location.reload(); }, 1000);
+                    }
+                    else {
+                        alert("提交失败");
+                    }
+                }
+            });
+        }
+
         function changeInputContentMonth(status, date1, date2) {
             if (date1 == null || date1 == "") {
                 date1 = document.getElementById("thisDate1").value;
@@ -76,11 +132,11 @@
             window.location.href = "/Member/moneyList?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + date1 + "&date2=" + date2+ "&page=1";
         }
 
-        function changeMoney(id) {
-            var element = document.getElementById(id);
-            var lastMoney = element.innerText;
-            element.innerHTML = "<input placeholder='" + lastMoney + "' onblur='finishChange(this)' />";
-        }
+        //function changeMoney(id) {
+        //    var element = document.getElementById(id);
+        //    var lastMoney = element.innerText;
+        //    element.innerHTML = "<input placeholder='" + lastMoney + "' onblur='finishChange(this)' />";
+        //}
 
         function finishChange(self) {
             var changeMoney = self.value;
@@ -217,9 +273,35 @@
                                 <td id="m_@money.money.sId"><font style="color:red">-@money.money.fine</font></td>
                                 <td>@money.money.time</td>
                                 <th>
-                                    <button type="button" class="btn-sm btn-warning" onclick="changeMoney('m_@money.money.sId')">修改</button>
+                                    <button type="button" class="btn-sm btn-warning" data-toggle="modal" data-target="#c_@money.money.sId">修改</button>
                                     <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#b_@money.money.sId">撤消</button>
                                     <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#x_@money.money.sId">详情</button>
+
+                                    <div class="modal fade" id="c_@money.money.sId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">修改信息</h4>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">金额</span>
+                                                        <input type="text" class="form-control" placeholder="@money.money.fine" id="cm_@money.money.sId" />
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">理由</span>
+                                                        <input type="text" class="form-control" placeholder="@money.money.reason" id="cr_@money.money.sId" />
+                                                    </div>
+                                                    <button type="button" class="btn-sm btn-success" data-toggle="modal" onclick="subsidy(@money.money.sId)">补贴</button>
+                                                    <button type="button" class="btn-sm btn-danger" data-toggle="modal" onclick="fine(@money.money.sId)">罚款</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">关闭</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                     <div class="modal fade" id="b_@money.money.sId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
@@ -269,9 +351,34 @@
                                 <td id="m_@money.money.sId"><font style="color:green">+@money.money.subsidy</font></td>
                                 <td>@money.money.time</td>
                                 <th>
-                                    <button type="button" class="btn-sm btn-warning" onclick="changeMoney('m_@money.money.sId')">修改</button>
+                                    <button type="button" class="btn-sm btn-warning" data-toggle="modal" data-target="#c_@money.money.sId">修改</button>
                                     <button type="button" class="btn-sm btn-danger" data-toggle="modal" data-target="#b_@money.money.sId">撤消</button>
                                     <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#x_@money.money.sId">详情</button>
+
+                                    <div class="modal fade" id="c_@money.money.sId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">修改信息</h4>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">金额</span>
+                                                        <input type="text" class="form-control" placeholder="@money.money.subsidy" id="cm_@money.money.sId" />
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">理由</span>
+                                                        <input type="text" class="form-control" placeholder="@money.money.reason" id="cr_@money.money.sId" />
+                                                    </div>
+                                                    <button type="button" class="btn-sm btn-success" data-toggle="modal" onclick="subsidy(@money.money.sId)">补贴</button>
+                                                    <button type="button" class="btn-sm btn-danger" data-toggle="modal" onclick="fine(@money.money.sId)">罚款</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="">关闭</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="modal fade" id="b_@money.money.sId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
