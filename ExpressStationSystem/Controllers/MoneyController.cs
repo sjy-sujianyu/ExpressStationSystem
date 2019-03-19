@@ -137,7 +137,7 @@ namespace ExpressStationSystem.Controllers
         /// </summary>
         /// <remarks>需要定时调用的函数插入漏件，错件</remarks>
         /// <returns>返回</returns>
-        [HttpPost, Route("Money/ErrorPost")]
+        [HttpGet, Route("Money/ErrorPost")]
         public bool ErrorPost()
         {
             return true;
