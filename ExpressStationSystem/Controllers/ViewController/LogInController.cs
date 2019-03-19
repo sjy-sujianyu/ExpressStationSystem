@@ -58,7 +58,7 @@ namespace ExpressStationSystem.Controllers.ViewController
         {
             if (checkCookies())
             {
-                return Content(string.Format("parent.window.location='/Login/AfterLogin';</script>"));
+                return Content(string.Format("<script>parent.window.location='/Login/AfterLogin';</script>"));
             }
             else
             {
