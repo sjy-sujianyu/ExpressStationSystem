@@ -212,7 +212,7 @@
 
                     @foreach (var package in ViewBag.showPackage)
                     {
-                        if (package.error != null)
+                        if (package.error.Count != 0)
                         {
                             <tr class="list-group-item-danger" data-toggle="modal" data-target=".bs-example-modal-lg">
                                 <th scope="row">@package.package.id</th>

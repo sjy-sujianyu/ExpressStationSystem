@@ -91,13 +91,13 @@ namespace ExpressStationSystem.Controllers.ViewController
                     step.Add(jo);
                     continue;
                 }
-                else if (PackageInfo.error.Count != 0)
+                else if (PackageInfo.error.Count != 0 && status != defaultStatus)
                 {
                     foreach(var err in PackageInfo.error)
                     {
                         if (err.status == status)
                         {
-                            step.Add(PackageInfo);
+                            step.Add(jo);
                             break;
                         }
                     }
