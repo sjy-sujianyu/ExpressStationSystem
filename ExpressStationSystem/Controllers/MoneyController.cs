@@ -177,7 +177,7 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>插入提成价格</remarks>
         /// <returns>返回</returns>
         [HttpPost, Route("Money/PostCommission")]
-        public bool FineorPrize(CommisionClass x)
+        public bool PostCommission(CommisionClass x)
         {
             db = new DataClasses1DataContext(connstr);
             Commission com = new Commission();

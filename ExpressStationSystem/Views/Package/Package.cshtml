@@ -232,8 +232,11 @@
                                                 <div class="modal-body">
 
                                                     <div class="row">
-                                                        <div>错误信息:@package.error.status</div>
-                                                        <div>@package.error.introduction</div>
+                                                        @for (int i = 0; i < package.error.Count; i++)
+                                                        {
+                                                            <div>错误信息:@package.error[i].status</div>
+                                                            <div>@package.error[i].introduction</div>
+                                                        }
                                                     </div>
 
                                                     @if (@package.package.status == "已签收")
