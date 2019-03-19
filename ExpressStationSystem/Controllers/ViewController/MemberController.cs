@@ -726,6 +726,10 @@ namespace ExpressStationSystem.Controllers.ViewController
             {
                 return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
             }
+
+            var managername = (new QueryController().GetMemberAllInfo(Request.Cookies["MyCook"]["userid"])).name;
+            ViewBag.managername = managername;
+
             int pageNum = 10;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
@@ -1240,6 +1244,9 @@ namespace ExpressStationSystem.Controllers.ViewController
             {
                 return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
             }
+
+            var managername = (new QueryController().GetMemberAllInfo(Request.Cookies["MyCook"]["userid"])).name;
+            ViewBag.managername = managername;
             int pageNum = 10;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
