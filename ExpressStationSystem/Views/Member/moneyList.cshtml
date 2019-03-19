@@ -131,16 +131,6 @@
             window.location.href = "/Member/moneyList?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&date1=" + date1 + "&date2=" + date2+ "&page=1";
         }
 
-        //function changeMoney(id) {
-        //    var element = document.getElementById(id);
-        //    var lastMoney = element.innerText;
-        //    element.innerHTML = "<input placeholder='" + lastMoney + "' onblur='finishChange(this)' />";
-        //}
-
-        function finishChange(self) {
-            var changeMoney = self.value;
-            
-        }
     </script>
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -202,9 +192,6 @@
                 elem: '#thisDate1',
                 type: 'date',
                 done: function (value, date, endDate) {
-                    console.log(value); //得到日期生成的值，如：2017-08-18
-                    console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
-                    console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
                     changeInputContentMonth('@ViewBag.status', value)
                 }
             });
@@ -212,9 +199,6 @@
                 elem: '#thisDate2',
                 type: 'date',
                 done: function (value, date, endDate) {
-                    console.log(value); //得到日期生成的值，如：2017-08-18
-                    console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
-                    console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
                     changeInputContentMonth('@ViewBag.status', '', value)
                 }
             });

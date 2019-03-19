@@ -99,6 +99,7 @@
 
         function changeInfo() {
             var salary = Number(document.getElementById("newSalary").value);
+            alert(salary)
             //修改各项信息
             $.ajax({
                 url: 'http://172.16.34.153:60062/Manager/ChangeMemberInfo', /*接口域名地址*/
