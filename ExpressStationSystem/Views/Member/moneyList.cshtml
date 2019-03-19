@@ -84,12 +84,12 @@
                 }),
                 success: function (res) {
                     if (res == true) {
-                        alert("修改成功");
-                        setTimeout(function () { window.location.reload(); }, 1000);
+                        setTimeout(function () { alert("修改成功"); window.location.reload(); }, 2500);
                     }
                     else {
                         alert("提交失败");
                     }
+                    
                 }
             });
         }
@@ -112,8 +112,7 @@
                 }),
                 success: function (res) {
                     if (res == true) {
-                        alert("修改成功");
-                        setTimeout(function () { window.location.reload(); }, 1000);
+                        setTimeout(function () { alert("修改成功"); window.location.reload(); }, 2500);
                     }
                     else {
                         alert("提交失败");
