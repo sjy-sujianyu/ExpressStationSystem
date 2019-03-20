@@ -199,7 +199,7 @@ namespace ExpressStationSystem.Controllers
                 AddressBook aclass = db.AddressBook.Single(a=>a.account==x.account&&a.phone==x.phone&&a.province==x.province&&a.city==x.city&&a.street==x.street&&a.name==x.name);
                 if(aclass.isDelete==false)
                 {
-                    return false;
+                    return true;
                 }
                 aclass.isDelete = false;
                 db.SubmitChanges();
