@@ -123,7 +123,7 @@ namespace ExpressStationSystem.Controllers
         public List<int> GetReadytoReceive()
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Package where a.status == "已下单" select a.id;
+            var selectQuery = from a in db.Package join b in db.AddressBook on a.sendId equals b.aId where a.status == "已下单"&&b.street.Contains("华南农业大学") select a.id;
             List<int> list = new List<int>();
             foreach (var x in selectQuery)
             {
@@ -263,6 +263,23 @@ namespace ExpressStationSystem.Controllers
                 }
                 x.status = "已扫件";
                 x.time = DateTime.Now;
+                var receiver = db.AddressBook.SingleOrDefault(a => a.aId == x.receiverId);
+                if(receiver!=null&&!receiver.street.Contains("华南农业大学"))
+                {
+                    Error error = new Error();
+                    error.id = x.id;
+                    error.introduction = "目的地不在此网点附近";
+                    error.status = "错件";
+                    error.time = DateTime.Now;
+                    try
+                    {
+                        db.Error.InsertOnSubmit(error);
+                    }
+                    catch
+                    {
+
+                    }
+                }
                 db.SubmitChanges();
                 return true; 
             }
