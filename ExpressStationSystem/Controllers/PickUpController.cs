@@ -114,11 +114,12 @@ namespace ExpressStationSystem.Controllers
                 {
                     continue;
                 }
-                if(splitPlace(check.curPlace).street.Contains("华南农业大学"))
+                if(splitPlace(check.curPlace).street.Contains("华南农业大学")&&check.isArrival==true)
                 {
                     list.Add(x);
                 }
             }
+
             return list;
         }
 
