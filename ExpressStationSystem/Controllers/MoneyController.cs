@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 
 namespace ExpressStationSystem.Controllers
@@ -137,10 +138,41 @@ namespace ExpressStationSystem.Controllers
         /// </summary>
         /// <remarks>需要定时调用的函数插入漏件，错件</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Money/ErrorPost")]
-        public bool ErrorPost()
+        //[HttpGet, Route("Money/ErrorPost")]
+        public void ErrorPost(object obj)
         {
-            return true;
+            while(true)
+            {
+                try
+                {
+                    int time = (int)obj;
+                    Thread.Sleep(time);
+                }
+                catch
+                {
+                }
+                db = new DataClasses1DataContext(connstr);
+                var errorLeak = new PickUpController().GetReadytoScan();
+                foreach (var x in errorLeak)
+                {
+                    Error error = new Error();
+                    error.introduction = "包裹丢失,没有进站";
+                    error.status = "漏件";
+                    error.time = DateTime.Now;
+                    error.id = x;
+                    Console.WriteLine("包裹id" + x + "   " + "status:" + error.status);
+                    try
+                    {
+                        db.Error.InsertOnSubmit(error);
+                        db.SubmitChanges();
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+                
+            }
         }
         // PUT: api/Money/Complaint
         /// <summary>

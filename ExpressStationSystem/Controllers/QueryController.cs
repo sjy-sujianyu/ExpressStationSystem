@@ -16,10 +16,10 @@ namespace ExpressStationSystem.Controllers
 
         // GET: api/Query/GetRole?account={account}
         /// <summary>
-        /// 返回员工角色(揽件员，派件员，出件员)
+        /// 返回员工角色(揽件员，派件员，出件员,经理,待定中,休息中)
         /// </summary>
         /// <param name="account">员工账户</param>
-        /// <remarks>返回员工角色(揽件员，派件员，出件员,经理,待定中)</remarks>
+        /// <remarks>返回员工角色(揽件员，派件员，出件员,经理,待定中,休息中)</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Query/GetRole")]
         public string GetRole(string account)
@@ -32,6 +32,10 @@ namespace ExpressStationSystem.Controllers
             }
             else
             {
+                if(role.onDuty==false)
+                {
+                    return "休息中";
+                }
                 return role.job;
             }
         }

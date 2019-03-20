@@ -207,6 +207,20 @@ namespace ExpressStationSystem.Controllers
         {
             return true;
         }
+        public TOut TransReflection<TIn, TOut>(TIn tIn)
+        {
+            TOut tOut = Activator.CreateInstance<TOut>();
+            var tInType = tIn.GetType();
+            foreach (var itemOut in tOut.GetType().GetProperties())
+            {
+                var itemIn = tInType.GetProperty(itemOut.Name); ;
+                if (itemIn != null)
+                {
+                    itemOut.SetValue(tOut, itemIn.GetValue(tIn));
+                }
+            }
+            return tOut;
+        }
     }
 
         

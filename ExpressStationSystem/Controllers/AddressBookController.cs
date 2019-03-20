@@ -186,7 +186,7 @@ namespace ExpressStationSystem.Controllers
         /// <summary>
         /// 向数据库插入地址信息
         /// </summary>
-        /// <param name="x">地址簿信息实体  aId可以省略</param>
+        /// <param name="x">地址簿信息实体  aId没用</param>
         /// <remarks>向数据库插入地址信息</remarks>
         /// <returns>返回</returns>
         [HttpPost, Route("AddressBook/Post")]
@@ -244,14 +244,14 @@ namespace ExpressStationSystem.Controllers
 
             try
             {
-                AddressBook aclass = db.AddressBook.Single(a => a.aId == x.aId);
-                aclass.province = x.province;
-                aclass.city = x.city;
-                aclass.street = x.street;
-                aclass.phone = x.phone;
-                aclass.name = x.name;
-
-                db.SubmitChanges();
+                AddressBook aclassNew = db.AddressBook.Single(a => a.aId == x.aId);
+                
+                bool flag = Post(x);
+                if (flag==false)
+                {
+                    return false;
+                }
+                Delete(aclassNew.aId);
                 return true;
             }
             catch (Exception)
