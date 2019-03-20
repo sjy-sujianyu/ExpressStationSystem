@@ -21,6 +21,8 @@ namespace ExpressStationSystem
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            int sleepTime = 1800000;
+
             //Thread newlogin = new Thread(Simulation.Instance.AddNewLogin);
             //newlogin.IsBackground = true;
             //newlogin.Start();
@@ -32,6 +34,10 @@ namespace ExpressStationSystem
             //Thread newpackage = new Thread(Simulation.Instance.OrderNewPackage);
             //newpackage.IsBackground = true;
             //newpackage.Start();
+
+            Thread thread = new Thread(new ParameterizedThreadStart(new MoneyController().ErrorPost));
+            thread.IsBackground = true;
+            thread.Start(sleepTime);
 
         }
         protected void Application_BeginRequest(object sender, EventArgs e)
