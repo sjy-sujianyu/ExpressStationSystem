@@ -1,13 +1,14 @@
-﻿using ExpressStationSystem.Controllers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Threading;
+using ExpressStationSystem.Models;
+using ExpressStationSystem.Controllers;
 
 namespace ExpressStationSystem
 {
@@ -15,15 +16,30 @@ namespace ExpressStationSystem
     {
         protected void Application_Start()
         {
-            int sleepTime = 1800000;
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            int sleepTime = 1800000;
+
+            //Thread newlogin = new Thread(Simulation.Instance.AddNewLogin);
+            //newlogin.IsBackground = true;
+            //newlogin.Start();
+
+            //Thread newaddress = new Thread(Simulation.Instance.AddNewAddress);
+            //newaddress.IsBackground = true;
+            //newaddress.Start();
+
+            //Thread newpackage = new Thread(Simulation.Instance.OrderNewPackage);
+            //newpackage.IsBackground = true;
+            //newpackage.Start();
+
             Thread thread = new Thread(new ParameterizedThreadStart(new MoneyController().ErrorPost));
             thread.IsBackground = true;
             thread.Start(sleepTime);
+
         }
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
