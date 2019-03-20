@@ -199,7 +199,7 @@ namespace ExpressStationSystem.Controllers
                 AddressBook aclass = db.AddressBook.Single(a=>a.account==x.account&&a.phone==x.phone&&a.province==x.province&&a.city==x.city&&a.street==x.street&&a.name==x.name);
                 if(aclass.isDelete==false)
                 {
-                    return true;
+                    return false;
                 }
                 aclass.isDelete = false;
                 db.SubmitChanges();
@@ -249,7 +249,7 @@ namespace ExpressStationSystem.Controllers
                 bool flag = Post(x);
                 if (flag==false)
                 {
-                    return false;
+                    return true;
                 }
                 Delete(aclassNew.aId);
                 return true;
