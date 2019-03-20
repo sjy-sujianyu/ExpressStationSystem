@@ -63,7 +63,7 @@ namespace ExpressStationSystem.Controllers.ViewController
                 date2 = date1;
             }
             //包裹信息
-            List<int> PIDList = new ManagerController().GetAllPackage(Convert.ToDateTime(date1), Convert.ToDateTime(date2));
+            List<int> PIDList = new ManagerController().GetAllPackage(Convert.ToDateTime(date1), Convert.ToDateTime(date2).AddDays(1));
             if (car != null && car != "")
             {
                 PIDList = new TransferController().GetPackageIdOnVehicle(Convert.ToInt32(car));
