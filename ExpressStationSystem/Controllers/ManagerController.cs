@@ -141,6 +141,13 @@ namespace ExpressStationSystem.Controllers
             }
             else
             {
+                if (member.job != x.job)
+                {
+                    if (!checkDoJob(x.mId))
+                    {
+                        return false;
+                    }
+                }
                 member.job = x.job;
                 member.name = x.name;
                 member.baseSalary = x.baseSalary;

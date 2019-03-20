@@ -108,7 +108,16 @@ namespace ExpressStationSystem.Controllers
             List <int> list = new List<int>();
             foreach (var x in selectQuery)
             {
-                list.Add(x);
+                var path = from a in db.Path where a.id == x orderby a.time descending select a;
+                var check = path.FirstOrDefault();
+                if (check is null)
+                {
+                    continue;
+                }
+                if(splitPlace(check.curPlace).street.Contains("华南农业大学"))
+                {
+                    list.Add(x);
+                }
             }
             return list;
         }
@@ -284,7 +293,11 @@ namespace ExpressStationSystem.Controllers
                 return true; 
             }
         }
-
+        private dynamic splitPlace(string place)
+        {
+            string[] str = place.Split('-');
+            return new { province = str[0], city = str[1], street = str[2] };
+        }
         //// DELETE api/PickUp/Delete?id={id}
         ///// <summary>
         ///// 删除揽件员进度里的订单记录
@@ -327,7 +340,7 @@ namespace ExpressStationSystem.Controllers
         //        db.SubmitChanges();
         //        return true;
         //    }
-            
+
         //}
     }
 }
