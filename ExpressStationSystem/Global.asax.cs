@@ -6,6 +6,8 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Threading;
+using ExpressStationSystem.Models;
 
 namespace ExpressStationSystem
 {
@@ -18,6 +20,19 @@ namespace ExpressStationSystem
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            //Thread newlogin = new Thread(Simulation.Instance.AddNewLogin);
+            //newlogin.IsBackground = true;
+            //newlogin.Start();
+
+            //Thread newaddress = new Thread(Simulation.Instance.AddNewAddress);
+            //newaddress.IsBackground = true;
+            //newaddress.Start();
+
+            //Thread newpackage = new Thread(Simulation.Instance.OrderNewPackage);
+            //newpackage.IsBackground = true;
+            //newpackage.Start();
+
         }
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
