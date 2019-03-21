@@ -204,7 +204,8 @@ namespace ExpressStationSystem.Controllers
             int i = 0;
             foreach(var x in package)
             {
-                list.Add(new { package = x.package, src = x.src, dest = x.dest, error = errorList[i] });
+                var result = new { package = x.package, src = x.src, dest = x.dest, error = errorList[i] };
+                list.Add(result);
                 i++;
             }
             return list;
@@ -212,7 +213,7 @@ namespace ExpressStationSystem.Controllers
         private dynamic getError(int id)
         {
             db = new DataClasses1DataContext(connstr);
-            var error = db.Error.Where(a => a.id == id);
+            var error = db.Error.Where(a => a.id == id).ToList(); ;
             return error;
         }
         // GET: api/Query/GetTotalRecordByAccount?account={account}
