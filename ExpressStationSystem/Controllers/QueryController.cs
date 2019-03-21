@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace ExpressStationSystem.Controllers
@@ -257,6 +259,25 @@ namespace ExpressStationSystem.Controllers
             var vehicleEmploy = from a in db.Vehicle where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.isDelete == false select a;
             var vehicleFired = from a in db.Vehicle where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.isDelete == true select a;
             return new { errorError = new { content = errorError.ToList(), cnt = errorError.Count() }, errorLeak = new { content = errorLeak.ToList(), cnt = errorLeak.Count() }, errorDamaged = new { content = errorDamaged.ToList(), cnt = errorDamaged.Count() }, errorRefused = new { content = errorRefused.ToList(), cnt = errorRefused.Count() }, errorLose = new { content = errorLose.ToList(), cnt = errorLose.Count() }, delivery = new { content = delivery.ToList(), cnt = delivery.Count() }, pickUp = new { content = Inbound.ToList(), cnt = Inbound.Count() }, transfer = new { content = transfer.ToList(), cnt = transfer.Count() }, leave = new { content = leave.ToList(), cnt = leave.Count() }, memberEmploy = new { content = memberEmploy.ToList(), cnt = memberEmploy.Count() }, memberFired = new { content = memberFired.ToList(), cnt = memberFired.Count() }, commission = new { content = commission.ToList(), cnt = commission.Count() }, vehicleEmploy = new { content = vehicleEmploy.ToList(), cnt = vehicleEmploy.Count() }, vehicleFired = new { content = vehicleFired.ToList(), cnt = vehicleFired.Count() } };
+        }
+        public List<dynamic> FastGetAllInfo(List<int>list)
+        {
+            var tasks = new List<Task<dynamic>>();
+
+            List<dynamic> pList = new List<dynamic>();
+            foreach(var x in list)
+            {
+                var y = new Task<dynamic>(() => new QueryController().GetAllInfo(x));
+                y.Start();
+                tasks.Add(y);
+            }
+
+            Task.WaitAll(tasks.ToArray());
+            foreach(var x in tasks)
+            {
+                pList.Add(x.Result);
+            }
+            return pList;
         }
         private dynamic splitPlace(string place)
         {
