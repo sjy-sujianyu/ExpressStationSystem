@@ -144,7 +144,7 @@
         }
 
 
-        <div class="col-sm-10 col-sm-offset-2" style="display:flex">
+        <div class="col-sm-10 col-sm-offset-2">
             <script>
             //执行一个laydate实例
             laydate.render({
@@ -166,28 +166,33 @@
             });
             </script>
 
-            <input type="text" id="date1" value="@ViewBag.date1">
-            <input type="text" id="date2" value="@ViewBag.date2">
+            <div class="row">
+                <input type="text" id="date1" value="@ViewBag.date1">
+                <input type="text" id="date2" value="@ViewBag.date2">
 
-            <button class="btn btn-default" type="button" onclick="dateChange('@ViewBag.status')">OK!</button>
-
-            <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
-                    @ViewBag.searchWith<span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按单号</a></li>
-                    <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
-                    <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
-                </ul>
+                <button class="btn btn-default" type="button" onclick="dateChange('@ViewBag.status')">OK!</button>
             </div>
 
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" onclick="searchWith()">Go!</button>
-                </span>
+            <div class="row" style="display:flex">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
+                        @ViewBag.searchWith<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按单号</a></li>
+                        <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按姓名</a></li>
+                        <li><a onclick="changeShowCheckType(this);changeInputContent(this)">按手机</a></li>
+                    </ul>
+                </div>
+
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="" id="showCheckContent" value="@ViewBag.searchWithContent">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" onclick="searchWith()">Go!</button>
+                    </span>
+                </div>
             </div>
+            
         </div>
     </div>
 
