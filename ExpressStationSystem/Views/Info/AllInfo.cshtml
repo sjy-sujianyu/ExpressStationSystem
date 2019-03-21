@@ -8,6 +8,19 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <script src="~/Content/laydate/laydate.js"></script>
+
+    <script>
+        function dateChange(date1, date2) {
+            if (date1 == '' || date1 == undefined) {
+                date1 = document.getElementById("date1").value;
+            }
+            if (date2 == '' || date2 == undefined) {
+                date2 = document.getElementById("date2").value;
+            }
+            window.location.href = "/Info/AllInfo?date1=" + date1 + "&date2=" + date2;
+        }
+    </script>
+
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <body>
@@ -37,13 +50,16 @@
                             <li><a href="/Member/AddMember">员工录用</a></li>
                             <li><a href="/Member/DeleteMember">员工开除</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="/Member/Fine">补贴</a></li>
+                            <li><a href="/Member/Fine">奖罚款</a></li>
+                            <li><a href="/Member/moneyList">奖罚款条单</a></li>
                             <li><a href="/Member/Leave">请假条</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="/Member/Mission">任务分配</a></li>
                             <li><a href="/Member/Wages">工薪统计</a></li>
                         </ul>
                     </li>
+                    <li><a href="/Info/ModifyCommision">提成更改</a></li>
+                    <li><a href="/Info/AllInfo">今日统计</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -66,12 +82,17 @@
         <script>
             //执行一个laydate实例
             laydate.render({
-                elem: '#date1' //指定元素
-
+                elem: '#date1', //指定元素
+                done: function (value) {
+                    dateChange(value);
+                }
             });
             //执行一个laydate实例
             laydate.render({
-                elem: '#date2' //指定元素
+                elem: '#date2', //指定元素
+                done: function (value) {
+                    dateChange('',value);
+                }
             });
         </script>
 
