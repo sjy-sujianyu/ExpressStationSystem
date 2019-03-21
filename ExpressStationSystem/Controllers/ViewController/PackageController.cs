@@ -63,16 +63,16 @@ namespace ExpressStationSystem.Controllers.ViewController
                 date2 = date1;
             }
             //包裹信息
-            List<int> PIDList = new ManagerController().GetAllPackage(Convert.ToDateTime(date1), Convert.ToDateTime(date2).AddDays(1));
-            if (car != null && car != "")
-            {
-                PIDList = new TransferController().GetPackageIdOnVehicle(Convert.ToInt32(car));
-                ViewBag.car = car;
-            }
-            else
-            {
-                ViewBag.car = "";
-            }
+            List<dynamic> PInfoList = new QueryController().GetAllInfoFast(Convert.ToDateTime(date1), Convert.ToDateTime(date2).AddDays(1));
+            //if (car != null && car != "")
+            //{
+            //    PIDList = new TransferController().GetPackageIdOnVehicle(Convert.ToInt32(car));
+            //    ViewBag.car = car;
+            //}
+            //else
+            //{
+            //    ViewBag.car = "";
+            //}
             //中间数组
             List<dynamic> step = new List<dynamic>();
             //也是中间数组
@@ -80,9 +80,8 @@ namespace ExpressStationSystem.Controllers.ViewController
             //决定显示的前端数组
             List<dynamic> showPackage2 = new List<dynamic>();
             //第一次筛选，分类
-            foreach (var PID in PIDList)
+            foreach (var PackageInfo in PInfoList)
             {
-                var PackageInfo = new QueryController().GetAllInfo(PID);
                 var josnStr = JsonConvert.SerializeObject(PackageInfo);
                 JObject jo = (JObject)JsonConvert.DeserializeObject(josnStr);
 
@@ -93,7 +92,7 @@ namespace ExpressStationSystem.Controllers.ViewController
                 }
                 else if (PackageInfo.error.Count != 0 && status != defaultStatus)
                 {
-                    foreach(var err in PackageInfo.error)
+                    foreach (var err in PackageInfo.error)
                     {
                         if (err.status == status)
                         {
