@@ -23,7 +23,7 @@ namespace ExpressStationSystem.Controllers.ViewController
             }
             if (date2 == null || date2 == "")
             {
-                date2 = DateTime.Now.ToString("yyyy-MM-dd");
+                date2 = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
             }
             ViewBag.date1 = date1;
             ViewBag.date2 = date2;
