@@ -28,7 +28,7 @@ namespace ExpressStationSystem.Controllers
             string[] value5 = { "江苏省", "浙江省", "上海市" };
             int[] v1 = { 2,2,2 };
             string[] value9 = { "福建省", "江西省", "湖南省", "湖北省" };
-            int[] v2 = { 6,6,6 };
+            int[] v2 = { 6,6,6,6 };
             string []value10 = { "广东省", "广西省", "安徽省", "北京市", "天津市" };
             int[] v3 = { 9, 6, 6, 6, 6 };
             string []value12 = { "河南省", "山东省", "山西省", "四川省", "重庆市" };
@@ -69,7 +69,7 @@ namespace ExpressStationSystem.Controllers
                 }
                     
             }
-            else
+            else if(value12.ToList().IndexOf(destProvince) != -1)
             {
                 if(weight<=1)
                 {
@@ -79,6 +79,15 @@ namespace ExpressStationSystem.Controllers
                 {
                     value=12+ (weight - 1) * v4[value12.ToList().IndexOf(destProvince)];
                 }
+            }
+            else
+            {
+                if (weight <= 1)
+                {
+                    value = 12;
+                }
+                else
+                    value = 12 * weight;
             }
             return value;
         }

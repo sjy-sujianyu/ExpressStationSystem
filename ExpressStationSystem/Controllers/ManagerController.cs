@@ -28,7 +28,7 @@ namespace ExpressStationSystem.Controllers
         public List<int> GetAllPackage(DateTime start, DateTime end)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Package where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 select a.id;
+            var selectQuery = from a in db.Package where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 orderby a.time descending select a.id;
             List<int> list = new List<int>();
             foreach (var x in selectQuery)
             {
@@ -141,6 +141,13 @@ namespace ExpressStationSystem.Controllers
             }
             else
             {
+                if (member.job != x.job)
+                {
+                    if (!checkDoJob(x.mId))
+                    {
+                        return false;
+                    }
+                }
                 member.job = x.job;
                 member.name = x.name;
                 member.baseSalary = x.baseSalary;

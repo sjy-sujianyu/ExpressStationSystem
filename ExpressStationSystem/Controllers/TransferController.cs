@@ -71,7 +71,7 @@ namespace ExpressStationSystem.Controllers
         /// <summary>
         /// 获取已上车的包裹ID
         /// </summary>
-        /// <param name="x">交通工具id</param>
+        /// <param name="id">交通工具id</param>
         /// <remarks>获取已上车的包裹ID</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Transfer/GetPackageIdOnVehicle")]

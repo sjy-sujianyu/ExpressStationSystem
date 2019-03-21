@@ -41,6 +41,60 @@ namespace ExpressStationSystem.Controllers
             return list;
         }
 
+        // GET: api/AddressBook/GetAll
+        /// <summary>
+        /// 获取所有地址簿列表
+        /// </summary>
+        /// <remarks>根据客户账号获取地址簿列表</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("AddressBook/GetAll")]
+        public List<AddressBookClass> GetAll()
+        {
+            db = new DataClasses1DataContext(connstr);
+            var selectQuery = from addressbook in db.AddressBook where addressbook.isDelete == false select addressbook;
+            List<AddressBookClass> list = new List<AddressBookClass>();
+            foreach (var x in selectQuery)
+            {
+                AddressBookClass aclass = new AddressBookClass();
+                aclass.aId = x.aId;
+                aclass.account = x.account;
+                aclass.province = x.province;
+                aclass.city = x.city;
+                aclass.street = x.street;
+                aclass.phone = x.phone;
+                aclass.name = x.name;
+                list.Add(aclass);
+            }
+            return list;
+        }
+
+        // GET: api/AddressBook/GetAllSCAU
+        /// <summary>
+        /// 获取所有在华南农业大学的地址簿列表
+        /// </summary>
+        /// <remarks>获取所有在华南农业大学的地址簿列表</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("AddressBook/GetAllSCAU")]
+        public List<AddressBookClass> GetAllSCAU()
+        {
+            db = new DataClasses1DataContext(connstr);
+            var selectQuery = from addressbook in db.AddressBook where addressbook.isDelete == false && addressbook.street == "华南农业大学" select addressbook;
+            List<AddressBookClass> list = new List<AddressBookClass>();
+            foreach (var x in selectQuery)
+            {
+                AddressBookClass aclass = new AddressBookClass();
+                aclass.aId = x.aId;
+                aclass.account = x.account;
+                aclass.province = x.province;
+                aclass.city = x.city;
+                aclass.street = x.street;
+                aclass.phone = x.phone;
+                aclass.name = x.name;
+                list.Add(aclass);
+            }
+            return list;
+        }
+
         // GET: api/AddressBook/GetWithName
         /// <summary>
         /// 根据特定条件获取地址簿列表
@@ -132,7 +186,7 @@ namespace ExpressStationSystem.Controllers
         /// <summary>
         /// 向数据库插入地址信息
         /// </summary>
-        /// <param name="x">地址簿信息实体  aId可以省略</param>
+        /// <param name="x">地址簿信息实体  aId没用</param>
         /// <remarks>向数据库插入地址信息</remarks>
         /// <returns>返回</returns>
         [HttpPost, Route("AddressBook/Post")]
@@ -190,14 +244,14 @@ namespace ExpressStationSystem.Controllers
 
             try
             {
-                AddressBook aclass = db.AddressBook.Single(a => a.aId == x.aId);
-                aclass.province = x.province;
-                aclass.city = x.city;
-                aclass.street = x.street;
-                aclass.phone = x.phone;
-                aclass.name = x.name;
-
-                db.SubmitChanges();
+                AddressBook aclassNew = db.AddressBook.Single(a => a.aId == x.aId);
+                
+                bool flag = Post(x);
+                if (flag==false)
+                {
+                    return true;
+                }
+                Delete(aclassNew.aId);
                 return true;
             }
             catch (Exception)

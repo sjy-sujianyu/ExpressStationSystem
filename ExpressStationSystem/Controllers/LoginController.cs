@@ -35,6 +35,27 @@ namespace ExpressStationSystem.Controllers
             
         }
 
+        // GET: api/Login/GetAll
+        /// <summary>
+        /// 获取所有用户
+        /// </summary>
+        /// <remarks>获取所有用户</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Login/GetAll")]
+        public List<string> GetAll()
+        {
+            db = new DataClasses1DataContext(connstr);
+            var selectQuery = from a in db.Login where a.isDelete == false  select a;
+            List<string> list = new List<string>();
+            foreach (var x in selectQuery)
+            {
+                
+                list.Add(x.account);
+            }
+            return list;
+
+        }
+
         // GET: api/Login/LandOfManager
         /// <summary>
         /// 检验经理登陆
