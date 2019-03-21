@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace ExpressStationSystem.Controllers
@@ -79,7 +81,7 @@ namespace ExpressStationSystem.Controllers
                 return member;
             }
         }
-        // GET: api/Query/GetLogisticsInfo?account={account}
+        // GET: api/Query/GetLogisticsInfo?id={id}
         /// <summary>
         /// 根据包裹得到物流信息
         /// </summary>
@@ -87,7 +89,7 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>根据包裹得到物流信息</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Query/GetLogisticsInfo")]
-        private List<dynamic> GetLogisticsInfo(int id)
+        public List<dynamic> GetLogisticsInfo(int id)
         {
             db = new DataClasses1DataContext(connstr);
             var selectQuery = from a in db.Path where a.id==id orderby a.time
@@ -170,8 +172,49 @@ namespace ExpressStationSystem.Controllers
             return acl;
         }
 
-        
-
+        // GET: api/Query/GetAllInfo?account={account}
+        /// <summary>
+        /// 快速得到时间段内包裹全部信息
+        /// </summary>
+        /// <param name="start">包裹ID</param>
+        /// <param name="end">包裹ID</param>
+        /// <remarks>快速得到时间段内包裹全部信息 </remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Query/GetAllInfoFast")]
+        public dynamic GetAllInfoFast(DateTime start, DateTime end)
+        {
+            List<dynamic> list = new List<dynamic>();
+            db = new DataClasses1DataContext(connstr);
+            var package = db.Package.Where(a=> DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0)
+                .Join(db.AddressBook, a => a.sendId, b => b.aId, (a, b) => new { a = a, b = b })
+                .Join(db.AddressBook, a => a.a.receiverId, b => b.aId, (a, b) => new { package = a.a, src = a.b, dest = b });
+            var tasks = new List<Task<dynamic>>();
+            List<dynamic> errorList = new List<dynamic>();
+            foreach (var x in package)
+            {
+                var y = new Task<dynamic>(() => new QueryController().getError(x.package.id));
+                y.Start();
+                tasks.Add(y);
+            }
+            Task.WaitAll(tasks.ToArray());
+            foreach(var x in tasks)
+            {
+                errorList.Add(x.Result);
+            }
+            int i = 0;
+            foreach(var x in package)
+            {
+                list.Add(new { package = x.package, src = x.src, dest = x.dest, error = errorList[i] });
+                i++;
+            }
+            return list;
+        }
+        private dynamic getError(int id)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var error = db.Error.Where(a => a.id == id);
+            return error;
+        }
         // GET: api/Query/GetTotalRecordByAccount?account={account}
         /// <summary>
         /// 根据总员工历史任务记录
