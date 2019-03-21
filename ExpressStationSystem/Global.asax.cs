@@ -17,48 +17,33 @@ namespace ExpressStationSystem
     {
         protected void Application_Start()
         {
+            int sleepTime = 1800000;
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            //Text();
+            Thread thread = new Thread(new ParameterizedThreadStart(new MoneyController().ErrorPost));
+            thread.IsBackground = true;
+            thread.Start(sleepTime);
+
+        }
+        public void Text()
+        {
             DateTime date1 = new DateTime(2008, 6, 15, 21, 15, 07);
             DateTime date2 = new DateTime(2019, 6, 15, 21, 15, 07);
-            List<int>list=new ManagerController().GetAllPackage(date1, date2);
+            List<int> list = new ManagerController().GetAllPackage(date1, date2);
             Stopwatch sw = new Stopwatch();
             sw.Start();
-
-            foreach(var x in list)
-            {
-                new QueryController().GetAllInfo(x);
-            }
-            //new QueryController().FastGetAllInfo(new ManagerController().GetAllPackage(date1, date2));
+            new QueryController().GetAllInfoFast(date1,date2);
             //耗时巨大的代码
 
             sw.Stop();
             TimeSpan ts2 = sw.Elapsed;
             Console.WriteLine("Stopwatch总共花费{0}ms.", ts2.TotalMilliseconds);
+
             
-           
-
-            int sleepTime = 1800000;
-
-            //Thread newlogin = new Thread(Simulation.Instance.AddNewLogin);
-            //newlogin.IsBackground = true;
-            //newlogin.Start();
-
-            //Thread newaddress = new Thread(Simulation.Instance.AddNewAddress);
-            //newaddress.IsBackground = true;
-            //newaddress.Start();
-
-            //Thread newpackage = new Thread(Simulation.Instance.OrderNewPackage);
-            //newpackage.IsBackground = true;
-            //newpackage.Start();
-
-            Thread thread = new Thread(new ParameterizedThreadStart(new MoneyController().ErrorPost));
-            thread.IsBackground = true;
-            thread.Start(sleepTime);
-
         }
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
