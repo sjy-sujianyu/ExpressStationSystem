@@ -23,7 +23,7 @@ namespace ExpressStationSystem
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            //Text();
+            Text();
             Thread thread = new Thread(new ParameterizedThreadStart(new MoneyController().ErrorPost));
             thread.IsBackground = true;
             thread.Start(sleepTime);
