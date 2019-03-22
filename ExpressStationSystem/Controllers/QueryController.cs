@@ -187,28 +187,29 @@ namespace ExpressStationSystem.Controllers
             db = new DataClasses1DataContext(connstr);
             var package = db.Package.Where(a=> DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0)
                 .Join(db.AddressBook, a => a.sendId, b => b.aId, (a, b) => new { a = a, b = b })
-                .Join(db.AddressBook, a => a.a.receiverId, b => b.aId, (a, b) => new { package = a.a, src = a.b, dest = b });
-            var tasks = new List<Task<dynamic>>();
-            List<dynamic> errorList = new List<dynamic>();
-            foreach (var x in package)
-            {
-                var y = new Task<dynamic>(() => new QueryController().getError(x.package.id));
-                y.Start();
-                tasks.Add(y);
-            }
-            Task.WaitAll(tasks.ToArray());
-            foreach(var x in tasks)
-            {
-                errorList.Add(x.Result);
-            }
-            int i = 0;
-            foreach(var x in package)
-            {
-                var result = new { package = x.package, src = x.src, dest = x.dest, error = errorList[i] };
-                list.Add(result);
-                i++;
-            }
-            return list;
+                .Join(db.AddressBook, a => a.a.receiverId, b => b.aId, (a, b) => new { package = a.a, src = a.b, dest = b })
+                .GroupJoin(db.Error, x => x.package.id, y => y.id, (x, y) => y.DefaultIfEmpty().Select(z => new { package = x.package, src = x.src,dest=x.dest,error=y })).SelectMany(x => x).ToList();
+            //var tasks = new List<Task<dynamic>>();
+            //List<dynamic> errorList = new List<dynamic>();
+            //foreach (var x in package)
+            //{
+            //    var y = new Task<dynamic>(() => new QueryController().getError(x.package.id));
+            //    y.Start();
+            //    tasks.Add(y);
+            //}
+            //Task.WaitAll(tasks.ToArray());
+            //foreach(var x in tasks)
+            //{
+            //    errorList.Add(x.Result);
+            //}
+            //int i = 0;
+            //foreach(var x in package)
+            //{
+            //    var result = new { package = x.package, src = x.src, dest = x.dest, error = errorList[i] };
+            //    list.Add(result);
+            //    i++;
+            //}
+            return package;
         }
         public dynamic getError(int id)
         {
