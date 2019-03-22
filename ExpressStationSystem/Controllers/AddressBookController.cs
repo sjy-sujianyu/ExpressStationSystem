@@ -249,7 +249,7 @@ namespace ExpressStationSystem.Controllers
                 bool flag = Post(x);
                 if (flag==false)
                 {
-                    return false;
+                    return true;
                 }
                 Delete(aclassNew.aId);
                 return true;

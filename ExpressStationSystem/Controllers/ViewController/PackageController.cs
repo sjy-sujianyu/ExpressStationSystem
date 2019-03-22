@@ -17,7 +17,7 @@ namespace ExpressStationSystem.Controllers.ViewController
             {
                 return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
             }
-            int pageNum = 7;
+            int pageNum = 20;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
             string defaultStatus = "选择分类";
@@ -63,10 +63,10 @@ namespace ExpressStationSystem.Controllers.ViewController
                 date2 = date1;
             }
             //包裹信息
-            List<int> PIDList = new ManagerController().GetAllPackage(Convert.ToDateTime(date1), Convert.ToDateTime(date2));
+            List<dynamic> PInfoList = new QueryController().GetAllInfoFast(Convert.ToDateTime(date1), Convert.ToDateTime(date2).AddDays(1));
             if (car != null && car != "")
             {
-                PIDList = new TransferController().GetPackageIdOnVehicle(Convert.ToInt32(car));
+                PInfoList = new VehicleController().GetPackageOnVehicle(Convert.ToInt32(car));
                 ViewBag.car = car;
             }
             else
@@ -80,9 +80,8 @@ namespace ExpressStationSystem.Controllers.ViewController
             //决定显示的前端数组
             List<dynamic> showPackage2 = new List<dynamic>();
             //第一次筛选，分类
-            foreach (var PID in PIDList)
+            foreach (var PackageInfo in PInfoList)
             {
-                var PackageInfo = new QueryController().GetAllInfo(PID);
                 var josnStr = JsonConvert.SerializeObject(PackageInfo);
                 JObject jo = (JObject)JsonConvert.DeserializeObject(josnStr);
 
@@ -93,7 +92,7 @@ namespace ExpressStationSystem.Controllers.ViewController
                 }
                 else if (PackageInfo.error.Count != 0 && status != defaultStatus)
                 {
-                    foreach(var err in PackageInfo.error)
+                    foreach (var err in PackageInfo.error)
                     {
                         if (err.status == status)
                         {
@@ -183,6 +182,17 @@ namespace ExpressStationSystem.Controllers.ViewController
 
             }
             ViewBag.showPackage = showPackage2;
+            //物流信息字典树
+            Dictionary<dynamic, dynamic> pathList = new Dictionary<dynamic, dynamic>();
+            //得到物流信息
+            foreach (var pack in showPackage2)
+            {
+                var pathInfo = new QueryController().GetAllInfo(Convert.ToInt32(pack.package.id));
+                var josnStr = JsonConvert.SerializeObject(pathInfo);
+                JObject jo = (JObject)JsonConvert.DeserializeObject(josnStr);
+                pathList.Add(pack.package.id, jo);
+            }
+            ViewBag.pathList = pathList;
             //前端要用到的数据
             if (showPackage.Count % pageNum == 0)
             {
