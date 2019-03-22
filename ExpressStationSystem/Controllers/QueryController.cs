@@ -185,7 +185,7 @@ namespace ExpressStationSystem.Controllers
         {
             List<dynamic> list = new List<dynamic>();
             db = new DataClasses1DataContext(connstr);
-            var package = db.Package.Where(a=> DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0)
+            var package = db.Package.Where(a=> DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0).OrderByDescending(a=>a.time)
                 .Join(db.AddressBook, a => a.sendId, b => b.aId, (a, b) => new { a = a, b = b })
                 .Join(db.AddressBook, a => a.a.receiverId, b => b.aId, (a, b) => new { package = a.a, src = a.b, dest = b })
                 .GroupJoin(db.Error, x => x.package.id, y => y.id, (x, y) => y.DefaultIfEmpty().Select(z => new { package = x.package, src = x.src,dest=x.dest,error=y.ToList() })).SelectMany(x => x).ToList();
