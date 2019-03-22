@@ -21,7 +21,7 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>按条件查询要揽件的包裹</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("PickUp/GetReadytoReceiveByCondition")]
-        public List<int> GetReadytoReceiveByCondition(string str,string type,int page,int pageSize)
+        public dynamic GetReadytoReceiveByCondition(string str,string type,int page,int pageSize)
         {
             if(str is null||type is null)
             {
@@ -29,23 +29,22 @@ namespace ExpressStationSystem.Controllers
             }
             db = new DataClasses1DataContext(connstr);
             var a = GetReadytoReceive(0,0);
-            List <int> list = new List<int>();
+            List <dynamic> list = new List<dynamic>();
             foreach (var x in a)
             {
-                var ob = new QueryController().GetAllInfo(x);
-                if(type=="单号"&&ob.package.id.ToString().StartsWith(str))
+                if(type=="单号"&&x.package.id.ToString().StartsWith(str))
                 {
                     list.Add(x);
                 }
-                else if(type=="姓名"&&ob.src.name.StartsWith(str))
+                else if(type=="姓名"&& x.src.name.StartsWith(str))
                 {
                     list.Add(x);
                 }
-                else if(type=="电话"&&ob.src.phone.StartsWith(str))
+                else if(type=="电话"&& x.src.phone.StartsWith(str))
                 {
                     list.Add(x);
                 }
-                else if(type=="街道"&&ob.src.street.StartsWith(str))
+                else if(type=="街道"&&x.src.street.StartsWith(str))
                 {
                     list.Add(x);
                 }
