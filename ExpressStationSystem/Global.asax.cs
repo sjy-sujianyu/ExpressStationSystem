@@ -24,10 +24,25 @@ namespace ExpressStationSystem
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             //Text();
+            moni();
             Thread thread = new Thread(new ParameterizedThreadStart(new MoneyController().ErrorPost));
             thread.IsBackground = true;
             thread.Start(sleepTime);
 
+        }
+        public void moni()
+        {
+            //Thread newlogin = new Thread(Simulation.Instance.AddNewLogin);
+            //newlogin.IsBackground = true;
+            //newlogin.Start();
+
+            //Thread newaddress = new Thread(Simulation.Instance.AddNewAddress);
+            //newaddress.IsBackground = true;
+            //newaddress.Start();
+
+            Thread newpackage = new Thread(new ParameterizedThreadStart(Simulation.Instance.OrderNewPackage));
+            newpackage.IsBackground = true;
+            newpackage.Start(3000);
         }
         public void Text()
         {
