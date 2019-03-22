@@ -26,7 +26,7 @@ namespace ExpressStationSystem.Controllers
             List<dynamic> list = new List<dynamic>();
             db = new DataClasses1DataContext(connstr);
             var package = db.Package
-                .Join(db.Transfer.Where(a => a.vId == vId), a => a.id, b => b.id, (a, b) => new { a = a })
+                .Join(db.Transfer.Where(a => a.vId == vId&&a.isDone==true), a => a.id, b => b.id, (a, b) => new { a = a })
                 .Join(db.AddressBook, a => a.a.sendId, b => b.aId, (a, b) => new { a = a.a, b = b })
                 .Join(db.AddressBook, a => a.a.receiverId, b => b.aId, (a, b) => new { package = a.a, src = a.b, dest = b });
 
