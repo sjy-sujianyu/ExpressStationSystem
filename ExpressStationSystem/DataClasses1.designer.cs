@@ -58,18 +58,18 @@ namespace ExpressStationSystem
     partial void InsertPackage(Package instance);
     partial void UpdatePackage(Package instance);
     partial void DeletePackage(Package instance);
-    partial void InsertPickUp(PickUp instance);
-    partial void UpdatePickUp(PickUp instance);
-    partial void DeletePickUp(PickUp instance);
-    partial void InsertVehicle(Vehicle instance);
-    partial void UpdateVehicle(Vehicle instance);
-    partial void DeleteVehicle(Vehicle instance);
-    partial void InsertTransfer(Transfer instance);
-    partial void UpdateTransfer(Transfer instance);
-    partial void DeleteTransfer(Transfer instance);
     partial void InsertPath(Path instance);
     partial void UpdatePath(Path instance);
     partial void DeletePath(Path instance);
+    partial void InsertPickUp(PickUp instance);
+    partial void UpdatePickUp(PickUp instance);
+    partial void DeletePickUp(PickUp instance);
+    partial void InsertTransfer(Transfer instance);
+    partial void UpdateTransfer(Transfer instance);
+    partial void DeleteTransfer(Transfer instance);
+    partial void InsertVehicle(Vehicle instance);
+    partial void UpdateVehicle(Vehicle instance);
+    partial void DeleteVehicle(Vehicle instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -174,19 +174,19 @@ namespace ExpressStationSystem
 			}
 		}
 		
+		public System.Data.Linq.Table<Path> Path
+		{
+			get
+			{
+				return this.GetTable<Path>();
+			}
+		}
+		
 		public System.Data.Linq.Table<PickUp> PickUp
 		{
 			get
 			{
 				return this.GetTable<PickUp>();
-			}
-		}
-		
-		public System.Data.Linq.Table<Vehicle> Vehicle
-		{
-			get
-			{
-				return this.GetTable<Vehicle>();
 			}
 		}
 		
@@ -198,11 +198,11 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		public System.Data.Linq.Table<Path> Path
+		public System.Data.Linq.Table<Vehicle> Vehicle
 		{
 			get
 			{
-				return this.GetTable<Path>();
+				return this.GetTable<Vehicle>();
 			}
 		}
 	}
@@ -1947,7 +1947,7 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_baseSalary", DbType="Decimal(10,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_baseSalary", DbType="Decimal(10,2) NOT NULL")]
 		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
 		public decimal baseSalary
 		{
@@ -2550,11 +2550,11 @@ namespace ExpressStationSystem
 		
 		private EntitySet<Error> _Error;
 		
+		private EntitySet<Path> _Path;
+		
 		private EntitySet<PickUp> _PickUp;
 		
 		private EntitySet<Transfer> _Transfer;
-		
-		private EntitySet<Path> _Path;
 		
 		private EntityRef<AddressBook> _AddressBook;
 		
@@ -2855,8 +2855,27 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_PickUp", Storage="_PickUp", ThisKey="id", OtherKey="id")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Path", Storage="_Path", ThisKey="id", OtherKey="id")]
 		[global::System.Runtime.Serialization.DataMemberAttribute(Order=13, EmitDefaultValue=false)]
+		public EntitySet<Path> Path
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._Path.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._Path;
+			}
+			set
+			{
+				this._Path.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_PickUp", Storage="_PickUp", ThisKey="id", OtherKey="id")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=14, EmitDefaultValue=false)]
 		public EntitySet<PickUp> PickUp
 		{
 			get
@@ -2875,7 +2894,7 @@ namespace ExpressStationSystem
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Transfer", Storage="_Transfer", ThisKey="id", OtherKey="id")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=14, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=15, EmitDefaultValue=false)]
 		public EntitySet<Transfer> Transfer
 		{
 			get
@@ -2890,25 +2909,6 @@ namespace ExpressStationSystem
 			set
 			{
 				this._Transfer.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Path", Storage="_Path", ThisKey="id", OtherKey="id")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=15, EmitDefaultValue=false)]
-		public EntitySet<Path> Path
-		{
-			get
-			{
-				if ((this.serializing 
-							&& (this._Path.HasLoadedOrAssignedValues == false)))
-				{
-					return null;
-				}
-				return this._Path;
-			}
-			set
-			{
-				this._Path.Assign(value);
 			}
 		}
 		
@@ -3058,6 +3058,18 @@ namespace ExpressStationSystem
 			entity.Package = null;
 		}
 		
+		private void attach_Path(Path entity)
+		{
+			this.SendPropertyChanging();
+			entity.Package = this;
+		}
+		
+		private void detach_Path(Path entity)
+		{
+			this.SendPropertyChanging();
+			entity.Package = null;
+		}
+		
 		private void attach_PickUp(PickUp entity)
 		{
 			this.SendPropertyChanging();
@@ -3082,25 +3094,13 @@ namespace ExpressStationSystem
 			entity.Package = null;
 		}
 		
-		private void attach_Path(Path entity)
-		{
-			this.SendPropertyChanging();
-			entity.Package = this;
-		}
-		
-		private void detach_Path(Path entity)
-		{
-			this.SendPropertyChanging();
-			entity.Package = null;
-		}
-		
 		private void Initialize()
 		{
 			this._Delivery = new EntitySet<Delivery>(new Action<Delivery>(this.attach_Delivery), new Action<Delivery>(this.detach_Delivery));
 			this._Error = new EntitySet<Error>(new Action<Error>(this.attach_Error), new Action<Error>(this.detach_Error));
+			this._Path = new EntitySet<Path>(new Action<Path>(this.attach_Path), new Action<Path>(this.detach_Path));
 			this._PickUp = new EntitySet<PickUp>(new Action<PickUp>(this.attach_PickUp), new Action<PickUp>(this.detach_PickUp));
 			this._Transfer = new EntitySet<Transfer>(new Action<Transfer>(this.attach_Transfer), new Action<Transfer>(this.detach_Transfer));
-			this._Path = new EntitySet<Path>(new Action<Path>(this.attach_Path), new Action<Path>(this.detach_Path));
 			this._AddressBook = default(EntityRef<AddressBook>);
 			this._AddressBook1 = default(EntityRef<AddressBook>);
 			this._Login = default(EntityRef<Login>);
@@ -3126,6 +3126,273 @@ namespace ExpressStationSystem
 		public void OnSerialized(StreamingContext context)
 		{
 			this.serializing = false;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Path")]
+	[global::System.Runtime.Serialization.DataContractAttribute()]
+	public partial class Path : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _pId;
+		
+		private int _id;
+		
+		private string _srcPlace;
+		
+		private string _destPlace;
+		
+		private string _curPlace;
+		
+		private bool _isArrival;
+		
+		private System.DateTime _time;
+		
+		private EntityRef<Package> _Package;
+		
+    #region 可扩展性方法定义
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnpIdChanging(int value);
+    partial void OnpIdChanged();
+    partial void OnidChanging(int value);
+    partial void OnidChanged();
+    partial void OnsrcPlaceChanging(string value);
+    partial void OnsrcPlaceChanged();
+    partial void OndestPlaceChanging(string value);
+    partial void OndestPlaceChanged();
+    partial void OncurPlaceChanging(string value);
+    partial void OncurPlaceChanged();
+    partial void OnisArrivalChanging(bool value);
+    partial void OnisArrivalChanged();
+    partial void OntimeChanging(System.DateTime value);
+    partial void OntimeChanged();
+    #endregion
+		
+		public Path()
+		{
+			this.Initialize();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_pId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+		public int pId
+		{
+			get
+			{
+				return this._pId;
+			}
+			set
+			{
+				if ((this._pId != value))
+				{
+					this.OnpIdChanging(value);
+					this.SendPropertyChanging();
+					this._pId = value;
+					this.SendPropertyChanged("pId");
+					this.OnpIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+		public int id
+		{
+			get
+			{
+				return this._id;
+			}
+			set
+			{
+				if ((this._id != value))
+				{
+					if (this._Package.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnidChanging(value);
+					this.SendPropertyChanging();
+					this._id = value;
+					this.SendPropertyChanged("id");
+					this.OnidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_srcPlace", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+		public string srcPlace
+		{
+			get
+			{
+				return this._srcPlace;
+			}
+			set
+			{
+				if ((this._srcPlace != value))
+				{
+					this.OnsrcPlaceChanging(value);
+					this.SendPropertyChanging();
+					this._srcPlace = value;
+					this.SendPropertyChanged("srcPlace");
+					this.OnsrcPlaceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_destPlace", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+		public string destPlace
+		{
+			get
+			{
+				return this._destPlace;
+			}
+			set
+			{
+				if ((this._destPlace != value))
+				{
+					this.OndestPlaceChanging(value);
+					this.SendPropertyChanging();
+					this._destPlace = value;
+					this.SendPropertyChanged("destPlace");
+					this.OndestPlaceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_curPlace", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+		public string curPlace
+		{
+			get
+			{
+				return this._curPlace;
+			}
+			set
+			{
+				if ((this._curPlace != value))
+				{
+					this.OncurPlaceChanging(value);
+					this.SendPropertyChanging();
+					this._curPlace = value;
+					this.SendPropertyChanged("curPlace");
+					this.OncurPlaceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isArrival", DbType="Bit NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
+		public bool isArrival
+		{
+			get
+			{
+				return this._isArrival;
+			}
+			set
+			{
+				if ((this._isArrival != value))
+				{
+					this.OnisArrivalChanging(value);
+					this.SendPropertyChanging();
+					this._isArrival = value;
+					this.SendPropertyChanged("isArrival");
+					this.OnisArrivalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_time", DbType="DateTime NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
+		public System.DateTime time
+		{
+			get
+			{
+				return this._time;
+			}
+			set
+			{
+				if ((this._time != value))
+				{
+					this.OntimeChanging(value);
+					this.SendPropertyChanging();
+					this._time = value;
+					this.SendPropertyChanged("time");
+					this.OntimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Path", Storage="_Package", ThisKey="id", OtherKey="id", IsForeignKey=true)]
+		public Package Package
+		{
+			get
+			{
+				return this._Package.Entity;
+			}
+			set
+			{
+				Package previousValue = this._Package.Entity;
+				if (((previousValue != value) 
+							|| (this._Package.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Package.Entity = null;
+						previousValue.Path.Remove(this);
+					}
+					this._Package.Entity = value;
+					if ((value != null))
+					{
+						value.Path.Add(this);
+						this._id = value.id;
+					}
+					else
+					{
+						this._id = default(int);
+					}
+					this.SendPropertyChanged("Package");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._Package = default(EntityRef<Package>);
+			OnCreated();
+		}
+		
+		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
 		}
 	}
 	
@@ -3359,257 +3626,6 @@ namespace ExpressStationSystem
 		public void OnDeserializing(StreamingContext context)
 		{
 			this.Initialize();
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Vehicle")]
-	[global::System.Runtime.Serialization.DataContractAttribute()]
-	public partial class Vehicle : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _vId;
-		
-		private string _type;
-		
-		private bool _isDelete;
-		
-		private bool _onDuty;
-		
-		private string _plateNumber;
-		
-		private System.DateTime _time;
-		
-		private EntitySet<Transfer> _Transfer;
-		
-		private bool serializing;
-		
-    #region 可扩展性方法定义
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnvIdChanging(int value);
-    partial void OnvIdChanged();
-    partial void OntypeChanging(string value);
-    partial void OntypeChanged();
-    partial void OnisDeleteChanging(bool value);
-    partial void OnisDeleteChanged();
-    partial void OnonDutyChanging(bool value);
-    partial void OnonDutyChanged();
-    partial void OnplateNumberChanging(string value);
-    partial void OnplateNumberChanged();
-    partial void OntimeChanging(System.DateTime value);
-    partial void OntimeChanged();
-    #endregion
-		
-		public Vehicle()
-		{
-			this.Initialize();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
-		public int vId
-		{
-			get
-			{
-				return this._vId;
-			}
-			set
-			{
-				if ((this._vId != value))
-				{
-					this.OnvIdChanging(value);
-					this.SendPropertyChanging();
-					this._vId = value;
-					this.SendPropertyChanged("vId");
-					this.OnvIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
-		public string type
-		{
-			get
-			{
-				return this._type;
-			}
-			set
-			{
-				if ((this._type != value))
-				{
-					this.OntypeChanging(value);
-					this.SendPropertyChanging();
-					this._type = value;
-					this.SendPropertyChanged("type");
-					this.OntypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isDelete", DbType="Bit NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
-		public bool isDelete
-		{
-			get
-			{
-				return this._isDelete;
-			}
-			set
-			{
-				if ((this._isDelete != value))
-				{
-					this.OnisDeleteChanging(value);
-					this.SendPropertyChanging();
-					this._isDelete = value;
-					this.SendPropertyChanged("isDelete");
-					this.OnisDeleteChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_onDuty", DbType="Bit NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
-		public bool onDuty
-		{
-			get
-			{
-				return this._onDuty;
-			}
-			set
-			{
-				if ((this._onDuty != value))
-				{
-					this.OnonDutyChanging(value);
-					this.SendPropertyChanging();
-					this._onDuty = value;
-					this.SendPropertyChanged("onDuty");
-					this.OnonDutyChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_plateNumber", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
-		public string plateNumber
-		{
-			get
-			{
-				return this._plateNumber;
-			}
-			set
-			{
-				if ((this._plateNumber != value))
-				{
-					this.OnplateNumberChanging(value);
-					this.SendPropertyChanging();
-					this._plateNumber = value;
-					this.SendPropertyChanged("plateNumber");
-					this.OnplateNumberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_time", DbType="DateTime NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
-		public System.DateTime time
-		{
-			get
-			{
-				return this._time;
-			}
-			set
-			{
-				if ((this._time != value))
-				{
-					this.OntimeChanging(value);
-					this.SendPropertyChanging();
-					this._time = value;
-					this.SendPropertyChanged("time");
-					this.OntimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Vehicle_Transfer", Storage="_Transfer", ThisKey="vId", OtherKey="vId")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7, EmitDefaultValue=false)]
-		public EntitySet<Transfer> Transfer
-		{
-			get
-			{
-				if ((this.serializing 
-							&& (this._Transfer.HasLoadedOrAssignedValues == false)))
-				{
-					return null;
-				}
-				return this._Transfer;
-			}
-			set
-			{
-				this._Transfer.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Transfer(Transfer entity)
-		{
-			this.SendPropertyChanging();
-			entity.Vehicle = this;
-		}
-		
-		private void detach_Transfer(Transfer entity)
-		{
-			this.SendPropertyChanging();
-			entity.Vehicle = null;
-		}
-		
-		private void Initialize()
-		{
-			this._Transfer = new EntitySet<Transfer>(new Action<Transfer>(this.attach_Transfer), new Action<Transfer>(this.detach_Transfer));
-			OnCreated();
-		}
-		
-		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
-		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnDeserializing(StreamingContext context)
-		{
-			this.Initialize();
-		}
-		
-		[global::System.Runtime.Serialization.OnSerializingAttribute()]
-		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnSerializing(StreamingContext context)
-		{
-			this.serializing = true;
-		}
-		
-		[global::System.Runtime.Serialization.OnSerializedAttribute()]
-		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnSerialized(StreamingContext context)
-		{
-			this.serializing = false;
 		}
 	}
 	
@@ -3912,186 +3928,159 @@ namespace ExpressStationSystem
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Path")]
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Vehicle")]
 	[global::System.Runtime.Serialization.DataContractAttribute()]
-	public partial class Path : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Vehicle : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _pId;
+		private int _vId;
 		
-		private int _id;
+		private string _type;
 		
-		private string _srcPlace;
+		private bool _isDelete;
 		
-		private string _destPlace;
+		private bool _onDuty;
 		
-		private string _curPlace;
-		
-		private bool _isArrival;
+		private string _plateNumber;
 		
 		private System.DateTime _time;
 		
-		private EntityRef<Package> _Package;
+		private EntitySet<Transfer> _Transfer;
+		
+		private bool serializing;
 		
     #region 可扩展性方法定义
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnpIdChanging(int value);
-    partial void OnpIdChanged();
-    partial void OnidChanging(int value);
-    partial void OnidChanged();
-    partial void OnsrcPlaceChanging(string value);
-    partial void OnsrcPlaceChanged();
-    partial void OndestPlaceChanging(string value);
-    partial void OndestPlaceChanged();
-    partial void OncurPlaceChanging(string value);
-    partial void OncurPlaceChanged();
-    partial void OnisArrivalChanging(bool value);
-    partial void OnisArrivalChanged();
+    partial void OnvIdChanging(int value);
+    partial void OnvIdChanged();
+    partial void OntypeChanging(string value);
+    partial void OntypeChanged();
+    partial void OnisDeleteChanging(bool value);
+    partial void OnisDeleteChanged();
+    partial void OnonDutyChanging(bool value);
+    partial void OnonDutyChanged();
+    partial void OnplateNumberChanging(string value);
+    partial void OnplateNumberChanged();
     partial void OntimeChanging(System.DateTime value);
     partial void OntimeChanged();
     #endregion
 		
-		public Path()
+		public Vehicle()
 		{
 			this.Initialize();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_pId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_vId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
-		public int pId
+		public int vId
 		{
 			get
 			{
-				return this._pId;
+				return this._vId;
 			}
 			set
 			{
-				if ((this._pId != value))
+				if ((this._vId != value))
 				{
-					this.OnpIdChanging(value);
+					this.OnvIdChanging(value);
 					this.SendPropertyChanging();
-					this._pId = value;
-					this.SendPropertyChanged("pId");
-					this.OnpIdChanged();
+					this._vId = value;
+					this.SendPropertyChanged("vId");
+					this.OnvIdChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", DbType="Int NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_type", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
 		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
-		public int id
+		public string type
 		{
 			get
 			{
-				return this._id;
+				return this._type;
 			}
 			set
 			{
-				if ((this._id != value))
+				if ((this._type != value))
 				{
-					if (this._Package.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnidChanging(value);
+					this.OntypeChanging(value);
 					this.SendPropertyChanging();
-					this._id = value;
-					this.SendPropertyChanged("id");
-					this.OnidChanged();
+					this._type = value;
+					this.SendPropertyChanged("type");
+					this.OntypeChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_srcPlace", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isDelete", DbType="Bit NOT NULL")]
 		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
-		public string srcPlace
+		public bool isDelete
 		{
 			get
 			{
-				return this._srcPlace;
+				return this._isDelete;
 			}
 			set
 			{
-				if ((this._srcPlace != value))
+				if ((this._isDelete != value))
 				{
-					this.OnsrcPlaceChanging(value);
+					this.OnisDeleteChanging(value);
 					this.SendPropertyChanging();
-					this._srcPlace = value;
-					this.SendPropertyChanged("srcPlace");
-					this.OnsrcPlaceChanged();
+					this._isDelete = value;
+					this.SendPropertyChanged("isDelete");
+					this.OnisDeleteChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_destPlace", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_onDuty", DbType="Bit NOT NULL")]
 		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
-		public string destPlace
+		public bool onDuty
 		{
 			get
 			{
-				return this._destPlace;
+				return this._onDuty;
 			}
 			set
 			{
-				if ((this._destPlace != value))
+				if ((this._onDuty != value))
 				{
-					this.OndestPlaceChanging(value);
+					this.OnonDutyChanging(value);
 					this.SendPropertyChanging();
-					this._destPlace = value;
-					this.SendPropertyChanged("destPlace");
-					this.OndestPlaceChanged();
+					this._onDuty = value;
+					this.SendPropertyChanged("onDuty");
+					this.OnonDutyChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_curPlace", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_plateNumber", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
 		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
-		public string curPlace
+		public string plateNumber
 		{
 			get
 			{
-				return this._curPlace;
+				return this._plateNumber;
 			}
 			set
 			{
-				if ((this._curPlace != value))
+				if ((this._plateNumber != value))
 				{
-					this.OncurPlaceChanging(value);
+					this.OnplateNumberChanging(value);
 					this.SendPropertyChanging();
-					this._curPlace = value;
-					this.SendPropertyChanged("curPlace");
-					this.OncurPlaceChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isArrival", DbType="Bit NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
-		public bool isArrival
-		{
-			get
-			{
-				return this._isArrival;
-			}
-			set
-			{
-				if ((this._isArrival != value))
-				{
-					this.OnisArrivalChanging(value);
-					this.SendPropertyChanging();
-					this._isArrival = value;
-					this.SendPropertyChanged("isArrival");
-					this.OnisArrivalChanged();
+					this._plateNumber = value;
+					this.SendPropertyChanged("plateNumber");
+					this.OnplateNumberChanged();
 				}
 			}
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_time", DbType="DateTime NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
 		public System.DateTime time
 		{
 			get
@@ -4111,37 +4100,22 @@ namespace ExpressStationSystem
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Path", Storage="_Package", ThisKey="id", OtherKey="id", IsForeignKey=true)]
-		public Package Package
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Vehicle_Transfer", Storage="_Transfer", ThisKey="vId", OtherKey="vId")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7, EmitDefaultValue=false)]
+		public EntitySet<Transfer> Transfer
 		{
 			get
 			{
-				return this._Package.Entity;
+				if ((this.serializing 
+							&& (this._Transfer.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._Transfer;
 			}
 			set
 			{
-				Package previousValue = this._Package.Entity;
-				if (((previousValue != value) 
-							|| (this._Package.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Package.Entity = null;
-						previousValue.Path.Remove(this);
-					}
-					this._Package.Entity = value;
-					if ((value != null))
-					{
-						value.Path.Add(this);
-						this._id = value.id;
-					}
-					else
-					{
-						this._id = default(int);
-					}
-					this.SendPropertyChanged("Package");
-				}
+				this._Transfer.Assign(value);
 			}
 		}
 		
@@ -4165,9 +4139,21 @@ namespace ExpressStationSystem
 			}
 		}
 		
+		private void attach_Transfer(Transfer entity)
+		{
+			this.SendPropertyChanging();
+			entity.Vehicle = this;
+		}
+		
+		private void detach_Transfer(Transfer entity)
+		{
+			this.SendPropertyChanging();
+			entity.Vehicle = null;
+		}
+		
 		private void Initialize()
 		{
-			this._Package = default(EntityRef<Package>);
+			this._Transfer = new EntitySet<Transfer>(new Action<Transfer>(this.attach_Transfer), new Action<Transfer>(this.detach_Transfer));
 			OnCreated();
 		}
 		
@@ -4176,6 +4162,20 @@ namespace ExpressStationSystem
 		public void OnDeserializing(StreamingContext context)
 		{
 			this.Initialize();
+		}
+		
+		[global::System.Runtime.Serialization.OnSerializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[global::System.Runtime.Serialization.OnSerializedAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
 		}
 	}
 }
