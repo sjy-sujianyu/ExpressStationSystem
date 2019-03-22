@@ -63,7 +63,7 @@ namespace ExpressStationSystem.Controllers.ViewController
                 date2 = date1;
             }
             //包裹信息
-            List<dynamic> PInfoList = new QueryController().GetAllInfoFast(Convert.ToDateTime(date1), Convert.ToDateTime(date2).AddDays(1));
+            dynamic PInfoList = new QueryController().GetAllInfoFast(Convert.ToDateTime(date1), Convert.ToDateTime(date2).AddDays(1));
             if (car != null && car != "")
             {
                 PInfoList = new VehicleController().GetPackageOnVehicle(Convert.ToInt32(car));
