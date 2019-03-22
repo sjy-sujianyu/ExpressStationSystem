@@ -133,7 +133,7 @@ namespace ExpressStationSystem.Controllers
         public List<dynamic> GetReadytoReceive()
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Package join b in db.AddressBook  on a.sendId equals b.aId join c in db.AddressBook on a.receiverId equals c.aId  where a.status == "已下单"&&b.street.Contains("华南农业大学") select a;
+            var selectQuery = from a in db.Package join b in db.AddressBook  on a.sendId equals b.aId join c in db.AddressBook on a.receiverId equals c.aId  where a.status == "已下单"&&b.street.Contains("华南农业大学") select new { package = a, src = b, dest = c };
             List<dynamic> list = new List<dynamic>();
             foreach (var x in selectQuery)
             {
