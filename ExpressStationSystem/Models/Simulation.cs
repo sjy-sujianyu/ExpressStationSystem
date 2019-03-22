@@ -84,11 +84,29 @@ namespace ExpressStationSystem.Models
         public string NewName()
         {
             Random rand = new Random();
-            string name = "";
-            for(int i = 0; i <= 4; ++i)
-            {
-                name += Convert.ToChar(rand.Next(26) + 'a');
-            }
+
+            string[] nameS3 = new string[] { "赵", "钱", "孙", "李", "周", "吴", "郑", "王", "冯",
+ "陈", "褚", "卫", "蒋", "沈", "韩", "杨", "朱", "秦", "尤", "许", "何", "吕", "施",
+ "张", "孔", "曹", "严", "华", "金", "魏", "陶", "姜", "戚", "谢", "邹", "喻", "柏",
+ "水", "窦", "章", "云", "苏", "潘", "葛", "奚", "范", "彭", "郎" };
+
+            string[] nameS2 = new string[] {"鲁","韦","昌","马","苗","凤","花","方","俞","任","袁"
+ ,"柳","酆","鲍","史","唐","费","廉","岑","薛","雷","贺","倪","汤","滕","殷","罗",
+ "毕","郝","邬","安","常","乐","于","时","傅","皮","卞","齐","康","伍","余","元",
+ "卜","顾","孟","平","黄"};
+
+            string[] nameS1 = new string[] { "梅", "盛", "林", "刁", "锺", "徐", "邱", "骆", "高",
+ "夏", "蔡", "樊", "胡", "凌", "霍", "虞", "万", "支", "柯", "昝", "管", "卢", "莫",
+ "经", "房", "裘", "缪", "干", "解", "应", "宗", "丁", "宣", "贲", "邓", "郁", "单",
+ "杭", "洪", "包", "诸", "左", "石", "崔", "吉", "钮", "龚", "程", "嵇", "邢", "滑",
+ "裴", "陆", "荣", "翁", "荀", "羊", "於", "惠", "甄", "麴", "家", "封", "芮", "羿",
+ "储", "靳", "汲", "邴", "糜", "松", "井" };
+
+            string s1 = nameS1[rand.Next(0, nameS1.Length - 1)];
+            string s2 = nameS2[rand.Next(0, nameS2.Length - 1)];
+            string s3 = nameS3[rand.Next(0, nameS3.Length - 1)];
+            string name = s1 + s2 + s3;
+           
             return name;
         }
 
@@ -99,12 +117,13 @@ namespace ExpressStationSystem.Models
             {
                 try
                 {
-                    int x = rand.Next(2);
+                    int x = rand.Next(1000);
                     AddressBookClass address = new AddressBookClass();
                     var alllogin = new LoginController().GetAll();
                     address.account = alllogin[rand.Next(alllogin.Count)];
                     address.name = NewName();
-                    if (x == 0)
+                    address.phone = address.account;
+                    if (x%2 == 0)
                     {
                         address.province = "广东省";
                         address.city = "广州市";
@@ -125,7 +144,7 @@ namespace ExpressStationSystem.Models
                         address.city = city;
                         address.street = street;
                         
-                        address.phone = address.account;
+                        
                     }
                     new AddressBookController().Post(address);
                 }
@@ -135,7 +154,7 @@ namespace ExpressStationSystem.Models
                 }
                 try
                 {
-                    Thread.Sleep(10000);
+                    Thread.Sleep(1000);
                 }
                 catch (Exception e)
                 {
