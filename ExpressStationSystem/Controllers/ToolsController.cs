@@ -221,7 +221,39 @@ namespace ExpressStationSystem.Controllers
             }
             return tOut;
         }
+        [HttpGet, Route("Tools/splitpage")]
+        public dynamic splitpage(List<dynamic> list, int page, int pagesize)
+        {
+            if (page == 0 && pagesize == 0)
+            {
+                return list;
+            }
+            //总页码数
+            int totalpages = list.Count()/ pagesize;
+            if (list.Count() % pagesize > 0) totalpages++;
+
+            if (page > totalpages)
+            {
+                return null;
+            }
+
+            List<dynamic> result = new List<dynamic>();
+            int curpage = 1;
+            for (int i = 0; i < list.Count(); i++)
+            {
+                if (i != 0 && i % pagesize == 0)
+                {
+                    curpage++;
+                }
+                if (curpage == page)
+                {
+                    result.Add(list[i]);
+                }
+
+            }
+            return new { content = result, curpage = page,pageSize= pagesize, totalpages = totalpages };
+        }
     }
 
-        
+
 }

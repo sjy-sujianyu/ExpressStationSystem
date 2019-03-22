@@ -24,7 +24,7 @@ namespace ExpressStationSystem
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             //Text();
-            moni();
+            //moni();
             Thread thread = new Thread(new ParameterizedThreadStart(new MoneyController().ErrorPost));
             thread.IsBackground = true;
             thread.Start(sleepTime);

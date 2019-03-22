@@ -24,36 +24,36 @@ namespace ExpressStationSystem
         /// <remarks>按条件查询要派件的包裹</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Delivery/GetReadytoDeliveryByCondition")]
-        public List<int> GetReadytoDeliveryByCondition(string str, string type)
+        public List<int> GetReadytoDeliveryByCondition(string str, string type,int page,int pageSize)
         {
             if (str is null || type is null)
             {
                 return null;
             }
             db = new DataClasses1DataContext(connstr);
-            var a = GetReadytoDelivery();
-            List<int> list = new List<int>();
+            var a = GetReadytoDelivery(0,0);
+            List<dynamic> list = new List<dynamic>();
             foreach (var x in a)
             {
                 var ob = new QueryController().GetAllInfo(x);
-                if (type == "单号" && ob.package.id.ToString().StartsWith(str))
+                if (type == "单号" && x.package.id.ToString().StartsWith(str))
                 {
                     list.Add(x);
                 }
-                else if (type == "姓名" && ob.src.name.StartsWith(str))
+                else if (type == "姓名" && x.src.name.StartsWith(str))
                 {
                     list.Add(x);
                 }
-                else if (type == "电话" && ob.src.phone.StartsWith(str))
+                else if (type == "电话" && x.src.phone.StartsWith(str))
                 {
                     list.Add(x);
                 }
-                else if (type == "街道" && ob.src.street.StartsWith(str))
+                else if (type == "街道" && x.src.street.StartsWith(str))
                 {
                     list.Add(x);
                 }
             }
-            return list;
+            return new ToolsController().splitpage(list, page, pageSize);
         }
 
         // GET: api/Delivery/GetDeliveringByCondition
@@ -107,16 +107,17 @@ namespace ExpressStationSystem
         /// <remarks>获取待派件的包裹ID</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Delivery/GetReadytoDelivery")]
-        public List<int> GetReadytoDelivery()
+        public dynamic GetReadytoDelivery(int page,int pageSize)
         {
             db = new DataClasses1DataContext(connstr);
-            var readytoDelivery = db.Package.Where(a=>a.status=="已扫件").Join(db.AddressBook.Where(a=>a.street.Contains("华南农业大学")), a => a.receiverId, b => b.aId, (a, b) => a.id);
-            List<int> list = new List<int>();
+            var readytoDelivery = from a in db.Package join b in db.AddressBook on a.sendId equals b.aId join c in db.AddressBook on a.receiverId equals c.aId where a.status == "已扫件" && c.street.Contains("华南农业大学") select new { package = a, src = b, dest = c };
+
+            List<dynamic> list = new List<dynamic>();
             foreach (var x in readytoDelivery)
             {
                 list.Add(x);
             }
-            return list;
+            return new ToolsController().splitpage(list, page, pageSize);
         }
 
         // Post: api/Delivery/Post

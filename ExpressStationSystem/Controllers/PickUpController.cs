@@ -21,36 +21,35 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>按条件查询要揽件的包裹</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("PickUp/GetReadytoReceiveByCondition")]
-        public List<int> GetReadytoReceiveByCondition(string str,string type)
+        public dynamic GetReadytoReceiveByCondition(string str,string type,int page,int pageSize)
         {
             if(str is null||type is null)
             {
                 return null;
             }
             db = new DataClasses1DataContext(connstr);
-            var a = GetReadytoReceive();
-            List <int> list = new List<int>();
+            var a = GetReadytoReceive(0,0);
+            List <dynamic> list = new List<dynamic>();
             foreach (var x in a)
             {
-                var ob = new QueryController().GetAllInfo(x);
-                if(type=="单号"&&ob.package.id.ToString().StartsWith(str))
+                if(type=="单号"&&x.package.id.ToString().StartsWith(str))
                 {
                     list.Add(x);
                 }
-                else if(type=="姓名"&&ob.src.name.StartsWith(str))
+                else if(type=="姓名"&& x.src.name.StartsWith(str))
                 {
                     list.Add(x);
                 }
-                else if(type=="电话"&&ob.src.phone.StartsWith(str))
+                else if(type=="电话"&& x.src.phone.StartsWith(str))
                 {
                     list.Add(x);
                 }
-                else if(type=="街道"&&ob.src.street.StartsWith(str))
+                else if(type=="街道"&&x.src.street.StartsWith(str))
                 {
                     list.Add(x);
                 }
             }
-            return list;
+            return new ToolsController().splitpage(list, page, pageSize);
         }
 
         // GET: api/PickUp/GetReceivingByCondition
@@ -130,16 +129,16 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>获取待揽件的包裹ID</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("PickUp/GetReadytoReceive")]
-        public List<dynamic> GetReadytoReceive()
+        public dynamic GetReadytoReceive(int page,int pageSize)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Package join b in db.AddressBook  on a.sendId equals b.aId join c in db.AddressBook on a.receiverId equals c.aId  where a.status == "已下单"&&b.street.Contains("华南农业大学") select new { package = a, src = b, dest = c };
+            var selectQuery = from a in db.Package join b in db.AddressBook  on a.sendId equals b.aId join c in db.AddressBook on a.receiverId equals c.aId  where a.status == "已下单"&&b.street.Contains("华南农业大学") orderby a.time descending select new { package = a, src = b, dest = c };
             List<dynamic> list = new List<dynamic>();
             foreach (var x in selectQuery)
             {
                 list.Add(x);
             }
-            return list;
+            return new ToolsController().splitpage(list,page,pageSize);
         }
 
         // GET: api/PickUp/GetReceiving
