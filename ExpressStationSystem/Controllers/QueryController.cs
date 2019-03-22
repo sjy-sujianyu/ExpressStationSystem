@@ -188,7 +188,16 @@ namespace ExpressStationSystem.Controllers
             var package = db.Package.Where(a=> DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0)
                 .Join(db.AddressBook, a => a.sendId, b => b.aId, (a, b) => new { a = a, b = b })
                 .Join(db.AddressBook, a => a.a.receiverId, b => b.aId, (a, b) => new { package = a.a, src = a.b, dest = b })
-                .GroupJoin(db.Error, x => x.package.id, y => y.id, (x, y) => y.DefaultIfEmpty().Select(z => new { package = x.package, src = x.src,dest=x.dest,error=y })).SelectMany(x => x).GroupBy(a=>a.package.id).Select(g=>g.First());
+                .GroupJoin(db.Error, x => x.package.id, y => y.id, (x, y) => y.DefaultIfEmpty().Select(z => new { package = x.package, src = x.src,dest=x.dest,error=y.ToList() })).SelectMany(x => x).ToList();
+            HashSet<int> set = new HashSet<int>();
+            List<dynamic> result = new List<dynamic>();
+            foreach(var x in package)
+            {
+                if (set.Add(x.package.id))
+                {
+                    result.Add(x);
+                }
+            }
             //var tasks = new List<Task<dynamic>>();
             //List<dynamic> errorList = new List<dynamic>();
             //foreach (var x in package)
@@ -209,7 +218,7 @@ namespace ExpressStationSystem.Controllers
             //    list.Add(result);
             //    i++;
             //}
-            return package;
+            return result;
         }
         public dynamic getError(int id)
         {
