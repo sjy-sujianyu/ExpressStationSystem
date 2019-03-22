@@ -163,11 +163,17 @@ namespace ExpressStationSystem.Models
             }
         }
 
-        public void OrderNewPackage()
+        public void OrderNewPackage(object cnt)
         {
             Random rand = new Random();
+            int count =(int) cnt;
             while (true)
             {
+                count--;
+                if (count == 0)
+                {
+                    break;
+                }
 
                 var addresslist1 = new AddressBookController().GetAll();
                 var addresslist2 = new AddressBookController().GetAllSCAU();
@@ -194,7 +200,7 @@ namespace ExpressStationSystem.Models
                 new PackageController().Post(p);
                 try
                 {
-                    Thread.Sleep(10000);
+                    Thread.Sleep(100);
                 }catch(Exception e)
                 {
 
