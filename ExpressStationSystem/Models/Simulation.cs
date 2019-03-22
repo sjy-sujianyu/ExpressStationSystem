@@ -5,6 +5,7 @@ using System.Threading;
 using System.Web;
 using System.Xml;
 using ExpressStationSystem.Controllers;
+using System.Linq;
 
 namespace ExpressStationSystem.Models
 {
@@ -13,6 +14,9 @@ namespace ExpressStationSystem.Models
         private static readonly Simulation instance = new Simulation();
 
         public static Simulation Instance => instance;
+
+        private static string connstr = @"Data Source=172.16.34.153;Initial Catalog=Express;User ID=sa;Password=123456;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private DataClasses1DataContext db;
 
         private string[] telStarts = "134,135,136,137,138,139,150,151,152,157,158,159,130,131,132,155,156,133,153,180,181,182,183,185,186,176,187,188,189,177,178".Split(',');
         string NewPhone()
@@ -45,7 +49,7 @@ namespace ExpressStationSystem.Models
             }
         }
 
-        public static List<String> getProvince(XmlDocument doc)
+        public List<String> getProvince(XmlDocument doc)
         {
             List<String> provincelist = new List<string>();
             XmlNode provinces = doc.SelectSingleNode("/root");
@@ -56,7 +60,7 @@ namespace ExpressStationSystem.Models
             return provincelist;
         }
 
-        public static List<String> getCity(XmlDocument doc, String provincestr)
+        public List<String> getCity(XmlDocument doc, String provincestr)
         {
             List<String> citylist = new List<string>();
             string xpath = string.Format("/root/province[@name='{0}']/city", provincestr);
@@ -68,7 +72,7 @@ namespace ExpressStationSystem.Models
             return citylist;
         }
 
-        public static List<String> getCounty(XmlDocument doc, String provincestr, String citystr)
+        public List<String> getCounty(XmlDocument doc, String provincestr, String citystr)
         {
             List<String> qulist = new List<string>();
             string xpath = string.Format("/root/province[@name='{0}']/city[@name='{1}']/district", provincestr, citystr);
@@ -207,6 +211,40 @@ namespace ExpressStationSystem.Models
                 }
             }
 
+        }
+
+        public void NewPath()
+        {
+            db = new DataClasses1DataContext(connstr);
+            Random rand = new Random();
+            while (true)
+            {
+                List<Package> traning = db.Package.Where(a => a.status == "运输中" || a.status == "已下单").ToList();
+                var p = traning[rand.Next(traning.Count)];
+                AddressBook a1 = db.AddressBook.SingleOrDefault(a=>a.aId == p.sendId);
+                AddressBook a2 = db.AddressBook.SingleOrDefault(a => a.aId == p.receiverId);
+                string nxt = new TransferController().GetNext(p.id);
+                if (nxt == null) continue;
+                Path path = new Path();
+                path.id = p.id;
+                path.isArrival = true;
+                path.time = DateTime.Now;
+                path.curPlace = nxt;
+                path.srcPlace = a1.province + "-" + a1.city + "-" + a1.street;
+                path.destPlace = a2.province + "-" + a2.city + "-" + a2.street;
+                p.status = "运输中";
+                db.Path.InsertOnSubmit(path);
+                db.SubmitChanges();
+                try
+                {
+                    Thread.Sleep(1000);
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+            
         }
     }
 }

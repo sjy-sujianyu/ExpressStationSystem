@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Xml;
+using ExpressStationSystem.Models;
 
 namespace ExpressStationSystem.Controllers
 {
@@ -32,6 +34,70 @@ namespace ExpressStationSystem.Controllers
                 list.Add(x);
             }
             return list;
+        }
+
+        // GET: api/Transfer/GetNext
+        /// <summary>
+        /// 获取包裹下一站去哪
+        /// </summary>
+        /// <remarks>获取包裹下一站去哪</remarks>
+        /// <returns>返回</returns>
+        [HttpGet, Route("Transfer/GetNext")]
+        public string GetNext(int id)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var p = db.Package.SingleOrDefault(a => a.id == id);
+            if (p == null) return null;
+            AddressBook a1 = db.AddressBook.SingleOrDefault(a => a.aId == p.sendId);
+            AddressBook a2 = db.AddressBook.SingleOrDefault(a => a.aId == p.receiverId);
+            if (p.status == "运输中" || (p.status == "已下单" && !a1.street.Contains("华南农业大学")))
+            {
+                var prepath = db.Path.Where(a => a.id == id).OrderByDescending(a => a.time).FirstOrDefault();
+                AddressBookClass a3 = new AddressBookClass();
+                if(prepath == null)
+                {
+                    a3.province = a1.province;
+                    a3.city = a1.city;
+                    a3.street = a1.street;
+                }
+                else
+                {
+                    string x = prepath.curPlace;
+                    List<string> y = x.Split('-').ToList();
+                    a3.province = y[0];
+                    a3.city = y[1];
+                    a3.street = y[2];
+                }
+                if (a2.street == a3.street) return null;
+                if(a2.city == a3.city)
+                {
+                    return a3.province + "-" + a3.city + "-" + a2.street;
+                }
+                else if(a2.province == a3.province)
+                {
+                    return a3.province + "-" + a2.city + "-" + a2.city + "分拣中心";
+                }
+                else
+                {
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(AppDomain.CurrentDomain.BaseDirectory + "province.xml");
+                    string city1 = Simulation.Instance.getCity(doc, a3.province)[0];
+                    string city2 = Simulation.Instance.getCity(doc, a2.province)[0];
+                    if(a3.city == city1 && a3.street == a3.city + "分拣中心")
+                    {
+                        return a2.province + "-" + city2 + "-" + city2 + "分拣中心";
+                    }
+                    else if(a3.street == a3.city + "分拣中心")
+                    {
+                        return a3.province + "-" + city1 + "-" + city1 + "分拣中心";
+                    }
+                    else
+                    {
+                        return a3.province + "-" + a3.city + "-" + a3.city + "分拣中心";
+                    }
+                }
+            }
+            return null;
         }
 
         // Post: api/Transfer/Post
@@ -77,7 +143,7 @@ namespace ExpressStationSystem.Controllers
         /// <param name="x">交通工具id</param>
         /// <remarks>交通工具从站点出发</remarks>
         /// <returns>返回</returns>
-        [HttpPost, Route("Transfer/Departure")]
+        [HttpPut, Route("Transfer/Departure")]
         public bool Departure(IdClass x)
         {
             db = new DataClasses1DataContext(connstr);
@@ -125,6 +191,8 @@ namespace ExpressStationSystem.Controllers
                 return false;
             }
         }
+
+
 
 
 

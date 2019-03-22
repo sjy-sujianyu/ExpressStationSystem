@@ -40,9 +40,13 @@ namespace ExpressStationSystem
             //newaddress.IsBackground = true;
             //newaddress.Start();
 
-            Thread newpackage = new Thread(new ParameterizedThreadStart(Simulation.Instance.OrderNewPackage));
-            newpackage.IsBackground = true;
-            newpackage.Start(3000);
+            Thread newpath = new Thread(Simulation.Instance.NewPath);
+            newpath.IsBackground = true;
+            newpath.Start();
+
+            //Thread newpackage = new Thread(new ParameterizedThreadStart(Simulation.Instance.OrderNewPackage));
+            //newpackage.IsBackground = true;
+            //newpackage.Start(3000);
         }
         public void Text()
         {
