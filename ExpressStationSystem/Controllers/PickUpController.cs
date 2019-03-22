@@ -130,11 +130,11 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>获取待揽件的包裹ID</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("PickUp/GetReadytoReceive")]
-        public List<int> GetReadytoReceive()
+        public List<dynamic> GetReadytoReceive()
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Package join b in db.AddressBook on a.sendId equals b.aId where a.status == "已下单"&&b.street.Contains("华南农业大学") select a.id;
-            List<int> list = new List<int>();
+            var selectQuery = from a in db.Package join b in db.AddressBook  on a.sendId equals b.aId join c in db.AddressBook on a.receiverId equals c.aId  where a.status == "已下单"&&b.street.Contains("华南农业大学") select a;
+            List<dynamic> list = new List<dynamic>();
             foreach (var x in selectQuery)
             {
                 list.Add(x);
