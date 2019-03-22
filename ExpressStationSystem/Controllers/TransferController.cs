@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace ExpressStationSystem.Controllers
@@ -67,61 +68,41 @@ namespace ExpressStationSystem.Controllers
             }
         }
 
-        // GET: api/Transfer/GetPackageIdOnVehicle
-        /// <summary>
-        /// 获取已上车的包裹ID
-        /// </summary>
-        /// <param name="id">交通工具id</param>
-        /// <remarks>获取已上车的包裹ID</remarks>
-        /// <returns>返回</returns>
-        [HttpGet, Route("Transfer/GetPackageIdOnVehicle")]
-        public List<int> GetPackageIdOnVehicle(int id)
-        {
-            db = new DataClasses1DataContext(connstr);
-            var transfering = db.Package.Where(a => a.status == "运输中");
-            List<int> list = new List<int>();
-            foreach (var t in transfering)
-            {
-                var tran = db.Transfer.Where(a => a.id == t.id && a.vId == id).OrderByDescending(a => a.time).FirstOrDefault();
-                if(tran != null)
-                    list.Add(tran.id);
-            }
-            return list;
-        }
+       
 
-        // PUT: api/Transfer/Departure
-        /// <summary>
-        /// 交通工具从站点出发
-        /// </summary>
-        /// <param name="x">交通工具id</param>
-        /// <remarks>交通工具从站点出发</remarks>
-        /// <returns>返回</returns>
-        [HttpPost, Route("Transfer/Departure")]
-        public bool Departure(IdClass x)
-        {
-            db = new DataClasses1DataContext(connstr);
-            try
-            {
-                var vehicle = db.Vehicle.Single(a => a.vId == x.id);
-                if (vehicle == null) return false;
-                var packageOnVehicle = GetPackageIdOnVehicle(x.id);
-                foreach(var id in packageOnVehicle)
-                {
-                    var p = db.Package.SingleOrDefault(a => a.id == id);
-                    var tran = db.Transfer.Where(a => a.id == p.id).OrderByDescending(a => a.time).FirstOrDefault();
-                    if (p != null)
-                    {
-                        //tran.isDone = true;
-                    }
-                }
-                db.SubmitChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
+        //// PUT: api/Transfer/Departure
+        ///// <summary>
+        ///// 交通工具从站点出发
+        ///// </summary>
+        ///// <param name="x">交通工具id</param>
+        ///// <remarks>交通工具从站点出发</remarks>
+        ///// <returns>返回</returns>
+        //[HttpPost, Route("Transfer/Departure")]
+        //public bool Departure(IdClass x)
+        //{
+        //    db = new DataClasses1DataContext(connstr);
+        //    try
+        //    {
+        //        var vehicle = db.Vehicle.Single(a => a.vId == x.id);
+        //        if (vehicle == null) return false;
+        //        var packageOnVehicle = GetPackageIdOnVehicle(x.id);
+        //        foreach(var id in packageOnVehicle)
+        //        {
+        //            var p = db.Package.SingleOrDefault(a => a.id == id);
+        //            var tran = db.Transfer.Where(a => a.id == p.id).OrderByDescending(a => a.time).FirstOrDefault();
+        //            if (p != null)
+        //            {
+        //                //tran.isDone = true;
+        //            }
+        //        }
+        //        db.SubmitChanges();
+        //        return true;
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return false;
+        //    }
+        //}
 
         // PUT: api/Transfer/RevokeTransfer
         /// <summary>

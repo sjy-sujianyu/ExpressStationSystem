@@ -176,8 +176,8 @@ namespace ExpressStationSystem.Controllers
         /// <summary>
         /// 快速得到时间段内包裹全部信息
         /// </summary>
-        /// <param name="start">包裹ID</param>
-        /// <param name="end">包裹ID</param>
+        /// <param name="start">起始时间</param>
+        /// <param name="end">终止时间</param>
         /// <remarks>快速得到时间段内包裹全部信息 </remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Query/GetAllInfoFast")]
@@ -210,7 +210,7 @@ namespace ExpressStationSystem.Controllers
             }
             return list;
         }
-        private dynamic getError(int id)
+        public dynamic getError(int id)
         {
             db = new DataClasses1DataContext(connstr);
             var error = db.Error.Where(a => a.id == id).ToList(); ;
