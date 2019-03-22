@@ -64,15 +64,15 @@ namespace ExpressStationSystem.Controllers.ViewController
             }
             //包裹信息
             List<dynamic> PInfoList = new QueryController().GetAllInfoFast(Convert.ToDateTime(date1), Convert.ToDateTime(date2).AddDays(1));
-            //if (car != null && car != "")
-            //{
-            //    PInfoList = new TransferController().GetPackageIdOnVehicle(Convert.ToInt32(car));
-            //    ViewBag.car = car;
-            //}
-            //else
-            //{
-            //    ViewBag.car = "";
-            //}
+            if (car != null && car != "")
+            {
+                PInfoList = new VehicleController().GetPackageOnVehicle(Convert.ToInt32(car));
+                ViewBag.car = car;
+            }
+            else
+            {
+                ViewBag.car = "";
+            }
             //中间数组
             List<dynamic> step = new List<dynamic>();
             //也是中间数组
