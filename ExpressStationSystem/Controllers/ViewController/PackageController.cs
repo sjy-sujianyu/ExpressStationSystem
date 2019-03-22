@@ -66,7 +66,7 @@ namespace ExpressStationSystem.Controllers.ViewController
             List<dynamic> PInfoList = new QueryController().GetAllInfoFast(Convert.ToDateTime(date1), Convert.ToDateTime(date2).AddDays(1));
             //if (car != null && car != "")
             //{
-            //    PIDList = new TransferController().GetPackageIdOnVehicle(Convert.ToInt32(car));
+            //    PInfoList = new TransferController().GetPackageIdOnVehicle(Convert.ToInt32(car));
             //    ViewBag.car = car;
             //}
             //else
@@ -182,6 +182,17 @@ namespace ExpressStationSystem.Controllers.ViewController
 
             }
             ViewBag.showPackage = showPackage2;
+            //物流信息字典树
+            Dictionary<dynamic, dynamic> pathList = new Dictionary<dynamic, dynamic>();
+            //得到物流信息
+            foreach (var pack in showPackage2)
+            {
+                var pathInfo = new QueryController().GetAllInfo(Convert.ToInt32(pack.package.id));
+                var josnStr = JsonConvert.SerializeObject(pathInfo);
+                JObject jo = (JObject)JsonConvert.DeserializeObject(josnStr);
+                pathList.Add(pack.package.id, jo);
+            }
+            ViewBag.pathList = pathList;
             //前端要用到的数据
             if (showPackage.Count % pageNum == 0)
             {

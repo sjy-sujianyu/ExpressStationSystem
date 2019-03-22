@@ -130,7 +130,7 @@
 
     <div class="col-sm-12" style="display:flex;">
 
-        @if (ViewBag.car == "")
+        @if (ViewBag.car == "" || ViewBag.car == null)
         {
             <div style="display:none;height:5rem" class="col-sm-1">
                 <input id="Car" value="@ViewBag.car" style="height:100%;width:100%;font-size: 43px; color: red;text-align: center;" onblur="changeCar()">
@@ -144,7 +144,7 @@
         }
 
 
-        <div class="col-sm-10 col-sm-offset-2">
+        <div class="col-sm-12 col-sm-offset-1" style="display:flex">
             <script>
             //执行一个laydate实例
             laydate.render({
@@ -166,14 +166,11 @@
             });
             </script>
 
-            <div class="row">
-                <input type="text" id="date1" value="@ViewBag.date1">
-                <input type="text" id="date2" value="@ViewBag.date2">
+                <input type="text" id="date1" value="@ViewBag.date1" style="width:15%">
+                <input type="text" id="date2" value="@ViewBag.date2" style="width:15%">
 
                 <button class="btn btn-default" type="button" onclick="dateChange('@ViewBag.status')">OK!</button>
-            </div>
 
-            <div class="row" style="display:flex">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="showCheckType">
                         @ViewBag.searchWith<span class="caret"></span>
@@ -191,7 +188,6 @@
                         <button class="btn btn-default" type="button" onclick="searchWith()">Go!</button>
                     </span>
                 </div>
-            </div>
             
         </div>
     </div>
@@ -255,59 +251,59 @@
                                                         </div>
                                                     }
 
-                                                    @for (int i = 0; i < package.delivery.Count; i++)
+                                                    @for (int i = 0; i < @ViewBag.pathList[package.package.id].delivery.Count; i++)
                                                     {
                                                         <div class="row" style="border-top:1px solid #000;">
-                                                            <div>@package.delivery[i].delivery.time</div>
-                                                            <div>@package.delivery[i].member.name @package.delivery[i].member.mId</div>
+                                                            <div>@ViewBag.pathList[package.package.id].delivery[i].delivery.time</div>
+                                                            <div>@ViewBag.pathList[package.package.id].delivery[i].member.name @ViewBag.pathList[package.package.id].delivery[i].member.mId</div>
                                                             <div>正在为您派件</div>
                                                         </div>
                                                     }
-                                                    @for (int i = 0; i < package.transfer.Count; i++)
+                                                    @for (int i = 0; i < @ViewBag.pathList[package.package.id].transfer.Count; i++)
                                                     {
                                                         <div class="row" style="border-top:1px solid #000;">
-                                                            <div>@package.transfer[i].transfer.time</div>
-                                                            <div>@package.transfer[i].member.name</div>
+                                                            <div>@ViewBag.pathList[package.package.id].transfer[i].transfer.time</div>
+                                                            <div>@ViewBag.pathList[package.package.id].transfer[i].member.name</div>
                                                             <div>正在为您转件</div>
                                                         </div>
 
                                                     }
-                                                    @for (int i = 0; i < package.pathList.Count; i++)
+                                                    @for (int i = 0; i < @ViewBag.pathList[package.package.id].pathList.Count; i++)
                                                     {
-                                                        if (package.pathList[i].isArrival == "False")
+                                                        if (ViewBag.pathList[package.package.id].pathList[i].isArrival == "False")
                                                         {
                                                             <div class="row" style="border-top:1px solid #000;">
-                                                                <div>@package.pathList[i].time</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].time</div>
                                                                 <div>已到达</div>
-                                                                <div>@package.pathList[i].destPlace.street</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].destPlace.street</div>
                                                             </div>
                                                         }
                                                         else
                                                         {
                                                             <div class="row" style="border-top:1px solid #000;">
-                                                                <div>@package.pathList[i].time</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].time</div>
                                                                 <div>正从</div>
-                                                                <div>@package.pathList[i].curPlace.street</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].curPlace.street</div>
                                                                 <div>发往</div>
-                                                                <div>@package.pathList[i].destPlace.street</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].destPlace.street</div>
                                                             </div>
                                                         }
                                                     }
-                                                    @for (int i = 0; i < package.pickup.Count; i++)
+                                                    @for (int i = 0; i < ViewBag.pathList[package.package.id].pickup.Count; i++)
                                                     {
-                                                        if (package.pickup[i].pickup.isDone == "true")
+                                                        if (ViewBag.pathList[package.package.id].pickup[i].pickup.isDone == "true")
                                                         {
                                                             <div class="row" style="border-top:1px solid #000;">
-                                                                <div>@package.pickup[i].pickup.time</div>
-                                                                <div>@package.pickup[i].member.name</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pickup[i].pickup.time</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pickup[i].member.name</div>
                                                                 <div>已揽件</div>
                                                             </div>
                                                         }
                                                         else
                                                         {
                                                             <div class="row" style="border-top:1px solid #000;">
-                                                                <div>@package.pickup[i].pickup.time</div>
-                                                                <div>@package.pickup[i].member.name</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pickup[i].pickup.time</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pickup[i].member.name</div>
                                                                 <div>正在为您揽件</div>
                                                             </div>
                                                         }
@@ -331,8 +327,7 @@
                         if (@package.package.status == "派件中" ||
                                     @package.package.status == "运输中" ||
                                     @package.package.status == "已扫件" ||
-                                    @package.package.status == "待揽件" ||
-                                    @package.package.status == "已下单")
+                                    @package.package.status == "待揽件")
                         {
                             <tr class="list-group-item-info" data-toggle="modal" data-target=".bs-example-modal-lg">
                                 <th scope="row">@package.package.id</th>
@@ -351,6 +346,14 @@
                                                 </div>
                                                 <div class="modal-body">
 
+                                                    <div class="row">
+                                                        @for (int i = 0; i < package.error.Count; i++)
+                                                        {
+                                                            <div>错误信息:@package.error[i].status</div>
+                                                            <div>@package.error[i].introduction</div>
+                                                        }
+                                                    </div>
+
                                                     @if (@package.package.status == "已签收")
                                                     {
                                                         <div class="row" style="border-top:1px solid #000;">
@@ -359,59 +362,59 @@
                                                         </div>
                                                     }
 
-                                                    @for (int i = 0; i < package.delivery.Count; i++)
+                                                    @for (int i = 0; i < @ViewBag.pathList[package.package.id].delivery.Count; i++)
                                                     {
                                                         <div class="row" style="border-top:1px solid #000;">
-                                                            <div>@package.delivery[i].delivery.time</div>
-                                                            <div>@package.delivery[i].member.name @package.delivery[i].member.mId</div>
+                                                            <div>@ViewBag.pathList[package.package.id].delivery[i].delivery.time</div>
+                                                            <div>@ViewBag.pathList[package.package.id].delivery[i].member.name @ViewBag.pathList[package.package.id].delivery[i].member.mId</div>
                                                             <div>正在为您派件</div>
                                                         </div>
                                                     }
-                                                    @for (int i = 0; i < package.transfer.Count; i++)
+                                                    @for (int i = 0; i < @ViewBag.pathList[package.package.id].transfer.Count; i++)
                                                     {
                                                         <div class="row" style="border-top:1px solid #000;">
-                                                            <div>@package.transfer[i].transfer.time</div>
-                                                            <div>@package.transfer[i].member.name</div>
+                                                            <div>@ViewBag.pathList[package.package.id].transfer[i].transfer.time</div>
+                                                            <div>@ViewBag.pathList[package.package.id].transfer[i].member.name</div>
                                                             <div>正在为您转件</div>
                                                         </div>
 
                                                     }
-                                                    @for (int i = 0; i < package.pathList.Count; i++)
+                                                    @for (int i = 0; i < @ViewBag.pathList[package.package.id].pathList.Count; i++)
                                                     {
-                                                        if (package.pathList[i].isArrival == "False")
+                                                        if (ViewBag.pathList[package.package.id].pathList[i].isArrival == "False")
                                                         {
                                                             <div class="row" style="border-top:1px solid #000;">
-                                                                <div>@package.pathList[i].time</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].time</div>
                                                                 <div>已到达</div>
-                                                                <div>@package.pathList[i].destPlace.street</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].destPlace.street</div>
                                                             </div>
                                                         }
                                                         else
                                                         {
                                                             <div class="row" style="border-top:1px solid #000;">
-                                                                <div>@package.pathList[i].time</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].time</div>
                                                                 <div>正从</div>
-                                                                <div>@package.pathList[i].curPlace.street</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].curPlace.street</div>
                                                                 <div>发往</div>
-                                                                <div>@package.pathList[i].destPlace.street</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].destPlace.street</div>
                                                             </div>
                                                         }
                                                     }
-                                                    @for (int i = 0; i < package.pickup.Count; i++)
+                                                    @for (int i = 0; i < ViewBag.pathList[package.package.id].pickup.Count; i++)
                                                     {
-                                                        if (package.pickup[i].pickup.isDone == "true")
+                                                        if (ViewBag.pathList[package.package.id].pickup[i].pickup.isDone == "true")
                                                         {
                                                             <div class="row" style="border-top:1px solid #000;">
-                                                                <div>@package.pickup[i].pickup.time</div>
-                                                                <div>@package.pickup[i].member.name</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pickup[i].pickup.time</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pickup[i].member.name</div>
                                                                 <div>已揽件</div>
                                                             </div>
                                                         }
                                                         else
                                                         {
                                                             <div class="row" style="border-top:1px solid #000;">
-                                                                <div>@package.pickup[i].pickup.time</div>
-                                                                <div>@package.pickup[i].member.name</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pickup[i].pickup.time</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pickup[i].member.name</div>
                                                                 <div>正在为您揽件</div>
                                                             </div>
                                                         }
@@ -450,6 +453,14 @@
                                                 </div>
                                                 <div class="modal-body">
 
+                                                    <div class="row">
+                                                        @for (int i = 0; i < package.error.Count; i++)
+                                                        {
+                                                            <div>错误信息:@package.error[i].status</div>
+                                                            <div>@package.error[i].introduction</div>
+                                                        }
+                                                    </div>
+
                                                     @if (@package.package.status == "已签收")
                                                     {
                                                         <div class="row" style="border-top:1px solid #000;">
@@ -458,59 +469,59 @@
                                                         </div>
                                                     }
 
-                                                    @for (int i = 0; i < package.delivery.Count; i++)
+                                                    @for (int i = 0; i < @ViewBag.pathList[package.package.id].delivery.Count; i++)
                                                     {
                                                         <div class="row" style="border-top:1px solid #000;">
-                                                            <div>@package.delivery[i].delivery.time</div>
-                                                            <div>@package.delivery[i].member.name @package.delivery[i].member.mId</div>
+                                                            <div>@ViewBag.pathList[package.package.id].delivery[i].delivery.time</div>
+                                                            <div>@ViewBag.pathList[package.package.id].delivery[i].member.name @ViewBag.pathList[package.package.id].delivery[i].member.mId</div>
                                                             <div>正在为您派件</div>
                                                         </div>
                                                     }
-                                                    @for (int i = 0; i < package.transfer.Count; i++)
+                                                    @for (int i = 0; i < @ViewBag.pathList[package.package.id].transfer.Count; i++)
                                                     {
                                                         <div class="row" style="border-top:1px solid #000;">
-                                                            <div>@package.transfer[i].transfer.time</div>
-                                                            <div>@package.transfer[i].member.name</div>
+                                                            <div>@ViewBag.pathList[package.package.id].transfer[i].transfer.time</div>
+                                                            <div>@ViewBag.pathList[package.package.id].transfer[i].member.name</div>
                                                             <div>正在为您转件</div>
                                                         </div>
 
                                                     }
-                                                    @for (int i = 0; i < package.pathList.Count; i++)
+                                                    @for (int i = 0; i < @ViewBag.pathList[package.package.id].pathList.Count; i++)
                                                     {
-                                                        if (package.pathList[i].isArrival == "False")
+                                                        if (ViewBag.pathList[package.package.id].pathList[i].isArrival == "False")
                                                         {
                                                             <div class="row" style="border-top:1px solid #000;">
-                                                                <div>@package.pathList[i].time</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].time</div>
                                                                 <div>已到达</div>
-                                                                <div>@package.pathList[i].destPlace.street</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].destPlace.street</div>
                                                             </div>
                                                         }
                                                         else
                                                         {
                                                             <div class="row" style="border-top:1px solid #000;">
-                                                                <div>@package.pathList[i].time</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].time</div>
                                                                 <div>正从</div>
-                                                                <div>@package.pathList[i].curPlace.street</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].curPlace.street</div>
                                                                 <div>发往</div>
-                                                                <div>@package.pathList[i].destPlace.street</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].destPlace.street</div>
                                                             </div>
                                                         }
                                                     }
-                                                    @for (int i = 0; i < package.pickup.Count; i++)
+                                                    @for (int i = 0; i < ViewBag.pathList[package.package.id].pickup.Count; i++)
                                                     {
-                                                        if (package.pickup[i].pickup.isDone == "true")
+                                                        if (ViewBag.pathList[package.package.id].pickup[i].pickup.isDone == "true")
                                                         {
                                                             <div class="row" style="border-top:1px solid #000;">
-                                                                <div>@package.pickup[i].pickup.time</div>
-                                                                <div>@package.pickup[i].member.name</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pickup[i].pickup.time</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pickup[i].member.name</div>
                                                                 <div>已揽件</div>
                                                             </div>
                                                         }
                                                         else
                                                         {
                                                             <div class="row" style="border-top:1px solid #000;">
-                                                                <div>@package.pickup[i].pickup.time</div>
-                                                                <div>@package.pickup[i].member.name</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pickup[i].pickup.time</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pickup[i].member.name</div>
                                                                 <div>正在为您揽件</div>
                                                             </div>
                                                         }
@@ -531,9 +542,9 @@
                             </tr>
                         }
 
-                        else
+                        else if(@package.package.status == "已下单")
                         {
-                            <tr class="list-group-item-danger" data-toggle="modal" data-target=".bs-example-modal-lg">
+                            <tr class="list-group-item-warning" data-toggle="modal" data-target=".bs-example-modal-lg">
                                 <th scope="row">@package.package.id</th>
                                 <td> @package.dest.name </td>
                                 <td> @package.dest.phone </td>
@@ -550,6 +561,14 @@
                                                 </div>
                                                 <div class="modal-body">
 
+                                                    <div class="row">
+                                                        @for (int i = 0; i < package.error.Count; i++)
+                                                        {
+                                                            <div>错误信息:@package.error[i].status</div>
+                                                            <div>@package.error[i].introduction</div>
+                                                        }
+                                                    </div>
+
                                                     @if (@package.package.status == "已签收")
                                                     {
                                                         <div class="row" style="border-top:1px solid #000;">
@@ -558,59 +577,59 @@
                                                         </div>
                                                     }
 
-                                                    @for (int i = 0; i < package.delivery.Count; i++)
+                                                    @for (int i = 0; i < @ViewBag.pathList[package.package.id].delivery.Count; i++)
                                                     {
                                                         <div class="row" style="border-top:1px solid #000;">
-                                                            <div>@package.delivery[i].delivery.time</div>
-                                                            <div>@package.delivery[i].member.name @package.delivery[i].member.mId</div>
+                                                            <div>@ViewBag.pathList[package.package.id].delivery[i].delivery.time</div>
+                                                            <div>@ViewBag.pathList[package.package.id].delivery[i].member.name @ViewBag.pathList[package.package.id].delivery[i].member.mId</div>
                                                             <div>正在为您派件</div>
                                                         </div>
                                                     }
-                                                    @for (int i = 0; i < package.transfer.Count; i++)
+                                                    @for (int i = 0; i < @ViewBag.pathList[package.package.id].transfer.Count; i++)
                                                     {
                                                         <div class="row" style="border-top:1px solid #000;">
-                                                            <div>@package.transfer[i].transfer.time</div>
-                                                            <div>@package.transfer[i].member.name</div>
+                                                            <div>@ViewBag.pathList[package.package.id].transfer[i].transfer.time</div>
+                                                            <div>@ViewBag.pathList[package.package.id].transfer[i].member.name</div>
                                                             <div>正在为您转件</div>
                                                         </div>
 
                                                     }
-                                                    @for (int i = 0; i < package.pathList.Count; i++)
+                                                    @for (int i = 0; i < @ViewBag.pathList[package.package.id].pathList.Count; i++)
                                                     {
-                                                        if (package.pathList[i].isArrival == "False")
+                                                        if (ViewBag.pathList[package.package.id].pathList[i].isArrival == "False")
                                                         {
                                                             <div class="row" style="border-top:1px solid #000;">
-                                                                <div>@package.pathList[i].time</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].time</div>
                                                                 <div>已到达</div>
-                                                                <div>@package.pathList[i].destPlace.street</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].destPlace.street</div>
                                                             </div>
                                                         }
                                                         else
                                                         {
                                                             <div class="row" style="border-top:1px solid #000;">
-                                                                <div>@package.pathList[i].time</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].time</div>
                                                                 <div>正从</div>
-                                                                <div>@package.pathList[i].curPlace.street</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].curPlace.street</div>
                                                                 <div>发往</div>
-                                                                <div>@package.pathList[i].destPlace.street</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pathList[i].destPlace.street</div>
                                                             </div>
                                                         }
                                                     }
-                                                    @for (int i = 0; i < package.pickup.Count; i++)
+                                                    @for (int i = 0; i < ViewBag.pathList[package.package.id].pickup.Count; i++)
                                                     {
-                                                        if (package.pickup[i].pickup.isDone == "true")
+                                                        if (ViewBag.pathList[package.package.id].pickup[i].pickup.isDone == "true")
                                                         {
                                                             <div class="row" style="border-top:1px solid #000;">
-                                                                <div>@package.pickup[i].pickup.time</div>
-                                                                <div>@package.pickup[i].member.name</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pickup[i].pickup.time</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pickup[i].member.name</div>
                                                                 <div>已揽件</div>
                                                             </div>
                                                         }
                                                         else
                                                         {
                                                             <div class="row" style="border-top:1px solid #000;">
-                                                                <div>@package.pickup[i].pickup.time</div>
-                                                                <div>@package.pickup[i].member.name</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pickup[i].pickup.time</div>
+                                                                <div>@ViewBag.pathList[package.package.id].pickup[i].member.name</div>
                                                                 <div>正在为您揽件</div>
                                                             </div>
                                                         }
@@ -641,17 +660,17 @@
             <div class="list-group">
                 <h4 class="page-header" id="selectType">@ViewBag.status</h4>
                 <a class="list-group-item" onclick="JumpTo('')">全部</a>
-                <a class="list-group-item" onclick="JumpTo('派件中')">派件中</a>
-                <a class="list-group-item" onclick="JumpTo('运输中')">运输中</a>
-                <a class="list-group-item" onclick="JumpTo('已扫件')">已扫件</a>
-                <a class="list-group-item" onclick="JumpTo('已下单')">已下单</a>
-                <a class="list-group-item" onclick="JumpTo('已签收')">已签收</a>
-                <a class="list-group-item" onclick="JumpTo('已处理')">已处理</a>
-                <a class="list-group-item" onclick="JumpTo('错件')">错件</a>
-                <a class="list-group-item" onclick="JumpTo('漏件')">漏件</a>
-                <a class="list-group-item" onclick="JumpTo('破损')">破损</a>
-                <a class="list-group-item" onclick="JumpTo('拒签')">拒签</a>
-                <a class="list-group-item" onclick="JumpTo('丢件')">丢件</a>
+                <a class="list-group-item list-group-item-info" onclick="JumpTo('派件中')">派件中</a>
+                <a class="list-group-item list-group-item-info" onclick="JumpTo('运输中')">运输中</a>
+                <a class="list-group-item list-group-item-info" onclick="JumpTo('已扫件')">已扫件</a>
+                <a class="list-group-item list-group-item-warning" onclick="JumpTo('已下单')">已下单</a>
+                <a class="list-group-item list-group-item-success" onclick="JumpTo('已签收')">已签收</a>
+                <a class="list-group-item list-group-item-success" onclick="JumpTo('已处理')">已处理</a>
+                <a class="list-group-item list-group-item-danger" onclick="JumpTo('错件')">错件</a>
+                <a class="list-group-item list-group-item-danger" onclick="JumpTo('漏件')">漏件</a>
+                <a class="list-group-item list-group-item-danger" onclick="JumpTo('破损')">破损</a>
+                <a class="list-group-item list-group-item-danger" onclick="JumpTo('拒签')">拒签</a>
+                <a class="list-group-item list-group-item-danger" onclick="JumpTo('丢件')">丢件</a>
             </div>
         </div>
     </div>
