@@ -185,7 +185,7 @@ namespace ExpressStationSystem.Controllers
         {
             List<dynamic> list = new List<dynamic>();
             db = new DataClasses1DataContext(connstr);
-            var package = db.Package.Where(a=> DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0)
+            var package = db.Package.Where(a=> DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0).OrderByDescending(a=>a.time)
                 .Join(db.AddressBook, a => a.sendId, b => b.aId, (a, b) => new { a = a, b = b })
                 .Join(db.AddressBook, a => a.a.receiverId, b => b.aId, (a, b) => new { package = a.a, src = a.b, dest = b })
                 .GroupJoin(db.Error, x => x.package.id, y => y.id, (x, y) => y.DefaultIfEmpty().Select(z => new { package = x.package, src = x.src,dest=x.dest,error=y.ToList() })).SelectMany(x => x).ToList();
@@ -307,7 +307,7 @@ namespace ExpressStationSystem.Controllers
             var leave = from a in db.Leave where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.status == 2 select a;
             var memberEmploy = from a in db.Member where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.isDelete == false select a;
             var memberFired= from a in db.Member where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.isDelete == true select a;
-            var commission = from a in db.Commission where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 select a;
+            var commission = from a in db.Commission select a;
             var vehicleEmploy = from a in db.Vehicle where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.isDelete == false select a;
             var vehicleFired = from a in db.Vehicle where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.isDelete == true select a;
             return new { errorError = new { content = errorError.ToList(), cnt = errorError.Count() }, errorLeak = new { content = errorLeak.ToList(), cnt = errorLeak.Count() }, errorDamaged = new { content = errorDamaged.ToList(), cnt = errorDamaged.Count() }, errorRefused = new { content = errorRefused.ToList(), cnt = errorRefused.Count() }, errorLose = new { content = errorLose.ToList(), cnt = errorLose.Count() }, delivery = new { content = delivery.ToList(), cnt = delivery.Count() }, pickUp = new { content = Inbound.ToList(), cnt = Inbound.Count() }, transfer = new { content = transfer.ToList(), cnt = transfer.Count() }, leave = new { content = leave.ToList(), cnt = leave.Count() }, memberEmploy = new { content = memberEmploy.ToList(), cnt = memberEmploy.Count() }, memberFired = new { content = memberFired.ToList(), cnt = memberFired.Count() }, commission = new { content = commission.ToList(), cnt = commission.Count() }, vehicleEmploy = new { content = vehicleEmploy.ToList(), cnt = vehicleEmploy.Count() }, vehicleFired = new { content = vehicleFired.ToList(), cnt = vehicleFired.Count() } };

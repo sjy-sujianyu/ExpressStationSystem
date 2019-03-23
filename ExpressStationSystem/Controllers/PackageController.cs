@@ -113,6 +113,7 @@ namespace ExpressStationSystem.Controllers
                 package.Remarks = packageclass.Remarks;
                 package.account = packageclass.account;
                 package.time = DateTime.Now;
+                package.initialTime = DateTime.Now;
                 package.status = "已下单";
                 package.isDelete = false;
                 db.Package.InsertOnSubmit(package);

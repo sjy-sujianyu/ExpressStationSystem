@@ -17,21 +17,18 @@ namespace ExpressStationSystem
     {
         protected void Application_Start()
         {
-            int sleepTime = 1800000;
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            checkError();
             //Text();
             //moni();
-            Thread thread = new Thread(new ParameterizedThreadStart(new MoneyController().ErrorPost));
-            thread.IsBackground = true;
-            thread.Start(sleepTime);
-
         }
         public void moni()
         {
+            
             //Thread newlogin = new Thread(Simulation.Instance.AddNewLogin);
             //newlogin.IsBackground = true;
             //newlogin.Start();
@@ -40,9 +37,20 @@ namespace ExpressStationSystem
             //newaddress.IsBackground = true;
             //newaddress.Start();
 
-            Thread newpackage = new Thread(new ParameterizedThreadStart(Simulation.Instance.OrderNewPackage));
-            newpackage.IsBackground = true;
-            newpackage.Start(3000);
+            Thread newpath = new Thread(Simulation.Instance.NewPath);
+            newpath.IsBackground = true;
+            newpath.Start();
+
+            //Thread newpackage = new Thread(new ParameterizedThreadStart(Simulation.Instance.OrderNewPackage));
+            //newpackage.IsBackground = true;
+            //newpackage.Start(3000);
+        }
+        public void checkError()
+        {
+            int sleepTime = 1800000;
+            Thread thread = new Thread(new ParameterizedThreadStart(new MoneyController().ErrorPost));
+            thread.IsBackground = true;
+            thread.Start(sleepTime);
         }
         public void Text()
         {

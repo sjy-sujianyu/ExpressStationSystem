@@ -184,6 +184,7 @@ namespace ExpressStationSystem.Controllers
                 pk.isDone = false;
                 db.PickUp.InsertOnSubmit(pk);
                 package.status = "待揽件";
+                package.time = DateTime.Now;
                 db.SubmitChanges();
                 return true;
             }
@@ -216,6 +217,7 @@ namespace ExpressStationSystem.Controllers
                 pk.isDone = true;
                 db.PickUp.InsertOnSubmit(pk);
                 package.status = "已扫件";
+                package.time = DateTime.Now;
                 db.SubmitChanges();
                 return true;
             }
@@ -280,6 +282,7 @@ namespace ExpressStationSystem.Controllers
                     error.introduction = "目的地不在此网点附近";
                     error.status = "错件";
                     error.time = DateTime.Now;
+                    x.time= DateTime.Now; 
                     try
                     {
                         db.Error.InsertOnSubmit(error);
@@ -298,49 +301,5 @@ namespace ExpressStationSystem.Controllers
             string[] str = place.Split('-');
             return new { province = str[0], city = str[1], street = str[2] };
         }
-        //// DELETE api/PickUp/Delete?id={id}
-        ///// <summary>
-        ///// 删除揽件员进度里的订单记录
-        ///// </summary>
-        ///// <param name="key">主键 id mId time三个字段</param>
-        ///// <remarks>删除揽件员进度里的订单记录</remarks>
-        ///// <returns>返回</returns>
-        //[HttpDelete, Route("PickUp/Delete")]
-        //public bool Delete(PickUpClassPlus key)
-        //{
-        //    db = new DataClasses1DataContext(connstr);
-        //    var x = db.PickUp.Where(a => a.id == key.id).OrderByDescending(a=>a.time).First();
-        //    if(x is null)
-        //    {
-        //        return false;
-        //    }
-        //    if(x.mId==key.mId&&x.isDone==false)
-        //    {
-        //        var y = db.Package.SingleOrDefault(a => a.id == x.id);
-        //        if(y is null)
-        //        {
-        //            return false;
-        //        }
-        //        else
-        //        {
-        //            if(y.status=="待揽件")
-        //            {
-        //                return false;
-        //            }
-        //        }
-        //    }
-        //    var pickup = db.PickUp.SingleOrDefault(a => a.id == key.id && a.mId == key.mId && a.time == key.time);
-        //    if(pickup is null)
-        //    {
-        //        return false;
-        //    }
-        //    else
-        //    {
-        //        pickup.isDelete = true;
-        //        db.SubmitChanges();
-        //        return true;
-        //    }
-
-        //}
     }
 }
