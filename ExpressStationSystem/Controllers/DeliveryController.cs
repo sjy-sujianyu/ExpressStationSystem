@@ -24,7 +24,7 @@ namespace ExpressStationSystem
         /// <remarks>按条件查询要派件的包裹</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Delivery/GetReadytoDeliveryByCondition")]
-        public List<int> GetReadytoDeliveryByCondition(string str, string type,int page,int pageSize)
+        public dynamic GetReadytoDeliveryByCondition(string str, string type,int page,int pageSize)
         {
             if (str is null || type is null)
             {
@@ -35,7 +35,6 @@ namespace ExpressStationSystem
             List<dynamic> list = new List<dynamic>();
             foreach (var x in a)
             {
-                var ob = new QueryController().GetAllInfo(x);
                 if (type == "单号" && x.package.id.ToString().StartsWith(str))
                 {
                     list.Add(x);

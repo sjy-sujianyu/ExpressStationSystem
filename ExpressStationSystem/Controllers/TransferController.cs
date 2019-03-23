@@ -24,16 +24,16 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>获取待出站的包裹ID</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Transfer/GetReadyToTransfer")]
-        public List<int> GetReadyToTransfer()
+        public List<int> GetReadyToTransfer(int page,int pageSize)
         {
             db = new DataClasses1DataContext(connstr);
             var readytoDelivery = db.Package.Where(a => a.status == "已扫件").Join(db.AddressBook.Where(a => !a.street.Contains("华南农业大学")), a => a.receiverId, b => b.aId, (a, b) => a.id);
-            List<int> list = new List<int>();
+            List<dynamic> list = new List<dynamic>();
             foreach (var x in readytoDelivery)
             {
                 list.Add(x);
             }
-            return list;
+            return new ToolsController().splitpage(list, page, pageSize);
         }
 
         // GET: api/Transfer/GetNext
