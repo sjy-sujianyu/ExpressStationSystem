@@ -142,6 +142,7 @@ namespace ExpressStationSystem
                 del.mId = x.Mid;
                 del.time = DateTime.Now;
                 del.isDone = false;
+                package.time = DateTime.Now;
                 db.Delivery.InsertOnSubmit(del);
                 package.status = "派件中";
                 db.SubmitChanges();
@@ -237,6 +238,7 @@ namespace ExpressStationSystem
                 error.introduction = "客户拒收快递";
                 error.status = "拒签";
                 error.time = DateTime.Now;
+                x.time = DateTime.Now;
                 db.Error.InsertOnSubmit(error);
                 db.SubmitChanges();
                 return true;
@@ -287,6 +289,7 @@ namespace ExpressStationSystem
                 del.isDone = true;
                 db.Delivery.InsertOnSubmit(del);
                 package.status = "已签收";
+                package.time = DateTime.Now;
                 db.SubmitChanges();
                 return true;
             }

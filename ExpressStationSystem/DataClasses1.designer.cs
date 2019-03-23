@@ -2546,6 +2546,8 @@ namespace ExpressStationSystem
 		
 		private bool _isDelete;
 		
+		private System.DateTime _initialTime;
+		
 		private EntitySet<Delivery> _Delivery;
 		
 		private EntitySet<Error> _Error;
@@ -2588,6 +2590,8 @@ namespace ExpressStationSystem
     partial void OnstatusChanged();
     partial void OnisDeleteChanging(bool value);
     partial void OnisDeleteChanged();
+    partial void OninitialTimeChanging(System.DateTime value);
+    partial void OninitialTimeChanged();
     #endregion
 		
 		public Package()
@@ -2817,8 +2821,29 @@ namespace ExpressStationSystem
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_initialTime", DbType="DateTime NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=11)]
+		public System.DateTime initialTime
+		{
+			get
+			{
+				return this._initialTime;
+			}
+			set
+			{
+				if ((this._initialTime != value))
+				{
+					this.OninitialTimeChanging(value);
+					this.SendPropertyChanging();
+					this._initialTime = value;
+					this.SendPropertyChanged("initialTime");
+					this.OninitialTimeChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Delivery", Storage="_Delivery", ThisKey="id", OtherKey="id")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=11, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=12, EmitDefaultValue=false)]
 		public EntitySet<Delivery> Delivery
 		{
 			get
@@ -2837,7 +2862,7 @@ namespace ExpressStationSystem
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Error", Storage="_Error", ThisKey="id", OtherKey="id")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=12, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=13, EmitDefaultValue=false)]
 		public EntitySet<Error> Error
 		{
 			get
@@ -2856,7 +2881,7 @@ namespace ExpressStationSystem
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Path", Storage="_Path", ThisKey="id", OtherKey="id")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=13, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=14, EmitDefaultValue=false)]
 		public EntitySet<Path> Path
 		{
 			get
@@ -2875,7 +2900,7 @@ namespace ExpressStationSystem
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_PickUp", Storage="_PickUp", ThisKey="id", OtherKey="id")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=14, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=15, EmitDefaultValue=false)]
 		public EntitySet<PickUp> PickUp
 		{
 			get
@@ -2894,7 +2919,7 @@ namespace ExpressStationSystem
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Package_Transfer", Storage="_Transfer", ThisKey="id", OtherKey="id")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=15, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=16, EmitDefaultValue=false)]
 		public EntitySet<Transfer> Transfer
 		{
 			get

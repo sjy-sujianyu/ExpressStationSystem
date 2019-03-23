@@ -160,6 +160,11 @@ namespace ExpressStationSystem.Controllers
                     error.status = "漏件";
                     error.time = DateTime.Now;
                     error.id = x;
+                    var package = db.Package.SingleOrDefault(a => a.id == error.id);
+                    if(package !=null)
+                    {
+                        package.time = DateTime.Now;
+                    }
                     Console.WriteLine("包裹id" + x + "   " + "status:" + error.status);
                     try
                     {
@@ -190,6 +195,11 @@ namespace ExpressStationSystem.Controllers
             error.introduction = x.introduction;
             error.status = x.status;
             error.time = DateTime.Now;
+            var package = db.Package.SingleOrDefault(a => a.id == error.id);
+            if (package != null)
+            {
+                package.time = DateTime.Now;
+            }
             try
             {
                 db.Error.InsertOnSubmit(error);

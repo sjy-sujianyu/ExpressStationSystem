@@ -125,6 +125,7 @@ namespace ExpressStationSystem.Controllers
                 tran.time = DateTime.Now;
                 db.Transfer.InsertOnSubmit(tran);
                 package.status = "运输中";
+                package.time = DateTime.Now;
                 db.SubmitChanges();
                 return true;
             }
