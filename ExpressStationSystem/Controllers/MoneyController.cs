@@ -155,6 +155,11 @@ namespace ExpressStationSystem.Controllers
                 var errorLeak = new PickUpController().GetReadytoScan();
                 foreach (var x in errorLeak)
                 {
+                    var check = db.Error.Where(a => a.id == x && a.status == "漏件");
+                    if (check.Count() != 0)
+                    {
+                        continue;
+                    }
                     Error error = new Error();
                     error.introduction = "包裹丢失,没有进站";
                     error.status = "漏件";
