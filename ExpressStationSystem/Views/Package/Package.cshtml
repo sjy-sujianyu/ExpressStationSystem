@@ -223,7 +223,9 @@
                                 <td> @package.dest.name </td>
                                 <td> @package.dest.phone </td>
                                 <td> @package.package.time </td>
-                                <td> @package.package.status </td>
+                                <td style="display:flex">
+                                    @package.package.status (@for (int i = 0; i < package.error.Count; i++){<div>@package.error[i].status </div>})
+                                </td>
                                 <th>
                                     <button type="button" class="btn-sm btn-info" data-toggle="modal" data-target="#p_@package.package.id">详情</button>
                                     <div class="modal fade" id="p_@package.package.id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

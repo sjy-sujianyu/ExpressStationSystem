@@ -19,6 +19,13 @@
             }
             window.location.href = "/Info/AllInfo?date1=" + date1 + "&date2=" + date2;
         }
+
+        function jumpToPackage(status) {
+            var date1 = document.getElementById("date1").value;
+            var date2 = document.getElementById("date2").value;
+
+            window.location.href = "/Package/Package?status=" + status + "&searchWith=按姓名&searchWithContent=&date1=" + date1 + "&date2=" + date2 + "&page=1";
+        }
     </script>
 
 </head>
@@ -106,77 +113,77 @@
     </div>
 
         <ul class="list-group" style="margin-top:2rem;">
-            <li class="list-group-item list-group-item-success list-group-item-action" style="display: flex;justify-content: space-between;">
+            <li class="list-group-item list-group-item-success list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('错件')">
                 <div>错件数</div>
                 <div style="display:flex;">
                     <div>@ViewBag.number.errorError.cnt</div>
                     <div>件</div>
                 </div>
             </li>
-            <li class="list-group-item list-group-item-secondary list-group-item-action" style="display: flex;justify-content: space-between;">
+            <li class="list-group-item list-group-item-secondary list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('漏件')">
                 <div>漏件数</div>
                 <div style="display:flex;">
                     <div>@ViewBag.number.errorLeak.cnt</div>
                     <div>件</div>
                 </div>
             </li>
-            <li class="list-group-item list-group-item-info list-group-item-action" style="display: flex;justify-content: space-between;">
+            <li class="list-group-item list-group-item-info list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('破损')">
                 <div>破损件数</div>
                 <div style="display:flex;">
                     <div>@ViewBag.number.errorDamaged.cnt</div>
                     <div>件</div>
                 </div>
             </li>
-            <li class="list-group-item list-group-item-warning list-group-item-action" style="display: flex;justify-content: space-between;">
+            <li class="list-group-item list-group-item-warning list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('拒签')">
                 <div>拒签数</div>
                 <div style="display:flex;">
                     <div>@ViewBag.number.errorRefused.cnt</div>
                     <div>件</div>
                 </div>
             </li>
-            <li class="list-group-item list-group-item-danger list-group-item-action" style="display: flex;justify-content: space-between;">
+            <li class="list-group-item list-group-item-danger list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('丢件')">
                 <div>丢件数</div>
                 <div style="display:flex;">
                     <div>@ViewBag.number.errorLose.cnt</div>
                     <div>件</div>
                 </div>
             </li>
-            <li class="list-group-item list-group-item-success list-group-item-action" style="display: flex;justify-content: space-between;">
+            <li class="list-group-item list-group-item-success list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('已签收')">
                 <div>派件数</div>
                 <div style="display:flex;">
                     <div>@ViewBag.number.delivery.cnt</div>
                     <div>件</div>
                 </div>
             </li>
-            <li class="list-group-item list-group-item-secondary list-group-item-action" style="display: flex;justify-content: space-between;">
+            <li class="list-group-item list-group-item-secondary list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('已扫件')">
                 <div>入站数</div>
                 <div style="display:flex;">
                     <div>@ViewBag.number.pickUp.cnt</div>
                     <div>件</div>
                 </div>
             </li>
-            <li class="list-group-item list-group-item-info list-group-item-action" style="display: flex;justify-content: space-between;">
+            <li class="list-group-item list-group-item-info list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('运输中')">
                 <div>出件数</div>
                 <div style="display:flex;">
                     <div>@ViewBag.number.transfer.cnt</div>
                     <div>件</div>
                 </div>
             </li>
-            <li class="list-group-item list-group-item-warning list-group-item-action" style="display: flex;justify-content: space-between;">
+            <li class="list-group-item list-group-item-warning list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToLeave('错件')">
                 <div>请假数</div>
                 <div style="display:flex;">
                     <div>@ViewBag.number.leave.cnt</div>
                     <div>件</div>
                 </div>
             </li>
-            <li class="list-group-item list-group-item-danger list-group-item-action" style="display: flex;justify-content: space-between;">
+            <li class="list-group-item list-group-item-danger list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToMember('错件')">
                 <div>雇用数</div>
                 <div style="display:flex;">
                     <div>@ViewBag.number.memberEmploy.cnt</div>
                     <div>件</div>
                 </div>
             </li>
-            <li class="list-group-item list-group-item-secondary list-group-item-action" style="display: flex;justify-content: space-between;">
+            <li class="list-group-item list-group-item-secondary list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToMember('错件')">
                 <div>辞职数</div>
                 <div style="display:flex;">
                     <div>@ViewBag.number.memberFired.cnt</div>
@@ -190,14 +197,14 @@
                     <div>件</div>
                 </div>
             </li>
-            <li class="list-group-item list-group-item-warning list-group-item-action" style="display: flex;justify-content: space-between;">
+            <li class="list-group-item list-group-item-warning list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToCar('错件')">
                 <div>车录用数</div>
                 <div style="display:flex;">
                     <div>@ViewBag.number.vehicleEmploy.cnt</div>
                     <div>件</div>
                 </div>
             </li>
-            <li class="list-group-item list-group-item-danger list-group-item-action" style="display: flex;justify-content: space-between;">
+            <li class="list-group-item list-group-item-danger list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToCar('错件')">
                 <div>车删除数</div>
                 <div style="display:flex;">
                     <div>@ViewBag.number.vehicleFired.cnt</div>

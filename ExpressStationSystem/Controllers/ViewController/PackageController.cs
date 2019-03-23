@@ -11,12 +11,13 @@ namespace ExpressStationSystem.Controllers.ViewController
 {
     public class PackageController : Controller
     {
-        public ActionResult Package(string status, string searchWith, string searchWithContent, string date1, string date2, string page, string car)
+        public ActionResult Package(string status, string searchWith, string searchWithContent, string date1, string date2, string page, string car, List<dynamic> checkPackage)
         {
             if (!checkCookies())
             {
                 return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
             }
+
             int pageNum = 20;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
@@ -63,7 +64,16 @@ namespace ExpressStationSystem.Controllers.ViewController
                 date2 = date1;
             }
             //包裹信息
-            dynamic PInfoList = new QueryController().GetAllInfoFast(Convert.ToDateTime(date1), Convert.ToDateTime(date2).AddDays(1));
+            dynamic PInfoList;
+            if (checkPackage != null)
+            {
+                PInfoList = checkPackage;
+            }
+            else
+            {
+                PInfoList = new QueryController().GetAllInfoFast(Convert.ToDateTime(date1), Convert.ToDateTime(date2).AddDays(1));
+            }
+            
             if (car != null && car != "")
             {
                 PInfoList = new VehicleController().GetPackageOnVehicle(Convert.ToInt32(car));
@@ -139,28 +149,6 @@ namespace ExpressStationSystem.Controllers.ViewController
                     showPackage.Add(PInfo);
                 }
             }
-            //统计
-            int sumL = 0;
-            int sumP = 0;
-            int sumT = 0;
-            foreach(var p in showPackage)
-            {
-                if(p.package.status == "已扫件")
-                {
-                    sumL++;
-                }
-                else if(p.package.status == "已签收")
-                {
-                    sumP++;
-                }
-                else if (p.package.status == "运输中")
-                {
-                    sumT++;
-                }
-            }
-            ViewBag.sumL = sumL;
-            ViewBag.sumP = sumP;
-            ViewBag.sumT = sumT;
             //默认在第一页
             if (page == null || page == "" || Convert.ToInt32(page) <= 0)
             {
