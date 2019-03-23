@@ -18,7 +18,7 @@ namespace ExpressStationSystem.Controllers.ViewController
                 return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
             }
 
-            int pageNum = 20;
+            int pageNum = 10;
             string defaultSearchWith = "按姓名";
             string defaultSearchWithContent = "";
             string defaultStatus = "选择分类";
