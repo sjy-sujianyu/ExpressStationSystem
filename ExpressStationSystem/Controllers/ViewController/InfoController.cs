@@ -23,11 +23,11 @@ namespace ExpressStationSystem.Controllers.ViewController
             }
             if (date2 == null || date2 == "")
             {
-                date2 = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
+                date2 = DateTime.Now.ToString("yyyy-MM-dd");
             }
             ViewBag.date1 = date1;
             ViewBag.date2 = date2;
-            var number = new QueryController().GetStatistic(Convert.ToDateTime(date1),Convert.ToDateTime(date2));
+            var number = new QueryController().GetStatistic(Convert.ToDateTime(date1),Convert.ToDateTime(date2).AddDays(1));
             var jsonStr = JsonConvert.SerializeObject(number);
             JObject jo = (JObject)JsonConvert.DeserializeObject(jsonStr);
             ViewBag.number = jo;
