@@ -249,19 +249,37 @@ namespace ExpressStationSystem.Controllers
         /// <summary>
         /// 根据错误包裹
         /// </summary>
+        /// <param name="start">起始时间</param>
+        /// <param name="end">终止时间</param>
+        /// <param name="page">当前页数</param>
+        /// <param name="pageSize">总共页数</param>
+        /// <param name="status">错误信息状态：拒签、错件、漏件、破损、丢件、全部</param>
         /// <remarks>根据错误包裹</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Query/GetErrorPackage")]
-        public List<int> GetErrorPackage()
+        public List<int> GetErrorPackage(DateTime start, DateTime end,int page,int pageSize,string status)
         {
             db = new DataClasses1DataContext(connstr);
-            List<int> list = new List<int>();
-            var error = from a in db.Error select a.id;
-            foreach (var x in error)
+            if (status == "全部")
             {
-                list.Add(x);
+                List<dynamic> list = new List<dynamic>();
+                var error = from a in db.Error join b in db.Package on a.id equals b.id join c in db.AddressBook on b.sendId equals c.aId join d in db.AddressBook on b.receiverId equals d.aId where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 select new { package = b, src = c, dest = d };
+                foreach (var x in error)
+                {
+                    list.Add(x);
+                }
+                return new ToolsController().splitpage(list, page, pageSize);
             }
-            return list;
+            else
+            {
+                List<dynamic> list = new List<dynamic>();
+                var error = from a in db.Error join b in db.Package on a.id equals b.id join c in db.AddressBook on b.sendId equals c.aId join d in db.AddressBook on b.receiverId equals d.aId where DateTime.Compare(a.time, start) >= 0 && DateTime.Compare(a.time, end) <= 0 && a.status == status select new { package = b, src = c, dest = d };
+                foreach (var x in error)
+                {
+                    list.Add(x);
+                }
+                return new ToolsController().splitpage(list, page, pageSize);
+            }
         }
         // GET: api/Query/GetErrorPackage
         /// <summary>
