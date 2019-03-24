@@ -26,6 +26,23 @@
 
             window.location.href = "/Package/Package?status=" + status + "&searchWith=按姓名&searchWithContent=&date1=" + date1 + "&date2=" + date2 + "&page=1";
         }
+
+        function jumpToMember(status) {
+            var date1 = document.getElementById("date1").value;
+            var date2 = document.getElementById("date2").value; 
+
+            window.location.href = "/Member/AllMember?status=" + status + "&searchWith=&searchWithContent=&date1=" + date1 + "&date2=" + date2 + "&page=1";
+
+        }
+
+        function jumpToLeave() {
+            var date1 = document.getElementById("date1").value;
+            var date2 = document.getElementById("date2").value; 
+
+            window.location.href = "/Member/Leave?status=undefined&searchWith=&searchWithContent=&date1=" + date1 + "&date2=" + date2 + "&page=1";
+
+        }
+
     </script>
 
 </head>
@@ -112,106 +129,191 @@
 
     </div>
 
-        <ul class="list-group" style="margin-top:2rem;">
-            <li class="list-group-item list-group-item-success list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('错件')">
-                <div>错件数</div>
-                <div style="display:flex;">
-                    <div>@ViewBag.number.errorError.cnt</div>
-                    <div>件</div>
+    <ul class="list-group" style="margin-top:2rem;">
+        <li class="list-group-item list-group-item-success list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('错件')">
+            <div>错件数</div>
+            <div style="display:flex;">
+                <div>@ViewBag.number.errorError.cnt</div>
+                <div>件</div>
+            </div>
+        </li>
+        <li class="list-group-item list-group-item-secondary list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('漏件')">
+            <div>漏件数</div>
+            <div style="display:flex;">
+                <div>@ViewBag.number.errorLeak.cnt</div>
+                <div>件</div>
+            </div>
+        </li>
+        <li class="list-group-item list-group-item-info list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('破损')">
+            <div>破损件数</div>
+            <div style="display:flex;">
+                <div>@ViewBag.number.errorDamaged.cnt</div>
+                <div>件</div>
+            </div>
+        </li>
+        <li class="list-group-item list-group-item-warning list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('拒签')">
+            <div>拒签数</div>
+            <div style="display:flex;">
+                <div>@ViewBag.number.errorRefused.cnt</div>
+                <div>件</div>
+            </div>
+        </li>
+        <li class="list-group-item list-group-item-danger list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('丢件')">
+            <div>丢件数</div>
+            <div style="display:flex;">
+                <div>@ViewBag.number.errorLose.cnt</div>
+                <div>件</div>
+            </div>
+        </li>
+        <li class="list-group-item list-group-item-success list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('已签收')">
+            <div>派件数</div>
+            <div style="display:flex;">
+                <div>@ViewBag.number.delivery.cnt</div>
+                <div>件</div>
+            </div>
+        </li>
+        <li class="list-group-item list-group-item-secondary list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('已扫件')">
+            <div>入站数</div>
+            <div style="display:flex;">
+                <div>@ViewBag.number.pickUp.cnt</div>
+                <div>件</div>
+            </div>
+        </li>
+        <li class="list-group-item list-group-item-info list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('运输中')">
+            <div>出件数</div>
+            <div style="display:flex;">
+                <div>@ViewBag.number.transfer.cnt</div>
+                <div>件</div>
+            </div>
+        </li>
+        <li class="list-group-item list-group-item-warning list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToLeave()">
+            <div>请假数</div>
+            <div style="display:flex;">
+                <div>@ViewBag.number.leave.cnt</div>
+                <div>次</div>
+            </div>
+        </li>
+        <li class="list-group-item list-group-item-danger list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToMember()">
+            <div>雇用数</div>
+            <div style="display:flex;">
+                <div>@ViewBag.number.memberEmploy.cnt</div>
+                <div>人</div>
+            </div>
+        </li>
+        <li class="list-group-item list-group-item-secondary list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToMember('已辞职')">
+            <div>辞职数</div>
+            <div style="display:flex;">
+                <div>@ViewBag.number.memberFired.cnt</div>
+                <div>人</div>
+            </div>
+        </li>
+        <li class="list-group-item list-group-item-info list-group-item-action" style="display: flex;justify-content: space-between;" data-toggle="modal" data-target="#history">
+            <div>历史提成项目数</div>
+            <div style="display:flex;">
+                <div>@ViewBag.number.commission.cnt</div>
+                <div>项</div>
+            </div>
+        </li>
+
+        <div class="modal fade" id="history" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">历史提成项目</h4>
+                    </div>
+                    <div class="modal-body">
+                        @for(int i=0;i < ViewBag.number.commission.content.Count;i++)
+                        {
+                            <ul>
+                                <li>
+                                    <div>时间:@ViewBag.number.commission.content[i].time</div>
+                                    <div>揽件提成:￥@ViewBag.number.commission.content[i].pickUpValue/件</div>
+                                    <div>派件提成:￥@ViewBag.number.commission.content[i].deliveryValue/件</div>
+                                    <div>出件提成:￥@ViewBag.number.commission.content[i].transferValue/件</div>
+                                </li>
+                            </ul>
+                        }
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
                 </div>
-            </li>
-            <li class="list-group-item list-group-item-secondary list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('漏件')">
-                <div>漏件数</div>
-                <div style="display:flex;">
-                    <div>@ViewBag.number.errorLeak.cnt</div>
-                    <div>件</div>
+            </div>
+        </div>
+
+        <li class="list-group-item list-group-item-warning list-group-item-action" style="display: flex;justify-content: space-between;" data-toggle="modal" data-target="#carAdd">
+            <div>车录用数</div>
+            <div style="display:flex;">
+                <div>@ViewBag.number.vehicleEmploy.cnt</div>
+                <div>辆</div>
+            </div>
+        </li>
+
+        <div class="modal fade" id="carAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">车辆录用信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        @for (int i = 0; i < ViewBag.number.vehicleEmploy.content.Count; i++)
+                        {
+                            <ul>
+                                <li>
+                                    <div>录用时间:@ViewBag.number.vehicleEmploy.content[i].time</div>
+                                    <div>车牌号:@ViewBag.number.vehicleEmploy.content[i].plateNumber</div>
+                                    <div>车类型:@ViewBag.number.vehicleEmploy.content[i].type</div>
+                                </li>
+                            </ul>
+                        }
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
                 </div>
-            </li>
-            <li class="list-group-item list-group-item-info list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('破损')">
-                <div>破损件数</div>
-                <div style="display:flex;">
-                    <div>@ViewBag.number.errorDamaged.cnt</div>
-                    <div>件</div>
+            </div>
+        </div>
+
+        <li class="list-group-item list-group-item-danger list-group-item-action" style="display: flex;justify-content: space-between;" data-toggle="modal" data-target="#carDelete">
+            <div>车删除数</div>
+            <div style="display:flex;">
+                <div>@ViewBag.number.vehicleFired.cnt</div>
+                <div>辆</div>
+            </div>
+        </li>
+
+        <div class="modal fade" id="carDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">车辆删除信息</h4>
+                    </div>
+                    <div class="modal-body">
+                        @for (int i = 0; i < ViewBag.number.vehicleFired.content.Count; i++)
+                        {
+                            <ul>
+                                <li>
+                                    <div>录用时间:@ViewBag.number.vehicleFired.content[i].time</div>
+                                    <div>车牌号:@ViewBag.number.vehicleFired.content[i].plateNumber</div>
+                                    <div>车类型:@ViewBag.number.vehicleFired.-*+[i].type</div>
+                                </li>
+                            </ul>
+                        }
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
                 </div>
-            </li>
-            <li class="list-group-item list-group-item-warning list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('拒签')">
-                <div>拒签数</div>
-                <div style="display:flex;">
-                    <div>@ViewBag.number.errorRefused.cnt</div>
-                    <div>件</div>
-                </div>
-            </li>
-            <li class="list-group-item list-group-item-danger list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('丢件')">
-                <div>丢件数</div>
-                <div style="display:flex;">
-                    <div>@ViewBag.number.errorLose.cnt</div>
-                    <div>件</div>
-                </div>
-            </li>
-            <li class="list-group-item list-group-item-success list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('已签收')">
-                <div>派件数</div>
-                <div style="display:flex;">
-                    <div>@ViewBag.number.delivery.cnt</div>
-                    <div>件</div>
-                </div>
-            </li>
-            <li class="list-group-item list-group-item-secondary list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('已扫件')">
-                <div>入站数</div>
-                <div style="display:flex;">
-                    <div>@ViewBag.number.pickUp.cnt</div>
-                    <div>件</div>
-                </div>
-            </li>
-            <li class="list-group-item list-group-item-info list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToPackage('运输中')">
-                <div>出件数</div>
-                <div style="display:flex;">
-                    <div>@ViewBag.number.transfer.cnt</div>
-                    <div>件</div>
-                </div>
-            </li>
-            <li class="list-group-item list-group-item-warning list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToLeave('错件')">
-                <div>请假数</div>
-                <div style="display:flex;">
-                    <div>@ViewBag.number.leave.cnt</div>
-                    <div>次</div>
-                </div>
-            </li>
-            <li class="list-group-item list-group-item-danger list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToMember('错件')">
-                <div>雇用数</div>
-                <div style="display:flex;">
-                    <div>@ViewBag.number.memberEmploy.cnt</div>
-                    <div>人</div>
-                </div>
-            </li>
-            <li class="list-group-item list-group-item-secondary list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToMember('错件')">
-                <div>辞职数</div>
-                <div style="display:flex;">
-                    <div>@ViewBag.number.memberFired.cnt</div>
-                    <div>人</div>
-                </div>
-            </li>
-            <li class="list-group-item list-group-item-info list-group-item-action" style="display: flex;justify-content: space-between;">
-                <div>历史提成项目数</div>
-                <div style="display:flex;">
-                    <div>@ViewBag.number.commission.cnt</div>
-                    <div>项</div>
-                </div>
-            </li>
-            <li class="list-group-item list-group-item-warning list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToCar('错件')">
-                <div>车录用数</div>
-                <div style="display:flex;">
-                    <div>@ViewBag.number.vehicleEmploy.cnt</div>
-                    <div>辆</div>
-                </div>
-            </li>
-            <li class="list-group-item list-group-item-danger list-group-item-action" style="display: flex;justify-content: space-between;" onclick="jumpToCar('错件')">
-                <div>车删除数</div>
-                <div style="display:flex;">
-                    <div>@ViewBag.number.vehicleFired.cnt</div>
-                    <div>辆</div>
-                </div>
-            </li>
-        </ul>
+            </div>
+        </div>
+
+    </ul>
 
 </body>
 </html>
