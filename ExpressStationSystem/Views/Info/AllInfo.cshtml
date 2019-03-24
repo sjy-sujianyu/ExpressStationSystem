@@ -29,9 +29,11 @@
 
         function jumpToMember(status) {
             var date1 = document.getElementById("date1").value;
-            var date2 = document.getElementById("date2").value; 
-
-            window.location.href = "/Member/AllMember?status=" + status + "&searchWith=&searchWithContent=&date1=" + date1 + "&date2=" + date2 + "&page=1";
+            var date2 = document.getElementById("date2").value;
+            if (status == null || status == "" || status == "undefined") {
+                status = "选择分类";
+            }
+            window.location.href = "/Member/AllMember?status=" + status + "&searchWith=按姓名&searchWithContent=&date1=" + date1 + "&date2=" + date2 + "&page=1";
 
         }
 
@@ -83,7 +85,7 @@
                         </ul>
                     </li>
                     <li><a href="/Info/ModifyCommision">提成更改</a></li>
-                    <li><a href="/Info/AllInfo">今日统计</a></li>
+                    <li><a href="/Info/AllInfo">统计</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">

@@ -46,7 +46,7 @@
                     </ul>
                 </li>
                 <li><a href="/Info/ModifyCommision">提成更改</a></li>
-                <li><a href="/Info/AllInfo">今日统计</a></li>
+                <li><a href="/Info/AllInfo">统计</a></li>
             </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -108,6 +108,39 @@
         <div class="row" style="display:block;margin-top: 1rem;">
             <button class="btn btn-success" type="button" onclick="Money_PostCommision()" style="float:right;">OK!</button>
             <button class="btn btn-primary" type="button" onclick="ReSet()" style="float:right;margin-right:2rem;">重置</button>
+
+            <div>
+                <button class="btn btn-warning" type="button" style="float:right;margin-right:2rem;" data-toggle="modal" data-target="#history">历史</button>
+
+                <div class="modal fade" id="history" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">历史提成信息</h4>
+                            </div>
+                            <div class="modal-body">
+                                @for (int i = ViewBag.number.commission.content.Count - 1; i >= 0; i--)
+                                {
+                                    <ul>
+                                        <li>
+                                            <div>于 @ViewBag.number.commission.content[i].time 改动</div>
+                                            <div>揽件提成:￥@ViewBag.number.commission.content[i].pickUpValue/件</div>
+                                            <div>派件提成:￥@ViewBag.number.commission.content[i].deliveryValue/件</div>
+                                            <div>出件提成:￥@ViewBag.number.commission.content[i].transferValue/件</div>
+                                        </li>
+                                    </ul>
+                                }
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
         </div>
     </div>
     

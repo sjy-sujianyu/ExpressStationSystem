@@ -97,11 +97,11 @@ namespace ExpressStationSystem.Controllers.ViewController
                     continue;
                 }
                 //不对时间的也不要
-                if ((date1 != null && date1 != "") && menInfo.time.CompareTo(Convert.ToDateTime(date1)) <= 0)
+                if ((date1 != null && date1 != "") && menInfo.time.CompareTo(Convert.ToDateTime(date1.Replace('-','/'))) < 0)
                 {
                     continue;
                 }
-                if ((date2 != null && date2 != "") && menInfo.time.CompareTo(Convert.ToDateTime(date2).AddDays(1)) >= 0)
+                if ((date2 != null && date2 != "") && menInfo.time.CompareTo(Convert.ToDateTime(date2.Replace('-', '/')).AddDays(1)) > 0)
                 {
                     continue;
                 }
@@ -623,9 +623,9 @@ namespace ExpressStationSystem.Controllers.ViewController
             }
             else
             {
-                date = Convert.ToDateTime(month);
+                date = Convert.ToDateTime(month).AddMonths(1);
             }
-            ViewBag.thisMonth = date.Year.ToString() + "-" + date.Month.ToString();
+            ViewBag.thisMonth = date.Year.ToString() + "-" + date.AddMonths(-1).Month.ToString();
             //第二次是搜索的筛选
             foreach (var menInfo in step)
             {

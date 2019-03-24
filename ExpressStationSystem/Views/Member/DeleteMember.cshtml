@@ -36,7 +36,7 @@
                         alert('已经删除该员工');
                         window.location.reload();
                     } else {
-                        alert('失败');
+                        alert('删除失败，该员工存在未处理的订单');
                         console.log(res);
                     }
                 }
@@ -52,6 +52,26 @@
         }
         function JumpToPage(status, currentPage, count) {
             window.location.href = "/Member/DeleteMember?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&page=" + (currentPage + count).toString();
+        }
+
+        function rollBackMember(id) {
+            $.ajax({
+                url: 'http://172.16.34.153:60062/Manager/RevokeDeleteMember', /*接口域名地址*/
+                contentType: "application/json;charset=UTF-8",
+                type: 'delete',
+                data: JSON.stringify({
+                    'account': id
+                }),
+                success: function (res) {
+                    if (res == true) {
+                        alert('已经进行撤消');
+                        window.location.reload();
+                    } else {
+                        alert('撤消失败');
+                        console.log(res);
+                    }
+                }
+            })
         }
 
     </script>
@@ -91,7 +111,7 @@
                         </ul>
                     </li>
                     <li><a href="/Info/ModifyCommision">提成更改</a></li>
-                    <li><a href="/Info/AllInfo">今日统计</a></li>
+                    <li><a href="/Info/AllInfo">统计</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -144,15 +164,25 @@
 
                 @foreach(var man in ViewBag.showMen)
                 {
-                    <tr>
-                        <th scope="row"><img class="img-circle" src=@("http://" + man.imagePath) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
-                        <td>@man.name</td>
-                        <td>@man.mId</td>
-                        <td>@man.job</td>
+                <tr>
+                    <th scope="row"><img class="img-circle" src=@("http://" + man.imagePath) alt="头像" style="width:3rem;height:3rem;border-radius:3rem" /></th>
+                    <td>@man.name</td>
+                    <td>@man.mId</td>
+                    <td>@man.job</td>
+                    @if (man.isDelete)
+                    {
+                        <th>
+                            <button type="button" class="btn-sm btn-warning" onclick="rollBackMember(@man.mId)">撤消</button>
+                        </th>
+                    }
+                    else
+                    {
                         <th>
                             <button type="button" class="btn-sm btn-danger" onclick="deleteMember(@man.mId)">开除</button>
                         </th>
-                    </tr>
+                    }
+
+                </tr>
                 }
             </tbody>
         </table>
@@ -165,6 +195,7 @@
                 <a class="list-group-item" onclick="JumpTo('出件员',1)">出件员</a>
                 <a class="list-group-item" onclick="JumpTo('派件员',1)">派件员</a>
                 <a class="list-group-item" onclick="JumpTo('待定中',1)">待定中</a>
+                <a class="list-group-item" onclick="JumpTo('已辞职',1)">已辞职</a>
             </div>
         </div>
     </div>
