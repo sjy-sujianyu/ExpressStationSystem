@@ -65,36 +65,35 @@ namespace ExpressStationSystem
         /// <remarks>按条件查询正在派件的包裹</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Delivery/GetDeliveringByCondition")]
-        public List<int> GetDeliveringByCondition(string account, string str, string type)
+        public List<int> GetDeliveringByCondition(string account, string str, string type,int page,int pageSize)
         {
             if (str is null || type is null)
             {
                 return null;
             }
             db = new DataClasses1DataContext(connstr);
-            var a = GetDelivering(account);
-            List<int> list = new List<int>();
+            var a = GetDelivering(account,0,0);
+            List<dynamic> list = new List<dynamic>();
             foreach (var x in a)
             {
-                var ob = new QueryController().GetAllInfo(x);
-                if (type == "单号" && ob.package.id.ToString().StartsWith(str))
+                if (type == "单号" && x.package.id.ToString().StartsWith(str))
                 {
                     list.Add(x);
                 }
-                else if (type == "姓名" && ob.src.name.StartsWith(str))
+                else if (type == "姓名" && x.src.name.StartsWith(str))
                 {
                     list.Add(x);
                 }
-                else if (type == "电话" && ob.src.phone.StartsWith(str))
+                else if (type == "电话" && x.src.phone.StartsWith(str))
                 {
                     list.Add(x);
                 }
-                else if (type == "街道" && ob.src.street.StartsWith(str))
+                else if (type == "街道" && x.src.street.StartsWith(str))
                 {
                     list.Add(x);
                 }
             }
-            return list;
+            return new ToolsController().splitpage(list, page, pageSize); ;
         }
 
 
@@ -251,17 +250,17 @@ namespace ExpressStationSystem
         /// <remarks>获取某员工正在派件的包裹ID</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("Delivery/GetDelivering")]
-        public List<int> GetDelivering(string account)
+        public dynamic GetDelivering(string account,int page,int pageSize)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Delivery.GroupBy(p => p.id).Select(g => g.OrderByDescending(t => t.time).First()) join b in db.Package on a.id equals b.id where b.status == "派件中" && a.mId == account && a.isDone == false select b.id;
-            List<int> list = new List<int>();
+            var selectQuery = from a in db.Delivery.GroupBy(p => p.id).Select(g => g.OrderByDescending(t => t.time).First()) join b in db.Package on a.id equals b.id where b.status == "派件中" && a.mId == account && a.isDone == false join c in db.AddressBook on b.sendId equals c.aId join d in db.AddressBook on b.receiverId equals d.aId select new { package = b, src = c, dest = d };
+            List<dynamic> list = new List<dynamic>();
             foreach (var x in selectQuery)
             {
                 list.Add(x);
             }
 
-            return list;
+            return new ToolsController().splitpage(list, page, pageSize);
         }
 
         // Post: api/Delivery/ConfirmPost
