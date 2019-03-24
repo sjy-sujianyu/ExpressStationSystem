@@ -23,7 +23,7 @@ namespace ExpressStationSystem
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             checkError();
-            Text();
+            //Text();
             //moni();
         }
         public void moni()
