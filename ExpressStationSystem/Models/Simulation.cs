@@ -259,15 +259,22 @@ namespace ExpressStationSystem.Models
                 List<Member> mem = db.Member.Where(a => a.job == "揽件员").ToList();
                 pick.mId = mem[rand.Next(mem.Count)].mId;
                 pick.id = id;
-                IdClass idc = new IdClass();
-                idc.id = id;
                 new PickUpController().Post(pick);
-                new PickUpController().Scan(idc);
+
+                try
+                {
+                    Thread.Sleep(10000);
+                }
+                catch (Exception e)
+                {
+
+                }
+                new PickUpController().ConfirmPost(pick);
 
                 
                 try
                 {
-                    Thread.Sleep(30000);
+                    Thread.Sleep(10000);
                 }
                 catch (Exception e)
                 {
