@@ -28,7 +28,7 @@ namespace ExpressStationSystem
         }
         public void moni()
         {
-            
+
             //Thread newlogin = new Thread(Simulation.Instance.AddNewLogin);
             //newlogin.IsBackground = true;
             //newlogin.Start();
@@ -37,13 +37,21 @@ namespace ExpressStationSystem
             //newaddress.IsBackground = true;
             //newaddress.Start();
 
-            Thread newpath = new Thread(Simulation.Instance.NewPath);
-            newpath.IsBackground = true;
-            newpath.Start();
+            ////Thread newpath = new Thread(Simulation.Instance.NewPath);
+            ////newpath.IsBackground = true;
+            ////newpath.Start();
 
             //Thread newpackage = new Thread(new ParameterizedThreadStart(Simulation.Instance.OrderNewPackage));
             //newpackage.IsBackground = true;
             //newpackage.Start(3000);
+
+            Thread newpickup = new Thread(Simulation.Instance.NewPickUp);
+            newpickup.IsBackground = true;
+            newpickup.Start();
+
+            //Thread newdelivery = new Thread(Simulation.Instance.NewDelivery);
+            //newdelivery.IsBackground = true;
+            //newdelivery.Start();
         }
         public void checkError()
         {
