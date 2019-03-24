@@ -150,7 +150,7 @@ namespace ExpressStationSystem.Controllers
         public dynamic GetReceiving(string account,int page, int pageSize)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.PickUp.GroupBy(p=>p.id).Select(g=>g.OrderByDescending(t=>t.time).First()) join b in db.Package on a.id equals b.id where b.status == "待揽件" && a.mId == account&&a.isDone==false select b.id;
+            var selectQuery = from a in db.PickUp.GroupBy(p=>p.id).Select(g=>g.OrderByDescending(t=>t.time).First()) join b in db.Package on a.id equals b.id where b.status == "待揽件" && a.mId == account&&a.isDone==false join c in db.AddressBook on b.sendId equals c.aId join d in db.AddressBook on b.receiverId equals d.aId select new { package = b, src = c, dest = d };
             List<dynamic> list = new List<dynamic>();
             foreach (var x in selectQuery)
             {
