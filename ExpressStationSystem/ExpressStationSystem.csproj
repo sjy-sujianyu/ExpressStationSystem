@@ -148,7 +148,6 @@
     <Compile Include="Controllers\ViewController\CarController.cs" />
     <Compile Include="Controllers\ViewController\InfoController.cs" />
     <Compile Include="Models\Simulation.cs" />
-    <Compile Include="SpecialMethodModule.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />

@@ -92,7 +92,7 @@ namespace ExpressStationSystem.Controllers
         public List<dynamic> GetLogisticsInfo(int id)
         {
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Path where a.id==id orderby a.time
+            var selectQuery = from a in db.Path where a.id==id orderby a.time descending
                               select new {pId=a.pId,id=a.id,srcPlace=splitPlace(a.srcPlace),destPlace=splitPlace(a.destPlace),curPlace=splitPlace(a.curPlace),isArrival=a.isArrival,time=a.time };
             List<dynamic> list = new List<dynamic>();
             foreach (var x in selectQuery)
