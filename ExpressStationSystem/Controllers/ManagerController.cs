@@ -281,7 +281,27 @@ namespace ExpressStationSystem.Controllers
             db.SubmitChanges();
             return true;
         }
-
+        // PUT: api/Manager/RevokeDeleteMember?account={account}
+        /// <summary>
+        /// 撤销解雇某个员工
+        /// </summary>
+        /// <param name="aclass">账户实体信息</param>
+        /// <remarks>撤销解雇某个员工</remarks>
+        /// <returns>返回</returns>
+        [HttpDelete, Route("Manager/RevokeDeleteMember")]
+        public bool RevokeDeleteMember(accountClass aclass)
+        {
+            db = new DataClasses1DataContext(connstr);
+            var x = db.Member.SingleOrDefault(a => a.mId == aclass.account);
+            if (x is null)
+            {
+                return false;
+            }
+            x.isDelete = false;
+            x.onDuty = true;
+            db.SubmitChanges();
+            return true;
+        }
         private bool checkDoJob(string account)
         {
             db = new DataClasses1DataContext(connstr);
