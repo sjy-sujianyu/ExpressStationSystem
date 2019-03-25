@@ -179,7 +179,7 @@ namespace ExpressStationSystem.Models
                     break;
                 }
 
-                var addresslist1 = new AddressBookController().GetAll();
+                var addresslist1 = new AddressBookController().GetAllNotInSCAU();
                 var addresslist2 = new AddressBookController().GetAllSCAU();
 
                 var address1 = addresslist1[rand.Next(addresslist1.Count())];
@@ -237,7 +237,7 @@ namespace ExpressStationSystem.Models
                 db.SubmitChanges();
                 try
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(10000);
                 }
                 catch (Exception e)
                 {
@@ -245,6 +245,68 @@ namespace ExpressStationSystem.Models
                 }
             }
             
+        }
+
+        public void NewPickUp()
+        {
+            db = new DataClasses1DataContext(connstr);
+            Random rand = new Random();
+            while (true)
+            {
+                var packages = new PickUpController().GetReadytoReceive(1, 1000000);
+                int id = packages.content[rand.Next(packages.content.Count)].package.id;
+                PickUpClass pick = new PickUpClass();
+                List<Member> mem = db.Member.Where(a => a.job == "揽件员").ToList();
+                pick.mId = mem[rand.Next(mem.Count)].mId;
+                pick.id = id;
+                new PickUpController().Post(pick);
+
+                try
+                {
+                    Thread.Sleep(10000);
+                }
+                catch (Exception e)
+                {
+
+                }
+                new PickUpController().ConfirmPost(pick);
+
+                
+                try
+                {
+                    Thread.Sleep(10000);
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+        }
+
+        public void NewDelivery()
+        {
+            db = new DataClasses1DataContext(connstr);
+            Random rand = new Random();
+            while (true)
+            {
+                var packages = new DeliveryController().GetReadytoDelivery(1, 1000000);
+                int id = packages.content[rand.Next(packages.content.Count)].package.id;
+                DeliveryClass del = new DeliveryClass();
+                List<Member> mem = db.Member.Where(a => a.job == "派件员").ToList();
+                del.Mid = mem[rand.Next(mem.Count)].mId;
+                del.Id = id;
+                new DeliveryController().Post(del);
+
+
+                try
+                {
+                    Thread.Sleep(100000);
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
         }
     }
 }

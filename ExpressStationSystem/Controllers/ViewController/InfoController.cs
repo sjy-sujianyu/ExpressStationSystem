@@ -40,6 +40,12 @@ namespace ExpressStationSystem.Controllers.ViewController
             {
                 return Content(string.Format("<script>alert('请先登陆');parent.window.location='/Login/Login';</script>"));
             }
+            DateTime date1 = DateTime.Now.AddYears(-20);
+            DateTime date2 = DateTime.Now;
+            var number = new QueryController().GetStatistic(Convert.ToDateTime(date1), Convert.ToDateTime(date2).AddDays(1));
+            var jsonStr = JsonConvert.SerializeObject(number);
+            JObject jo = (JObject)JsonConvert.DeserializeObject(jsonStr);
+            ViewBag.number = jo;
             return View();
         }
 
