@@ -111,7 +111,7 @@ namespace ExpressStationSystem.Controllers
             {
                 if(splitPlace(x.curPlace).street.Contains("华南农业大学")&&x.isArrival==true)
                 {
-                    list.Add(x);
+                    list.Add(x.id);
                 }
             }
             sw.Stop();
