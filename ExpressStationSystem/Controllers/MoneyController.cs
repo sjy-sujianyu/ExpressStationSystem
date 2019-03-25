@@ -155,7 +155,8 @@ namespace ExpressStationSystem.Controllers
                 var errorLeak = new PickUpController().GetReadytoScan(0,0);
                 foreach (var x in errorLeak)
                 {
-                    var check = db.Error.Where(a => a.id == x && a.status == "漏件");
+                    int xy = (int)x;
+                    var check = db.Error.Where(a => a.id == xy && a.status == "漏件");
                     if (check.Count() != 0)
                     {
                         continue;

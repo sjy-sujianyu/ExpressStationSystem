@@ -99,7 +99,7 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>获取上个网点转来待扫件的包裹ID</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("PickUp/GetReadytoScan")]
-        public List<int> GetReadytoScan(int page,int pageSize)
+        public dynamic GetReadytoScan(int page,int pageSize)
         {
             db = new DataClasses1DataContext(connstr);
             var selectQuery = from a in db.Package where  a.status == "运输中" select a.id;
