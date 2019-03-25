@@ -99,11 +99,11 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>获取上个网点转来待扫件的包裹ID</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("PickUp/GetReadytoScan")]
-        public List<int> GetReadytoScan()
+        public List<int> GetReadytoScan(int page,int pageSize)
         {
             db = new DataClasses1DataContext(connstr);
             var selectQuery = from a in db.Package where  a.status == "运输中" select a.id;
-            List <int> list = new List<int>();
+            List <dynamic> list = new List<dynamic>();
             foreach (var x in selectQuery)
             {
                 var path = from a in db.Path where a.id == x orderby a.time descending select a;
@@ -118,7 +118,7 @@ namespace ExpressStationSystem.Controllers
                 }
             }
 
-            return list;
+            return new ToolsController().splitpage(list, page, pageSize);
         }
 
         // GET: api/PickUp/GetReadytoReceive

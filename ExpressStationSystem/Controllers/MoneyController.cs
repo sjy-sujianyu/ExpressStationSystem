@@ -152,7 +152,7 @@ namespace ExpressStationSystem.Controllers
                 {
                 }
                 db = new DataClasses1DataContext(connstr);
-                var errorLeak = new PickUpController().GetReadytoScan();
+                var errorLeak = new PickUpController().GetReadytoScan(0,0);
                 foreach (var x in errorLeak)
                 {
                     var check = db.Error.Where(a => a.id == x && a.status == "漏件");
