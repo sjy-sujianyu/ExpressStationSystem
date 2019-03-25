@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -99,25 +100,23 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>获取上个网点转来待扫件的包裹ID</remarks>
         /// <returns>返回</returns>
         [HttpGet, Route("PickUp/GetReadytoScan")]
-        public List<int> GetReadytoScan(int page,int pageSize)
+        public dynamic GetReadytoScan(int page,int pageSize)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Package where  a.status == "运输中" select a.id;
+            var selectQuery = from a in db.Package join b in db.Path on a.id equals b.id  orderby b.time descending where a.status == "运输中" group b by b.id into g select g.First();
             List <dynamic> list = new List<dynamic>();
             foreach (var x in selectQuery)
             {
-                var path = from a in db.Path where a.id == x orderby a.time descending select a;
-                var check = path.FirstOrDefault();
-                if (check is null)
-                {
-                    continue;
-                }
-                if(splitPlace(check.curPlace).street.Contains("华南农业大学")&&check.isArrival==true)
+                if(splitPlace(x.curPlace).street.Contains("华南农业大学")&&x.isArrival==true)
                 {
                     list.Add(x);
                 }
             }
-
+            sw.Stop();
+            TimeSpan ts2 = sw.Elapsed;
+            Console.WriteLine("Stopwatch总共花费{0}ms.", ts2.TotalMilliseconds);
             return new ToolsController().splitpage(list, page, pageSize);
         }
 
