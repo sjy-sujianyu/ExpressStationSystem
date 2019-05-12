@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ExpressStationSystem
+namespace ExpressStationSystem.Models
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;

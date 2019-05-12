@@ -80,13 +80,29 @@ namespace ExpressStationSystem
         {
             var res = HttpContext.Current.Response;
             var req = HttpContext.Current.Request;
-
+            var token = HttpContext.Current.Request.Headers.Get("Token");
+            var path = HttpContext.Current.Request.Path;
+            if (path.ToString().StartsWith("/api/"))
+            {
+                if (!ignoreTokenController().Contains(path))
+                {
+                    if (token==null||!Global.ValidateTicket(token))
+                    {
+                        res.StatusCode = 403;
+                        res.End();
+                    }
+                }
+            }
             //自定义header时进行处理
             if (req.HttpMethod == "OPTIONS")
             {
                 res.StatusCode = 200;
                 res.End();
             }
+        }
+        private List<string> ignoreTokenController()
+        {
+            return new List<string>() { "/api/Login/Land", "/api/Login/LandOfManager", "/api/Query/GetAdminToken", "/api/Query/AdminValidateTicket" };
         }
     }
 }

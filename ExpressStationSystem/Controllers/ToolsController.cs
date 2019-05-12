@@ -12,25 +12,26 @@ using System.Web.Http;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Device.Location;
+using ExpressStationSystem.Models;
 
 namespace ExpressStationSystem.Controllers
 {
     public class ToolsController : ApiController
     {
-        //private static string connstr = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Express;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-        //private DataClasses1DataContext db;
-        //// GET: api/Wechat/GetPhoneNumber
-        ///// <summary>
-        ///// 获取OpenId
-        ///// </summary>
-        ///// <param name="appId">开发者ID</param>
-        ///// <param name="secret">密钥</param>
-        ///// <param name="code">用户登陆后的code</param>
-        ///// <param name="encryptedDataStr">加密数据</param>
-        ///// <param name="iv">加密算法初始向量</param>
-        ///// <remarks>获取OpenId</remarks>
-        ///// <returns>返回</returns>
-        //[HttpGet, Route("Wechat/GetPhoneNumber")]
+        
+        // GET: api/Wechat/GetPhoneNumber
+        /// <summary>
+        /// 获取OpenId
+        /// </summary>
+        /// <param name="appId">开发者ID</param>
+        /// <param name="secret">密钥</param>
+        /// <param name="code">用户登陆后的code</param>
+        /// <param name="encryptedDataStr">加密数据</param>
+        /// <param name="iv">加密算法初始向量</param>
+        /// <remarks>获取OpenId</remarks>
+        /// 
+        /// <returns>返回</returns>
+        //[HttpGet]
         //private string GetPhoneNumber(string appId, string secret, string code, string encryptedDataStr, string iv)
         //{
         //    string html = string.Empty;
@@ -55,7 +56,7 @@ namespace ExpressStationSystem.Controllers
         //    {
         //        return null;
         //    }
-        //    string phone= AES_decrypt(encryptedDataStr, session_key, iv);
+        //    string phone = AES_decrypt(encryptedDataStr, session_key, iv);
         //    try
         //    {
         //        Login login = new Login();
@@ -65,118 +66,57 @@ namespace ExpressStationSystem.Controllers
         //        db.SubmitChanges();
         //        return phone;
         //    }
-        //    catch(Exception)
+        //    catch (Exception)
         //    {
         //        return phone;
         //    }
 
         //}
-        //private string AES_decrypt(string encryptedDataStr, string key, string iv)
-        //{
-        //    RijndaelManaged rijalg = new RijndaelManaged();
-        //    //-----------------    
-        //    //设置 cipher 格式 AES-128-CBC    
+        private string AES_decrypt(string encryptedDataStr, string key, string iv)
+        {
+            RijndaelManaged rijalg = new RijndaelManaged();
+            //-----------------    
+            //设置 cipher 格式 AES-128-CBC    
 
-        //    rijalg.KeySize = 128;
+            rijalg.KeySize = 128;
 
-        //    rijalg.Padding = PaddingMode.PKCS7;
-        //    rijalg.Mode = CipherMode.CBC;
+            rijalg.Padding = PaddingMode.PKCS7;
+            rijalg.Mode = CipherMode.CBC;
 
-        //    rijalg.Key = Convert.FromBase64String(key);
-        //    rijalg.IV = Convert.FromBase64String(iv);
+            rijalg.Key = Convert.FromBase64String(key);
+            rijalg.IV = Convert.FromBase64String(iv);
 
 
-        //    byte[] encryptedData = Convert.FromBase64String(encryptedDataStr);
-        //    //解密    
-        //    ICryptoTransform decryptor = rijalg.CreateDecryptor(rijalg.Key, rijalg.IV);
+            byte[] encryptedData = Convert.FromBase64String(encryptedDataStr);
+            //解密    
+            ICryptoTransform decryptor = rijalg.CreateDecryptor(rijalg.Key, rijalg.IV);
 
-        //    string result;
+            string result;
 
-        //    using (MemoryStream msDecrypt = new MemoryStream(encryptedData))
-        //    {
-        //        using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
-        //        {
-        //            using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-        //            {
+            using (MemoryStream msDecrypt = new MemoryStream(encryptedData))
+            {
+                using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                {
+                    using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                    {
 
-        //                result = srDecrypt.ReadToEnd();
-        //            }
-        //        }
-        //    }
+                        result = srDecrypt.ReadToEnd();
+                    }
+                }
+            }
 
-        //    return result;
-        //}
+            return result;
+        }
         // GET: api/Tools/CheckPhone
         /// <summary>
         /// 检查手机号码是否本人，并返回短信验证码
         /// </summary>
         /// <param name="phone">手机号码</param>
         /// <returns>返回</returns>
-        [HttpGet, Route("Tools/CheckPhone")]
+        [HttpGet]
         public string CheckPhone(string phone)
         {
-            const String host = "http://dingxin.market.alicloudapi.com";
-            const String path = "/dx/sendSms";
-            const String method = "POST";
-            const String appcode = "e11ebfb7a2b644b69c2d0a12f39833cf";
-            String code = (new Random().Next(1000,10000)).ToString();
-            String querys = "mobile="+phone+"&param=code:"+code+ "&tpl_id=TP1711063";
-            String bodys = "";
-            String url = host + path;
-            HttpWebRequest httpRequest = null;
-            HttpWebResponse httpResponse = null;
-
-            if (0 < querys.Length)
-            {
-                url = url + "?" + querys;
-            }
-
-            if (host.Contains("https://"))
-            {
-                ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
-                httpRequest = (HttpWebRequest)WebRequest.CreateDefault(new Uri(url));
-            }
-            else
-            {
-                httpRequest = (HttpWebRequest)WebRequest.Create(url);
-            }
-            httpRequest.Method = method;
-            httpRequest.Headers.Add("Authorization", "APPCODE " + appcode);
-            if (0 < bodys.Length)
-            {
-                byte[] data = Encoding.UTF8.GetBytes(bodys);
-                using (Stream stream = httpRequest.GetRequestStream())
-                {
-                    stream.Write(data, 0, data.Length);
-                }
-            }
-            try
-            {
-                httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-            }
-            catch (WebException ex)
-            {
-                httpResponse = (HttpWebResponse)ex.Response;
-            }
-
-            Console.WriteLine(httpResponse.StatusCode);
-            Console.WriteLine(httpResponse.Method);
-            Console.WriteLine(httpResponse.Headers);
-            Stream st = httpResponse.GetResponseStream();
-            StreamReader reader = new StreamReader(st, Encoding.GetEncoding("utf-8"));
-            JObject jo = (JObject)JsonConvert.DeserializeObject(reader.ReadToEnd());
-            string return_code = jo["return_code"].ToString();
-            Console.WriteLine(reader.ReadToEnd());
-            Console.WriteLine("\n");
-            if (return_code!="00000")
-            {
-                return null;
-            }
-            else
-            {
-                return code;
-            }
-            
+            return Global.CheckPhone(phone);
             
         }
         // GET: api/Tools/GetLocationProperty
@@ -184,8 +124,8 @@ namespace ExpressStationSystem.Controllers
         /// 获取经纬度
         /// </summary>
         /// <returns>返回</returns>
-        [HttpGet, Route("Tools/GetLocationProperty")]
-        public dynamic GetLocationProperty()
+        [HttpGet]
+        private dynamic GetLocationProperty()
         {
             GeoCoordinateWatcher watcher = new GeoCoordinateWatcher();
 
@@ -203,10 +143,6 @@ namespace ExpressStationSystem.Controllers
                 return null;
             }
         }
-        private bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
-        {
-            return true;
-        }
         public TOut TransReflection<TIn, TOut>(TIn tIn)
         {
             TOut tOut = Activator.CreateInstance<TOut>();
@@ -221,38 +157,29 @@ namespace ExpressStationSystem.Controllers
             }
             return tOut;
         }
-        [HttpGet, Route("Tools/splitpage")]
-        public dynamic splitpage(List<dynamic> list, int page, int pagesize)
+
+        // GET: api/Tools/GetLocationProperty
+        /// <summary>
+        /// 获取接口里的数据
+        /// </summary>
+        /// <returns>返回</returns>
+        [HttpGet]
+        public dynamic GetData(string api)
         {
-            if (page == 0 && pagesize == 0)
-            {
-                return list;
-            }
-            //总页码数
-            int totalpages = list.Count()/ pagesize;
-            if (list.Count() % pagesize > 0) totalpages++;
-
-            if (page > totalpages)
-            {
-                return null;
-            }
-
-            List<dynamic> result = new List<dynamic>();
-            int curpage = 1;
-            for (int i = 0; i < list.Count(); i++)
-            {
-                if (i != 0 && i % pagesize == 0)
-                {
-                    curpage++;
-                }
-                if (curpage == page)
-                {
-                    result.Add(list[i]);
-                }
-
-            }
-            return new { content = result, curpage = page,pageSize= pagesize, totalpages = totalpages };
+            string html = string.Empty;
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(api);
+            request.Method = "GET";
+            HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+            Stream ioStream = response.GetResponseStream();
+            StreamReader sr = new StreamReader(ioStream, Encoding.UTF8);
+            html = sr.ReadToEnd();
+            sr.Close();
+            ioStream.Close();
+            response.Close();
+            return html;
         }
+
+        
     }
 
 

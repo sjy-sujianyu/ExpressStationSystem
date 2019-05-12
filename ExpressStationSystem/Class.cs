@@ -6,6 +6,25 @@ using System.Web.Http.Description;
 
 namespace ExpressStationSystem
 {
+    public class TokenFilter : IOperationFilter
+    {
+        public void Apply(Operation operation, SchemaRegistry schemaRegistry, ApiDescription apiDescription)
+        {
+            if (!string.IsNullOrWhiteSpace(operation.summary) && !operation.summary.Contains("NotToken"))
+            {
+                operation.consumes.Add("application/form-data");
+                if (operation.parameters == null)
+                    operation.parameters = new List<Parameter>();
+                operation.parameters.Add(new Parameter
+                {
+                    name = "Token",
+                    @in = "header", 
+                    required = true,
+                    type = "string"
+                });
+            }
+        }
+    }
     public class UploadFilter : IOperationFilter
     {
 

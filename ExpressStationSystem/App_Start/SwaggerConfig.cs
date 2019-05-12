@@ -18,13 +18,13 @@ namespace ExpressStationSystem
             GlobalConfiguration.Configuration
                 .EnableSwagger(c =>
                 {
-
+                    c.OperationFilter<TokenFilter>();
                     c.OperationFilter<UploadFilter>();
                     c.SingleApiVersion("v1", "Swagger");
                     c.IncludeXmlComments(GetXmlCommentsPath());
 
                 })
-                .EnableSwaggerUi(c =>
+                .EnableSwaggerUi(c => 
                 {
                     c.DocumentTitle("系统开发接口");
                         // 使用中文

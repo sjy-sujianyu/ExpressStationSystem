@@ -147,6 +147,18 @@
     <Compile Include="Controllers\TransferController.cs" />
     <Compile Include="Controllers\ViewController\CarController.cs" />
     <Compile Include="Controllers\ViewController\InfoController.cs" />
+    <Compile Include="Models\AddressBook.cs" />
+    <Compile Include="Models\Commission.cs" />
+    <Compile Include="Models\Delivery.cs" />
+    <Compile Include="Models\Error.cs" />
+    <Compile Include="Models\Global.cs" />
+    <Compile Include="Models\Leave.cs" />
+    <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\Member.cs" />
+    <Compile Include="Models\Money.cs" />
+    <Compile Include="Models\Package.cs" />
+    <Compile Include="Models\Path.cs" />
+    <Compile Include="Models\PickUp.cs" />
     <Compile Include="Models\Simulation.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -182,7 +194,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Class.cs" />
     <Compile Include="Controllers\AddressBookController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ViewController\HomeController.cs" />
     <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="Controllers\LeaveController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -191,16 +203,12 @@
     <Compile Include="Controllers\PickUpController.cs" />
     <Compile Include="Controllers\QueryController.cs" />
     <Compile Include="Controllers\MoneyController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\VehicleController.cs" />
     <Compile Include="Controllers\ViewController\LogInController.cs" />
     <Compile Include="Controllers\ViewController\MemberController.cs" />
     <Compile Include="Controllers\ViewController\PackageController.cs" />
     <Compile Include="Controllers\ToolsController.cs" />
-    <Compile Include="DataClasses1.cs">
-      <DependentUpon>DataClasses1.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="DataClasses1.designer.cs">
+    <Compile Include="Models\DataClasses1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataClasses1.dbml</DependentUpon>
@@ -209,6 +217,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Transfer.cs" />
+    <Compile Include="Models\Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -249,7 +259,7 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
-    <Content Include="DataClasses1.dbml">
+    <Content Include="Models\DataClasses1.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>DataClasses1.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
@@ -257,7 +267,7 @@
     <Content Include="Content\laydate\theme\default\font\iconfont.eot" />
     <Content Include="Content\laydate\theme\default\font\iconfont.ttf" />
     <Content Include="Content\laydate\theme\default\font\iconfont.woff" />
-    <None Include="DataClasses1.dbml.layout">
+    <None Include="Models\DataClasses1.dbml.layout">
       <DependentUpon>DataClasses1.dbml</DependentUpon>
     </None>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />

@@ -1,4 +1,5 @@
 ﻿using ExpressStationSystem.Controllers;
+using ExpressStationSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,6 @@ namespace ExpressStationSystem
     public class DeliveryController : ApiController
     {
 
-        private static string connstr = @"Data Source=172.16.34.153;Initial Catalog=Express;User ID=sa;Password=123456;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-        private DataClasses1DataContext db;
-
         // GET: api/Delivery/GetReadytoDeliveryByCondition
         /// <summary>
         /// 按条件查询要派件的包裹
@@ -23,36 +21,10 @@ namespace ExpressStationSystem
         /// <param name="type">类型 "单号、姓名、电话、街道"其中一种</param>
         /// <remarks>按条件查询要派件的包裹</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Delivery/GetReadytoDeliveryByCondition")]
+        [HttpGet]
         public dynamic GetReadytoDeliveryByCondition(string str, string type,int page,int pageSize)
         {
-            if (str is null || type is null)
-            {
-                return null;
-            }
-            db = new DataClasses1DataContext(connstr);
-            var a = GetReadytoDelivery(0,0);
-            List<dynamic> list = new List<dynamic>();
-            foreach (var x in a)
-            {
-                if (type == "单号" && x.package.id.ToString().StartsWith(str))
-                {
-                    list.Add(x);
-                }
-                else if (type == "姓名" && x.src.name.StartsWith(str))
-                {
-                    list.Add(x);
-                }
-                else if (type == "电话" && x.src.phone.StartsWith(str))
-                {
-                    list.Add(x);
-                }
-                else if (type == "街道" && x.src.street.StartsWith(str))
-                {
-                    list.Add(x);
-                }
-            }
-            return new ToolsController().splitpage(list, page, pageSize);
+            return new Delivery().GetReadytoDeliveryByCondition(str, type, page, pageSize);
         }
 
         // GET: api/Delivery/GetDeliveringByCondition
@@ -64,36 +36,10 @@ namespace ExpressStationSystem
         /// <param name="account">员工的mId</param>
         /// <remarks>按条件查询正在派件的包裹</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Delivery/GetDeliveringByCondition")]
+        [HttpGet]
         public List<int> GetDeliveringByCondition(string account, string str, string type,int page,int pageSize)
         {
-            if (str is null || type is null)
-            {
-                return null;
-            }
-            db = new DataClasses1DataContext(connstr);
-            var a = GetDelivering(account,0,0);
-            List<dynamic> list = new List<dynamic>();
-            foreach (var x in a)
-            {
-                if (type == "单号" && x.package.id.ToString().StartsWith(str))
-                {
-                    list.Add(x);
-                }
-                else if (type == "姓名" && x.src.name.StartsWith(str))
-                {
-                    list.Add(x);
-                }
-                else if (type == "电话" && x.src.phone.StartsWith(str))
-                {
-                    list.Add(x);
-                }
-                else if (type == "街道" && x.src.street.StartsWith(str))
-                {
-                    list.Add(x);
-                }
-            }
-            return new ToolsController().splitpage(list, page, pageSize); ;
+            return new Delivery().GetDeliveringByCondition(account, str, type, page, pageSize);
         }
 
 
@@ -104,18 +50,10 @@ namespace ExpressStationSystem
         /// </summary>
         /// <remarks>获取待派件的包裹ID</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Delivery/GetReadytoDelivery")]
+        [HttpGet]
         public dynamic GetReadytoDelivery(int page,int pageSize)
         {
-            db = new DataClasses1DataContext(connstr);
-            var readytoDelivery = from a in db.Package join b in db.AddressBook on a.sendId equals b.aId join c in db.AddressBook on a.receiverId equals c.aId where a.status == "已扫件" && c.street.Contains("华南农业大学") select new { package = a, src = b, dest = c };
-
-            List<dynamic> list = new List<dynamic>();
-            foreach (var x in readytoDelivery)
-            {
-                list.Add(x);
-            }
-            return new ToolsController().splitpage(list, page, pageSize);
+            return new Delivery().GetReadytoDelivery(page, pageSize);
         }
 
         // Post: api/Delivery/Post
@@ -124,32 +62,10 @@ namespace ExpressStationSystem
         /// </summary>
         /// <remarks>添加派件中包裹信息</remarks>
         /// <returns>返回</returns>
-        [HttpPost, Route("Delivery/Post")]
+        [HttpPost]
         public bool Post(DeliveryClass x)
         {
-            db = new DataClasses1DataContext(connstr);
-            try
-            {
-                var package = db.Package.Single(a => a.id == x.Id);
-                if (package.status != "已扫件")
-                {
-                    return false;
-                }
-                Delivery del = new Delivery();
-                del.id = x.Id;
-                del.mId = x.Mid;
-                del.time = DateTime.Now;
-                del.isDone = false;
-                package.time = DateTime.Now;
-                db.Delivery.InsertOnSubmit(del);
-                package.status = "派件中";
-                db.SubmitChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            return new Delivery().Post(x);
         }
 
         // GET: api/Delivery/IsRefuse
@@ -159,15 +75,10 @@ namespace ExpressStationSystem
         /// <param name="id">包裹id</param>
         /// <remarks>查看包裹是否为退件包裹</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Delivery/IsRefuse")]
+        [HttpGet]
         public bool IsRefuse(int id)
         {
-            db = new DataClasses1DataContext(connstr);
-            if (db.Error.SingleOrDefault(a => a.id == id && a.status == "拒签") is null)
-            {
-                return false;
-            }
-            else return true;
+            return new Delivery().IsRefuse(id);
         }
 
         // PUT: api/Delivery/RevokeDelivery
@@ -176,21 +87,10 @@ namespace ExpressStationSystem
         /// </summary>
         /// <remarks>包裹的状态从派件中撤销为已扫件</remarks>
         /// <returns>返回</returns>
-        [HttpPut, Route("Delivery/RevokeDelivery")]
+        [HttpPut]
         public bool RevokeDelivery(IdClass iclass)
         {
-            db = new DataClasses1DataContext(connstr);
-            var x = db.Package.SingleOrDefault(a => a.id == iclass.id);
-            if (x is null || x.status != "派件中")
-            {
-                return false;
-            }
-            else
-            {
-                x.status = "已扫件";
-                db.SubmitChanges();
-                return true;
-            }
+            return new Delivery().RevokeDelivery(iclass);
         }
 
         // PUT: api/Delivery/SwapAddress
@@ -199,17 +99,10 @@ namespace ExpressStationSystem
         /// </summary>
         /// <remarks>交换发件人和收件人地址</remarks>
         /// <returns>返回</returns>
-        [HttpPut, Route("Delivery/SwapAddress")]
+        [HttpPut]
         public bool SwapAddress(IdClass iclass)
         {
-            db = new DataClasses1DataContext(connstr);
-            var x = db.Package.SingleOrDefault(a => a.id == iclass.id);
-            if (x is null) return false;
-            int temp = x.receiverId;
-            int temp1 = x.sendId;
-            x.receiverId = temp1;
-            x.sendId = temp;
-            return true;
+            return new Delivery().SwapAddress(iclass);
         }
 
         //PUT: api/Delivery/Refuse
@@ -218,29 +111,10 @@ namespace ExpressStationSystem
         /// </summary>
         /// <remarks>包裹拒签，状态从派件中撤销为已扫件</remarks>
         /// <returns>返回</returns>
-        [HttpPut, Route("Delivery/Refuse")]
+        [HttpPut]
         public bool Refuse(IdClass iclass)
         {
-            db = new DataClasses1DataContext(connstr);
-            var x = db.Package.SingleOrDefault(a => a.id == iclass.id);
-            if (x is null || x.status != "派件中" || IsRefuse(iclass.id))
-            {
-                return false;
-            }
-            else
-            {
-                RevokeDelivery(iclass);
-                SwapAddress(iclass);
-                Error error = new Error();
-                error.id = iclass.id;
-                error.introduction = "客户拒收快递";
-                error.status = "拒签";
-                error.time = DateTime.Now;
-                x.time = DateTime.Now;
-                db.Error.InsertOnSubmit(error);
-                db.SubmitChanges();
-                return true;
-            }
+            return new Delivery().Refuse(iclass);
         }
 
         // GET: api/Delivery/GetDelivering
@@ -249,18 +123,10 @@ namespace ExpressStationSystem
         /// </summary>
         /// <remarks>获取某员工正在派件的包裹ID</remarks>
         /// <returns>返回</returns>
-        [HttpGet, Route("Delivery/GetDelivering")]
+        [HttpGet]
         public dynamic GetDelivering(string account,int page,int pageSize)
         {
-            db = new DataClasses1DataContext(connstr);
-            var selectQuery = from a in db.Delivery.GroupBy(p => p.id).Select(g => g.OrderByDescending(t => t.time).First()) join b in db.Package on a.id equals b.id where b.status == "派件中" && a.mId == account && a.isDone == false join c in db.AddressBook on b.sendId equals c.aId join d in db.AddressBook on b.receiverId equals d.aId select new { package = b, src = c, dest = d };
-            List<dynamic> list = new List<dynamic>();
-            foreach (var x in selectQuery)
-            {
-                list.Add(x);
-            }
-
-            return new ToolsController().splitpage(list, page, pageSize);
+            return new Delivery().GetDelivering(account, page, pageSize);
         }
 
         // Post: api/Delivery/ConfirmPost
@@ -269,32 +135,10 @@ namespace ExpressStationSystem
         /// </summary>
         /// <remarks>添加已签收包裹信息</remarks>
         /// <returns>返回</returns>
-        [HttpPost, Route("Delivery/ConfirmPost")]
+        [HttpPost]
         public bool ConfirmPost(DeliveryClass x)
         {
-            db = new DataClasses1DataContext(connstr);
-            try
-            {
-                var package = db.Package.Single(a => a.id == x.Id);
-                if (package.status != "派件中")
-                {
-                    return false;
-                }
-                Delivery del = new Delivery();
-                del.id = x.Id;
-                del.mId = x.Mid;
-                del.time = DateTime.Now;
-                del.isDone = true;
-                db.Delivery.InsertOnSubmit(del);
-                package.status = "已签收";
-                package.time = DateTime.Now;
-                db.SubmitChanges();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            return new Delivery().ConfirmPost(x);
         }
 
     }
