@@ -40,13 +40,13 @@ namespace ExpressStationSystem.Models
                     error.introduction = "包裹丢失,没有进站";
                     error.status = "漏件";
                     error.time = DateTime.Now;
-                    error.id = x;
+                    error.id = x.id;
                     var package = db.Package.SingleOrDefault(a => a.id == error.id);
                     if (package != null)
                     {
                         package.time = DateTime.Now;
                     }
-                    Console.WriteLine("包裹id" + x + "   " + "status:" + error.status);
+                    Console.WriteLine("包裹id" + x.id + "   " + "status:" + error.status);
                     try
                     {
                         db.Error.InsertOnSubmit(error);

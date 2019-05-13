@@ -78,27 +78,30 @@ namespace ExpressStationSystem
         }
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
+            
             var res = HttpContext.Current.Response;
             var req = HttpContext.Current.Request;
+            var ip= HttpContext.Current.Request.UserHostAddress;
             var token = HttpContext.Current.Request.Headers.Get("Token");
             var path = HttpContext.Current.Request.Path;
-            if (path.ToString().StartsWith("/api/"))
-            {
-                if (!ignoreTokenController().Contains(path))
-                {
-                    if (token==null||!Global.ValidateTicket(token))
-                    {
-                        res.StatusCode = 403;
-                        res.End();
-                    }
-                }
-            }
             //自定义header时进行处理
             if (req.HttpMethod == "OPTIONS")
             {
                 res.StatusCode = 200;
                 res.End();
             }
+            if (path.ToString().StartsWith("/api/"))
+            {
+                if (!ignoreTokenController().Contains(path))
+                {
+                    if (token == null || !Global.ValidateTicket(token))
+                    {
+                        res.StatusCode = 403;
+                        res.End();
+                    }
+                }
+            }
+            
         }
         private List<string> ignoreTokenController()
         {

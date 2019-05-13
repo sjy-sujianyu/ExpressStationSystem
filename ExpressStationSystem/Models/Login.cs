@@ -23,9 +23,7 @@ namespace ExpressStationSystem.Models
             {
                 Login login = db.Login.Single(l => l.account == account && l.password == password && l.isDelete == false);
                 var token = Global.GetUserToken(account,password);
-                HttpCookie coo = new HttpCookie("cookie", token);
-                //使用加入了userdata的新cookie 
-                HttpContext.Current.Response.Cookies.Add(coo);
+                HttpContext.Current.Response.AddHeader("Token", token);
                 return true;
             }
             catch (Exception e)
