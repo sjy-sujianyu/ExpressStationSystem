@@ -78,11 +78,8 @@ namespace ExpressStationSystem
         }
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            
             var res = HttpContext.Current.Response;
             var req = HttpContext.Current.Request;
-            var ip= HttpContext.Current.Request.UserHostAddress;
-            var token = HttpContext.Current.Request.Headers.Get("Token");
             var path = HttpContext.Current.Request.Path;
             //自定义header时进行处理
             if (req.HttpMethod == "OPTIONS")
@@ -94,7 +91,7 @@ namespace ExpressStationSystem
             {
                 if (!ignoreTokenController().Contains(path))
                 {
-                    if (token == null || !Global.ValidateTicket(token))
+                    if (Request.Cookies["cookie"] == null||!Global.ValidateTicket(Request.Cookies["cookie"].Value))
                     {
                         res.StatusCode = 403;
                         res.End();
@@ -103,6 +100,7 @@ namespace ExpressStationSystem
             }
             
         }
+
         private List<string> ignoreTokenController()
         {
             return new List<string>() { "/api/Login/Land", "/api/Login/LandOfManager", "/api/Query/GetAdminToken", "/api/Query/AdminValidateTicket" };
