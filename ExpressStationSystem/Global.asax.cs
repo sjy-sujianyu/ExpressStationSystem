@@ -91,7 +91,13 @@ namespace ExpressStationSystem
             {
                 if (!ignoreTokenController().Contains(path))
                 {
-                    if (Request.Cookies["cookie"] == null||!Global.ValidateTicket(Request.Cookies["cookie"].Value))
+                    if(Request.Cookies["cookie"] == null)
+                    {
+                        res.StatusCode = 403;
+                        res.End();
+                    }
+                    var token = Request.Cookies["cookie"].Value;
+                    if (!Global.ValidateTicket(token))
                     {
                         res.StatusCode = 403;
                         res.End();

@@ -182,7 +182,7 @@ namespace ExpressStationSystem.Models
         public static string GetUserToken(string account,string password)
         {
             FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, "cookie", DateTime.Now,
-                        DateTime.Now.AddHours(1), false, string.Format("{0}&{1}", account, password),
+                        DateTime.Now.AddHours(24), true, string.Format("{0}&{1}", account, password),
                         FormsAuthentication.FormsCookiePath);
             return FormsAuthentication.Encrypt(ticket);
         }
@@ -200,7 +200,7 @@ namespace ExpressStationSystem.Models
                 return null;
             }
             FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(0, "cookie", DateTime.Now,
-                        DateTime.Now.AddHours(1), false, string.Format("{0}&{1}", account, password),
+                        DateTime.Now.AddHours(24), true, string.Format("{0}&{1}", account, password),
                         FormsAuthentication.FormsCookiePath);
             return FormsAuthentication.Encrypt(ticket);
             

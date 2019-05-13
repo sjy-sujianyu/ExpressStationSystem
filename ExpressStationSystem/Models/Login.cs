@@ -76,7 +76,9 @@ namespace ExpressStationSystem.Models
                     {
                         var token = Global.GetUserToken(account, password);
                         HttpCookie coo = new HttpCookie("cookie", token);
-                        //使用加入了userdata的新cookie 
+                        DateTime dt = DateTime.Now;
+                        TimeSpan ts = new TimeSpan(1, 0, 0, 0, 0);//过期时间为24小时
+                        coo.Expires = dt.Add(ts);//设置过期时间
                         HttpContext.Current.Response.Cookies.Add(coo);
                         return true;
                     }
