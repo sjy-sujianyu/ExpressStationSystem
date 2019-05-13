@@ -13,6 +13,26 @@
 <body>
 
     <script>
+        function getCookie(cookie_name) {
+            var allcookies = document.cookie;
+            var cookie_pos = allcookies.indexOf(cookie_name);   //索引的长度
+
+            // 如果找到了索引，就代表cookie存在，
+            // 反之，就说明不存在。
+            if (cookie_pos != -1) {
+                // 把cookie_pos放在值的开始，只要给值加1即可。
+                cookie_pos += cookie_name.length + 1;      //这里容易出问题，所以请大家参考的时候自己好好研究一下
+                var cookie_end = allcookies.indexOf(";", cookie_pos);
+
+                if (cookie_end == -1) {
+                    cookie_end = allcookies.length;
+                }
+
+                var value = unescape(allcookies.substring(cookie_pos, cookie_end));         //这里就可以得到你想要的cookie的值了。。。
+            }
+            return value;
+        }
+
         function changeShowCheckType(self) {
             var button = document.getElementById("showCheckType");
             button.innerHTML = self.innerText + ' <span class="caret"></span>';
@@ -54,7 +74,7 @@
         function refuseApply(lid, mid) {
             //请假条完成
             $.ajax({
-                url: 'http://172.16.34.153:60062/Leave/Deal', /*接口域名地址*/
+                url: 'http://172.16.33.125/api/Leave/Deal', /*接口域名地址*/
                 contentType: "application/json;charset=UTF-8",
                 type: 'put',
                 data: JSON.stringify({
@@ -64,6 +84,9 @@
                     "isDone": false,
                     "mId": mid
                 }),
+                headers: {
+                    "Token": getCookie("cookie")
+                },
                 success: function (res) {
                     if (res == true) {
                         alert('拒绝完成');
@@ -82,17 +105,20 @@
             }
             //把员工休息
             $.ajax({
-                url: 'http://172.16.34.153:60062/Manager/ChangeDuty', /*接口域名地址*/
+                url: 'http://172.16.33.125/api/Manager/ChangeDuty', /*接口域名地址*/
                 contentType: "application/json;charset=UTF-8",
                 type: 'put',
                 data: JSON.stringify({
                     "mId": mid,
                     "onDuty": false
                 }),
+                headers: {
+                    "Token": getCookie("cookie")
+                },
                 success: function (res) {
                     if (res == true) {
                         $.ajax({
-                            url: 'http://172.16.34.153:60062/Leave/Deal', /*接口域名地址*/
+                            url: 'http://172.16.33.125/api/Leave/Deal', /*接口域名地址*/
                             contentType: "application/json;charset=UTF-8",
                             type: 'put',
                             data: JSON.stringify({
@@ -102,6 +128,9 @@
                                 "isDone": true,
                                 "mId": mid
                             }),
+                            headers: {
+                                "Token": getCookie("cookie")
+                            },
                             success: function (res) {
                                 if (res == true) {
                                     alert('批准成功');
@@ -120,12 +149,15 @@
 
         function remove(lid) {
             $.ajax({
-                url: 'http://172.16.34.153:60062/Leave/RevokeLeave', /*接口域名地址*/
+                url: 'http://172.16.33.125/api/Leave/RevokeLeave', /*接口域名地址*/
                 contentType: "application/json;charset=UTF-8",
                 type: 'put',
                 data: JSON.stringify({
                     "lId": lid
                 }),
+                headers: {
+                    "Token": getCookie("cookie")
+                },
                 success: function (res) {
                     if (res == true) {
                         alert('撤消成功');

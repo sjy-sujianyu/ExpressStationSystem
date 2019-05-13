@@ -28,6 +28,26 @@
             window.location.href = "/Member/Fine?status=" + status + "&searchWith=" + document.getElementById("showCheckType").innerText + "&searchWithContent=" + document.getElementById("showCheckContent").value + "&page=" + (currentPage).toString();
         }
 
+        function getCookie(cookie_name) {
+            var allcookies = document.cookie;
+            var cookie_pos = allcookies.indexOf(cookie_name);   //索引的长度
+
+            // 如果找到了索引，就代表cookie存在，
+            // 反之，就说明不存在。
+            if (cookie_pos != -1) {
+                // 把cookie_pos放在值的开始，只要给值加1即可。
+                cookie_pos += cookie_name.length + 1;      //这里容易出问题，所以请大家参考的时候自己好好研究一下
+                var cookie_end = allcookies.indexOf(";", cookie_pos);
+
+                if (cookie_end == -1) {
+                    cookie_end = allcookies.length;
+                }
+
+                var value = unescape(allcookies.substring(cookie_pos, cookie_end));         //这里就可以得到你想要的cookie的值了。。。
+            }
+            return value;
+        }
+
         function fine(id) {
             if (document.getElementById(id).value == 0 || document.getElementById(id).value == null) {
                 alert("金额不得为0或空值")
@@ -35,7 +55,7 @@
             }
             $.ajax({
                 type: 'post',
-                url: 'http://172.16.34.153:60062/Money/FineorPrize',
+                url: 'http://172.16.33.125/api/Money/FineorPrize',
                 contentType: "application/json;charset=UTF-8",
                 data: JSON.stringify({
                     "mId": id,
@@ -44,6 +64,9 @@
                     "reason": document.getElementById("fineView").value,
                     "person": "@ViewBag.managername"
                 }),
+                header: {
+                    "Token": getCookie("cookie")
+                },
                 success: function (res) {
                     if (res == true) {
                         alert("罚款单号已提交");
@@ -56,14 +79,13 @@
         }
 
         function subsidy(id) {
-            alert(id)
             if (document.getElementById(id).value == 0 || document.getElementById(id).value == null) {
                 alert("金额不得为0或空值")
                 return;
             }
             $.ajax({
                 type: 'post',
-                url: 'http://172.16.34.153:60062/Money/FineorPrize',
+                url: 'http://172.16.33.125/api/Money/FineorPrize',
                 contentType: "application/json;charset=UTF-8",
                 data: JSON.stringify({
                     "mId": id,
@@ -72,6 +94,9 @@
                     "reason": document.getElementById("subsidyView").value,
                     "person": "@ViewBag.managername"
                 }),
+                headers: {
+                    "Token": getCookie("cookie")
+                },
                 success: function (res) {
                     if (res == true) {
                         alert("补贴单号已提交");
