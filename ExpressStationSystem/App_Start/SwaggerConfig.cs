@@ -18,7 +18,7 @@ namespace ExpressStationSystem
             GlobalConfiguration.Configuration
                 .EnableSwagger(c =>
                 {
-                    c.OperationFilter<TokenFilter>();
+                    //c.OperationFilter<TokenFilter>();
                     c.OperationFilter<UploadFilter>();
                     c.SingleApiVersion("v1", "Swagger");
                     c.IncludeXmlComments(GetXmlCommentsPath());

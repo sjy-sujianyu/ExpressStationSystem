@@ -15,7 +15,7 @@ namespace ExpressStationSystem.Models
         /// </summary>
         /// <remarks>获取待出站的包裹ID</remarks>
         /// <returns>返回</returns>
-        public List<int> GetReadyToTransfer(int page, int pageSize)
+        public dynamic GetReadyToTransfer(int page, int pageSize)
         {
             var readytoDelivery = db.Package.Where(a => a.status == "已扫件").Join(db.AddressBook.Where(a => !a.street.Contains("华南农业大学")), a => a.receiverId, b => b.aId, (a, b) => a.id);
             List<dynamic> list = new List<dynamic>();
