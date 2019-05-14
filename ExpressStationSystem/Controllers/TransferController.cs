@@ -22,7 +22,7 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>获取待出站的包裹ID</remarks>
         /// <returns>返回</returns>
         [HttpGet]
-        public List<int> GetReadyToTransfer(int page,int pageSize)
+        public dynamic GetReadyToTransfer(int page,int pageSize)
         {
             return new Transfer().GetReadyToTransfer(page, pageSize);
         }
