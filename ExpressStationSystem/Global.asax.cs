@@ -10,11 +10,15 @@ using System.Threading;
 using ExpressStationSystem.Models;
 using ExpressStationSystem.Controllers;
 using System.Diagnostics;
+using uPLibrary.Networking.M2Mqtt;
+using uPLibrary.Networking.M2Mqtt.Messages;
+using System.Text;
 
 namespace ExpressStationSystem
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
+        private string mqttServerAddress = "";
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -22,6 +26,7 @@ namespace ExpressStationSystem
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            connectMqttServer(mqttServerAddress);
             checkError();
             //Text();
             //moni();
@@ -110,6 +115,25 @@ namespace ExpressStationSystem
         private List<string> ignoreTokenController()
         {
             return new List<string>() { "/api/Login/Land", "/api/Login/LandOfManager", "/api/Query/GetAdminToken", "/api/Query/AdminValidateTicket" };
+        }
+
+        private void connectMqttServer(string address)
+        {
+            MqttClient client = new MqttClient(address);
+            client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
+            string clientId = Guid.NewGuid().ToString();
+            try
+            {
+                client.Connect(clientId);
+            }
+            catch
+            {
+                return;
+            }
+        }
+        private void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
+        {
+            Global.publishMessage = Encoding.UTF8.GetString(e.Message);
         }
     }
 }

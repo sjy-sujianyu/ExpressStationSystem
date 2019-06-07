@@ -20,6 +20,7 @@ namespace ExpressStationSystem.Models
     {
         public static string connstr = @"Data Source=172.16.33.125;Initial Catalog=Express;User ID=sa;Password=123456;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         private static DataClasses1DataContext db = new DataClasses1DataContext(connstr);
+        public static string publishMessage=null;
         public static dynamic splitpage(List<dynamic> list, int page, int pagesize)
         {
             if (page == 0 && pagesize == 0)
@@ -66,15 +67,15 @@ namespace ExpressStationSystem.Models
             try
             {
                 client.Connect(clientId);
-                client.Publish("经理公告", Encoding.UTF8.GetBytes(x.content), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
+                client.Publish("经理公告", Encoding.UTF8.GetBytes(x.content), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
             }
             catch
             {
                 return false;
             }
-            
-            return false;
+            return true;
         }
+
         // POST: api/Query/isTel?tb={tb}
         /// <summary>
         /// 验证手机号码是否合法
