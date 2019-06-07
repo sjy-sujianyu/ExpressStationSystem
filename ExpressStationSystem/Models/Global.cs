@@ -11,6 +11,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
+using uPLibrary.Networking.M2Mqtt;
+using uPLibrary.Networking.M2Mqtt.Messages;
 
 namespace ExpressStationSystem.Models
 {
@@ -48,6 +50,30 @@ namespace ExpressStationSystem.Models
 
             }
             return new { content = result, curpage = page, pageSize = pagesize, totalpages = totalpages };
+        }
+        // POST: api/Leave/GetHistoryLeave
+        /// <summary>
+        /// 发布经理公告给员工小程序，主题是“经理公告”
+        /// </summary>
+        /// <param name="x">x</param>
+        /// <remarks>获取请假信息</remarks>
+        /// <returns>返回</returns>
+        public static bool PublishMessage(mqttMessage x)
+        {
+            MqttClient client = new MqttClient(x.address);
+
+            string clientId = Guid.NewGuid().ToString();
+            try
+            {
+                client.Connect(clientId);
+                client.Publish("经理公告", Encoding.UTF8.GetBytes(x.content), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
+            }
+            catch
+            {
+                return false;
+            }
+            
+            return false;
         }
         // POST: api/Query/isTel?tb={tb}
         /// <summary>
@@ -235,6 +261,7 @@ namespace ExpressStationSystem.Models
                 return false;
             }
         }
+        
 
     }
 }

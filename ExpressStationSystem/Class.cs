@@ -67,6 +67,12 @@ namespace ExpressStationSystem
 
         public string account;
     }
+    public class mqttMessage
+    {
+        public string content;
+        public string address;
+    }
+
     public class AddressBookClass
     {
         public int aId;

@@ -127,5 +127,17 @@ namespace ExpressStationSystem.Controllers
         {
             return new Member().RevokeDeleteMember(aclass);
         }
+        // POST: api/Leave/GetHistoryLeave
+        /// <summary>
+        /// 发布经理公告给员工小程序，主题是“经理公告”
+        /// </summary>
+        /// <param name="x">x</param>
+        /// <remarks>获取请假信息</remarks>
+        /// <returns>返回</returns>
+        [HttpPost]
+        public bool PublishMessage(mqttMessage x)
+        {
+            return Global.PublishMessage(x);
+        }
     }
 }
