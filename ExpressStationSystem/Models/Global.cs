@@ -61,7 +61,7 @@ namespace ExpressStationSystem.Models
         /// <returns>返回</returns>
         public static bool PublishMessage(mqttMessage x)
         {
-            MqttClient client = new MqttClient("127.0.0.1");
+            MqttClient client = new MqttClient(x.address);
 
             string clientId = Guid.NewGuid().ToString();
             try
