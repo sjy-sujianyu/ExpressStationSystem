@@ -49,6 +49,7 @@ namespace ExpressStationSystem.Models
                     Console.WriteLine("包裹id" + x.id + "   " + "status:" + error.status);
                     try
                     {
+
                         db.Error.InsertOnSubmit(error);
                         db.SubmitChanges();
                     }
