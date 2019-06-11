@@ -12,7 +12,7 @@ namespace ExpressStationSystem.Controllers
 {
     public class LeaveController : ApiController
     {
-        //请假状态  0:初始 1:被拒绝 2:申请成功 3:已销假
+        //请假状态  0:初始 1:被拒绝 2:申请成功 3:已销假    
 
         // GET: api/Leave/GetLeaveList
         /// <summary>

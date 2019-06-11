@@ -27,7 +27,7 @@ namespace ExpressStationSystem.Models
             {
                 return list;
             }
-            //总页码数
+            //总的页码数
             int totalpages = list.Count() / pagesize;
             if (list.Count() % pagesize > 0) totalpages++;
 
@@ -61,7 +61,7 @@ namespace ExpressStationSystem.Models
         /// <returns>返回</returns>
         public static bool PublishMessage(mqttMessage x)
         {
-            MqttClient client = new MqttClient("127.0.0.1");
+            MqttClient client = new MqttClient(x.address);
 
             string clientId = Guid.NewGuid().ToString();
             try

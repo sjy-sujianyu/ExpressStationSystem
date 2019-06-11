@@ -219,6 +219,47 @@
     </Compile>
     <Compile Include="Models\Transfer.cs" />
     <Compile Include="Models\Vehicle.cs" />
+    <Compile Include="MQTT\Exceptions\MqttClientException.cs" />
+    <Compile Include="MQTT\Exceptions\MqttCommunicationException.cs" />
+    <Compile Include="MQTT\Exceptions\MqttConnectionException.cs" />
+    <Compile Include="MQTT\Exceptions\MqttTimeoutException.cs" />
+    <Compile Include="MQTT\IMqttNetworkChannel.cs" />
+    <Compile Include="MQTT\Internal\InternalEvent.cs" />
+    <Compile Include="MQTT\Internal\MsgInternalEvent.cs" />
+    <Compile Include="MQTT\Internal\MsgPublishedInternalEvent.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgBase.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgConnack.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgConnect.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgConnectEventArgs.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgContext.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgDisconnect.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgPingReq.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgPingResp.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgPuback.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgPubcomp.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgPublish.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgPublishedEventArgs.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgPublishEventArgs.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgPubrec.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgPubrel.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgSuback.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgSubscribe.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgSubscribedEventArgs.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgSubscribeEventArgs.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgUnsuback.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgUnsubscribe.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgUnsubscribedEventArgs.cs" />
+    <Compile Include="MQTT\Messages\MqttMsgUnsubscribeEventArgs.cs" />
+    <Compile Include="MQTT\MqttClient.cs" />
+    <Compile Include="MQTT\MqttSecurity.cs" />
+    <Compile Include="MQTT\MqttSettings.cs" />
+    <Compile Include="MQTT\Net\Fx.cs" />
+    <Compile Include="MQTT\Net\MqttNetworkChannel.cs" />
+    <Compile Include="MQTT\Session\MqttBrokerSession.cs" />
+    <Compile Include="MQTT\Session\MqttClientSession.cs" />
+    <Compile Include="MQTT\Session\MqttSession.cs" />
+    <Compile Include="MQTT\Utility\QueueExtension.cs" />
+    <Compile Include="MQTT\Utility\Trace.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
