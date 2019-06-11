@@ -27,7 +27,7 @@ namespace ExpressStationSystem.Models
             {
                 return list;
             }
-            //总页码数
+            //总的页码数
             int totalpages = list.Count() / pagesize;
             if (list.Count() % pagesize > 0) totalpages++;
 
