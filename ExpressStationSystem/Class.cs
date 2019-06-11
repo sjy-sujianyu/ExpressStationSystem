@@ -70,7 +70,6 @@ namespace ExpressStationSystem
     public class mqttMessage
     {
         public string content;
-        public string address;
     }
 
     public class AddressBookClass
