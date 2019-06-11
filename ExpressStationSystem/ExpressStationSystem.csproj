@@ -351,12 +351,6 @@
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\paho.mqtt.m2mqtt\M2Mqtt\M2Mqtt.Net.csproj">
-      <Project>{a11aef5a-b246-4fe8-8330-06db73cc8074}</Project>
-      <Name>M2Mqtt.Net</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
