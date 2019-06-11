@@ -18,7 +18,7 @@ namespace ExpressStationSystem
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
-        private string mqttServerAddress = "";
+        private string mqttServerAddress = "139.199.62.51";
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
