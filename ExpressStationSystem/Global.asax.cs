@@ -124,7 +124,8 @@ namespace ExpressStationSystem
             try
             {
                 Global.client.Connect(clientId);
-                Global.client.Subscribe(new string[] { "经理公告", "请假公告" }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+                Global.client.Subscribe(new string[] { "经理公告" }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+                Global.client.Subscribe(new string[] { "请假公告" }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
             }
             catch
             {
