@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ExpressStationSystem.Controllers;
+using ExpressStationSystem.Models;
 
 namespace ExpressStationSystem.Controllers.ViewController
 {
@@ -26,8 +27,7 @@ namespace ExpressStationSystem.Controllers.ViewController
                     cookie.Values.Add("userid", phone);
                     cookie.Values.Add("password", passWord);
                     Response.AppendCookie(cookie);
-                    //输出该Cookie的所有内容
-                    return View();
+                    return Content(string.Format("<script>alert('Success');parent.window.location='/Login/AfterLogin';</script>"));
                 }
                 else
                 {
@@ -38,14 +38,24 @@ namespace ExpressStationSystem.Controllers.ViewController
             {
                 return Content(string.Format("<script>alert('请重新登陆');parent.window.location='/Login/Login';</script>"));
             }
-            
-            
         }
 
         public ActionResult AfterLogin()
         {
             if (checkCookies())
             {
+                string text = Global.publishMessage;
+                if (text  != null && text.Contains('|'))
+                {
+                    string[] text2 = text.Split('|');
+                    ViewBag.title = text2[0];
+                    ViewBag.content = text2[1];
+                }
+                else
+                {
+                    ViewBag.title = "未知公告";
+                    ViewBag.content = text;
+                }
                 return View();
             }
             else
@@ -58,7 +68,7 @@ namespace ExpressStationSystem.Controllers.ViewController
         {
             if (checkCookies())
             {
-                return Content(string.Format("<script>parent.window.location='/Login/AfterLogin';</script>"));
+                return Content(string.Format("<script>parent.window.location='/Login/AfterLogin';alert('欢迎');</script>"));
             }
             else
             {

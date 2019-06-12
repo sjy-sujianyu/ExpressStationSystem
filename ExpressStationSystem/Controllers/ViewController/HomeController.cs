@@ -12,7 +12,18 @@ namespace ExpressStationSystem.Controllers
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";
-
+            string text = Global.publishMessage;
+            if(text != null && text.Contains('|'))
+            {
+                string[] text2 = text.Split('|');
+                ViewBag.title = text2[0];
+                ViewBag.content = text2[1];
+            }
+            else
+            {
+                ViewBag.title = "未知公告";
+                ViewBag.content = text;
+            }
             return View();
         }
     }

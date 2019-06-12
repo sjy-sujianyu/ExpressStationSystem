@@ -32,8 +32,10 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <script src="~/Scripts/jquery-3.3.1.js"></script>
-
+    <script src="~/Content/laydate/laydate.js"></script>
     <script>
+
+
         function checkPack() {
             window.location.href = "/Package/checkPackage?id=" + document.getElementById("pid").value;
         }
@@ -46,6 +48,7 @@
                 document.getElementById("check").disabled = true;
             }
         }
+
     </script>
 </head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -62,7 +65,6 @@
                 </button>
                 <a class="navbar-brand" href="/Home/Index">首页</a>
             </div>
-
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
@@ -83,7 +85,6 @@
                 </div>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-
                         <script type="text/javascript">
                             $(document).ready(function () {
                                 $("#btn-Login").click(function () {
@@ -91,15 +92,42 @@
                                 });
                             });
                         </script>
-
                         <button id="btn-Login" class="btn btn-primary btn-lg active" onclick="">登陆</button>
-
                     </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </div>
 
+    <span class="glyphicon glyphicon-star" aria-hidden="true" style="font-size: 40px;margin: auto;">公告栏</span>
+    <div class=" col-sm-10" style="margin: auto;margin-top: 5rem;">
+        <table class="table table-hover">
+            <tbody style="display: table-row-group;vertical-align: middle;border-color: inherit;" onclick="">
+                <tr style="background:#f2f2f2;">
+                    <td style="font-size: 5rem; color: #fc3;font-family: fantasy; width: 44%;">new!</td>
+                    <td style="font-size: 2rem;line-height: 6rem;" data-toggle="modal" data-target="#public">@ViewBag.title</td>
+
+                    <div class="modal fade" id="public" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog alert-info" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">@ViewBag.title</h4>
+                                </div>
+                                <div class="modal-body">
+                                    @ViewBag.content
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
 
