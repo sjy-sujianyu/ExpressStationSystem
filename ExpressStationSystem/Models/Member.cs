@@ -36,9 +36,18 @@ namespace ExpressStationSystem.Models
         /// </summary>
         /// <remarks>获取公告信息</remarks>
         /// <returns>返回</returns>
-        public string GetPublishMessage()
+        public string GetPublishMessage(string account)
         {
-            return Global.publishMessage;
+            var member = db.Member.SingleOrDefault(a => a.mId == account);
+            if (member == null) return null;
+            if (member.onDuty == false)
+            {
+                return Global.pulibshLeaveMessage;
+            }
+            else
+            {
+                return Global.publishMessage;
+            }
         }
         // GET: api/Image/Post
         /// <summary>

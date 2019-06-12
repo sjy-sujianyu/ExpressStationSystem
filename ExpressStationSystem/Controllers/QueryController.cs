@@ -47,9 +47,9 @@ namespace ExpressStationSystem.Controllers
         /// <remarks>获取公告信息</remarks>
         /// <returns>返回</returns>
         [HttpGet]
-        public string GetPublishMessage()
+        public string GetPublishMessage(string account)
         {
-            return new Member().GetPublishMessage();
+            return new Member().GetPublishMessage(account);
         }
         // GET: api/Query/GetMemberAllInfo?account={account}
         /// <summary>
