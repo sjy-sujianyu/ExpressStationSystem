@@ -19,6 +19,8 @@ namespace ExpressStationSystem.Models
     public class Global
     {
         public static string connstr = @"Data Source=172.16.33.125;Initial Catalog=Express;User ID=sa;Password=123456;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        public static string mqttAdress = "172.16.33.125";
+        public static MqttClient client;
         private static DataClasses1DataContext db = new DataClasses1DataContext(connstr);
         public static string publishMessage=null;
         public static dynamic splitpage(List<dynamic> list, int page, int pagesize)
@@ -61,13 +63,9 @@ namespace ExpressStationSystem.Models
         /// <returns>返回</returns>
         public static bool PublishMessage(mqttMessage x)
         {
-            MqttClient client = new MqttClient("139.199.62.51");
-
-            string clientId = Guid.NewGuid().ToString();
             try
             {
-                client.Connect(clientId);
-                client.Publish("经理公告", Encoding.UTF8.GetBytes(x.content), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+                Global.client.Publish("经理公告", Encoding.UTF8.GetBytes(x.content), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
             }
             catch
             {

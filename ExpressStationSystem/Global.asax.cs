@@ -18,7 +18,6 @@ namespace ExpressStationSystem
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
-        private string mqttServerAddress = "139.199.62.51";
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -26,7 +25,7 @@ namespace ExpressStationSystem
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            connectMqttServer(mqttServerAddress);
+            connectMqttServer(Global.mqttAdress);
             checkError();
             //Text();
             //moni();
@@ -119,12 +118,12 @@ namespace ExpressStationSystem
 
         private void connectMqttServer(string address)
         {
-            MqttClient client = new MqttClient(address);
-            client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
+            Global.client = new MqttClient(address);
+            Global.client.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
             string clientId = Guid.NewGuid().ToString();
             try
             {
-                client.Connect(clientId);
+                Global.client.Connect(clientId);
             }
             catch
             {
@@ -135,5 +134,7 @@ namespace ExpressStationSystem
         {
             Global.publishMessage = Encoding.UTF8.GetString(e.Message);
         }
+
+
     }
 }
