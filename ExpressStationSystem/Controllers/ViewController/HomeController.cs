@@ -21,7 +21,7 @@ namespace ExpressStationSystem.Controllers
             }
             else
             {
-                ViewBag.title = "未知公告";
+                ViewBag.title = "无公告";
                 ViewBag.content = text;
             }
             return View();
