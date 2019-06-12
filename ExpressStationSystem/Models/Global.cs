@@ -66,7 +66,7 @@ namespace ExpressStationSystem.Models
         {
             try
             {
-                Global.client.Publish("经理公告", Encoding.UTF8.GetBytes(x.content), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
+                Global.client.Publish(x.topic, Encoding.UTF8.GetBytes(x.content), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, true);
             }
             catch
             {
