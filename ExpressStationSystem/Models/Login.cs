@@ -144,12 +144,13 @@ namespace ExpressStationSystem.Models
             login.isDelete = false;
             try
             {
-
                 db.Login.InsertOnSubmit(login);
                 db.SubmitChanges();
+                var token = Global.GetUserToken(login.account, login.password);
+                HttpContext.Current.Response.AddHeader("Token", token);
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return false;
             }

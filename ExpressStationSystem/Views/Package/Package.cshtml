@@ -133,18 +133,18 @@
         @if (ViewBag.car == "" || ViewBag.car == null)
         {
             <div style="display:none;height:5rem" class="col-sm-1">
-                <input id="Car" value="@ViewBag.car" style="height:100%;width:100%;font-size: 43px; color: red;text-align: center;" onblur="changeCar()">
+                <input id="Car" value="@ViewBag.car" style="width:10rem;height:100%;width:100%;font-size: 43px; color: red;text-align: center;" onblur="changeCar()">
             </div>
         }
         else
         {
             <div style="display:block;height:5rem" class="col-sm-1">
-                <input id="Car" value="@ViewBag.car" style="height:100%;width:100%;font-size: 43px; color: red;text-align: center;" onblur="changeCar()">
+                <input id="Car" value="@ViewBag.car" style="width:10rem;height:100%;width:100%;font-size: 43px; color: red;text-align: center;" onblur="changeCar()">
             </div>
         }
 
 
-        <div class="col-sm-12 col-sm-offset-1" style="display:flex">
+        <div class="col-sm-12 col-sm-offset-1" style="display:flex ;height:fit-content;margin: auto;">
             <script>
             //执行一个laydate实例
             laydate.render({

@@ -19,7 +19,7 @@ namespace ExpressStationSystem.Models
     public class Global
     {
         public static string connstr = @"Data Source=172.16.33.125;Initial Catalog=Express;User ID=sa;Password=123456;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-        public static string mqttAdress = "172.16.33.125";
+        public static string mqttAdress = "127.0.0.1";
         public static MqttClient client;
         private static DataClasses1DataContext db = new DataClasses1DataContext(connstr);
         public static string publishMessage=null;

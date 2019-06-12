@@ -91,7 +91,7 @@ namespace ExpressStationSystem
                 res.StatusCode = 200;
                 res.End();
             }
-            if (path.ToString().StartsWith("/api/"))
+           if (path.ToString().StartsWith("/api/"))
             {
                 if (!ignoreTokenController().Contains(path))
                 {
@@ -113,7 +113,7 @@ namespace ExpressStationSystem
 
         private List<string> ignoreTokenController()
         {
-            return new List<string>() { "/api/Login/Land", "/api/Login/LandOfManager", "/api/Query/GetAdminToken", "/api/Query/AdminValidateTicket" };
+            return new List<string>() { "/api/Login/Land", "/api/Login/LandOfManager", "/api/Query/GetAdminToken", "/api/Query/AdminValidateTicket", "/api/Query/isTel","/api/Tools/CheckPhone","/api/Login/Post" };
         }
 
         private void connectMqttServer(string address)
@@ -124,6 +124,7 @@ namespace ExpressStationSystem
             try
             {
                 Global.client.Connect(clientId);
+                Global.client.Subscribe(new string[] { "经理公告" }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
             }
             catch
             {
