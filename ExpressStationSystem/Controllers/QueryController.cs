@@ -41,6 +41,16 @@ namespace ExpressStationSystem.Controllers
             return Global.isTel(tb);
         }
 
+        /// <summary>
+        /// 获取公告信息
+        /// </summary>
+        /// <remarks>获取公告信息</remarks>
+        /// <returns>返回</returns>
+        [HttpGet]
+        public string GetPublishMessage()
+        {
+            return new Member().GetPublishMessage();
+        }
         // GET: api/Query/GetMemberAllInfo?account={account}
         /// <summary>
         /// 返回员工信息

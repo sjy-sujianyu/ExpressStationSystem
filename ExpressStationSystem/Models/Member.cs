@@ -30,7 +30,16 @@ namespace ExpressStationSystem.Models
                 return member.imagePath;
             }
         }
-
+        
+        /// <summary>
+        /// 获取公告信息
+        /// </summary>
+        /// <remarks>获取公告信息</remarks>
+        /// <returns>返回</returns>
+        public string GetPublishMessage()
+        {
+            return Global.publishMessage;
+        }
         // GET: api/Image/Post
         /// <summary>
         /// [upload]上传文件

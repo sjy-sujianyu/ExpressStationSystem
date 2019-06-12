@@ -132,7 +132,14 @@ namespace ExpressStationSystem
         }
         private void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
-            Global.publishMessage = Encoding.UTF8.GetString(e.Message);
+            if (e.Topic == "经理公告")
+            {
+                Global.publishMessage = Encoding.UTF8.GetString(e.Message);
+            }
+            else if (e.Topic == "请假公告")
+            {
+                Global.pulibshLeaveMessage = Encoding.UTF8.GetString(e.Message);
+            }
         }
 
 

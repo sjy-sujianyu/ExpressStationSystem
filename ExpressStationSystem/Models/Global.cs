@@ -23,6 +23,7 @@ namespace ExpressStationSystem.Models
         public static MqttClient client;
         private static DataClasses1DataContext db = new DataClasses1DataContext(connstr);
         public static string publishMessage=null;
+        public static string pulibshLeaveMessage = null;
         public static dynamic splitpage(List<dynamic> list, int page, int pagesize)
         {
             if (page == 0 && pagesize == 0)
