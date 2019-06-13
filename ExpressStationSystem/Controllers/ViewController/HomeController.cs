@@ -13,7 +13,8 @@ namespace ExpressStationSystem.Controllers
         {
             ViewBag.Title = "Home Page";
             string text = Global.publishMessage;
-            if(text != null && text.Contains('|'))
+            string textL = Global.pulibshLeaveMessage;
+            if (text != null && text.Contains('|'))
             {
                 string[] text2 = text.Split('|');
                 ViewBag.title = text2[0];
@@ -23,6 +24,17 @@ namespace ExpressStationSystem.Controllers
             {
                 ViewBag.title = "无公告";
                 ViewBag.content = text;
+            }
+            if (textL != null && textL.Contains('|'))
+            {
+                string[] text3 = textL.Split('|');
+                ViewBag.Ltitle = text3[0];
+                ViewBag.Lcontent = text3[1];
+            }
+            else
+            {
+                ViewBag.Ltitle = "无公告";
+                ViewBag.Lcontent = text;
             }
             return View();
         }
